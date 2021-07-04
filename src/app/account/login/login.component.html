@@ -1,0 +1,51 @@
+<div fxLayout="column" fxLayoutAlign="start center">
+    <div fxFlexOffset="3" fxFlex fxLayout="column" fxLayoutAlign="start center">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput type="text" formControlName="username"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                <div *ngIf="submitted && f.username.errors"
+                     class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">
+                        Username is required</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label >Password</mat-label>
+                    <input matInput type="password" formControlName="password"
+                           class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors"
+                         class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required">
+                            Password is required</div>
+                    </div>
+            </mat-form-field>
+        </div>
+        <div *ngIf="message" class="text-danger">{{message}}</div>
+        <div class="form-group">
+            <button mat-flat-button color="accent" [disabled]="loading">
+                <span *ngIf="loading"
+                      class="spinner-border spinner-border-sm mr-1"></span>
+                Login
+            </button>
+            <a mat-flat-button routerLink="../signup" class="btn btn-link">
+                Sign Up</a>
+            <div>
+                <a mat-flat-button routerLink="/account/retrieve-username" class="btn btn-link">
+                    Forgot Username?</a>
+            </div>
+            <div>
+                <a mat-flat-button routerLink="/account/reset_password" class="btn btn-link">
+                    Forgot Password?</a>
+            </div>
+        </div>
+    </form>
+</div>
+</div>

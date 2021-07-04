@@ -1,0 +1,48 @@
+<h2>Account</h2>
+<div gdcolumns="repeat(auto-fill, minmax(350px, 1fr))" gdgap="10px"
+     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;"
+>
+    <div class="container">
+        <table mat-table [dataSource]="userProfArr" class="mat-elevation-z8">
+            <ng-container matColumnDef="key">
+                <th mat-header-cell *matHeaderCellDef><h3>Property</h3></th>
+                <td class="mat-first-col" mat-cell
+                    *matCellDef="let element">{{element[0]}}</td>
+            </ng-container>
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef><h3>Value</h3></th>
+                <td mat-cell *matCellDef="let element">{{element[1]}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <app-account-details-form [userProfile]="userProfile"
+                              (formData)="onSubmit($event)">
+    </app-account-details-form>
+    <div class="container" fxLayout="column" fxLayoutAlign="none">
+        <div>
+            <div class="container" fxLayout="row" fxLayoutAlign="space-around start">
+                <button mat-raised-button color="accent"
+                    (click)="disabled()"
+                    [disabled]="isDisabled"
+                    [routerLink]="['/account', {outlets: {resetusername: ['username-form']}}]">
+                Change Username
+            </button>
+            <button mat-raised-button color="accent"
+                    (click)="disabled()"
+                    [disabled]="isDisabled"
+                    [routerLink]="['/account',
+                                             {outlets: {resetpassword: ['password-form']}}]">
+                Change Password
+            </button>
+            </div>
+        </div>
+        <router-outlet name="resetusername"
+                       (deactivate)="onDeactivate($event)"
+        ></router-outlet>
+        <router-outlet name="resetpassword"
+                       (deactivate)="onDeactivate($event)"
+        ></router-outlet>
+    </div>
+</div>

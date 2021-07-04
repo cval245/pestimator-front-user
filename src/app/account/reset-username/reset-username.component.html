@@ -1,0 +1,41 @@
+<div class="card">
+    <h4 class="card-header">Change Username</h4>
+    <div class="card-body">
+        <form [formGroup]="resetUsernameForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+                <mat-label for="new_username">New Username</mat-label>
+                <input matInput type="text" formControlName="new_username"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && f.new_username.errors }" />
+                <div *ngIf="submitted && f.new_username.errors"
+                     class="invalid-feedback">
+                    <div *ngIf="f.new_username.errors.required">
+                        Username is required</div>
+                </div>
+            </mat-form-field>
+            <div></div>
+            <mat-form-field appearance="fill">
+                <mat-label for="password">Password</mat-label>
+                <input matInput type="password"
+                       formControlName="password"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors"
+                     class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">
+                        Password is required</div>
+                </div>
+                </mat-form-field>
+            <div class="form-group">
+                <button mat-flat-button color="accent" [disabled]="loading">
+                    <span *ngIf="loading"
+                          class="spinner-border spinner-border-sm mr-1">
+                    </span>
+                    Save
+                </button>
+                <a mat-button routerLink="/account">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+

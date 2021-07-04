@@ -1,0 +1,192 @@
+<div class="formContainer">
+<h2>Estimation Form</h2>
+<mat-vertical-stepper #stepper>
+    <mat-step [stepControl]="familyForm" [editable]="isEditable">
+        <form [formGroup]="familyForm" fxLayout="column">
+            <ng-template matStepLabel>Family Details</ng-template>
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div class="form-row">
+                    <h2>Details on Patent Family:</h2>
+                </div>
+            <div class="form-row" fxLayout="row">
+                <mat-form-field color="accent" appearance="outline">
+                    <mat-label>Family Name:</mat-label>
+                    <input matInput type="text" formControlName="family_name">
+                </mat-form-field>
+                <mat-form-field color="accent" appearance="outline">
+                    <mat-label>Family Number:</mat-label>
+                    <input matInput type="text" formControlName="family_no">
+                </mat-form-field>
+            </div>
+                <mat-divider></mat-divider>
+            <div class="form-row">
+                <h3>Details on Corporation Filing the Application:</h3>
+            </div>
+            <div class="form-row" fxLayout="row">
+                <mat-form-field color="accent" appearance="outline">
+                    <mat-label>Entity Size:</mat-label>
+                    <mat-select class="custom-select"
+                                formControlName="entity_size">
+                        <mat-option *ngFor="let t of entitySizes"
+                                    [value]="t.id+''">
+                            {{t.entity_size}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <button mat-flat-button color="accent" matStepperNext>Next</button>
+            </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="firstApplForm" [editable]="isEditable">
+        <form [formGroup]="firstApplForm">
+            <ng-template matStepLabel>First Application</ng-template>
+
+            <div fxLayout="column" fxLayoutAlign="center center">
+            <div class="form-row">
+                <h2>First Application:</h2>
+            </div>
+            <div class="form-row">
+            <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <mat-select class="custom-select"
+                        formControlName="country">
+                <mat-option *ngFor="let t of countries"
+                            [value]="t.id+''">
+                    {{t.country}}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Filing Date</mat-label>
+                <input matInput [matDatepicker]="datepicker"
+                       formControlName="date_filing">
+                <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <mat-datepicker #datepicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+            <mat-label>Application Type</mat-label>
+                <mat-select class="custom-select"
+                        formControlName="application_type">
+                    <mat-option *ngFor="let t of applTypes"
+                            [value]="t.id+''">
+                        {{t.application_type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-divider></mat-divider>
+            </div>
+            <div class="form-row">
+                <h3>Specifications of the First Application:</h3>
+            </div>
+            <div class="form-row">
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Number of Claims:</mat-label>
+                    <input matInput type="text" formControlName="num_claims">
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Independent Claims:</mat-label>
+                    <input matInput type="text" formControlName="num_indep_claims">
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Number of Drawings:</mat-label>
+                    <input matInput type="text" formControlName="num_drawings">
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Number of Pages: </mat-label>
+                    <input matInput type="text" formControlName="num_pages">
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+        <div class="button-container">
+            <button mat-flat-button color="primary" style="margin: 5px;"
+                    matStepperPrevious>Back</button>
+            <button mat-flat-button color="accent" style="margin: 5px;"
+                    matStepperNext>Next</button>
+        </div>
+        </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step  *ngIf="interOption"
+               [formGroup]="internationalStageForm" [stepControl]="internationalStageForm">
+        <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
+            <ng-template matStepLabel>International Stage</ng-template>
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div class="form-row">
+                    <h2>File Through PCT (optional):</h2>
+                </div>
+                <div class="form-row">
+                    <mat-checkbox formControlName="method" (change)="pctMethod($event)">
+                        PCT
+                    </mat-checkbox>
+                </div>
+                <div class="form-row" *ngIf="method">
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="form-row" *ngIf="method">
+                    <h3>Specifications of the First Application:</h3>
+                </div>
+                <div class="form-row" *ngIf="method">
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>
+                            PCT Country
+                        </mat-label>
+                        <mat-select class="custom-select"
+                                    formControlName="meth_country">
+                            <mat-option *ngFor="let t of countries"
+                                        [value]="t.id+''">
+                                {{t.country}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <button mat-flat-button color="primary" style="margin: 5px;"
+                                matStepperPrevious>Back</button>
+                        <button mat-flat-button color="accent"  style="margin: 5px;"
+                                matStepperNext>Next</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [formGroup]="nationalPhaseForm">
+        <form [formGroup]="nationalPhaseForm">
+            <ng-template matStepLabel>National Phase</ng-template>
+            <div fxLayout="column" fxLayoutAlign="center center">
+            <div class="form-row">
+                <h2>Select Jurisdictions to File</h2>
+            </div>
+            <div class="form-row">
+            <div *ngFor="let country of countries; let i=index">
+                <mat-checkbox [value]="country.id+''"
+                              (change)="onCheckboxChange($event, country.id)">
+                    {{country.id}}.{{country.country}}
+                </mat-checkbox>
+            </div>
+            </div>
+            <div class="form-row">
+                <button mat-flat-button color="warn"  style="margin: 5px;"
+                        (click)="stepper.reset()">Reset</button>
+                <button mat-flat-button color="primary" style="margin: 5px;"
+                        matStepperPrevious>Back</button>
+                <button mat-flat-button color="accent" type="submit"
+                        style="margin: 5px;"
+                        (click)="onSubmit()"
+                        [disabled]="!nationalPhaseForm.valid">
+                    Submit
+                </button>
+            </div>
+            </div>
+        </form>
+    </mat-step>
+</mat-vertical-stepper>
+</div>

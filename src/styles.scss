@@ -1,0 +1,153 @@
+
+@use '~@angular/material' as mat;
+
+@import './theme.scss';
+
+html, body { height: 100%; width:100% }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.title{
+    text: mat.font-size($fontConfig, 'display-4');
+    //text: map-get($fontConfig, 'display-4');
+}
+
+// #footer {
+//     position: absolute;
+//     bottom:0;
+//     width:100%;
+//     height:60px;
+//     //background: map-get($theme-primary, 'darker');
+// }
+.blurb-container{
+    padding: 30px;
+    background: map-get($theme-primary, 'lighter');
+}
+
+.blurb-container-2{
+    padding: 30px;
+    background: map-get($theme-primary, 'main');
+}
+
+.blurb{
+    width:500px;
+}
+
+app-root {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom:0;
+    left: 0;
+    right: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: stretch; */
+    /* display:flex; */
+    /* flex-flow:row wrap; */
+}
+.over-main{
+    flex: 1;
+    display: flex;
+}
+//app-header,
+app-nav,
+app-main,
+app-aside,
+app-footer {
+    padding: 20px;
+    margin: 5px;
+}
+
+app-header {
+    //flex: 0 0 100px;
+    //background: map-get($theme-primary, 'lighter');
+    /* order:1; */
+    /* height:100px; */
+    /* flex:0 1 100%; */
+    /* background: #f1b5b5; */
+}
+
+app-nav {
+    flex: 0 2 150px;
+    background: map-get($theme-primary, 'lighter');
+}
+
+app-main {
+    flex: 1 1 300px;
+    min-height:300px;
+}
+
+app-aside {
+    flex:0 2 200px;
+}
+
+app-footer {
+    flex: 0 0 40px;
+    background: map-get($theme-primary, 'darker');
+}
+
+.mat-header-cell{
+    background: map-get($theme-primary, 'darker');
+
+    h3 {
+        font-weight: bold;
+        padding-top: 10px;
+        text-align: center;
+        color: $light-text;
+    }
+
+    
+}
+.mat-first-col{
+    background: map-get($theme-primary, 'lighter');
+}
+
+.formContainer{
+    background-color: map-get($theme-primary, 'darker');
+    mat-vertical-stepper{
+        .mat-step-header{
+            background-color: map-get($theme-primary, 'lighter');
+        }
+        .form-row {
+            margin: 10px;
+        }
+        .mat-step-icon{
+            color: $light-text;
+            background-color: map-get($theme-accent, 'darker');
+        }
+        .mat-step-icon-selected{
+            color: $light-text;
+            background-color: map-get($theme-accent, 'main');
+        }
+        form{
+            //background: map-get($theme-primary, 'lighter');
+            mat-form-field{
+                padding-left: 10px;
+                padding-right: 10px;
+
+                mat-label{
+                    //color: $dark-text;
+                }
+                input{
+                    color: $dark-text;
+                }
+            }
+        }
+    }
+}

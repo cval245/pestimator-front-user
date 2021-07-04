@@ -1,0 +1,17 @@
+<div class="container">
+    <app-header>
+    </app-header>
+    <div class="over-main" fxLayout="row" fxLayout.xs="column">
+        <app-nav *ngIf="isLoggedIn" fxShow fxHide.xs="true">
+        </app-nav>
+
+
+        <app-main>
+        </app-main>
+
+        <app-aside *ngIf="isLoggedIn" fxShow fxHide.sm="true" fxHide.md="true">
+        </app-aside>
+    </div>
+    <app-footer>
+    </app-footer>
+</div>

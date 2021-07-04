@@ -1,0 +1,29 @@
+<p>Retrieve your username by entering your email address below</p>
+<mat-form-field appearance="fill">
+    <mat-label>Enter Email Address:</mat-label>
+        <input matInput
+               type="email" [formControl]="email" />
+</mat-form-field>
+<div></div>
+<button mat-flat-button color="accent" (click)="sendEmail()">
+    Send Email
+</button>
+<div *ngIf="submitted && email.errors"
+     class="invalid-feedback">
+    <div *ngIf="email.errors.required">
+        Password is required</div>
+</div>
+<div *ngIf="submitted && email.errors">
+    <div *ngIf="email.errors.required" class="text-danger">
+        Email is required
+    </div>
+    <div *ngIf="email.errors.pattern" class="text-danger">
+        Please enter a valid email address
+    </div>
+</div>
+<div *ngIf="success" class="text-success">
+    An Email has been sent to your address
+</div>
+<div>
+    <a mat-button color="accent" routerLink="/login">Back to Login</a>
+</div>

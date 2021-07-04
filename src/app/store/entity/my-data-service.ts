@@ -1,0 +1,33 @@
+import { Injectable, Type } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {
+    EntityCollectionDataService,
+    DefaultDataService,
+    HttpUrlGenerator,
+    Logger,
+    QueryParams
+} from '@ngrx/data';
+import { Update } from '@ngrx/entity';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { defaultDataServiceConfig } from '../../app.module';
+
+@Injectable()
+export class MyDataService extends DefaultDataService<any> {
+    constructor(http: HttpClient, httpUrlGenerator: HttpUrlGenerator, logger: Logger) {
+        super('account', http, httpUrlGenerator, defaultDataServiceConfig);
+        logger.log('Created custom Hero EntityDataService');
+        this.entitiesUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.collectionResourceUrl
+        this.entityUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.entityResourceUrl
+        console.log('dddd', defaultDataServiceConfig)
+    }
+
+    update(update: Update<any>): Observable<any> {
+        const id = update && update.id;
+        const updateOrError =
+            id == null
+            ? new Error(`No "${this.entityName}" update data or id`)
+            : update.changes;
+        return this.execute('PUT', this.entityUrl + id +'/', updateOrError);
+    }
+ }

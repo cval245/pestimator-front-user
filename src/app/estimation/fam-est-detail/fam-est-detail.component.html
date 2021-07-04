@@ -1,0 +1,25 @@
+<h1>Family Name: {{family.family_name}}</h1>
+<div gdcolumns="repeat(auto-fill, minmax(350x, 1fr))" gdgap="10px"
+     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;"
+>
+    <div gdcolumn="auto / span 2"
+         gdrow="auto / span 2"
+         style="grid-area: auto / auto / span 2 / span 2;">
+        <div>
+            <app-chart-fam-est-detail [countryAggeds]="countryAgged"></app-chart-fam-est-detail>
+        </div>
+    </div>
+    <div gdcolumn="auto / span 2"
+         style="grid-column: auto / span 2">
+        <app-fam-est-detail-table [famEstDetails]="famEstDetails"
+                                  [countryAggeds]="countryAgged">
+        </app-fam-est-detail-table>
+    </div>
+        <div>
+            <app-fam-det-table [applications]="applications"></app-fam-det-table>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" class="buttonContainer">
+            <p>Export data to excel</p>
+            <button mat-flat-button color="accent" (click)="exportXLSX()">Export</button>
+        </div>
+</div>
