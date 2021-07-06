@@ -24,7 +24,7 @@ import { LawFirmRoutingModule } from './law-firm/law-firm-routing.module';
 import { JwtInterceptor } from './account/_helpers/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { AuthEffects, AuthEffectsNew } from './store/effects/auth.effect';
-import { reducers } from './store/app.states';
+//import { reducers } from './store/app.states';
 import { LandingRoutingModule } from './landing/landing-routing.module';
 import { LandingModule } from './landing/landing.module';
 import * as fromRedu from './store/reducers/auth.reducers';
@@ -89,7 +89,58 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         ApplDetail: {
             entityResourceUrl: environment.API_URL + 'specs/',
             collectionResourceUrl: environment.API_URL + 'specs/',
-        }
+        },
+
+
+        CustomFilTrans: {
+            entityResourceUrl: environment.API_URL + 'custom-filing-transform',
+            collectionResourceUrl: environment.API_URL + 'custom-filing-transform',
+        },
+        PublTrans: {
+            entityResourceUrl: environment.API_URL + 'publication-transform',
+            collectionResourceUrl: environment.API_URL + 'publication-transform',
+        },
+        OATrans: {
+            entityResourceUrl: environment.API_URL + 'oa-transform',
+            collectionResourceUrl: environment.API_URL + 'oa-transform',
+        },
+        AllowTrans: {
+            entityResourceUrl: environment.API_URL + 'allowance-transform',
+            collectionResourceUrl: environment.API_URL + 'allowance-transform',
+        },
+        IssueTrans: {
+            entityResourceUrl: environment.API_URL + 'issue-transform',
+            collectionResourceUrl: environment.API_URL + 'issue-transform',
+        },
+        CountryOANum: {
+            entityResourceUrl: environment.API_URL + 'country-oanum',
+            collectionResourceUrl: environment.API_URL + 'country-oanum',
+        },
+
+        BaseEstTemp: {
+            entityResourceUrl: environment.API_URL + 'base-est-template',
+            collectionResourceUrl: environment.API_URL + 'base-est-template',
+        },  
+        FilEstTemp: {
+            entityResourceUrl: environment.API_URL + 'filing-est-template',
+            collectionResourceUrl: environment.API_URL + 'filing-est-template',
+        },  
+        PublEstTemp: {
+            entityResourceUrl: environment.API_URL + 'publication-est-template',
+            collectionResourceUrl: environment.API_URL + 'publication-est-template',
+        },
+        OAEstTemp: {
+            entityResourceUrl: environment.API_URL + 'oa-est-template',
+            collectionResourceUrl: environment.API_URL + 'oa-est-template',
+        },
+        AllowEstTemp: {
+            entityResourceUrl: environment.API_URL + 'allowance-est-template',
+            collectionResourceUrl: environment.API_URL + 'allowance-est-template',
+        },
+        IssueEstTemp: {
+            entityResourceUrl: environment.API_URL + 'issue-est-template',
+            collectionResourceUrl: environment.API_URL + 'issue-est-template',
+        },
     }
 }
 
@@ -115,7 +166,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         FlexLayoutModule,
         MatToolbarModule,
         MatDividerModule,
-        StoreModule.forRoot({'fromRedu': fromRedu.reducer,
+        StoreModule.forRoot({//'fromRedu': fromRedu.reducer,
                              'authCred': fromRedu.authReducer,
                             },
                             {metaReducers}),

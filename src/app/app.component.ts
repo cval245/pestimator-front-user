@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'front-user';
+    title = 'front-admin';
     isLoggedIn = false;
 
     constructor(

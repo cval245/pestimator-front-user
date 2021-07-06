@@ -4,26 +4,26 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as authActions from '../actions/auth.action';
 
 
-export interface State {
-    // is a user authenticated?
-    isAuthenticated: boolean;
-    // if authenticated, there should be a user object
-    user: User | null;
-    // error message
-    errorMessage: string | null;
-}
-export const initialState: State = {
-    isAuthenticated: false,
-    user: null,
-    errorMessage: null
-};
+// export interface State {
+//     // is a user authenticated?
+//     isAuthenticated: boolean;
+//     // if authenticated, there should be a user object
+//     user: User | null;
+//     // error message
+//     errorMessage: string | null;
+// }
+// export const initialState: State = {
+//     isAuthenticated: false,
+//     user: null,
+//     errorMessage: null
+// };
 
-const superReducer = createReducer(
-    initialState,
-)
-export function reducer(state: State | undefined, action: Action) {
-    return superReducer(state, action)
-}
+// const superReducer = createReducer(
+//     initialState,
+// )
+// export function reducer(state: State | undefined, action: Action) {
+//     return superReducer(state, action)
+// }
 
 
 
@@ -42,25 +42,25 @@ export const initialAuthState: AuthState = {
     refreshTimer: new Date(),
 };
 
-export interface CredentialState {
-    credentials: any;
-}
+// export interface CredentialState {
+//     credentials: any;
+// }
 
-export const initialCredentialState: CredentialState ={
-    credentials: null,
-}
+// export const initialCredentialState: CredentialState ={
+//     credentials: null,
+// }
 
 
-export const authCredentialReducer = createReducer(
-    initialCredentialState,
-    on(authActions.login, (state, {credentials}) => {
-        return {
-            ...state,
-            credentials
-        }
-    }),
+// export const authCredentialReducer = createReducer(
+//     initialCredentialState,
+//     on(authActions.login, (state, {credentials}) => {
+//         return {
+//             ...state,
+//             credentials
+//         }
+//     }),
 
-)
+// )
 
 const authReducerInternal = createReducer(
     initialAuthState,

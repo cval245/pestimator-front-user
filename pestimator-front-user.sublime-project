@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": ".git",
+		},
+		{
+			"path": "dist",
+		},
+		{
+			"path": "node_modules",
+		},
+		{
+			"path": "src"
+		},
+	],
+}

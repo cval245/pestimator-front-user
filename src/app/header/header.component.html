@@ -9,7 +9,7 @@
         <a mat-button routerLink="/home"><h3>PatPort Cost Estimator</h3></a>
         <div fxFlex fxLayout="row" fxLayoutAlign="end center">
             <a mat-flat-button color="accent" routerLink="/account">Account</a>
-            <a mat-button routerLink="/logout">Logout</a>
+            <a mat-button (click)="logout()">Logout</a>
         </div>
     </mat-toolbar>
 </header>

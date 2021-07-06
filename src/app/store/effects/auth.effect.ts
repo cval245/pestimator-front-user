@@ -47,6 +47,22 @@ export class AuthEffectsNew {
         return expires
     }
 
+
+    logout$ = createEffect(()=>
+        this.authActions$.pipe(
+            ofType(logout),
+            exhaustMap(action => this.authService.logout()
+                 .pipe(map(profile => logoutComplete()))
+                //  {
+                //     profile,
+                //     isLoggedIn: false,
+                //     refreshTimer: new Date()})),
+                //         tap(() => this.router.navigate(['/logout']))
+                // )
+            )
+        )
+        )
+
     timer$ = createEffect(() =>
         this.authActions$.pipe(
             ofType(loginComplete),

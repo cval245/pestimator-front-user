@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AccountService } from '../account/_services/account.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -10,6 +12,7 @@ export class HeaderComponent implements OnInit {
     isLoggedIn = false;
     constructor(
         private store: Store<{authCred: any}>,
+        private accSer: AccountService,
     ) { }
 
     ngOnInit(): void {
@@ -17,4 +20,9 @@ export class HeaderComponent implements OnInit {
             { this.isLoggedIn = x.isLoggedIn})
     }
 
+    logout(){
+        this.accSer.logout()
+    }    
+
+      
 }

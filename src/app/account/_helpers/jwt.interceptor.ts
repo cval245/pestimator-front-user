@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { selectUser } from '../../store/index';
-import { AppState } from '../../store/app.states';
+// import { selectUser } from '../../store/index';
+// import { AppState } from '../../store/app.states';
 import {
     HttpRequest,
     HttpHandler,
@@ -42,9 +42,10 @@ export class JwtInterceptor implements HttpInterceptor {
         }
         return next.handle(request).pipe(
             catchError((er: HttpErrorResponse) => {
-                if(er.status === 401){
-                    this.accountService.logout()
-                } else if(er.status === 404){
+                // if(er.status === 401){
+                //     this.accountService.logout()
+                // }
+                if(er.status === 404){
                     this.router.navigate(['/not-found'])
                 }
                 return EMPTY;

@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 
-import { EstimationRoutingModule } from './estimation-routing.module';
 import { FamilyEstimateMainComponent } from './family-estimate-main/family-estimate-main.component';
 import { FamilyEstimateTableComponent } from './family-estimate-table/family-estimate-table.component';
 import { FamEstDetailComponent } from './fam-est-detail/fam-est-detail.component';
@@ -28,7 +27,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FamDetTableComponent } from './fam-det-table/fam-det-table.component';
 
 @NgModule({
-  declarations: [
+    declarations: [
       FamilyEstimateMainComponent,
       FamilyEstimateTableComponent,
       FamEstDetailComponent,

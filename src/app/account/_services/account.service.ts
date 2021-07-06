@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, interval} from 'rxjs';
+import { Observable, interval, from} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -35,7 +35,9 @@ export class AccountService {
 
     logout(){
         this.store.dispatch(logout());
-        this.router.navigate(['logout'])
+        console.log('Logout')
+        let succ = this.router.navigate(['logout'])
+        return from(succ)
     }
 
     register(user: User) {
