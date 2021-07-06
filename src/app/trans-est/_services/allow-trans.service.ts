@@ -3,14 +3,14 @@ import {
     EntityCollectionServiceBase,
     EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
+import { IAllowTrans } from '../_models/AllowTrans.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomFilTransService extends EntityCollectionServiceBase<ICustomFilTrans> {
+export class AllowTransService extends EntityCollectionServiceBase<IAllowTrans>{
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('CustomFilTrans', serviceElementsFactory)
+      super('AllowTrans', serviceElementsFactory)
    }
 }

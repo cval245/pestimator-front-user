@@ -3,14 +3,14 @@ import {
     EntityCollectionServiceBase,
     EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
+import { IOAEstTemp } from '../_models/OAEstTemp.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomFilTransService extends EntityCollectionServiceBase<ICustomFilTrans> {
-
+export class OaEstTempService extends EntityCollectionServiceBase<IOAEstTemp> {
+  
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('CustomFilTrans', serviceElementsFactory)
+    super('OAEstTemp', serviceElementsFactory)
    }
 }

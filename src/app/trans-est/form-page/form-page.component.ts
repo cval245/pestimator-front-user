@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription, combineLatest } from 'rxjs';
+import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
+import { CustomFilTransService } from '../_services/custom-fil-trans.service';
 
 @Component({
   selector: 'app-form-page',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormPageComponent implements OnInit {
 
-  constructor() { }
+  private csmt$: Subscription = new Subscription
+  //private cmbSub: Subscription = new Subscription
+  public cstmFilTrans = new Array<ICustomFilTrans>()
+
+  constructor(private cstmFilSer: CustomFilTransService
+    ) {
+    this.csmt$ = this.cstmFilSer.getAll().subscribe(x =>
+      this.cstmFilTrans = x
+    )
+  }
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.csmt$.unsubscribe()
+  }
 }

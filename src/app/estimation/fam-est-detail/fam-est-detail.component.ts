@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap, mergeMap } from 'rxjs/operators';
-import { values, keys, groupBy, keyBy, mapValues, each, map, assign, omit, transform, reduce, reject,
-         defaults, flatMap } from 'lodash';
+import { values, keys, groupBy, keyBy, mapValues, each, map, assign, reduce,
+         defaults } from 'lodash';
 import { FamEstDetail } from '../_models/FamEstDetail.model';
 import { FamEstDetailService } from '../_services/fam-est-detail.service';
 // @ts-ignore

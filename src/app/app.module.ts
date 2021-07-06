@@ -12,7 +12,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
 
 
-import { environment as env } from '../environments/environment';
 import { metaReducers } from './store/storage.metareducer';
 import { entityConfig } from './entity-metadata';
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +41,8 @@ import { LawFirmModule } from './law-firm/law-firm.module';
 import { EstimationModule } from './estimation/estimation.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MyDataService } from './store/entity/my-data-service';
+import { TransEstModule } from './trans-est/trans-est.module';
+import { TransEstRoutingModule } from './trans-est/trans-est-routing.module';
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     root: environment.API_URL,
@@ -163,6 +164,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         HomeModule,
         LawFirmModule,
         EstimationModule,
+        TransEstModule,
         FlexLayoutModule,
         MatToolbarModule,
         MatDividerModule,
@@ -180,8 +182,8 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         HomeRoutingModule,
         LawFirmRoutingModule,
         EstimationRoutingModule,
+        TransEstRoutingModule,
         LandingRoutingModule,
-        HomeRoutingModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         MatButtonModule,

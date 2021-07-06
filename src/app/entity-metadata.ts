@@ -13,6 +13,18 @@ const entityMetadata: EntityMetadataMap = {
     Application: {},
     ApplDetail: {},
     UserProfile: {},
+    CustomFilTrans: {},
+    PublTrans: {},
+    OATrans: {},
+    AllowTrans: {},
+    IssueTrans: {},
+    CountryOANum: {},
+    BaseEstTemp: {},
+    FileEstTemp: {},
+    PublEstTemp: {},
+    OAEstTemp: {},
+    AllowEstTemp: {},
+    IssueEstTemp: {},
 };
 
 // because the plural of "hero" is not "heros"

@@ -3,14 +3,15 @@ import {
     EntityCollectionServiceBase,
     EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
+import { ICountryOANum } from '../_models/CountryOANum.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomFilTransService extends EntityCollectionServiceBase<ICustomFilTrans> {
+export class CountryOanumService extends EntityCollectionServiceBase<ICountryOANum>{
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('CustomFilTrans', serviceElementsFactory)
+    super('CountryOANum', serviceElementsFactory)
    }
+
 }
