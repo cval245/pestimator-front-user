@@ -10,6 +10,6 @@ import { IIssueTrans } from '../_models/IssueTrans.model';
 })
 export class IssueTransService extends EntityCollectionServiceBase<IIssueTrans>{
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('IIssueTrans', serviceElementsFactory)
+    super('IssueTrans', serviceElementsFactory)
    }
 }

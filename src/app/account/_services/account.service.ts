@@ -14,7 +14,7 @@ import { logout } from '../../store/actions/auth.action';
 })
 
 export class AccountService {
-    baseUrl = environment.API_URL;
+    baseUrl = environment.API_URL + 'auth/';
     constructor(private http: HttpClient,
                 private store: Store<{authCred: any}>,
                 private router: Router){
@@ -24,7 +24,7 @@ export class AccountService {
     }
 
     login(username: string, password: string): Observable<any>{
-        const url = this.baseUrl + 'auth/jwt/create/'
+        const url = this.baseUrl + 'jwt/create/'
 
         return this.http.post<User>(url, {username, password})
             .pipe(map(user => {
@@ -41,7 +41,7 @@ export class AccountService {
     }
 
     register(user: User) {
-        const url = this.baseUrl + 'auth/users/'
+        const url = this.baseUrl + 'users/'
         return this.http.post(url, user)
     }
 
@@ -49,13 +49,13 @@ export class AccountService {
         let new_username = obj.new_username
         let re_new_username = obj.new_username
         let current_password = obj.password
-        const url = this.baseUrl + 'auth/users/set_username/'
+        const url = this.baseUrl + 'users/set_username/'
         return this.http.post(url, {new_username, re_new_username,
                                     current_password})
     }
 
     set_password(obj: any){
-        const url = this.baseUrl + 'auth/users/set_password/'
+        const url = this.baseUrl + 'users/set_password/'
         return this.http.post(url, obj)
     }
 
@@ -67,10 +67,12 @@ export class AccountService {
         this.store.select('authCred').subscribe(x =>
             {refresh = x.profile.refresh,
              access = x.profile.access,
-             username=x.profile.username})
+             username=x.profile.username
+             console.log('xxx', x)
+            })
         let refresh_two = {'refresh': refresh}
         const bob= this.http.post<{'access': string}>(
-            this.baseUrl+'auth/jwt/refresh/',
+            this.baseUrl+'jwt/refresh/',
             refresh_two,
         )
         return bob

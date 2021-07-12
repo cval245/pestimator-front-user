@@ -4,7 +4,6 @@ import { FamEstForm } from '../_models/FamEstForm.model';
 import { ApplType } from '../../characteristics/_models/applType.model';
 import { Country } from '../../characteristics/_models/Country.model';
 import { EntitySize } from '../../characteristics/_models/entitySize.model';
-//import { FamEstFormData } from '../_models/FamEstForm.model';
 
 @Component({
   selector: 'fam-est-form',
@@ -17,10 +16,6 @@ export class FamEstFormComponent implements OnInit {
     @Input() countries: Country[];
     @Input() entitySizes: EntitySize[];
     @Output() formData = new EventEmitter;
-    // @Output() formDataFamily = new EventEmitter;
-    // @Output() formDataFirstAppl = new EventEmitter;
-    // @Output() formDataIntMeth = new EventEmitter;
-    // @Output() formDataNatPhase = new EventEmitter;
     public aggFormData: FamEstForm;
     public method: Boolean;
     public interOption: Boolean = true;

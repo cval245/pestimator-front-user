@@ -29,7 +29,7 @@ export class FamilyEstimateMainComponent implements OnInit {
         this.famEst$ = famEstSer.entities$;
         this.family$ = familySer.getAll();
 
-        this.famEstSub = combineLatest(this.famEst$, this.family$)
+        this.famEstSub = combineLatest([this.famEst$, this.family$])
             .subscribe(
                 ([famEsts, families])=> {
                     this.families = families

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoggedInGuard } from '../_guards/logged-in.guard';
 import { FormPageComponent } from './form-page/form-page.component';
 
-
 const routes: Routes = [
     {path: 'trans-form', component: FormPageComponent ,
      canActivate: [LoggedInGuard]},

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 //import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType, createEffect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { of } from 'rxjs'
 import { tap, map, switchMap, catchError, exhaustMap, combineLatest, concatMap, takeUntil} from 'rxjs/operators';
 import {User} from '../../account/_models/user.model';
@@ -53,12 +53,7 @@ export class AuthEffectsNew {
             ofType(logout),
             exhaustMap(action => this.authService.logout()
                  .pipe(map(profile => logoutComplete()))
-                //  {
-                //     profile,
-                //     isLoggedIn: false,
-                //     refreshTimer: new Date()})),
-                //         tap(() => this.router.navigate(['/logout']))
-                // )
+                
             )
         )
         )
@@ -109,11 +104,6 @@ export class AuthEffectsNew {
                     .pipe(takeUntil(this.authActions$.pipe(ofType(logout))))
                     .pipe(exhaustMap(() => this.authService.refreshToken_two()
                     .pipe(
-                        tap(x => {
-                            console.log('SSSSSSSSSSSSSSSSSSSSSs')
-                            console.log('action.profile', action.profile)
-                            console.log('action.profile.access', action.profile.access)
-                            console.log('tapped', x)}),
                         map(access => {
                         let user_two = new User('', '', '')
                         this.store.select('authCred').subscribe(x => {
@@ -124,9 +114,14 @@ export class AuthEffectsNew {
                         let user_five = new User(user_two.username,
                                                  access.access,
                                                  user_two.refresh)
-                        console.log('ddfdfdfdfdf')
                             return refreshAccessSuccess({'profile': user_five})
-                    })))))
+                    }), catchError(() => of(logout()))
+                        )
+                    // ,
+                    // catchError(err => {
+                    //     return of({'access': ''})
+                    // })
+                    )))
         ))
     refreshAccSuc$ = createEffect(() =>
         this.authActions$.pipe(
