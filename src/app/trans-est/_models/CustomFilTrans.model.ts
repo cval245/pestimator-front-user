@@ -1,5 +1,5 @@
 export interface ICustomFilTrans{
-		id: number;
+		id?: number;
 		date_diff: string;
 		country: any;
 		appl_type: any;

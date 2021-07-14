@@ -1,13 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IAllowTrans } from '../_models/AllowTrans.model';
-import { ICountryOANum } from '../_models/CountryOANum.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
-import { IIssueTrans } from '../_models/IssueTrans.model';
-import { IOATrans } from '../_models/OATrans.model';
-import { IPublTrans } from '../_models/PublTrans.model';
-import { FormControl, FormGroup, FormBuilder, Validators, FormArray, AbstractControl} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Country } from 'src/app/characteristics/_models/Country.model';
 import { ApplType } from 'src/app/characteristics/_models/applType.model';
+import { concat, dropRight } from 'lodash';
 
 
 @Component({
@@ -16,21 +12,18 @@ import { ApplType } from 'src/app/characteristics/_models/applType.model';
   styleUrls: ['./trans-form-table.component.scss']
 })
 export class TransFormTableComponent implements OnInit {
-  @Input() countries: Country[] = [new Country(0, '', '')]
+  @Input() country: Country = new Country(0,'','')
   @Input() applTypes: ApplType[] = [new ApplType]
   @Input() cstmFilTrans = new Array<ICustomFilTrans>()
-  @Input() allowTrans = new Array<IAllowTrans>()
-  @Input() publTrans = new Array<IPublTrans>()
-  @Input() oaTrans = new Array<IOATrans>()
-  @Input() issueTrans = new Array<IIssueTrans>()
-  @Input() oaNum = new Array<ICountryOANum>()
+  @Output() formData = new EventEmitter
+  @Output() delEmit = new EventEmitter
   editingRow: number = 0;
-  displayedColumns: string[] = ['id', 'country', 'prev_appl_type', 
+  displayedColumns: string[] = ['id', 'prev_appl_type', 
                                  'appl_type', 'date_diff']
   public form: FormGroup;
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      id : [''],
+      id : [undefined],
       country: ['', Validators.required],
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
@@ -44,12 +37,13 @@ export class TransFormTableComponent implements OnInit {
   ngOnChanges(){
     console.log('cddd', this.cstmFilTrans)
   }
-
+  newRow(){
+    this.cstmFilTrans = concat(this.cstmFilTrans, {id: 0,
+      country:'',date_diff:'', appl_type: '', prev_appl_type: ''})
+  }
   editRow(row: ICustomFilTrans) {
-    // edit row??? 
-    // 
     console.log('rowo', row)
-    this.editingRow = row.id
+    this.editingRow = row.id!
     if (row.prev_appl_type == undefined){
       row.prev_appl_type = ''
     }
@@ -65,10 +59,18 @@ export class TransFormTableComponent implements OnInit {
 
   submit(){
     console.log('form = ', this.form)
+    this.form.patchValue({country: this.country})
+    this.formData.emit(this.form.value)
   }
   cancel(){
+    if (this.form.controls.id.value == undefined){
+      this.cstmFilTrans= dropRight(this.cstmFilTrans, 1)
+    }
     console.log('cancel')
     this.editingRow = 0
     this.form.reset()
+  }
+  delete(row: ICustomFilTrans) {
+    this.delEmit.emit(row.id)
   }
 }

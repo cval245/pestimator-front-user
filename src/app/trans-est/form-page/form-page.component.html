@@ -1,12 +1,77 @@
-<p>form-page works!</p>
+
+<mat-form-field appearance="outline">
+    <mat-label>Country</mat-label>
+    <mat-select class="custom-select"
+        [formControl]="countryControl">
+        <mat-option *ngFor="let t of countries"
+                [value]="t.id+''">
+                {{t.country}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
+<h2>Custom Filing Transforms</h2>
 <app-trans-form-table 
     [cstmFilTrans]="cstmFilTrans"
-    [allowTrans]="allowTrans"
-    [publTrans]="publTrans"
-    [oaTrans]="oaTrans"
-    [issueTrans]="issueTrans"
-    [oaNum]="oaNum"
-    [countries]="countries"
     [applTypes]="applTypes"
+    [country]="country"
+    (formData)="onSubmitCstmFilTrans($event)"
+    (delEmit)="delCstmFilTrans($event)"
 >
 </app-trans-form-table>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+<h2>Publication Transforms</h2>
+<app-gen-trans
+    [tableData]="publTrans"
+    [country]="country"
+    (formData)="onSubmitPublTrans($event)"
+    (delEmit)="delPublTrans($event)"
+    >
+</app-gen-trans>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="center center" style="margin-right:5px;">
+<h2>Office Action Transforms</h2>
+<app-gen-trans
+    [tableData]="oaTrans"
+    [country]="country"
+    (formData)="onSubmitOATrans($event)"
+    (delEmit)="delOATrans($event)"
+    >
+</app-gen-trans>
+</div>
+<div fxLayout="column" fxLayoutAlign="center center">
+<h2>OA Num</h2>
+<app-oa-num-form
+    [oanum]="oaNum"
+    [country]="country"
+    (formData)="onSubmitOanum($event)"
+    (delEmit)="delOanum($event)"
+    >
+</app-oa-num-form>
+</div>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+<h2>Allow Transforms</h2>
+<app-gen-trans
+    [tableData]="allowTrans"
+    [country]="country"
+    (formData)="onSubmitAllowTrans($event)"
+    (delEmit)="delAllowTrans($event)"
+    >
+</app-gen-trans>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+<h2>Issue Transforms</h2>
+<app-gen-trans
+    [tableData]="issueTrans"
+    [country]="country"
+    (formData)="onSubmitIssueTrans($event)"
+    (delEmit)="delIssueTrans($event)"
+    >
+</app-gen-trans>
+</div>
+

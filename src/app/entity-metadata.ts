@@ -1,4 +1,10 @@
 import { EntityMetadataMap } from '@ngrx/data';
+import { EntitySizeService } from './characteristics/_services/entity-size.service';
+import { IAllowTrans } from './trans-est/_models/AllowTrans.model';
+import { ICustomFilTrans } from './trans-est/_models/CustomFilTrans.model';
+import { IIssueTrans } from './trans-est/_models/IssueTrans.model';
+import { IOATrans } from './trans-est/_models/OATrans.model';
+import { IPublTrans } from './trans-est/_models/PublTrans.model';
 
 const entityMetadata: EntityMetadataMap = {
     LawFirm: {},
@@ -13,12 +19,30 @@ const entityMetadata: EntityMetadataMap = {
     Application: {},
     ApplDetail: {},
     UserProfile: {},
-    CustomFilTrans: {},
-    PublTrans: {},
-    OATrans: {},
-    AllowTrans: {},
-    IssueTrans: {},
-    CountryOANum: {},
+    CustomFilTrans: {
+        filterFn: (entities: ICustomFilTrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    PublTrans: {
+        filterFn: (entities: IPublTrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+        }},
+    OATrans: { 
+        filterFn: (entities: IOATrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    AllowTrans: {
+        filterFn: (entities: IAllowTrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    IssueTrans: {
+        filterFn: (entities: IIssueTrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    CountryOANum: {
+        filterFn: (entities: IIssueTrans[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
     BaseEstTemp: {},
     FileEstTemp: {},
     PublEstTemp: {},

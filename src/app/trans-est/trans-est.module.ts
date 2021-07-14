@@ -9,13 +9,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { GenTransComponent } from './gen-trans/gen-trans.component';
+import { OaNumFormComponent } from './oa-num-form/oa-num-form.component';
 
 
 
 @NgModule({
   declarations: [
     FormPageComponent,
-    TransFormTableComponent
+    TransFormTableComponent,
+    GenTransComponent,
+    OaNumFormComponent
   ],
   imports: [
     CommonModule,

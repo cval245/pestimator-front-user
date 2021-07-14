@@ -94,53 +94,53 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
 
 
         CustomFilTrans: {
-            entityResourceUrl: environment.API_URL + 'custom-filing-transform',
-            collectionResourceUrl: environment.API_URL + 'custom-filing-transform',
+            entityResourceUrl: environment.API_URL + 'custom-filing-transform/',
+            collectionResourceUrl: environment.API_URL + 'custom-filing-transform/',
         },
         PublTrans: {
-            entityResourceUrl: environment.API_URL + 'publication-transform',
-            collectionResourceUrl: environment.API_URL + 'publication-transform',
+            entityResourceUrl: environment.API_URL + 'publication-transform/',
+            collectionResourceUrl: environment.API_URL + 'publication-transform/',
         },
         OATrans: {
-            entityResourceUrl: environment.API_URL + 'oa-transform',
-            collectionResourceUrl: environment.API_URL + 'oa-transform',
+            entityResourceUrl: environment.API_URL + 'oa-transform/',
+            collectionResourceUrl: environment.API_URL + 'oa-transform/',
         },
         AllowTrans: {
-            entityResourceUrl: environment.API_URL + 'allowance-transform',
-            collectionResourceUrl: environment.API_URL + 'allowance-transform',
+            entityResourceUrl: environment.API_URL + 'allowance-transform/',
+            collectionResourceUrl: environment.API_URL + 'allowance-transform/',
         },
         IssueTrans: {
-            entityResourceUrl: environment.API_URL + 'issue-transform',
-            collectionResourceUrl: environment.API_URL + 'issue-transform',
+            entityResourceUrl: environment.API_URL + 'issue-transform/',
+            collectionResourceUrl: environment.API_URL + 'issue-transform/',
         },
         CountryOANum: {
-            entityResourceUrl: environment.API_URL + 'country-oanum',
-            collectionResourceUrl: environment.API_URL + 'country-oanum',
+            entityResourceUrl: environment.API_URL + 'country-oanum/',
+            collectionResourceUrl: environment.API_URL + 'country-oanum/',
         },
 
         BaseEstTemp: {
-            entityResourceUrl: environment.API_URL + 'base-est-template',
-            collectionResourceUrl: environment.API_URL + 'base-est-template',
+            entityResourceUrl: environment.API_URL + 'base-est-template/',
+            collectionResourceUrl: environment.API_URL + 'base-est-template/',
         },  
         FilEstTemp: {
-            entityResourceUrl: environment.API_URL + 'filing-est-template',
-            collectionResourceUrl: environment.API_URL + 'filing-est-template',
+            entityResourceUrl: environment.API_URL + 'filing-est-template/',
+            collectionResourceUrl: environment.API_URL + 'filing-est-template/',
         },  
         PublEstTemp: {
-            entityResourceUrl: environment.API_URL + 'publication-est-template',
-            collectionResourceUrl: environment.API_URL + 'publication-est-template',
+            entityResourceUrl: environment.API_URL + 'publication-est-template/',
+            collectionResourceUrl: environment.API_URL + 'publication-est-template/',
         },
         OAEstTemp: {
-            entityResourceUrl: environment.API_URL + 'oa-est-template',
-            collectionResourceUrl: environment.API_URL + 'oa-est-template',
+            entityResourceUrl: environment.API_URL + 'oa-est-template/',
+            collectionResourceUrl: environment.API_URL + 'oa-est-template/',
         },
         AllowEstTemp: {
-            entityResourceUrl: environment.API_URL + 'allowance-est-template',
-            collectionResourceUrl: environment.API_URL + 'allowance-est-template',
+            entityResourceUrl: environment.API_URL + 'allowance-est-template/',
+            collectionResourceUrl: environment.API_URL + 'allowance-est-template/',
         },
         IssueEstTemp: {
-            entityResourceUrl: environment.API_URL + 'issue-est-template',
-            collectionResourceUrl: environment.API_URL + 'issue-est-template',
+            entityResourceUrl: environment.API_URL + 'issue-est-template/',
+            collectionResourceUrl: environment.API_URL + 'issue-est-template/',
         },
     }
 }

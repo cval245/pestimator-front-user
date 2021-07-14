@@ -6,10 +6,10 @@
 html, body { height: 100%; width:100% }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.title{
-    text: mat.font-size($fontConfig, 'display-4');
-    //text: map-get($fontConfig, 'display-4');
-}
+// .title{
+//     text: mat.font-size($fontConfig, 'display-4');
+//     //text: map-get($fontConfig, 'display-4');
+// }
 
 // #footer {
 //     position: absolute;
@@ -74,14 +74,14 @@ app-footer {
     margin: 5px;
 }
 
-app-header {
-    //flex: 0 0 100px;
-    //background: map-get($theme-primary, 'lighter');
-    /* order:1; */
-    /* height:100px; */
-    /* flex:0 1 100%; */
-    /* background: #f1b5b5; */
-}
+// app-header {
+//     //flex: 0 0 100px;
+//     //background: map-get($theme-primary, 'lighter');
+//     /* order:1; */
+//     /* height:100px; */
+//     /* flex:0 1 100%; */
+//     /* background: #f1b5b5; */
+// }
 
 app-nav {
     flex: 0 2 150px;
@@ -141,9 +141,9 @@ app-footer {
                 padding-left: 10px;
                 padding-right: 10px;
 
-                mat-label{
-                    //color: $dark-text;
-                }
+                // mat-label{
+                //     //color: $dark-text;
+                // }
                 input{
                     color: $dark-text;
                 }

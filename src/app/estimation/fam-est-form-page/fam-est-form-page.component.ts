@@ -34,11 +34,6 @@ export class FamEstFormPageComponent implements OnInit {
     private entitySizes$: Observable<EntitySize[]>;
     private entitySizesSub: Subscription;
 
-    // public formDataFamily: any;
-    // public formDataFirstAppl: any;
-    // public formDataIntMeth: any;
-    // public formDataNatPhase: any;
-
     constructor(
         private famEstFormSer: FamEstFormService,
         private countrySer: CountryService,

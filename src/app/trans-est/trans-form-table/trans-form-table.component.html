@@ -1,33 +1,11 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-<h3>Custom Filing Transforms</h3>
 <table mat-table [dataSource]="cstmFilTrans">
     <ng-container matColumnDef="id">
         <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
         <td mat-cell class="mat-cell" *matCellDef="let element">
         {{element.id}}</td>
     </ng-container>
-    <ng-container matColumnDef="country">
-        <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>Country</h3></th>
-        <td mat-cell *matCellDef="let element">
-        <div *ngIf="editingRow==element.id; else country">
-        <div [formGroup]="form">
-            <mat-form-field appearance="outline" color="accent">
-            <mat-label>Country</mat-label>
-            <mat-select class="custom-select"
-                        formControlName="country">
-                <mat-option *ngFor="let t of countries"
-                            [value]="t.id+''">
-                    {{t.country}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        </div>
-        </div>
-        <ng-template #country>
-        {{element.country}}
-        </ng-template>
-        </td>
-    </ng-container>
+    
     <ng-container matColumnDef="date_diff">
         <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
         <td mat-cell *matCellDef="let element">
@@ -40,6 +18,8 @@
         </mat-form-field>
         <button mat-button (click)="submit()"><mat-icon>done</mat-icon></button>
         <button mat-button (click)="cancel()"><mat-icon>close</mat-icon></button>
+        <button mat-button (click)="delete(element)"><mat-icon>delete_outline</mat-icon></button>
+
 
 
         </div>
@@ -104,4 +84,5 @@
     *matRowDef="let row; columns: displayedColumns;">
     </tr>
 </table>
+<button (click)="newRow()">new row</button>
 </div>

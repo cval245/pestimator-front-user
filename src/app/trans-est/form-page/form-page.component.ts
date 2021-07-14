@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { map } from 'lodash';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ApplType } from 'src/app/characteristics/_models/applType.model';
 import { Country } from 'src/app/characteristics/_models/Country.model';
 import { ApplTypeService } from 'src/app/characteristics/_services/appl-type.service';
@@ -18,6 +20,11 @@ import { IssueTransService } from '../_services/issue-trans.service';
 import { OaTransService } from '../_services/oa-trans.service';
 import { PublTransService } from '../_services/publ-trans.service';
 
+  interface CountryWise{
+    id: number,
+    country: any;
+  }
+
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
@@ -25,8 +32,8 @@ import { PublTransService } from '../_services/publ-trans.service';
 })
 export class FormPageComponent implements OnInit {
 
-  private csmt$: Subscription = new Subscription
-  private cmbLat: Subscription = new Subscription
+  //private cmbLat: Subscription = new Subscription
+  private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
   public countries: Country[] = [new Country(0, '', '')]
   public applTypes: ApplType[] = [new ApplType()]
   public cstmFilTrans = new Array<ICustomFilTrans>()
@@ -35,6 +42,8 @@ export class FormPageComponent implements OnInit {
   public allowTrans = new Array<IAllowTrans>()
   public issueTrans = new Array<IIssueTrans>()
   public oaNum = new Array<ICountryOANum>()
+  public countryControl = new FormControl()
+  public country: Country = new Country(0, '', '')
 
   constructor(
     private countrySer: CountryService,
@@ -46,66 +55,68 @@ export class FormPageComponent implements OnInit {
     private oaNumSer: CountryOanumService,
     private applTypeSer: ApplTypeService,
     ) {
-  
-    let comb_1 = combineLatest([
-      this.countrySer.entities$,
-      this.cstmFilSer.entities$,
-      this.publTranSer.entities$,
-      this.oaTranSer.entities$,
-      this.allowTranSer.entities$,
-      this.issueTranSer.entities$,
-    ])
-    let comb_2 = combineLatest([
-      this.oaNumSer.entities$,
-      this.applTypeSer.entities$])
-    this.cmbLat = combineLatest([comb_1, comb_2]).subscribe(data => {
-      this.countries = data[0][0]
-      let cstmFilTrans = data[0][1]
-      let publTrans = data[0][2]
-      let oaTrans = data[0][3]
-      let allowTrans = data[0][4]
-      let issueTrans = data[0][5]
-      let oaNum = data[1][0]
-      this.applTypes = data[1][1]
-      
-      this.cstmFilTrans = map(cstmFilTrans, (x: ICustomFilTrans) => {
-        let d = this.countries.find(y => y.id == x.country);
-        let applType = this.applTypes.find(z => z.id == x.appl_type)
-        let prevApplType = this.applTypes.find(a => a.id == x.prev_appl_type)
-        return {...x, 'country': d?.country, 
-                'currency_name': d?.currency_name,
-                'appl_type': applType,
-                'prev_appl_type': prevApplType,
-              }
-      })
-      this.publTrans = map(publTrans, (x: IPublTrans) => {
-        let d = this.countries.find(y => y.id == x.country);
-        return {...x, 'country': d?.country, 'currency_name': d?.currency_name}
-      })
-      
-      this.oaTrans = map(oaTrans, (x: IOATrans) => {
-        let d = this.countries.find(y => y.id == x.country);
-        return {...x, 'country': d?.country, 'currency_name': d?.currency_name}
-      })
+      this.countrySer.entities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => this.countries = x) 
 
-      this.allowTrans = map(allowTrans, (x: IAllowTrans) => {
-        let d = this.countries.find(y => y.id == x.country);
-        return {...x, 'country': d?.country, 'currency_name': d?.currency_name}
-      })
-     
-      this.issueTrans = map(issueTrans, (x: IIssueTrans) => {
-        let d = this.countries.find(y => y.id == x.country);
-        return {...x, 'country': d?.country, 'currency_name': d?.currency_name}
-      })
+      this.applTypeSer.entities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => this.applTypes = x)
 
-      this.oaNum = map(oaNum, (x: ICountryOANum) => {
-        let d = this.countries.find(y => y.id == x.country);
-        return {...x, 'country': d?.country, 'currency_name': d?.currency_name}
+      this.countryControl.valueChanges
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.country = x
+        this.cstmFilSer.setFilter({
+          country_id: x
+        })
+        this.publTranSer.setFilter({
+          country_id: x
+        })
+        this.oaTranSer.setFilter({
+          country_id: x
+        })
+        this.allowTranSer.setFilter({
+          country_id: x
+        })
+        this.issueTranSer.setFilter({
+          country_id: x
+        })
+        this.oaNumSer.setFilter({
+          country_id: x
+        })
       })
-      console.log('this.allowTrans', this.allowTrans)
-      
-    }
-    )
+      this.cstmFilSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.cstmFilTransSet(x)
+      })
+      this.publTranSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.publTrans = this.countrySet(x)
+      })
+      this.oaTranSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.oaTrans = this.countrySet(x)
+      })
+      this.allowTranSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.allowTrans = this.countrySet(x)
+        console.log('this.allowTrans', this.allowTrans)
+      })
+      this.issueTranSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.issueTrans = this.countrySet(x)
+      })
+      this.oaNumSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.oaNum = this.countrySet(x)
+      })
   }
 
   ngOnInit(): void {
@@ -119,6 +130,102 @@ export class FormPageComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.csmt$.unsubscribe()
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
+
+  cstmFilTransSet(cstmFilTrans: ICustomFilTrans[]){
+  this.cstmFilTrans = map(cstmFilTrans, (x: ICustomFilTrans) => {
+        let d = this.countries.find(y => y.id == x.country);
+        let applType = this.applTypes.find(z => z.id == x.appl_type)
+        let prevApplType = this.applTypes.find(a => a.id == x.prev_appl_type)
+        return {...x, 'country': d,
+                'appl_type': applType,
+                'prev_appl_type': prevApplType,
+              }
+      })
+  }
+
+  countrySet<TCountryWise extends CountryWise>(arg: TCountryWise[]): TCountryWise[] 
+  {
+    let modArg = map<TCountryWise, TCountryWise>(arg, (x: TCountryWise) => {
+        let d = this.countries.find(y => y.id == x.country);
+        return {...x, 'country': d}
+      }) 
+    return modArg
+  }
+
+
+  onSubmitPublTrans(formData: IPublTrans): void {
+    console.log('formDATa', formData)
+    if (formData.id == undefined){
+      this.publTranSer.add(formData)
+    } else {
+      this.publTranSer.update(formData)
+    }
+  }
+  delPublTrans(row: IPublTrans): void{
+    this.publTranSer.delete(row)
+  }
+
+  onSubmitOATrans(formData: IOATrans): void {
+    console.log('formDATa', formData)
+    if (formData.id == undefined){
+      this.oaTranSer.add(formData)
+    } else {
+      this.oaTranSer.update(formData)
+    }
+  }
+  delOATrans(row: IOATrans): void{
+    this.oaTranSer.delete(row)
+  }
+
+  onSubmitAllowTrans(formData: IAllowTrans): void {
+    console.log('formDATa', formData)
+    if (formData.id == undefined){
+      this.allowTranSer.add(formData)
+    } else {
+      this.allowTranSer.update(formData)
+    }
+  }
+  delAllowTrans(row: IAllowTrans): void{
+    this.allowTranSer.delete(row)
+  }
+
+  onSubmitIssueTrans(formData: IIssueTrans): void {
+    console.log('formDATa', formData)
+    if (formData.id == undefined){
+      this.issueTranSer.add(formData)
+    } else {
+      this.issueTranSer.update(formData)
+    }
+  }
+  delIssueTrans(row: IIssueTrans): void{
+    this.issueTranSer.delete(row)
+  }
+
+  onSubmitCstmFilTrans(formData: ICustomFilTrans): void{
+    if (formData.id == undefined){
+      this.cstmFilSer.add(formData)
+    } else {
+      this.cstmFilSer.update(formData)
+    }
+  }
+
+  delCstmFilTrans(row: ICustomFilTrans): void{
+    this.cstmFilSer.delete(row)
+  }
+
+  onSubmitOanum(formData: ICountryOANum): void{
+    if (formData.id == undefined){
+      this.oaNumSer.add(formData)
+    } else {
+      this.oaNumSer.update(formData)
+    }
+  }
+
+  delOanum(row: ICountryOANum): void{
+    this.oaNumSer.delete(row)
+  }
+
 }
