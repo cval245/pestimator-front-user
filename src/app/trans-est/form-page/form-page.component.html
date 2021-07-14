@@ -10,6 +10,7 @@
     </mat-select>
 </mat-form-field>
 
+<div fxLayout="column" fxLayoutAlign="start start">
 <h2>Custom Filing Transforms</h2>
 <app-trans-form-table 
     [cstmFilTrans]="cstmFilTrans"
@@ -19,8 +20,8 @@
     (delEmit)="delCstmFilTrans($event)"
 >
 </app-trans-form-table>
-
-<div fxLayout="column" fxLayoutAlign="center center">
+</div>
+<div fxLayout="column" fxLayoutAlign="start start">
 <h2>Publication Transforms</h2>
 <app-gen-trans
     [tableData]="publTrans"
@@ -30,8 +31,7 @@
     >
 </app-gen-trans>
 </div>
-<div fxLayout="row" fxLayoutAlign="center center">
-<div fxLayout="column" fxLayoutAlign="center center" style="margin-right:5px;">
+<div fxLayout="column" fxLayoutAlign="start start" style="margin-right:5px;">
 <h2>Office Action Transforms</h2>
 <app-gen-trans
     [tableData]="oaTrans"
@@ -41,7 +41,7 @@
     >
 </app-gen-trans>
 </div>
-<div fxLayout="column" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="start start">
 <h2>OA Num</h2>
 <app-oa-num-form
     [oanum]="oaNum"
@@ -51,9 +51,8 @@
     >
 </app-oa-num-form>
 </div>
-</div>
 
-<div fxLayout="column" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="start start">
 <h2>Allow Transforms</h2>
 <app-gen-trans
     [tableData]="allowTrans"
@@ -64,7 +63,7 @@
 </app-gen-trans>
 </div>
 
-<div fxLayout="column" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="start start">
 <h2>Issue Transforms</h2>
 <app-gen-trans
     [tableData]="issueTrans"

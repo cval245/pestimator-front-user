@@ -1,6 +1,7 @@
 import { EntityMetadataMap } from '@ngrx/data';
 import { EntitySizeService } from './characteristics/_services/entity-size.service';
 import { IAllowTrans } from './trans-est/_models/AllowTrans.model';
+import { IBaseEstTemp } from './trans-est/_models/BaseEstTemp.model';
 import { ICustomFilTrans } from './trans-est/_models/CustomFilTrans.model';
 import { IIssueTrans } from './trans-est/_models/IssueTrans.model';
 import { IOATrans } from './trans-est/_models/OATrans.model';
@@ -43,12 +44,17 @@ const entityMetadata: EntityMetadataMap = {
         filterFn: (entities: IIssueTrans[], country_id: any) => {
             return entities.filter(entity => entity.country == country_id.country_id)
     }},
-    BaseEstTemp: {},
+    BaseEstTemp: {
+    //     filterFn: (entities: IBaseEstTemp[], country_id: any) => {
+    //         return entities.filter(entity => entity.country == country_id.country_id)
+    // }
+    },
     FileEstTemp: {},
     PublEstTemp: {},
     OAEstTemp: {},
     AllowEstTemp: {},
     IssueEstTemp: {},
+    LawFirmEstTemp: {},
 };
 
 // because the plural of "hero" is not "heros"

@@ -11,6 +11,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { GenTransComponent } from './gen-trans/gen-trans.component';
 import { OaNumFormComponent } from './oa-num-form/oa-num-form.component';
+import { EstMainFormComponent } from './est-main-form/est-main-form.component';
 
 
 
@@ -19,7 +20,8 @@ import { OaNumFormComponent } from './oa-num-form/oa-num-form.component';
     FormPageComponent,
     TransFormTableComponent,
     GenTransComponent,
-    OaNumFormComponent
+    OaNumFormComponent,
+    EstMainFormComponent
   ],
   imports: [
     CommonModule,
