@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ApplType } from 'src/app/characteristics/_models/applType.model';
 import { Country } from 'src/app/characteristics/_models/Country.model';
 import { ApplTypeService } from 'src/app/characteristics/_services/appl-type.service';
-import { CountryService } from 'src/app/characteristics/_services/country.service';
+import { CountryAllService } from 'src/app/characteristics/_services/country-all.service';
 import { IAllowTrans } from '../_models/AllowTrans.model';
 import { ICountryOANum } from '../_models/CountryOANum.model';
 import { ICustomFilTrans } from '../_models/CustomFilTrans.model';
@@ -45,7 +45,7 @@ export class FormPageComponent implements OnInit {
   public country: Country = new Country(0, '', '')
 
   constructor(
-    private countrySer: CountryService,
+    private countrySer: CountryAllService,
     private cstmFilSer: CustomFilTransService,
     private publTranSer: PublTransService,
     private oaTranSer: OaTransService,
@@ -104,7 +104,6 @@ export class FormPageComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.allowTrans = this.countrySet(x)
-        console.log('this.allowTrans', this.allowTrans)
       })
       this.issueTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))

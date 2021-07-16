@@ -59,6 +59,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
             entityResourceUrl: environment.API_URL + 'countries/',
             collectionResourceUrl: environment.API_URL + 'countries/',
         },
+        CountryAll: {
+            entityResourceUrl: environment.API_URL + 'countries-all/',
+            collectionResourceUrl: environment.API_URL + 'countries-all/',
+        },
         FamEstDetail: {
             entityResourceUrl: environment.API_URL + 'fam-est-detail/',
             collectionResourceUrl: environment.API_URL + 'fam-est-detail/',

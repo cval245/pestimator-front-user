@@ -61,17 +61,18 @@ export class AccountService {
     }
 
 
-    public refreshToken_two(){
-        var refresh = ''
-        var access = ''
-        var username = ''
-        this.store.select('authCred').subscribe(x =>
-            {refresh = x.profile.refresh,
-             access = x.profile.access,
-             username=x.profile.username
-             console.log('xxx', x)
-            })
+    public refreshToken_two(refresh: string){
+        //var refresh = ''
+        //var access = ''
+        //var username = ''
+        // this.store.select('authCred').subscribe(x =>
+        //     {refresh = x.profile.refresh,
+        //      access = x.profile.access,
+        //      username=x.profile.username
+        //      console.log('xxx', x)
+        //     })
         let refresh_two = {'refresh': refresh}
+        console.log('refresh_tow', refresh_two)
         const bob= this.http.post<{'access': string}>(
             this.baseUrl+'jwt/refresh/',
             refresh_two,

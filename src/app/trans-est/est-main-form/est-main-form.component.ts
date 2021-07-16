@@ -6,6 +6,7 @@ import { mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { ApplType } from 'src/app/characteristics/_models/applType.model';
 import { Country } from 'src/app/characteristics/_models/Country.model';
 import { ApplTypeService } from 'src/app/characteristics/_services/appl-type.service';
+import { CountryAllService } from 'src/app/characteristics/_services/country-all.service';
 import { CountryService } from 'src/app/characteristics/_services/country.service';
 import { IAllowEstTemp } from '../_models/AllowEstTemp.model';
 import { IConditions } from '../_models/Conditions.model';
@@ -65,7 +66,7 @@ export class EstMainFormComponent implements OnInit {
   public lawFirmTemp = new Array<ILawFirmEstTemp>()
   
   constructor(
-    private countrySer: CountryService,
+    private countrySer: CountryAllService,
     private filEstSer: FileEstTempService,
     private publEstSer: PublEstTempService,
     private oaEstSer: OaEstTempService,

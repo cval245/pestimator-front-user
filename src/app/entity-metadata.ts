@@ -19,6 +19,7 @@ const entityMetadata: EntityMetadataMap = {
     FamEstDetail: {},
     FamEstForm: {},
     Country: {},
+    CountryAll: {},
     EntitySize: {},
     ApplType: {},
     OAType: {},

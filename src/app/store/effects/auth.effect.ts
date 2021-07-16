@@ -63,7 +63,7 @@ export class AuthEffectsNew {
             ofType(loginComplete),
             exhaustMap(action =>
                 this.authService.startRefreshTokenTimer_two(action.refreshTimer)
-                    .pipe(switchMap(() => this.authService.refreshToken_two()
+                    .pipe(switchMap(() => this.authService.refreshToken_two('')
                     .pipe(
                         tap(x => console.log('99999999999999999999999999999999999', x)),
                         map(access => {
@@ -94,7 +94,32 @@ export class AuthEffectsNew {
                                       'refreshTimer': this.getExpTimeAccess(user.access)})
             }
             )))
-
+    // restartTimer$ = createEffect(() =>
+    //     this.authActions$.pipe(
+    //         ofType(refreshAccess),
+    //         switchMap(action =>
+    //             this.authService.startRefreshTokenTimer_two(action.refreshTimer)
+    //                 .pipe(takeUntil(this.authActions$.pipe(ofType(logout))))
+    //                 .pipe(exhaustMap(() => this.authService.refreshToken_two('')
+    //                 .pipe(
+    //                     map(access => {
+    //                         console.log('axxess', access)
+    //                     let user_two = new User('', '', '')
+    //                     this.store.select('authCred').subscribe(x => {
+    //                         user_two=x.profile
+    //                     })
+    //                     let user_five = new User(user_two.username,
+    //                                              access.access,
+    //                                              user_two.refresh)
+    //                         return refreshAccessSuccess({'profile': user_five})
+    //                 }), catchError(() => of(logout()))
+    //                     )
+    //                 // ,
+    //                 // catchError(err => {
+    //                 //     return of({'access': ''})
+    //                 // })
+    //                 )))
+    //     ))
 
     restartTimer$ = createEffect(() =>
         this.authActions$.pipe(
@@ -102,15 +127,14 @@ export class AuthEffectsNew {
             switchMap(action =>
                 this.authService.startRefreshTokenTimer_two(action.refreshTimer)
                     .pipe(takeUntil(this.authActions$.pipe(ofType(logout))))
-                    .pipe(exhaustMap(() => this.authService.refreshToken_two()
+                    .pipe(exhaustMap(() => this.authService.refreshToken_two('')
                     .pipe(
                         map(access => {
+                            console.log('axxess', access)
                         let user_two = new User('', '', '')
                         this.store.select('authCred').subscribe(x => {
                             user_two=x.profile
                         })
-                        //user_two.access = access.access
-                        //action.profile.access
                         let user_five = new User(user_two.username,
                                                  access.access,
                                                  user_two.refresh)
