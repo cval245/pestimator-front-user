@@ -32,7 +32,6 @@ import { PublTransService } from '../_services/publ-trans.service';
 })
 export class FormPageComponent implements OnInit {
 
-  //private cmbLat: Subscription = new Subscription
   private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
   public countries: Country[] = [new Country(0, '', '')]
   public applTypes: ApplType[] = [new ApplType()]
