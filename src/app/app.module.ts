@@ -122,7 +122,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
             entityResourceUrl: environment.API_URL + 'base-est-template/',
             collectionResourceUrl: environment.API_URL + 'base-est-template/',
         },  
-        FilEstTemp: {
+        FileEstTemp: {
             entityResourceUrl: environment.API_URL + 'filing-est-template/',
             collectionResourceUrl: environment.API_URL + 'filing-est-template/',
         },  
@@ -142,6 +142,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
             entityResourceUrl: environment.API_URL + 'issue-est-template/',
             collectionResourceUrl: environment.API_URL + 'issue-est-template/',
         },
+        Conditions: {
+            entityResourceUrl: environment.API_URL + 'conditions/',
+            collectionResourceUrl: environment.API_URL + 'conditions/',
+        },
+        LawFirmEstTemp: {
+            entityResourceUrl: environment.API_URL + 'lawfirm-est-template/',
+            collectionResourceUrl: environment.API_URL + 'lawfirm-est-template/',
+        }
     }
 }
 

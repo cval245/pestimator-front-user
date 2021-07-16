@@ -1,0 +1,305 @@
+<table mat-table [dataSource]="tableData">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
+        <td mat-cell class="mat-cell" *matCellDef="let element">
+        {{element.id}}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="official_cost">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Official Cost</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else officialCost">
+        <div [formGroup]="form">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Official Cost</mat-label>
+            <input matInput type="text"
+                    formControlName="official_cost">
+        </mat-form-field>
+        </div>
+        </div>
+        <ng-template #officialCost>
+        {{element.official_cost}}
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="appl_type">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>ApplType</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else applType">
+        <div [formGroup]="form">
+        
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+        <mat-label>ApplType</mat-label>
+            <mat-select class="custom-select"
+                        formControlName="appl_type">
+                <mat-option *ngFor="let t of applTypes"
+                            [value]="t.id">
+                    {{t.application_type}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        </div>
+        </div>
+        <ng-template #applType>
+        <div *ngIf="element.appl_type">
+        {{element.appl_type.application_type}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_claims_min">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Claims Min</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsClaimsMin">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Claims Min</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_claims_min">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsClaimsMin>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_claims_min}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_claims_max">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Claims Max</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsClaimsMax">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Claims Max</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_claims_max">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsClaimsMax>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_claims_max}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_pages_min">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Pages Min</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsPagesMin">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Pages Min</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_pages_min">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsPagesMin>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_pages_min}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="condition_pages_max">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Pages Max</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsPagesMax">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Pages Max</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_pages_max">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsPagesMax>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_pages_max}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_drawings_min">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Drawings Min</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsDrawingsMin">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Drawings Min</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_drawings_min">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsDrawingsMin>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_drawings_min}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_drawings_max">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Drawings Max</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsDrawingsMax">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Drawings Max</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_drawings_max">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsDrawingsMax>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_drawings_max}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condition_entity_size">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Entity Size</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsEntitySize">
+        <div [formGroup]="form">
+        <div formGroupName="conditions">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Entity Size</mat-label>
+            <input matInput type="text"
+                    formControlName="condition_entity_size">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsEntitySize>
+        <div *ngIf="element.conditions">
+        {{element.conditions.condition_entity_size}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="law_firm_cost">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>LawFirm Cost</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else conditionsLawFirmCost">
+        <div [formGroup]="form">
+        <div formGroupName="law_firm_template">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>LawFirm Cost</mat-label>
+            <input matInput type="text"
+                    formControlName="law_firm_cost">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #conditionsLawFirmCost>
+        <div *ngIf="element.law_firm_template">
+        {{element.law_firm_template.law_firm_cost}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="law_firm_date_diff">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>LawFirm Date Diff </h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else LawFirmDateDiff">
+        <div [formGroup]="form">
+        <div formGroupName="law_firm_template">
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>LawFirm Date Diff</mat-label>
+            <input matInput type="text"
+                    formControlName="date_diff">
+        </mat-form-field>
+        </div>
+        </div>
+        </div>
+        <ng-template #LawFirmDateDiff>
+        <div *ngIf="element.law_firm_template">
+        {{element.law_firm_template.date_diff}}
+        </div>
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date_diff">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else datediff">
+        <div [formGroup]="form">
+
+        <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Date Diff</mat-label>
+            <input matInput type="text"
+                    formControlName="date_diff">
+        </mat-form-field>
+                </div>
+        </div>
+        <ng-template #datediff>
+        {{element.date_diff}}
+                </ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="buttons">
+        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+        <h3>Buttons</h3></th>
+        <td mat-cell *matCellDef="let element">
+        <div *ngIf="editingRow==element.id; else buttonsRow">
+        <button mat-button (click)="submit()"><mat-icon>done</mat-icon></button>
+        <button mat-button (click)="cancel()"><mat-icon>close</mat-icon></button>
+        <button mat-button (click)="delete(element)"><mat-icon>delete_outline
+                </mat-icon>
+        </button>
+        </div>
+        <ng-template #buttonsRow>
+
+        </ng-template>
+        </td>
+    </ng-container>
+
+        
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (dblclick)="editRow(row)"
+    *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+</table>
+<button (click)="newRow()">new row</button>

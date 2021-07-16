@@ -1,10 +1,16 @@
 import { EntityMetadataMap } from '@ngrx/data';
 import { EntitySizeService } from './characteristics/_services/entity-size.service';
+import { IAllowEstTemp } from './trans-est/_models/AllowEstTemp.model';
 import { IAllowTrans } from './trans-est/_models/AllowTrans.model';
 import { IBaseEstTemp } from './trans-est/_models/BaseEstTemp.model';
 import { ICustomFilTrans } from './trans-est/_models/CustomFilTrans.model';
+import { IFileEstTemp } from './trans-est/_models/FileEstTemp.model';
+import { IIssueEstTemp } from './trans-est/_models/IssueEstTemp.model';
 import { IIssueTrans } from './trans-est/_models/IssueTrans.model';
+import { ILawFirmEstTemp } from './trans-est/_models/LawFirmEstTemp.model';
+import { IOAEstTemp } from './trans-est/_models/OAEstTemp.model';
 import { IOATrans } from './trans-est/_models/OATrans.model';
+import { IPublEstTemp } from './trans-est/_models/PublEstTemp.model';
 import { IPublTrans } from './trans-est/_models/PublTrans.model';
 
 const entityMetadata: EntityMetadataMap = {
@@ -45,16 +51,31 @@ const entityMetadata: EntityMetadataMap = {
             return entities.filter(entity => entity.country == country_id.country_id)
     }},
     BaseEstTemp: {
-    //     filterFn: (entities: IBaseEstTemp[], country_id: any) => {
-    //         return entities.filter(entity => entity.country == country_id.country_id)
-    // }
-    },
-    FileEstTemp: {},
-    PublEstTemp: {},
-    OAEstTemp: {},
-    AllowEstTemp: {},
-    IssueEstTemp: {},
+        filterFn: (entities: IBaseEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    FileEstTemp: {
+        filterFn: (entities: IFileEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    PublEstTemp: {
+        filterFn: (entities: IPublEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    OAEstTemp: {
+        filterFn: (entities: IOAEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    AllowEstTemp: {
+        filterFn: (entities: IAllowEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
+    IssueEstTemp: {
+        filterFn: (entities: IIssueEstTemp[], country_id: any) => {
+            return entities.filter(entity => entity.country == country_id.country_id)
+    }},
     LawFirmEstTemp: {},
+    Conditions: {},
 };
 
 // because the plural of "hero" is not "heros"

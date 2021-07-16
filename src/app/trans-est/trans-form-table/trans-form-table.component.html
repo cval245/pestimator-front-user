@@ -36,7 +36,7 @@
         <div *ngIf="editingRow==element.id; else applType">
         <div [formGroup]="form">
             <mat-form-field appearance="outline" color="accent">
-            <mat-label>Country</mat-label>
+            <mat-label>ApplType</mat-label>
             <mat-select class="custom-select"
                         formControlName="appl_type">
                 <mat-option *ngFor="let t of applTypes"

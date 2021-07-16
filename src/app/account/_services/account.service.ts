@@ -24,6 +24,7 @@ export class AccountService {
     }
 
     login(username: string, password: string): Observable<any>{
+        console.log(this.baseUrl)
         const url = this.baseUrl + 'jwt/create/'
 
         return this.http.post<User>(url, {username, password})

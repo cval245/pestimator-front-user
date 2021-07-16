@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { GenTransComponent } from './gen-trans/gen-trans.component';
 import { OaNumFormComponent } from './oa-num-form/oa-num-form.component';
 import { EstMainFormComponent } from './est-main-form/est-main-form.component';
+import { EstFormComponent } from './est-form/est-form.component';
 
 
 
@@ -21,7 +22,8 @@ import { EstMainFormComponent } from './est-main-form/est-main-form.component';
     TransFormTableComponent,
     GenTransComponent,
     OaNumFormComponent,
-    EstMainFormComponent
+    EstMainFormComponent,
+    EstFormComponent
   ],
   imports: [
     CommonModule,

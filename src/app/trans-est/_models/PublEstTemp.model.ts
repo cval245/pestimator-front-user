@@ -3,6 +3,7 @@ export interface IPublEstTemp{
         official_cost: number,
 		date_diff: string;
 		country: any;
-        conditions?: any;
-        law_firm_template?: any;
+        appl_type: any;
+        conditions: any;
+        law_firm_template: any;
 }
