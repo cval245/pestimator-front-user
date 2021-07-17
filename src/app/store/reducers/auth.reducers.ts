@@ -1,5 +1,4 @@
 import { User } from '../../account/_models/user.model';
-import { AuthActionTypes, All } from '../actions/user.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as authActions from '../actions/auth.action';
 
@@ -59,7 +58,6 @@ export const initialAuthState: AuthState = {
 //             credentials
 //         }
 //     }),
-
 // )
 
 const authReducerInternal = createReducer(
@@ -75,21 +73,46 @@ const authReducerInternal = createReducer(
             refreshTimer
         };
     }),
-    on(authActions.logout, (state, {}) => {
+
+
+    on(authActions.logout, (state) => {
         return {
             ...state,
             profile: new User('','',''),
             isLoggedIn: false,
         };
     }),
-    on(authActions.refreshAccess, (state, {profile, refreshTimer})=> {
+
+
+
+    // on(authActions.refreshAccess, (state, {profile })=> {
+    //    return {
+    //        ...state,
+    //        profile,
+    //        isLoggedIn: true,
+    //    };
+    // }),
+
+    on(authActions.refreshAccessSuccess, (state, { profile }) => {
+        console.log('state', state)
+        console.log('access', profile)
+        //console.log('profile', profile)
+        //throw('rando error')
        return {
            ...state,
-           profile,
+           profile: profile,
+           //profile,
            isLoggedIn: true,
-           refreshTimer,
        };
     }),
+
+
+    // on(authActions.refreshAccessSuccess, (state,{profile}) => {
+    //     return {
+    //         ...state,
+    //         profile 
+    //     }
+    // })
 );
 
 export function authReducer(state: AuthState | undefined, action: Action) {

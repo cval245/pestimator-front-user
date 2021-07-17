@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, interval, from} from 'rxjs';
+import { Observable, interval, from, Subject} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -15,6 +15,8 @@ import { logout } from '../../store/actions/auth.action';
 
 export class AccountService {
     baseUrl = environment.API_URL + 'auth/';
+    //timerSubj = new Subject()
+
     constructor(private http: HttpClient,
                 private store: Store<{authCred: any}>,
                 private router: Router){
@@ -62,17 +64,8 @@ export class AccountService {
 
 
     public refreshToken_two(refresh: string){
-        //var refresh = ''
-        //var access = ''
-        //var username = ''
-        // this.store.select('authCred').subscribe(x =>
-        //     {refresh = x.profile.refresh,
-        //      access = x.profile.access,
-        //      username=x.profile.username
-        //      console.log('xxx', x)
-        //     })
         let refresh_two = {'refresh': refresh}
-        console.log('refresh_tow', refresh_two)
+        //console.log('refresh_tow', refresh_two)
         const bob= this.http.post<{'access': string}>(
             this.baseUrl+'jwt/refresh/',
             refresh_two,
@@ -83,7 +76,18 @@ export class AccountService {
 
     public startRefreshTokenTimer_two(refresh_time: Date): Observable<any>{
         var time_diff = refresh_time.getTime() - Date.now() - (60 * 1000);
-        let source = interval(time_diff)
-        return source
+        console.log('time_diff = ', time_diff)
+        if (time_diff < 0){
+            throw "negative time on access token"
+        }
+        let timerSubj = new Subject<void>()
+        setTimeout(() => {
+            timerSubj.next()
+            timerSubj.complete()
+            console.log('setTimeout Is Complete')
+            //this.timerSubj.next(1)
+            //this.timerSubj.complete()
+        }, time_diff)
+        return timerSubj
     }
 }

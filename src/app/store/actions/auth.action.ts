@@ -16,8 +16,14 @@ export const loginComplete = createAction(
 export const logout = createAction('[Auth] logout');
 export const logoutComplete = createAction('[Auth] logoutComplete');
 
-export const startTimer = createAction('[Auth] startTimer', props<{refreshModel: RefreshModel}>())
-export const refreshAccess = createAction('[Auth] refreshAccess', props<{profile: User;
-                                                                         refreshTimer: Date;}>())
-export const refreshAccessSuccess = createAction('[Auth] refreshAccessScuccess',
+export const startTimer = createAction('[Auth] startTimer', 
+                props<{refreshModel: RefreshModel}>())
+//export const refreshAccess = createAction('[Auth] refreshAccess')
+export const refreshAccess = createAction('[Auth] refreshAccess', 
+                props<{profile: User;}>())
+
+
+export const restartTimer = createAction('[Auth] restartTimer', 
+                                props<{refreshTimer: Date;}>())
+export const refreshAccessSuccess = createAction('[Auth] refreshAccessSuccess',
                                                  props<{profile: User;}>())
