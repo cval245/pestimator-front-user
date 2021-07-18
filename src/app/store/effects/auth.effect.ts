@@ -9,7 +9,6 @@ import { AccountService } from '../../account/_services/account.service';
 import { login, loginComplete, logoutComplete, logout,
          refreshAccess, refreshAccessSuccess, restartTimer } from '../actions/auth.action';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
 
 @Injectable()
 export class AuthEffectsNew {

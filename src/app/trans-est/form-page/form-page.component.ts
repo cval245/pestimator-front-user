@@ -215,6 +215,7 @@ export class FormPageComponent implements OnInit {
   }
 
   onSubmitOanum(formData: ICountryOANum): void{
+    console.log('formData', formData)
     if (formData.id == undefined){
       this.oaNumSer.add(formData)
     } else {

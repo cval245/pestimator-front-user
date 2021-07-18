@@ -58,7 +58,10 @@ export class FamEstFormPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.famEstFormSub = this.getFamEstForms().subscribe(x => this.famEstForms = x);
-        this.countriesSub = this.getCountries().subscribe(x => this.countries = x);
+        this.countriesSub = this.getCountries().subscribe(x => {
+            console.log('xxx', x)
+            this.countries = x
+        });
         this.applTypesSub = this.getApplTypes().subscribe(x => this.applTypes = x);
         this.entitySizesSub = this.getEntitySize().subscribe(x => this.entitySizes = x);
     }

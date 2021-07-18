@@ -17,7 +17,7 @@ export class AccountDetailsFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {
         this.userProfile = new UserProfile()
         this.acctForm = this.fb.group({
-            id: [''],
+            id: [undefined],
             company_name : ['', Validators.required],
             address: ['', Validators.required],
             city: ['', Validators.required],

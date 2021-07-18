@@ -16,15 +16,17 @@ export class OaNumFormComponent implements OnInit {
   @Output() delEmit = new EventEmitter
   
   editingRow: number = 0;
-  displayedColumns: string[] = ['id', 'date_diff', 'oa_total']
+  displayedColumns: string[] = ['id', //'date_diff', 
+                                'oa_total']
 
   public form: FormGroup;
   
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       id : [undefined],
-      date_diff: ['', Validators.required],
-      oa_total: ['', Validators.required],
+      country: [0, Validators.required],
+      //date_diff: ['', Validators.required],
+      oa_total: [0, Validators.required],
     })
    }
 
@@ -33,7 +35,8 @@ export class OaNumFormComponent implements OnInit {
 
   newRow(){
     this.oanum = concat(this.oanum, {id: 0,
-      country:'',date_diff:'', oa_total: 0})
+      country:this.country,//date_diff:'', 
+      oa_total: 0})
   }
   editRow(row: ICountryOANum) {
     console.log('rowo', row)
@@ -42,15 +45,18 @@ export class OaNumFormComponent implements OnInit {
     this.form.setValue({
       id: row.id,
       country: row.country,
-      date_diff: row.date_diff,
+      //date_diff: row.date_diff,
       oa_total: row.oa_total,
     })
     console.log('editing row', row)
   }
 
   submit(){
-    console.log('form = ', this.form)
+    console.log('form = ', this.form.value)
     this.form.patchValue({country: this.country})
+    if (this.form.controls.id.value == 0){
+      this.form.patchValue({id: undefined})
+    }
     this.formData.emit(this.form.value)
   }
   cancel(){
