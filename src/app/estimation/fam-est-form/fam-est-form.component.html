@@ -134,27 +134,33 @@
                 </div>
                 <div class="form-row" *ngIf="method">
                     <mat-form-field appearance="outline" color="accent">
-                        <mat-label>
-                            PCT Country
-                        </mat-label>
-                        <mat-select class="custom-select"
-                                    formControlName="meth_country">
-                            <mat-option *ngFor="let t of countries"
-                                        [value]="t.id+''">
-                                {{t.country}}
-                            </mat-option>
-                        </mat-select>
+                      <mat-label>
+                        PCT Country
+                      </mat-label>
+                      <mat-select class="custom-select"
+                                  formControlName="meth_country">
+                        <mat-option *ngFor="let t of pct_countries"
+                                    [value]="t.id+''">
+                          {{t.country}}
+                        </mat-option>
+                      </mat-select>
                     </mat-form-field>
                 </div>
-
-                <div class="form-row">
-                    <div>
-                        <button mat-flat-button color="primary" style="margin: 5px;"
-                                matStepperPrevious>Back</button>
-                        <button mat-flat-button color="accent"  style="margin: 5px;"
-                                matStepperNext>Next</button>
-                    </div>
+              <div class="form-row">
+                <mat-checkbox formControlName="ep_method" (change)="epMethod($event)">
+                  EPO for European Patents?
+                </mat-checkbox>
+              </div>
+              <div class="form-row">
+                <div>
+                  <button mat-flat-button color="primary" style="margin: 5px;"
+                          matStepperPrevious>Back
+                  </button>
+                  <button mat-flat-button color="accent" style="margin: 5px;"
+                          matStepperNext>Next
+                  </button>
                 </div>
+              </div>
             </div>
         </form>
     </mat-step>

@@ -30,16 +30,16 @@
               "src/favicon.ico",
               "src/assets"
             ],
-              "styles": [
-                  "src/styles.scss"
+            "styles": [
+              "src/styles.scss"
             ],
-              "scripts": []
+            "scripts": []
           },
           "configurations": {
-              "production": {
-                  "budgets": [
-                      {
-                    "type": "initial",
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
                   "maximumWarning": "1500kb",
                   "maximumError": "2mb"
                 },
@@ -103,9 +103,21 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "front-user"
+  "defaultProject": "front-user",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

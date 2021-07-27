@@ -10,60 +10,71 @@
 </mat-form-field>
 <div>
 <p>Filing Estimate Template</p>
-<app-est-form 
-    [tableData]="filEstTemp"
-    [country]="country"
-    [applTypes]="applTypes"
-    (formData)="onSubmitFilEstTemp($event)"
-    (delEmit)="delFileEstTemp($event)"
+<app-est-form
+  [tableData]="filEstTemp"
+  [country]="country"
+  [applTypes]="applTypes"
+  (formData)="onSubmitFilEstTemp($event)"
+  (delEmit)="delFileEstTemp($event)"
 >
 </app-est-form>
 </div>
 
 <div>
 <p>Publication Estimate Template</p>
-<app-est-form 
+  <app-est-form
     [tableData]="publEstTemp"
     [country]="country"
     [applTypes]="applTypes"
     (formData)="onSubmitPublEstTemp($event)"
     (delEmit)="delPublEstTemp($event)"
->
-</app-est-form>
+  >
+  </app-est-form>
 </div>
 
-<div>
-<p>OA Estimate Template</p>
-<app-est-form 
+<div *ngIf="country_us === false">
+  <p>OA Estimate Template</p>
+  <app-est-form
     [tableData]="oaEstTemp"
     [country]="country"
     [applTypes]="applTypes"
     (formData)="onSubmitOAEstTemp($event)"
     (delEmit)="delOAEstTemp($event)"
->
-</app-est-form>
+  >
+  </app-est-form>
+</div>
+<div *ngIf="country_us === true">
+  <p>US OA Estimate Template</p>
+  <app-us-oa-est-form
+    [tableData]="usoaEstTemp"
+    [country]="country"
+    [applTypes]="applTypes"
+    (formData)="onSubmitUSOAEstTemp($event)"
+    (delEmit)="delUSOAEstTemp($event)"
+  >
+  </app-us-oa-est-form>
 </div>
 
 <div>
 <p>Allow Estimate Template</p>
-<app-est-form 
+  <app-est-form
     [tableData]="allowEstTemp"
     [country]="country"
     [applTypes]="applTypes"
     (formData)="onSubmitAllowEstTemp($event)"
     (delEmit)="delAllowEstTemp($event)"
->
-</app-est-form>
+  >
+  </app-est-form>
 </div>
 
 <div>
 <p>Issue Estimate Template</p>
-<app-est-form 
+  <app-est-form
     [tableData]="issueEstTemp"
     [country]="country"
     [applTypes]="applTypes"
     (formData)="onSubmitIssueEstTemp($event)"
     (delEmit)="delIssueEstTemp($event)"
->
-</app-est-form>
+  >
+  </app-est-form>
 </div>

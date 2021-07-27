@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { concat, dropRight, takeRight } from 'lodash';
-import { ApplType } from 'src/app/characteristics/_models/applType.model';
-import { Country } from 'src/app/characteristics/_models/Country.model';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {concat, dropRight, takeRight} from 'lodash';
+import {ApplType} from 'src/app/characteristics/_models/applType.model';
+import {Country} from 'src/app/characteristics/_models/Country.model';
 
-interface TableWise{
+interface TableWise {
   id: number | undefined
   country: any,//Country | undefined,
   appl_type: any,//ApplType | undefined,
@@ -19,21 +19,20 @@ interface TableWise{
   templateUrl: './est-form.component.html',
   styleUrls: ['./est-form.component.scss']
 })
-export class EstFormComponent implements OnInit {
-
+export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '')
+  @Input() country: Country = new Country(0, '', '', false, false, '', '')
   @Input() applTypes: ApplType[] = [new ApplType]
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
   public displayedColumns: string[] = ['id', 'official_cost', 'appl_type',
     'date_diff',
-    'condition_claims_min', 'condition_claims_max', 
+    'condition_claims_min', 'condition_claims_max',
     'condition_pages_min', 'condition_pages_max',
     'condition_drawings_min', 'condition_drawings_max',
     'condition_entity_size', 'law_firm_cost', 'law_firm_date_diff',
-    'buttons' ]
+    'buttons']
                 //'conditions', 'law_firm_template']
   public form: FormGroup;
 
@@ -60,35 +59,29 @@ export class EstFormComponent implements OnInit {
         date_diff: ['', Validators.required]
       })
     })
-   }
-   // conditions should be subgroup of same form
-   // law_firm_template same
-   // then saved to different version on est-main-form
-   
-
-  ngOnInit(): void {
   }
 
-  ngOnChanges(): void{
-    console.log('whe', this.tableData)
-  }
 
-  newRow(){
-    if(this.tableData.length == 0){
-        this.tableData = concat(this.tableData, {id:0, country:'',
-          date_diff:'',
-          official_cost:0, appl_type:'', conditions: '', law_firm_template: ''})
+  newRow() {
+    if (this.tableData.length == 0) {
+      this.tableData = concat(this.tableData, {
+        id: 0, country: '',
+        date_diff: '',
+        official_cost: 0, appl_type: '', conditions: '', law_firm_template: ''
+      })
 
-    }else if(takeRight(this.tableData, 1)[0].id != undefined && 
+    } else if (takeRight(this.tableData, 1)[0].id != undefined &&
       takeRight(this.tableData, 1)[0].id != null &&
       takeRight(this.tableData, 1)[0].id != 0 &&
       this.editingRow == 0
-      ){
-      this.tableData = concat(this.tableData, {id:0, country:'',
-        date_diff:'',
-        official_cost:0, appl_type:'', conditions: '', law_firm_template: ''})
+    ) {
+      this.tableData = concat(this.tableData, {
+        id: 0, country: '',
+        date_diff: '',
+        official_cost: 0, appl_type: '', conditions: '', law_firm_template: ''
+      })
     }
-  
+
   }
 
   editRow(row: any) {

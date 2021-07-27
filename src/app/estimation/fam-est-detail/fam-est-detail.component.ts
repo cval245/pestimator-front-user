@@ -1,93 +1,97 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { switchMap, mergeMap } from 'rxjs/operators';
-import { values, keys, groupBy, keyBy, mapValues, each, map, assign, reduce,
-         defaults } from 'lodash';
-import { FamEstDetail } from '../_models/FamEstDetail.model';
-import { FamEstDetailService } from '../_services/fam-est-detail.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {combineLatest, Observable, Subscription} from 'rxjs';
+import {mergeMap, switchMap} from 'rxjs/operators';
+import {assign, defaults, each, groupBy, keyBy, keys, map, mapValues, reduce, values} from 'lodash';
+import {FamEstDetail} from '../_models/FamEstDetail.model';
+import {FamEstDetailService} from '../_services/fam-est-detail.service';
 // @ts-ignore
 import * as XLSX from 'xlsx/dist/xlsx.core.min';
-import { FamEstService } from '../_services/fam-est.service';
-import { FamilyService } from 'src/app/portfolio/_services/family.service';
-import { Family } from 'src/app/portfolio/_models/family.model';
-import { CountryService } from 'src/app/characteristics/_services/country.service';
-import { ApplicationService } from 'src/app/application/_services/application.service';
-import { ApplDetailService } from 'src/app/application/_services/appl-detail.service';
-import { Application } from 'src/app/application/_models/application.model';
-import { Country } from 'src/app/characteristics/_models/Country.model';
+import {FamilyService} from 'src/app/portfolio/_services/family.service';
+import {Family} from 'src/app/portfolio/_models/family.model';
+import {CountryService} from 'src/app/characteristics/_services/country.service';
+import {ApplicationService} from 'src/app/application/_services/application.service';
+import {ApplDetailService} from 'src/app/application/_services/appl-detail.service';
+import {Application} from 'src/app/application/_models/application.model';
+import {Country} from 'src/app/characteristics/_models/Country.model';
+import {ApplTypeService} from "../../characteristics/_services/appl-type.service";
+import {ApplType} from "../../characteristics/_models/applType.model";
 
 @Component({
   selector: 'app-fam-est-detail',
   templateUrl: './fam-est-detail.component.html',
   styleUrls: ['./fam-est-detail.component.scss']
 })
-export class FamEstDetailComponent implements OnInit {
+export class FamEstDetailComponent implements OnInit, OnDestroy {
 
-    displayedColumns: string[]=['']
-    public countryAgged = [{}]
-    public family: Family
-    public applications: Application[] = [new Application()];
-    public columns=[{
-        columnDef: 'year',
-        header: 'Year',
-        cell: ''
-    }]
-    public famEstDetails: FamEstDetail[]
-    private countries: Country[] = [new Country(0,'','')]
-    private combinedSub: Subscription;
-    //private familySub: Subscription;
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private famEstDetSer: FamEstDetailService,
-        private familySer: FamilyService,
-        private countrySer: CountryService,
-        private applSer: ApplicationService,
-        private applDetSer: ApplDetailService,
-    ) {
-        this.famEstDetails = [new FamEstDetail()]
-        this.family = new Family
+  displayedColumns: string[] = ['']
+  public countryAgged = [{}]
+  public family: Family
+  public applications: Application[] = [new Application()];
+  public columns = [{
+    columnDef: 'year',
+    header: 'Year',
+    cell: ''
+  }]
+  public famEstDetails: FamEstDetail[]
+  private countries: Country[] = [new Country(0, '', '', false, false, '', '')]
+  private combinedSub: Subscription;
+  //private familySub: Subscription;
+  private applTypes: ApplType[] = [new ApplType()];
 
-        let famEstDetails$ = this.activatedRoute.params.pipe(
-            switchMap(x => {
-                //this.familySer.getWithQuery('FamEstFormData='+x.id).subscribe(console.log)
-                return this.getFamEstDetailByFormId(x.id)
-            }))
-        let family$ = this.activatedRoute.params.pipe(
-            switchMap(x => {
-                return this.familySer.getWithQuery('FamEstFormData='+x.id)
-            }))
-        this.combinedSub = combineLatest(this.countrySer.getAll(), famEstDetails$, family$).pipe(
-            mergeMap(([countries, famEstDetails, family]) => {
-                this.famEstDetails = map(famEstDetails, x => {
-                    let country = countries.find(y => y.id == x.country)
-                    return {...x, 'country': country}
-                })
-                this.countries=countries
-                this.countryAgged = this.calcTotalMatrix()
-                this.family = family[0]
-                let appl$ = this.applSer.getWithQuery('family='+family[0].id)
-                let applDet$ = this.applDetSer.getWithQuery('family='+family[0].id)
-                return combineLatest(appl$, applDet$)
-            })).subscribe(([applications, applDetails]) => {
-                let appls_temp = applications.map(appl => {
-                    let x = applDetails.find(det => det.application == appl.id)
-                    let y = this.countries.find(c => c.id == appl.country)
-                    console.log('this.countries', this.countries)
-                    console.log('appl', appl)
-                    return {...appl, 'appl_details': x, 'country': y }
-                })
-                this.applications = appls_temp
-            })
-    }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private famEstDetSer: FamEstDetailService,
+    private familySer: FamilyService,
+    private countrySer: CountryService,
+    private applSer: ApplicationService,
+    private applTypeSer: ApplTypeService,
+    private applDetSer: ApplDetailService,
+  ) {
+    this.famEstDetails = [new FamEstDetail()]
+    this.family = new Family
+
+    let famEstDetails$ = this.activatedRoute.params.pipe(
+      switchMap(x => {
+        return this.getFamEstDetailByFormId(x.id)
+      }))
+    let family$ = this.activatedRoute.params.pipe(
+      switchMap(x => {
+        return this.familySer.getWithQuery('FamEstFormData=' + x.id)
+      }))
+    this.combinedSub = combineLatest(this.countrySer.entities$, famEstDetails$,
+      family$, this.applTypeSer.entities$).pipe(
+      mergeMap(([countries, famEstDetails,
+                  family, applTypes]) => {
+        this.famEstDetails = map(famEstDetails, x => {
+          let country = countries.find(y => y.id == x.country)
+          return {...x, 'country': country}
+        })
+        this.applTypes = applTypes
+        this.countries = countries
+        this.countryAgged = this.calcTotalMatrix()
+        this.family = family[0]
+        let appl$ = this.applSer.getWithQuery('family=' + family[0].id)
+        let applDet$ = this.applDetSer.getWithQuery('family=' + family[0].id)
+        return combineLatest(appl$, applDet$)
+      })).subscribe(([applications, applDetails]) => {
+      this.applications = applications.map(appl => {
+        let x = applDetails.find(det => det.application == appl.id)
+        let y = this.countries.find(c => c.id == appl.country)
+        let z = this.applTypes.find(a => a.id == appl.appl_type)
+        return {
+          ...appl, 'appl_details': x, 'country': y,
+          'application_type': z
+        }
+      })
+    })
+  }
 
     ngOnInit(): void {
-        console.log('countryAgged', this.countryAgged)
+      this.countrySer.getAll()
+      this.applTypeSer.getAll()
     }
 
-    ngOnChanges(): void {
-        console.log('countryAgged', this.countryAgged)
-    }
 
     ngOnDestroy(): void{
         this.combinedSub.unsubscribe()
@@ -182,13 +186,8 @@ export class FamEstDetailComponent implements OnInit {
     }
 
     calcLawFirmTot(famEstDetails: any){
-        let zoom = [{'id': 22, 'country': 3, 'year': 2021, 'official_cost_sum': 500,
-                     'law_firm_cost_sum': 74, 'total_cost_sum': 574.00},
-                    {'id': 23, 'country': 3, 'year': 2023, 'official_cost_sum': 6000.00,
-                     'law_firm_cost_sum': 565, 'total_cost_sum': 6565.00}]
-        famEstDetails = famEstDetails.concat(zoom)
+
         let bob=reduce(famEstDetails, function (obj: any, item: any){
-            var index = item.year
             if (item.law_firm_cost_sum != undefined){
                 obj[item.year] = item.law_firm_cost_sum
             } else{
@@ -202,13 +201,8 @@ export class FamEstDetailComponent implements OnInit {
         return bob
     }
     calcOfficialCost(famEstDetails: any){
-        let zoom = [{'id': 22, 'country': 3, 'year': 2021, 'official_cost_sum': 500,
-                     'law_firm_cost_sum': 74, 'total_cost_sum': 574.00},
-                    {'id': 23, 'country': 3, 'year': 2023, 'official_cost_sum': 6000.00,
-                     'law_firm_cost_sum': 565, 'total_cost_sum': 6565.00}]
-        famEstDetails = famEstDetails.concat(zoom)
+
         let bob=reduce(famEstDetails, function (obj: any, item: any){
-            var index = item.year
             if (item.official_cost_sum != undefined){
                 obj[item.year] = item.official_cost_sum
             } else{
@@ -245,34 +239,36 @@ export class FamEstDetailComponent implements OnInit {
         return columns
     }
 
-    calcTotalMatrix(){
-        let grouped_ests = groupBy(this.famEstDetails, 'country.id')
-        console.log('grouped_ests', grouped_ests)
-        let countryAgged = map(grouped_ests, x =>{
-            let sam = keyBy(x, function(o){
-                return JSON.stringify(o.year)
-            })
-            let years = mapValues(sam, function(o){
-                return o['total_cost_sum']
-            })
-            return assign({'country' : x[0].country}, years)
+    calcTotalMatrix() {
+      console.log('this.fame', this.famEstDetails)
+      let grouped_ests = groupBy(this.famEstDetails, 'country.id')
+      console.log('this.count', grouped_ests)
+      let countryAgged = map(grouped_ests, x => {
+        let sam = keyBy(x, function (o) {
+          return JSON.stringify(o.year)
         })
-        console.log('this.coudsfsdf', countryAgged)
-        let min_max_year = this.findMinMaxYear(countryAgged)
-        //create list of year keys
-        let year_keys ={}
-        let year = min_max_year['min_year']
-        while (year <= min_max_year['max_year']){
-            year_keys = assign(year_keys, {[year]:0})
-            console.log('year_keys', year_keys)
-            year += 1
-        }
+        console.log('sam', sam)
+        let years = mapValues(sam, function (o) {
+          return reduce(x.filter(y => y.year == o.year),
+            function (sum, r) {
+              return sum + r.total_cost_sum!
+            }, 0)
+        })
+        return assign({'country': x[0].country}, years)
+      })
+      console.log('countryAggedsss', countryAgged)
+      let min_max_year = this.findMinMaxYear(countryAgged)
+      //create list of year keys
+      let year_keys = {}
+      let year = min_max_year['min_year']
+      while (year <= min_max_year['max_year']) {
+        year_keys = assign(year_keys, {[year]: 0})
+        year += 1
+      }
         // for every key that does not exist in object insert into new
         each(countryAgged, (obj) => {
-            console.log('obj, ', year_keys)
             defaults(obj, year_keys)
         })
-        console.log('countryAgged', countryAgged)
         return countryAgged
     }
 
@@ -329,23 +325,22 @@ export class FamEstDetailComponent implements OnInit {
         return {'min_year': min_year, 'max_year': max_year}
     }
 
-    calcTotal(){
-        // aggregate data together
-        let bob=values(this.famEstDetails.reduce(function (obj: any, item){
-            var index = item.year
-            obj[index] = {
-                year: index,
-                cost: (obj[index] && obj[index].total_cost_sum || 0) + item.total_cost_sum}
-            return obj
-        },{}))
-        return bob
+    calcTotal() {
+      // aggregate data together
+      return values(this.famEstDetails.reduce(function (obj: any, item) {
+        var index = item.year
+        obj[index] = {
+          year: index,
+          cost: (obj[index] && obj[index].total_cost_sum || 0) + item.total_cost_sum
+        }
+        return obj
+      }, {}))
     }
     convert_collection_json_to_aoa(collection:any){
         let keys = this.json_to_aoa_keys(collection[0])
         let accumulator=[keys]
         for (let item of collection){
             item.country = item.country.country
-            let bob = accumulator.push(this.json_to_aoa(item))
         }
         console.log('accumu', accumulator)
         return accumulator
@@ -355,11 +350,6 @@ export class FamEstDetailComponent implements OnInit {
         let accumulator=[keys]
         for (let item of collection){
             item.country = item.country.country
-            for (let k in item){
-                console.log('k',k)
-
-            }
-            let bob = accumulator.push(this.json_to_aoa(item))
         }
         console.log('accumu', accumulator)
         return accumulator

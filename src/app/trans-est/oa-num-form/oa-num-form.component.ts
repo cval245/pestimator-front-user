@@ -1,47 +1,48 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { concat, dropRight } from 'lodash';
-import { Country } from 'src/app/characteristics/_models/Country.model';
-import { ICountryOANum } from '../_models/CountryOANum.model';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {concat, dropRight} from 'lodash';
+import {Country} from 'src/app/characteristics/_models/Country.model';
+import {ICountryOANum} from '../_models/CountryOANum.model';
 
 @Component({
   selector: 'app-oa-num-form',
   templateUrl: './oa-num-form.component.html',
   styleUrls: ['./oa-num-form.component.scss']
 })
-export class OaNumFormComponent implements OnInit {
-  @Input() country: Country = new Country(0,'','')
+export class OaNumFormComponent {
+  @Input() country: Country = new Country(0, '', '', false, false, '', '')
   @Input() oanum = new Array<ICountryOANum>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
-  
+
   editingRow: number = 0;
-  displayedColumns: string[] = ['id', //'date_diff', 
-                                'oa_total']
+  displayedColumns: string[] = ['id', //'date_diff',
+    'oa_total']
 
   public form: FormGroup;
-  
+
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      id : [undefined],
+      id: [undefined],
       country: [0, Validators.required],
       //date_diff: ['', Validators.required],
       oa_total: [0, Validators.required],
     })
-   }
-
-  ngOnInit(): void {
   }
 
-  newRow(){
-    this.oanum = concat(this.oanum, {id: 0,
-      country:this.country,//date_diff:'', 
-      oa_total: 0})
+
+  newRow() {
+    this.oanum = concat(this.oanum, {
+      id: 0,
+      country: this.country,//date_diff:'',
+      oa_total: 0
+    })
   }
+
   editRow(row: ICountryOANum) {
     console.log('rowo', row)
     this.editingRow = row.id!
-    
+
     this.form.setValue({
       id: row.id,
       country: row.country,

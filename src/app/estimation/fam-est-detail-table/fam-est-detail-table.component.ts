@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
-import { FamEstDetail } from '../_models/FamEstDetail.model';
-import { each } from 'lodash';
-
+import {Component, Input, OnChanges} from '@angular/core';
+import {FamEstDetail} from '../_models/FamEstDetail.model';
+import {each} from 'lodash';
 
 
 @Component({
@@ -9,46 +8,38 @@ import { each } from 'lodash';
   templateUrl: './fam-est-detail-table.component.html',
   styleUrls: ['./fam-est-detail-table.component.scss']
 })
-export class FamEstDetailTableComponent implements OnInit {
-    displayedColumns: string[]=['']
-    @Input() famEstDetails: FamEstDetail[]
-    @Input() countryAggeds: any
-    // @HostListener('window:resize', ['$event'])
-    // onResize(event: any){
-    //     event.target.innerWidth;
-    //     console.log('eeeee', event.target.innerWidth)
-    // }
-    public countryAgged = [{}]
-    public columns=[{
-        columnDef: 'year',
-        header: 'Year',
-        cell: ''
-    }]
-    constructor() {
-        this.famEstDetails = [new FamEstDetail()]
-    }
+export class FamEstDetailTableComponent implements OnChanges {
+  displayedColumns: string[] = ['']
+  @Input() famEstDetails: FamEstDetail[]
+  @Input() countryAggeds: any
+  public countryAgged = [{}]
+  public columns = [{
+    columnDef: 'year',
+    header: 'Year',
+    cell: ''
+  }]
 
-    ngOnInit(): void {
-    }
+  constructor() {
+    this.famEstDetails = [new FamEstDetail()]
+  }
 
-    ngOnChanges(){
-        //this.calcTotal()
-        //this.countryAgged = this.calcTotalMatrix()
-        this.columns = this.calcColumns(this.countryAggeds)
-        this.displayedColumns = this.columns.map(c => c.columnDef)
-    }
 
-    calcColumns(countryAgged: any){
-        let columns = [
-            {
-                columnDef: 'country',
-                header: 'Country',
-                cell: 'country'
-            },
-        ]
-        //let keys = Object.keys(countryAgged)
-        // find minimum year and maximum year
-        let min_max_year = this.findMinMaxYear(countryAgged)
+  ngOnChanges() {
+    this.columns = this.calcColumns(this.countryAggeds)
+    this.displayedColumns = this.columns.map(c => c.columnDef)
+  }
+
+  calcColumns(countryAgged: any) {
+    let columns = [
+      {
+        columnDef: 'country',
+        header: 'Country',
+        cell: 'country'
+      },
+    ]
+    //let keys = Object.keys(countryAgged)
+    // find minimum year and maximum year
+    let min_max_year = this.findMinMaxYear(countryAgged)
         let year = min_max_year['min_year']
         console.log('coutn', countryAgged)
         while(year<=min_max_year['max_year']) {

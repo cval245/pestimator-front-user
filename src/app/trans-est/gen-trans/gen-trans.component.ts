@@ -1,24 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { concat, dropRight } from 'lodash';
-import { Country } from 'src/app/characteristics/_models/Country.model';
-//import { IPublTrans } from '../_models/PublTrans.model';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {concat, dropRight} from 'lodash';
+import {Country} from 'src/app/characteristics/_models/Country.model';
 
 @Component({
   selector: 'app-gen-trans',
   templateUrl: './gen-trans.component.html',
   styleUrls: ['./gen-trans.component.scss']
 })
-export class GenTransComponent implements OnInit {
+export class GenTransComponent {
 
   @Input() tableData: any
-  @Input() country: Country = new Country(0, '', '')
+  @Input() country: Country = new Country(0, '', '', false, false, '', '')
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
   public displayedColumns: string[] = ['id', 'date_diff']
   public form: FormGroup;
-  
+
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       id: [undefined],
@@ -27,8 +26,6 @@ export class GenTransComponent implements OnInit {
     })
    }
 
-  ngOnInit(): void {
-  }
 
   newRow(){
     this.tableData = concat(this.tableData, {id:'',country:'',date_diff:''})
