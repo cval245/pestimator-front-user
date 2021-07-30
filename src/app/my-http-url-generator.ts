@@ -33,7 +33,6 @@ export class MyHttpUrlGenerator extends DefaultHttpUrlGenerator {
             };
             this.registerHttpResourceUrls({ [entityName]: resourceUrls });
         }
-        console.log('resourceUr', resourceUrls)
         return resourceUrls;
     }
 }

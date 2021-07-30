@@ -25,16 +25,10 @@ tr.element-row:not(.expanded-row):active {
 .element-detail {
     overflow: hidden;
     display: flex;
+    flex-direction: row;
+  justify-content: center;
 }
 
-.element-diagram {
-    min-width: 80px;
-    border: 2px solid black;
-    padding: 8px;
-    font-weight: lighter;
-    margin: 8px 0;
-    height: 104px;
-}
 
 .element-symbol {
     font-weight: bold;
@@ -44,6 +38,7 @@ tr.element-row:not(.expanded-row):active {
 
 .element-description {
     padding: 16px;
+  //flex-grow: 1;
 }
 
 .element-description-attribution {

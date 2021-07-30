@@ -13,7 +13,7 @@ import {concat, dropRight} from 'lodash';
 })
 export class TransFormTableComponent {
   @Input() country: Country = new Country(0, '', '', false, false, '', '')
-  @Input() applTypes: ApplType[] = [new ApplType]
+  @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
   @Input() cstmFilTrans = new Array<ICustomFilTrans>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter

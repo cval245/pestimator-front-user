@@ -25,6 +25,9 @@ import {MatDividerModule} from '@angular/material/divider';
 import { SubmitFamEstFormComponent } from './submit-fam-est-form/submit-fam-est-form.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FamDetTableComponent } from './fam-det-table/fam-det-table.component';
+import { FamEstConfirmComponent } from './fam-est-confirm/fam-est-confirm.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
     declarations: [
@@ -37,24 +40,27 @@ import { FamDetTableComponent } from './fam-det-table/fam-det-table.component';
       ChartFamEstDetailComponent,
       SubmitFamEstFormComponent,
       FamDetTableComponent,
+      FamEstConfirmComponent,
   ],
   imports: [
-      CommonModule,
-      RouterModule,
-      MatCheckboxModule,
-      MatInputModule,
-      MatButtonModule,
-      MatFormFieldModule,
-      MatSelectModule,
-      MatDatepickerModule,
-      MatNativeDateModule,
-      MatStepperModule,
-      MatTableModule,
-      MatDividerModule,
-      MatPaginatorModule,
-      FlexLayoutModule,
-      ChartsModule,
-      ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatStepperModule,
+    MatTableModule,
+    MatDividerModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    FlexLayoutModule,
+    ChartsModule,
+    ReactiveFormsModule,
+    MatListModule,
   ],
     exports: [
         FamEstFormComponent

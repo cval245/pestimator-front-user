@@ -1,6 +1,6 @@
 <div class="formContainer">
 <h2>Estimation Form</h2>
-<mat-vertical-stepper #stepper>
+<mat-vertical-stepper #stepper linear>
     <mat-step [stepControl]="familyForm" [editable]="isEditable">
         <form [formGroup]="familyForm" fxLayout="column">
             <ng-template matStepLabel>Family Details</ng-template>
@@ -55,7 +55,7 @@
                         formControlName="country">
                 <mat-option *ngFor="let t of countries"
                             [value]="t.id+''">
-                    {{t.country}}
+                    {{t.long_name}}
                 </mat-option>
             </mat-select>
             </mat-form-field>
@@ -72,7 +72,7 @@
                         formControlName="application_type">
                     <mat-option *ngFor="let t of applTypes"
                             [value]="t.id+''">
-                        {{t.application_type}}
+                        {{t.long_name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -122,17 +122,14 @@
                     <h2>File Through PCT (optional):</h2>
                 </div>
                 <div class="form-row">
-                    <mat-checkbox formControlName="method" (change)="pctMethod($event)">
+                    <mat-checkbox formControlName="method">
                         PCT
                     </mat-checkbox>
                 </div>
-                <div class="form-row" *ngIf="method">
+                <div fxLayout="column" fxLayoutAlign="center center"
+                  class="form-row" *ngIf="internationalStageForm.controls.method.value">
                     <mat-divider></mat-divider>
-                </div>
-                <div class="form-row" *ngIf="method">
-                    <h3>Specifications of the First Application:</h3>
-                </div>
-                <div class="form-row" *ngIf="method">
+                    <h3>PCT Examining Country</h3>
                     <mat-form-field appearance="outline" color="accent">
                       <mat-label>
                         PCT Country
@@ -141,13 +138,13 @@
                                   formControlName="meth_country">
                         <mat-option *ngFor="let t of pct_countries"
                                     [value]="t.id+''">
-                          {{t.country}}
+                          {{t.long_name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
               <div class="form-row">
-                <mat-checkbox formControlName="ep_method" (change)="epMethod($event)">
+                <mat-checkbox formControlName="ep_method">
                   EPO for European Patents?
                 </mat-checkbox>
               </div>
@@ -173,15 +170,17 @@
             </div>
             <div class="form-row">
             <div *ngFor="let country of countries; let i=index">
-                <mat-checkbox [value]="country.id+''"
-                              (change)="onCheckboxChange($event, country.id)">
-                    {{country.id}}.{{country.country}}
-                </mat-checkbox>
+              <mat-checkbox [formControl]="getCountriesFormCtrlName(country.id)"
+                            (change)="onCheckboxChange($event, country.id)">
+                {{country.long_name}}
+              </mat-checkbox>
+
             </div>
             </div>
             <div class="form-row">
                 <button mat-flat-button color="warn"  style="margin: 5px;"
-                        (click)="stepper.reset()">Reset</button>
+                        (click)="stepper.reset()"
+                        (click)="formReset()">Reset</button>
                 <button mat-flat-button color="primary" style="margin: 5px;"
                         matStepperPrevious>Back</button>
                 <button mat-flat-button color="accent" type="submit"

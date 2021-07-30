@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {mergeMap, switchMap} from 'rxjs/operators';
@@ -24,7 +24,11 @@ import {ApplType} from "../../characteristics/_models/applType.model";
 })
 export class FamEstDetailComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[] = ['']
+  public displayedColumns = [{
+    columnDef: 'year',
+    header: 'Year',
+    cell: ''
+  }]
   public countryAgged = [{}]
   public family: Family
   public applications: Application[] = [new Application()];
@@ -37,7 +41,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   private countries: Country[] = [new Country(0, '', '', false, false, '', '')]
   private combinedSub: Subscription;
   //private familySub: Subscription;
-  private applTypes: ApplType[] = [new ApplType()];
+  private applTypes: ApplType[] = [new ApplType(0, '', '')];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,7 +63,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       switchMap(x => {
         return this.familySer.getWithQuery('FamEstFormData=' + x.id)
       }))
-    this.combinedSub = combineLatest(this.countrySer.entities$, famEstDetails$,
+    this.combinedSub = combineLatest(this.countrySer.getAll(), famEstDetails$,
       family$, this.applTypeSer.entities$).pipe(
       mergeMap(([countries, famEstDetails,
                   family, applTypes]) => {
@@ -70,6 +74,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.applTypes = applTypes
         this.countries = countries
         this.countryAgged = this.calcTotalMatrix()
+        this.displayedColumns = this.calcColumns(this.countryAgged)
         this.family = family[0]
         let appl$ = this.applSer.getWithQuery('family=' + family[0].id)
         let applDet$ = this.applDetSer.getWithQuery('family=' + family[0].id)
@@ -91,7 +96,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       this.countrySer.getAll()
       this.applTypeSer.getAll()
     }
-
 
     ngOnDestroy(): void{
         this.combinedSub.unsubscribe()
@@ -174,11 +178,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         XLSX.utils.book_append_sheet(wb, ws_three, 'Type of Cost')
 
         let sheetCountries = this.calcCountryTotalMatrix()
-        console.log('this.', this.countryAgged)
-        console.log('sheeet', sheetCountries)
-        for (let c of sheetCountries){
-            console.log('ccc', c)
-        }
         this.convert_collection_nested_json_to_aoa(sheetCountries)
 
 
@@ -193,11 +192,9 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
             } else{
                 obj[item.year] = 0
             }
-            console.log('obj', obj)
             return obj
         },{})
         bob['type']='total_law_firm_costs'
-        console.log('bob', bob)
         return bob
     }
     calcOfficialCost(famEstDetails: any){
@@ -208,11 +205,9 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
             } else{
                 obj[item.year] = 0
             }
-            console.log('obj', obj)
             return obj
         },{})
         bob['type']='total_official_costs'
-        console.log('bob', bob)
         return bob
     }
 
@@ -240,14 +235,11 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     }
 
     calcTotalMatrix() {
-      console.log('this.fame', this.famEstDetails)
       let grouped_ests = groupBy(this.famEstDetails, 'country.id')
-      console.log('this.count', grouped_ests)
       let countryAgged = map(grouped_ests, x => {
         let sam = keyBy(x, function (o) {
           return JSON.stringify(o.year)
         })
-        console.log('sam', sam)
         let years = mapValues(sam, function (o) {
           return reduce(x.filter(y => y.year == o.year),
             function (sum, r) {
@@ -256,7 +248,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         })
         return assign({'country': x[0].country}, years)
       })
-      console.log('countryAggedsss', countryAgged)
       let min_max_year = this.findMinMaxYear(countryAgged)
       //create list of year keys
       let year_keys = {}
@@ -271,6 +262,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         })
         return countryAgged
     }
+
+
 
     calcCountryTotalMatrix(){
         let grouped_ests = groupBy(this.famEstDetails, 'country.id')
@@ -342,7 +335,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         for (let item of collection){
             item.country = item.country.country
         }
-        console.log('accumu', accumulator)
         return accumulator
     }
     convert_collection_nested_json_to_aoa(collection:any){
@@ -351,7 +343,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         for (let item of collection){
             item.country = item.country.country
         }
-        console.log('accumu', accumulator)
         return accumulator
     }
 

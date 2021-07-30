@@ -19,6 +19,7 @@ import {CustomFilTransService} from '../_services/custom-fil-trans.service';
 import {IssueTransService} from '../_services/issue-trans.service';
 import {OaTransService} from '../_services/oa-trans.service';
 import {PublTransService} from '../_services/publ-trans.service';
+import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
 
 interface CountryWise {
   id: number,
@@ -34,7 +35,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
   public countries: Country[] = [new Country(0, '', '', false, false, '', '')]
-  public applTypes: ApplType[] = [new ApplType()]
+  public applTypes: ApplType[] = [new ApplType(0, '', '')]
   public cstmFilTrans = new Array<ICustomFilTrans>()
   public publTrans = new Array<IPublTrans>()
   public oaTrans = new Array<IOATrans>()
@@ -52,7 +53,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private allowTranSer: AllowTransService,
     private issueTranSer: IssueTransService,
     private oaNumSer: CountryOanumService,
-    private applTypeSer: ApplTypeService,
+    private applTypeSer: ApplTypeAllService,
     ) {
     this.countrySer.entities$
       .pipe(takeUntil(this.unsubscribe$))

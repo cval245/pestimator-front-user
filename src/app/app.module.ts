@@ -22,7 +22,7 @@ import {HomeRoutingModule} from './home/home-routing.module';
 import {LawFirmRoutingModule} from './law-firm/law-firm-routing.module';
 import {JwtInterceptor} from './account/_helpers/jwt.interceptor';
 import {environment} from '../environments/environment';
-import {AuthEffects, AuthEffectsNew} from './store/effects/auth.effect';
+import {AuthEffectsNew} from './store/effects/auth.effect';
 //import { reducers } from './store/app.states';
 import {LandingRoutingModule} from './landing/landing-routing.module';
 import {LandingModule} from './landing/landing.module';
@@ -72,6 +72,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'appl-types/',
             collectionResourceUrl: environment.API_URL + 'appl-types/',
         },
+    ApplTypeAll: {
+      entityResourceUrl: environment.API_URL + 'appl-types-all/',
+      collectionResourceUrl: environment.API_URL + 'appl-types-all/',
+    },
         FamEstForm: {
             entityResourceUrl: environment.API_URL + 'fam-est-form-data/',
             collectionResourceUrl: environment.API_URL + 'fam-est-form-data/',
@@ -189,7 +193,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
         maxAge: 25,
         logOnly: environment.production
       }),
-      EffectsModule.forRoot([AuthEffects, AuthEffectsNew]),
+      EffectsModule.forRoot([AuthEffectsNew]),
       EntityDataModule.forRoot(entityConfig),
       AccountRoutingModule,
       HomeRoutingModule,

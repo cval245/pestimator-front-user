@@ -6,17 +6,19 @@ import {HomeRoutingModule} from './home-routing.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [HomePageComponent],
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    MatCardModule,
-    MatGridListModule,
-    HomeRoutingModule,
-  ],
+    imports: [
+        CommonModule,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatCardModule,
+        MatGridListModule,
+        HomeRoutingModule,
+        MatListModule,
+    ],
 })
 export class HomeModule {
 }

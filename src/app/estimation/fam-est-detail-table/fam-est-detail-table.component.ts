@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {AfterViewInit, Component, HostBinding, Input, OnChanges, ViewChild} from '@angular/core';
 import {FamEstDetail} from '../_models/FamEstDetail.model';
-import {each} from 'lodash';
+import {cloneDeep, each} from 'lodash';
 
 
 @Component({
@@ -8,73 +8,47 @@ import {each} from 'lodash';
   templateUrl: './fam-est-detail-table.component.html',
   styleUrls: ['./fam-est-detail-table.component.scss']
 })
-export class FamEstDetailTableComponent implements OnChanges {
-  displayedColumns: string[] = ['']
-  @Input() famEstDetails: FamEstDetail[]
-  @Input() countryAggeds: any
-  public countryAgged = [{}]
-  public columns = [{
+export class FamEstDetailTableComponent implements OnChanges, AfterViewInit {
+  @Input() countryAggeds: any = [{'country': ''}]
+  public displayColumns: string[] = ['country']
+  public remainColumns = [{
     columnDef: 'year',
     header: 'Year',
     cell: ''
   }]
+  private num_cells = 1;
+  @Input() displayedColumns = [{
+    columnDef: 'year',
+    header: 'Year',
+    cell: ''
+  }]
+  publicTotCol: string[] = ['']
+
+  @ViewChild('tableOverContainer') overContainer: any;
+  @ViewChild('matTableCell') matTableCell: any;
+
 
   constructor() {
-    this.famEstDetails = [new FamEstDetail()]
   }
 
+  ngAfterViewInit(){
+    this.num_cells = this.overContainer.nativeElement.clientWidth
+      / this.matTableCell.nativeElement.clientWidth
+    this.num_cells = Math.floor(this.num_cells)
+    this.displayColumns = this.publicTotCol.slice(0, this.num_cells)
+    this.calcRemainColumns()
+  }
 
   ngOnChanges() {
-    this.columns = this.calcColumns(this.countryAggeds)
-    this.displayedColumns = this.columns.map(c => c.columnDef)
+    this.publicTotCol = this.displayedColumns.map(c => c.columnDef)
+
+    if (this.overContainer != undefined && this.matTableCell != undefined){
+      this.calcRemainColumns()
+    }
   }
 
-  calcColumns(countryAgged: any) {
-    let columns = [
-      {
-        columnDef: 'country',
-        header: 'Country',
-        cell: 'country'
-      },
-    ]
-    //let keys = Object.keys(countryAgged)
-    // find minimum year and maximum year
-    let min_max_year = this.findMinMaxYear(countryAgged)
-        let year = min_max_year['min_year']
-        console.log('coutn', countryAgged)
-        while(year<=min_max_year['max_year']) {
-            let g = {
-                columnDef: JSON.stringify(year),
-                header: JSON.stringify(year),
-                cell: JSON.stringify(year)
-            }
-            columns.push(g)
-            year += 1
-        }
-        return columns
-    }
-
-    // find minimum and maximum years
-    findMinMaxYear(countryAgged: any){
-        let min_year=0
-        let max_year=0
-        each(countryAgged, (x) => {
-            each(Object.keys(x), (y) => {
-                if (y != 'country') {
-                    let y_parsed = parseInt(y)
-                    if(min_year == 0){
-                        min_year = y_parsed
-                        max_year = y_parsed
-                    }
-                    if (y_parsed < min_year){
-                        min_year = y_parsed
-                    } else if (y_parsed > max_year){
-                        max_year = y_parsed
-                    }
-                }
-            })
-        })
-        return {'min_year': min_year, 'max_year': max_year}
-    }
-
+  calcRemainColumns(){
+    this.remainColumns = cloneDeep(this.displayedColumns)
+    this.remainColumns.splice(1,this.num_cells -1 )
+  }
 }

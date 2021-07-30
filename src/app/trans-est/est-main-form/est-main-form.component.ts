@@ -23,6 +23,7 @@ import {OaEstTempService} from '../_services/oa-est-temp.service';
 import {PublEstTempService} from '../_services/publ-est-temp.service';
 import {IUSOAEstTemp} from "../_models/IUSOAEstTemp";
 import {UsOaEstTempService} from "../_services/us-oa-est-temp.service";
+import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
 
 interface CountryWise {
   id: number,
@@ -55,7 +56,7 @@ export class EstMainFormComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
   public countries: Country[] = [new Country(0, '', '', false, false, '', '')]
   public country: Country = new Country(0, '', '', false, false, '', '')
-  public applTypes: ApplType[] = [new ApplType()]
+  public applTypes: ApplType[] = [new ApplType(0, '', '')]
   public filEstTemp = new Array<IFileEstTemp>()
   public publEstTemp = new Array<IPublEstTemp>()
   public oaEstTemp = new Array<IOAEstTemp>()
@@ -76,7 +77,7 @@ export class EstMainFormComponent implements OnInit {
     private usoaEstSer: UsOaEstTempService,
     private allowEstSer: AllowEstTempService,
     private issueEstSer: IssueEstTempService,
-    private applTypeSer: ApplTypeService,
+    private applTypeSer: ApplTypeAllService,
     private conditionSer: ConditionsService,
     private lawFirmTempSer: LawFirmTempService,
   ) {

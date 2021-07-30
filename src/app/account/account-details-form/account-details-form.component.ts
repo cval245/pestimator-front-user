@@ -39,7 +39,7 @@ export class AccountDetailsFormComponent implements OnInit {
     }
 
     cancelForm(){
-        this.acctForm.setValue(this.userProfile)
+      this.acctForm.setValue(this.userProfile)
         this.disableForm()
     }
 
@@ -62,7 +62,6 @@ export class AccountDetailsFormComponent implements OnInit {
     }
 
     onSubmit(): void{
-        console.log('', this.acctForm)
         if (this.acctForm.valid){
             this.formData.emit(this.acctForm.value)
             this.disableForm()

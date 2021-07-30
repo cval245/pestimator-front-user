@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { FamEstFormFull} from "../_models/FamEstForm.model";
 
 @Component({
   selector: 'app-fam-est-confirm',
   templateUrl: './fam-est-confirm.component.html',
   styleUrls: ['./fam-est-confirm.component.scss']
 })
-export class FamEstConfirmComponent implements OnInit {
+export class FamEstConfirmComponent {
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<any>,
+    @Inject(MAT_DIALOG_DATA) public formData: FamEstFormFull) { }
 
-  ngOnInit(): void {
+
+  save(){
+    this.dialogRef.close({event:'save'})
   }
 
+  cancel(){
+    this.dialogRef.close({event:'cancel'})
+  }
 }

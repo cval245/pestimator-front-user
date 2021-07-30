@@ -1,39 +1,42 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {concat, dropRight, takeRight} from 'lodash';
-import {ApplType} from 'src/app/characteristics/_models/applType.model';
-import {Country} from 'src/app/characteristics/_models/Country.model';
 
-interface TableWise {
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { concat, dropRight, takeRight } from 'lodash';
+import { ApplType } from 'src/app/characteristics/_models/applType.model';
+import { Country } from 'src/app/characteristics/_models/Country.model';
+
+interface TableWise{
   id: number | undefined
-  country: any,//Country | undefined,
-  appl_type: any,//ApplType | undefined,
+  country: any,
+  appl_type: any,
   official_cost: number,
   date_diff: string,
   conditions: any,
   law_firm_template: any,
+  oa_type: string,
 }
 
 @Component({
-  selector: 'app-est-form',
-  templateUrl: './est-form.component.html',
-  styleUrls: ['./est-form.component.scss']
+  selector: 'app-us-oa-est-form',
+  templateUrl: './us-oa-est-form.component.html',
+  styleUrls: ['./us-oa-est-form.component.scss']
 })
-export class EstFormComponent {
+export class UsOaEstFormComponent {
+
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
+  @Input() country: Country = new Country(0,'','', false, false, '', '')
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
   public displayedColumns: string[] = ['id', 'official_cost', 'appl_type',
-    'date_diff',
+    'date_diff', 'oa_type',
     'condition_claims_min', 'condition_claims_max',
     'condition_pages_min', 'condition_pages_max',
     'condition_drawings_min', 'condition_drawings_max',
     'condition_entity_size', 'law_firm_cost', 'law_firm_date_diff',
-    'buttons']
-                //'conditions', 'law_firm_template']
+    'buttons' ]
   public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -43,6 +46,7 @@ export class EstFormComponent {
       official_cost: ['', Validators.required],
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
+      oa_type: ['', Validators.required],
       conditions: this.fb.group({
         id: [undefined],
         condition_claims_min: [undefined],
@@ -62,26 +66,21 @@ export class EstFormComponent {
   }
 
 
-  newRow() {
-    if (this.tableData.length == 0) {
-      this.tableData = concat(this.tableData, {
-        id: 0, country: '',
-        date_diff: '',
-        official_cost: 0, appl_type: '', conditions: '', law_firm_template: ''
-      })
+  newRow(){
+    if(this.tableData.length == 0){
+      this.tableData = concat(this.tableData, {id:0, country:'',
+        date_diff:'', official_cost:0, appl_type:'', conditions: '',
+        law_firm_template: '', oa_type: ''})
 
-    } else if (takeRight(this.tableData, 1)[0].id != undefined &&
+    }else if(takeRight(this.tableData, 1)[0].id != undefined &&
       takeRight(this.tableData, 1)[0].id != null &&
       takeRight(this.tableData, 1)[0].id != 0 &&
       this.editingRow == 0
-    ) {
-      this.tableData = concat(this.tableData, {
-        id: 0, country: '',
-        date_diff: '',
-        official_cost: 0, appl_type: '', conditions: '', law_firm_template: ''
-      })
+    ){
+      this.tableData = concat(this.tableData, {id:0, country:'',
+        date_diff:'', official_cost:0, appl_type:'', conditions: '',
+        law_firm_template: '', oa_type: ''})
     }
-
   }
 
   editRow(row: any) {
@@ -92,6 +91,7 @@ export class EstFormComponent {
       date_diff: row.date_diff,
       official_cost: row.official_cost,
       appl_type: row.appl_type.id,
+      oa_type: row.oa_num,
     })
     this.form.controls.conditions.setValue({
       id: row.conditions.id,
@@ -120,11 +120,9 @@ export class EstFormComponent {
   }
 
   cancel(){
-    console.log('cancel', this.form.value)
     if (this.form.controls.id.value == 0 || this.form.controls.id.value == null){
       this.tableData = dropRight(this.tableData, 1)
     }
-    console.log('this.tableData', this.tableData)
     this.editingRow = 0
     this.form.reset()
   }

@@ -26,6 +26,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .blurb-container-2{
     padding: 30px;
     background: map-get($theme-primary, 'main');
+    color: $light-text
 }
 
 .blurb{
@@ -100,6 +101,7 @@ app-aside {
 app-footer {
     flex: 0 0 40px;
     background: map-get($theme-primary, 'darker');
+    color: $light-accent-text;
 }
 
 .mat-header-cell{
@@ -109,10 +111,10 @@ app-footer {
         font-weight: bold;
         padding-top: 10px;
         text-align: center;
-        color: $light-text;
+        color: $light-accent-text;
     }
 
-    
+
 }
 .mat-first-col{
     background: map-get($theme-primary, 'lighter');
@@ -120,6 +122,10 @@ app-footer {
 
 .formContainer{
     background-color: map-get($theme-primary, 'darker');
+    color: $light-accent-text;
+    h2 {
+    margin-bottom: 0px;
+    }
     mat-vertical-stepper{
         .mat-step-header{
             background-color: map-get($theme-primary, 'lighter');

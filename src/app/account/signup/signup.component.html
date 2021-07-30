@@ -8,11 +8,7 @@
 						    <input matInput type="text" formControlName="email"
 									     class="form-control"
 									     [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-						    <div *ngIf="submitted && f.email.errors"
-								     class="invalid-feedback">
-								    <div *ngIf="f.email.errors.required">
-										    Email is required</div>
-						    </div>
+              <mat-error *ngIf="f.email.errors">Enter valid email address</mat-error>
 				    </mat-form-field>
         </div>
         <div>
@@ -21,11 +17,7 @@
 						<input matInput type="text" formControlName="username"
 									 class="form-control"
 									 [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-						<div *ngIf="submitted && f.username.errors"
-								 class="invalid-feedback">
-								<div *ngIf="f.username.errors.required">
-										Username is required</div>
-						</div>
+          <mat-error *ngIf="f.username.errors">Username is required</mat-error>
 				</mat-form-field>
         </div>
         <div>
@@ -36,11 +28,7 @@
 									 formControlName="password"
 									 class="form-control"
 									 [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-						<div *ngIf="submitted && f.password.errors"
-								 class="invalid-feedback">
-								<div *ngIf="f.password.errors.required">
-										Password is required</div>
-						</div>
+            <mat-error *ngIf="f.password.errors">{{getErrorMessage()}}</mat-error>
 				</mat-form-field>
         </div>
         <div>
@@ -51,16 +39,7 @@
 									 formControlName="re_password"
 									 class="form-control"
 									 [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-						<div *ngIf="submitted && f.password.errors"
-								 class="invalid-feedback">
-								<div *ngIf="f.password.errors.required">
-										Password is required</div>
-						</div>
-						<div *ngIf="errorMessages">
-								<div *ngFor="let message of errorMessages" class="text-danger">
-										{{message}}
-								</div>
-						</div>
+          <mat-error *ngIf="f.re_password.errors">{{getRePassErrorMessage()}}</mat-error>
 				</mat-form-field>
         </div>
 				<button mat-flat-button color="accent" [disabled]="loading">

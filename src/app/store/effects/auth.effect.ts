@@ -6,9 +6,12 @@ import {User} from '../../account/_models/user.model';
 import { AccountService } from '../../account/_services/account.service';
 
 
-import { login, loginComplete, logoutComplete, logout,
-         refreshAccess, refreshAccessSuccess, restartTimer } from '../actions/auth.action';
+import {
+  login, loginComplete, logoutComplete, logout,
+  refreshAccess, refreshAccessSuccess, restartTimer, loginFailure
+} from '../actions/auth.action';
 import { Store } from '@ngrx/store';
+import {of} from "rxjs";
 
 @Injectable()
 export class AuthEffectsNew {
@@ -23,22 +26,26 @@ export class AuthEffectsNew {
         this.authActions$.pipe(
             ofType(login),
             exhaustMap(action =>
-                this.authService.login(action.credentials.username, 
+                this.authService.login(action.credentials.username,
                                     action.credentials.password)
-                    .pipe(map(profile => loginComplete({
-                        profile,
-                        isLoggedIn: true,
-                        refreshTimer: this.getExpTimeAccess(profile.access)})),
+                    .pipe(map(profile => {
+                      return loginComplete({
+                          profile,
+                          isLoggedIn: true,
+                          refreshTimer: this.getExpTimeAccess(profile.access)})
+                      }),
                           tap(() => this.router.navigate(['/home']))
-                         )
-                      )))
+                    ,catchError(x => {
+                      return of({type: '[Auth] loginFailure'})
+                        //return of({loginFailure({ x })})
+                    })
+                    )
+            )))
 
     getExpTimeAccess(access_token: string){
-        //console.log('access_token', access_token)
         const jwtToken = JSON.parse(atob(access_token
             .split('.')[1]));
         const expires = new Date(jwtToken.exp * 1000)
-        //console.log('expires', expires)
         return expires
     }
 
@@ -47,7 +54,7 @@ export class AuthEffectsNew {
             ofType(logout),
             map(() => logoutComplete())
             ))
-    
+
 
     initStuff$ = createEffect(() =>
         this.authActions$.pipe(
@@ -59,7 +66,7 @@ export class AuthEffectsNew {
                     return refreshAccess({profile: x.profile })
                 } else
                     console.log('ttt', x)
-                    throw "ddddd error" 
+                    throw "ddddd error"
                     //return logout()
             })
             ))))
@@ -69,7 +76,7 @@ export class AuthEffectsNew {
             ofType(refreshAccess),
             //exhaustMap(() => this.store.select('authCred')
             exhaustMap(action => {
-                let user = action.profile 
+                let user = action.profile
                 let a =this.authService.refreshToken_two(user.refresh)
                 .pipe(map(access => {
                     let user_two = new User('','','')
@@ -78,10 +85,10 @@ export class AuthEffectsNew {
                     user_two.username = user.username
                 return refreshAccessSuccess({'profile': user_two})
             })//,catchError(x => {throw(x)})
-            ) 
+            )
             return a
         }),
-        
+
             ))
 
     loginComplete$ = createEffect(() =>
@@ -90,7 +97,7 @@ export class AuthEffectsNew {
             map(action =>{
                 return restartTimer({'refreshTimer': this.getExpTimeAccess(action.profile.access)})
             }),
-            
+
         ))
 
 
@@ -101,7 +108,7 @@ export class AuthEffectsNew {
             map(action =>{
                 return restartTimer({'refreshTimer': this.getExpTimeAccess(action.profile.access)})
             }),
-            
+
         ))
 
     restartTimer$ = createEffect(() =>
@@ -116,47 +123,3 @@ export class AuthEffectsNew {
             )))
 
 }
-
-
-// @Injectable()
-export class AuthEffects {
-
-//     constructor(
-//         private actions: Actions,
-//         private authService: AccountService,
-//         private router: Router,
-//     ) {}
-
-//     @Effect()
-//     LogIn: Observable<any> = this.actions
-//         .pipe(ofType(AuthActionTypes.LOGIN),
-//               map((action: LogIn) => action.payload),
-//               switchMap(payload  => {
-//                   return this.authService.login(payload.email, payload.password)
-//                       .pipe(map((user) => {
-//                           console.log(user);
-//                           return new LogInSuccess({token: user.token, email: payload.email});
-//                       }))
-//                       // .pipe(catchError((error) => {
-//                       //     console.log(error);
-//                       //     return of(new LogInFailure({ error: error }));
-//                       // }));
-//               })
-//              )
-
-
-//     @Effect({ dispatch: false })
-//     LogInSuccess: Observable<any> = this.actions.pipe(
-//         ofType(AuthActionTypes.LOGIN_SUCCESS),
-//         tap((user: User) => {
-//             //localStorage.setItem('access', user?.payload.access ?? '');
-//             //localStorage.setItem('refresh', user.payload.refresh);
-//             //localStorage.setItem('username', user.payload.username);
-//             localStorage.setItem('access', user?.access ?? '');
-//             localStorage.setItem('refresh', user?.refresh ?? '');
-//             localStorage.setItem('username', user?.username ?? '');
-
-//             this.router.navigateByUrl('/');
-//         })
-//     );
- }

@@ -22,23 +22,20 @@ export class AccountService {
                 private router: Router){
     }
 
-    ngOnDestroy(){
-    }
-
     login(username: string, password: string): Observable<any>{
-        console.log(this.baseUrl)
+      console.log('log')
         const url = this.baseUrl + 'jwt/create/'
-
+      // return this.http.post<User>(url, {username, password})
+      //   .pipe(map(user => {
+      //     user.username = username
+      //     console.log('user', user)
+      //     return user;
+      //   }))
         return this.http.post<User>(url, {username, password})
-            .pipe(map(user => {
-                user.username = username
-                return user;
-            }))
     }
 
     logout(){
         this.store.dispatch(logout());
-        console.log('Logout')
         let succ = this.router.navigate(['logout'])
         return from(succ)
     }

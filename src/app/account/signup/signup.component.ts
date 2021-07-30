@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms'
 import { AccountService } from '../_services/account.service';
 import { first } from 'rxjs/operators';
 
@@ -12,10 +12,19 @@ import { first } from 'rxjs/operators';
 export class SignupComponent implements OnInit {
 
     signupForm = this.fb.group({
-        email:['', Validators.required],
+        email:['', Validators.compose([Validators.email,
+                    Validators.required])],
         username:['', Validators.required],
-        password:['', Validators.required],
-        re_password:['', Validators.required],})
+        password:['', Validators.compose(
+          [Validators.minLength(8),
+          this.PasswordValidator(),
+          Validators.required]
+        )],
+      re_password:['', Validators.compose(
+        [this.PasswordSameValidator(),
+          Validators.required]
+      )]
+        })
     returnUrl = ''
     loading = false;
     submitted = false;
@@ -32,8 +41,69 @@ export class SignupComponent implements OnInit {
 
     get f() {return this.signupForm.controls}
 
+    PasswordValidator(): ValidatorFn{
+      return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        if (!value){
+          return null;
+        }
+        const hasUpperCase = /[A-Z]+/.test(value);
+        const hasLowerCase = /[a-z]+/.test(value);
+        const hasNumeric = /[0-9]+/.test(value);
+        const passwordValid = hasUpperCase && hasLowerCase && hasNumeric;
+        let error_return = {
+          hasUpperCase: hasUpperCase,
+          hasLowerCase: hasLowerCase,
+          hasNumeric: hasNumeric
+        }
+        return !passwordValid ? {passwordStrength: error_return}: null;
+      }
+    }
+    PasswordSameValidator(): ValidatorFn{
+      return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        if (!value){
+          return null;
+        }
+        const passwordSame = value == this.f.password.value
+        return !passwordSame ? {passwordSame: true}: null;
+      }
+    }
+    getErrorMessage(){
+      if (this.f.password.errors) {
+        if (this.f.password.errors.required) {
+          return 'Password is required'
+        }else if (this.f.password.errors.minlength) {
+          return '8 character minimum'
+        }else if (this.f.password.errors.passwordStrength){
+          if (!this.f.password.errors.passwordStrength.hasUpperCase) {
+            return 'required upper case char'
+          } else if (!this.f.password.errors.passwordStrength.hasLowerCase) {
+            return 'required lower case char'
+          } else if (!this.f.password.errors.passwordStrength.hasNumeric) {
+            return 'required Number'
+          }
+        }
+      }
+      return null
+    }
+    getRePassErrorMessage(){
+      if (this.f.re_password.errors) {
+        if (this.f.re_password.errors.required) {
+          return 'Repeat Password'
+        } else if (this.f.re_password.errors.passwordSame) {
+          return 'passwords do not match'
+        }
+      }
+      return null
+    }
+
     onSubmit(){
         this.submitted = true;
+
+        if (this.signupForm.controls.password == this.signupForm.controls.re_password){
+
+        }
 
         if(this.signupForm.valid) {
             this.loading = true;

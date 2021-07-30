@@ -6,9 +6,11 @@ import {EntitySize} from 'src/app/characteristics/_models/entitySize.model';
 import {ApplTypeService} from 'src/app/characteristics/_services/appl-type.service';
 import {CountryService} from 'src/app/characteristics/_services/country.service';
 import {EntitySizeService} from 'src/app/characteristics/_services/entity-size.service';
-import {FamEstForm} from '../_models/FamEstForm.model';
+import {FamEstForm, FamEstFormFull} from '../_models/FamEstForm.model';
 import {FamEstFormService} from '../_services/fam-est-form.service';
 import {Router} from '@angular/router';
+import {FamEstConfirmComponent} from "../fam-est-confirm/fam-est-confirm.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-fam-est-form-page',
@@ -17,12 +19,7 @@ import {Router} from '@angular/router';
 })
 export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
-  // private loading$: Observable<boolean>;
-  // private famEstForms: FamEstForm[];
-  // private famEstForm$: Observable<FamEstForm[]>;
-  // private famEstFormSub: Subscription;
-
-  public applTypes: ApplType[];
+  public applTypes: ApplType[] = [new ApplType(0, '', '')];
   private applTypes$: Observable<ApplType[]>;
   private applTypesSub: Subscription;
 
@@ -32,9 +29,13 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
   public pct_countries: Country[];
 
-  public entitySizes: EntitySize[];
+  public entitySizes: EntitySize[] = [new EntitySize(0,'')];
   private entitySizes$: Observable<EntitySize[]>;
   private entitySizesSub: Subscription;
+  private famformData: FamEstForm = new FamEstForm('',
+    '',0,'',0,0,
+    0,0,0,0,false,0,
+    '',false,0);
 
   constructor(
     private famEstFormSer: FamEstFormService,
@@ -42,22 +43,22 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     private applTypeSer: ApplTypeService,
     private entitySizeSer: EntitySizeService,
     private router: Router,
+    public dialog: MatDialog,
   ) {
-    this.applTypes = [new ApplType];
+    this.applTypes = [new ApplType(0, '', '')];
     this.applTypes$ = applTypeSer.entities$;
     this.applTypesSub = new Subscription();
     this.countries = [new Country(0, '', '', false, false, '', '')];
     this.countries$ = countrySer.entities$;
     this.countriesSub = new Subscription();
     this.pct_countries = [new Country(0, '', '', false, false, '', '')];
-    this.entitySizes = [new EntitySize];
+    this.entitySizes = [new EntitySize(0, '')];
     this.entitySizes$ = entitySizeSer.entities$;
     this.entitySizesSub = new Subscription();
   }
 
   ngOnInit(): void {
     this.countriesSub = this.getCountries().subscribe(x => {
-      console.log('xxx', x)
       this.countries = x
       this.pct_countries = this.countries.filter(y => y.pct_analysis_bool)
     });
@@ -98,15 +99,57 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
         this.famEstFormSer.update(famEstForm)
     }
 
-    onSubmit(formData: FamEstForm) {
-      const datetime = JSON.stringify(formData.init_appl_filing_date)
+    onSubmit() {
+      const datetime = JSON.stringify(this.famformData.init_appl_filing_date)
       const dateParts = datetime.split("T")
       const dateSplit = dateParts[0].split('\"')
-      formData.init_appl_filing_date = dateSplit[1]
-      console.log('formData', formData)
-      this.add(formData).subscribe(x => {
+      this.famformData.init_appl_filing_date = dateSplit[1]
+      this.add(this.famformData).subscribe(x => {
         this.router.navigate(['estimations/' + x.id])
       })
     }
 
+    verifySubmission(formData: FamEstForm){
+      this.famformData = formData
+      console.log('this.famformData', this.famformData)
+      let fullFormData = formData
+      let totalFormData: FamEstFormFull;
+      let entity_size = this.entitySizes.find(x => x.id == fullFormData.entity_size)!
+      let init_appl_country= this.countries.find(x => x.id == fullFormData.init_appl_country)!
+      let init_appl_type = this.applTypes.find(x => x.id == fullFormData.init_appl_type)!
+      let countries = fullFormData.countries.map((x: number) => {
+        return this.countries.find(y => y.id == x)
+      })
+      let meth_country= this.countries.find(x => x.id == fullFormData.meth_country)!
+      totalFormData = new FamEstFormFull(
+        fullFormData.family_name,
+        fullFormData.family_no,
+        entity_size,
+        fullFormData.init_appl_filing_date,
+        init_appl_country,
+        init_appl_type,
+        fullFormData.init_appl_claims,
+        fullFormData.init_appl_drawings,
+        fullFormData.init_appl_indep_claims,
+        fullFormData.init_appl_pages,
+        fullFormData.method,
+        meth_country,
+        countries,
+        fullFormData.ep_method,
+        fullFormData.id,
+      );
+      console.log('totalFormData', totalFormData)
+
+       let dialogRef = this.dialog.open(FamEstConfirmComponent, {
+         width: '500px',
+         data: totalFormData})
+
+      dialogRef.afterClosed().subscribe(result => {
+        if(result.event == 'save') {
+          this.onSubmit()
+        } else {
+          console.log('canceled')
+        }
+      })
+    }
 }

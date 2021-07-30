@@ -21,6 +21,7 @@ const entityMetadata: EntityMetadataMap = {
   CountryAll: {},
   EntitySize: {},
   ApplType: {},
+  ApplTypeAll: {},
   OAType: {},
   Family: {},
   Application: {},
