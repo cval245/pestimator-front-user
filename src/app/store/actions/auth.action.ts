@@ -1,21 +1,21 @@
-import { createAction, props } from '@ngrx/store';
-import { Credentials } from 'src/app/account/_models/credentials.model';
-import { RefreshModel } from 'src/app/account/_models/TimerRefresh.model';
-import { User } from 'src/app/account/_models/user.model';
+import {createAction, props} from '@ngrx/store';
+import {Credentials} from 'src/app/account/_models/credentials.model';
+import {RefreshModel} from 'src/app/account/_models/TimerRefresh.model';
+import {User} from 'src/app/account/_models/user.model';
 
 export const checkAuth = createAction('[Auth] checkAuth');
 export const checkAuthComplete = createAction(
-    '[Auth] checkAuthComplete',
-    props<{ isLoggedIn: boolean }>()
+  '[Auth] checkAuthComplete',
+  props<{ isLoggedIn: boolean }>()
 );
-export const login = createAction('[Auth] login', props<{credentials: Credentials}>());
+export const login = createAction('[Auth] login', props<{ credentials: Credentials }>());
 export const loginComplete = createAction(
-    '[Auth] loginComplete',
-    props<{ profile: any; isLoggedIn: boolean; refreshTimer: Date; }>()
+  '[Auth] loginComplete',
+  props<{ profile: any; isLoggedIn: boolean; refreshTimer: Date; }>()
 );
 export const loginFailure = createAction(
   '[Auth] loginFailure',
-  props<{errorMessage: string}>()
+  props<{ error: any }>()
 )
 export const logout = createAction('[Auth] logout');
 export const logoutComplete = createAction('[Auth] logoutComplete');

@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { AccountService } from '../_services/account.service';
-import { Store } from '@ngrx/store';
-import { login } from '../../store/actions/auth.action';
-import { Credentials } from '../_models/credentials.model';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {FormBuilder, Validators} from '@angular/forms';
+import {filter} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {login} from '../../store/actions/auth.action';
+import {Credentials} from '../_models/credentials.model';
 
 @Component({
   selector: 'app-login',
@@ -14,26 +13,42 @@ import { Credentials } from '../_models/credentials.model';
 })
 
 export class LoginComponent implements OnInit {
-    returnUrl = ''
-    loading = false;
-    submitted = false;
-    loginForm = this.fb.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required],
-    })
-    message=''
+  error: any
+  error_bool = false
+  returnUrl = ''
+  loading = false;
+  submitted = false;
+  loginForm = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  })
+  message = ''
 
 
     constructor(private fb: FormBuilder,
                 private route: ActivatedRoute,
-                private store: Store,
-               ) { }
+                private store: Store<{ authCred: any }>,
+    ) { }
 
     ngOnInit(): void {
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      this.store.select('authCred').pipe(
+        filter(x => x.error)
+      )
+        .subscribe(error => {
+          console.log('this.error_bool', this.error_bool)
+          this.error_bool = true
+
+          console.log('this.error_bool', this.error_bool)
+          this.error = error
+          console.log('ttt', this.error)
+          console.log('ttt', this.error.error.error.error.detail)
+        })
     }
 
-    get f() {return this.loginForm.controls;}
+  get f() {
+    return this.loginForm.controls;
+  }
 
     onSubmit(){
         this.submitted = true;

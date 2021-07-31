@@ -12,17 +12,19 @@
   <div gdcolumn="auto / span 2"
        style="grid-column: auto / span 2">
     <div *ngIf="countryAgged.length>0 && displayedColumns.length>1">
-    <app-fam-est-detail-table [displayedColumns]="displayedColumns"
-                              [countryAggeds]="countryAgged"
-    >
-    </app-fam-est-detail-table>
-      </div>
+      <app-fam-est-detail-table [displayedColumns]="displayedColumns"
+                                [countryAggeds]="countryAgged"
+      >
+      </app-fam-est-detail-table>
+    </div>
   </div>
   <div>
     <app-fam-det-table [applications]="applications"></app-fam-det-table>
   </div>
-  <div fxLayout="column" fxLayoutAlign="center center" class="buttonContainer">
-    <p>Export data to excel</p>
+  <div class="light-accent-background buttonContainer" fxLayout="column" fxLayoutAlign="start center">
+    <div class="buttonContainerTitle">
+      <h3>Export data</h3>
+    </div>
     <button mat-flat-button color="accent" (click)="exportXLSX()">Export</button>
   </div>
 </div>

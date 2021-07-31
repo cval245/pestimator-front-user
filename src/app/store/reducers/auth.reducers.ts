@@ -1,14 +1,14 @@
-import { User } from '../../account/_models/user.model';
-import { Action, createReducer, on } from '@ngrx/store';
+import {User} from '../../account/_models/user.model';
+import {Action, createReducer, on} from '@ngrx/store';
 import * as authActions from '../actions/auth.action';
 
 
 export const authFeatureName = 'auth';
 
 export interface AuthState {
-    profile: User;
-    isLoggedIn: boolean;
-    refreshTimer: Date;
+  profile: User;
+  isLoggedIn: boolean;
+  refreshTimer: Date;
 }
 
 export const initialAuthState: AuthState = {
@@ -21,24 +21,32 @@ const authReducerInternal = createReducer(
     initialAuthState,
 
     on(authActions.loginComplete, (state, { profile, isLoggedIn,
-                                            refreshTimer
-                                          }) => {
-        return {
-            ...state,
-            profile,
-            isLoggedIn: true,
-            refreshTimer
-        };
+      refreshTimer
+    }) => {
+      return {
+        ...state,
+        profile,
+        isLoggedIn: true,
+        refreshTimer
+      };
     }),
 
+  on(authActions.loginFailure, (state, error) => {
+    return {
+      ...state,
+      error
+    };
+  }),
 
-    on(authActions.logout, (state) => {
-        return {
-            ...state,
-            profile: new User('','',''),
-            isLoggedIn: false,
-        };
-    }),
+
+  on(authActions.logout, (state) => {
+    return {
+      ...state,
+      profile: new User('', '', ''),
+      isLoggedIn: false,
+      error: null
+    };
+  }),
 
 
     on(authActions.refreshAccessSuccess, (state, { profile }) => {

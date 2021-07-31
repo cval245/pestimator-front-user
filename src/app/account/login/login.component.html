@@ -1,6 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="start center">
     <div fxFlexOffset="3" fxFlex fxLayout="column" fxLayoutAlign="start center">
     <h2>Login</h2>
+    <p *ngIf="error_bool">{{error.error.error.error.detail}}</p>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div>
             <mat-form-field appearance="fill">

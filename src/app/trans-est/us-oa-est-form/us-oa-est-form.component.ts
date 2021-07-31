@@ -1,12 +1,10 @@
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {concat, dropRight, takeRight} from 'lodash';
+import {ApplType} from 'src/app/characteristics/_models/applType.model';
+import {Country} from 'src/app/characteristics/_models/Country.model';
 
-
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { concat, dropRight, takeRight } from 'lodash';
-import { ApplType } from 'src/app/characteristics/_models/applType.model';
-import { Country } from 'src/app/characteristics/_models/Country.model';
-
-interface TableWise{
+interface TableWise {
   id: number | undefined
   country: any,
   appl_type: any,
@@ -111,9 +109,11 @@ export class UsOaEstFormComponent {
     })
   }
 
-  submit(){
+  submit() {
     this.form.patchValue({country: this.country})
-    this.formData.emit(this.form.value)
+    if (this.form.valid) {
+      this.formData.emit(this.form.value)
+    }
 
     //reset editing row
     this.editingRow = 0

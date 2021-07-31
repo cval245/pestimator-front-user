@@ -1,15 +1,23 @@
 <header>
     <mat-toolbar *ngIf="!isLoggedIn" color="primary">
-        <a mat-button routerLink="/"><h3>PatPort Cost Estimator</h3></a>
-        <div fxFlex fxLayout="row" fxLayoutAlign="end center">
-            <a mat-flat-button color="accent" routerLink="/login">Login</a>
-        </div>
+      <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
+        <img style="width: 100%; height: 100%; object-fit: cover"
+             src="assets/images/patport-logo-trans.svg" alt="">
+      </div>
+      <a mat-button routerLink="/"><h3>PatPort Cost Estimator</h3></a>
+      <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+        <a mat-flat-button color="accent" routerLink="/login">Login</a>
+      </div>
     </mat-toolbar>
-    <mat-toolbar *ngIf="isLoggedIn" color="primary">
-        <a mat-button routerLink="/home"><h3>PatPort Cost Estimator</h3></a>
-        <div fxFlex fxLayout="row" fxLayoutAlign="end center">
-            <a mat-flat-button color="accent" routerLink="/account">Account</a>
-            <a mat-button (click)="logout()">Logout</a>
-        </div>
-    </mat-toolbar>
+  <mat-toolbar *ngIf="isLoggedIn" color="primary">
+    <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
+      <img style="width: 100%; height: 100%; object-fit: cover"
+           src="assets/images/patport-logo-trans.svg" alt="">
+    </div>
+    <a mat-button routerLink="/home"><h3>PatPort Cost Estimator</h3></a>
+    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+      <a mat-flat-button color="accent" routerLink="/account">Account</a>
+      <a mat-button (click)="logout()">Logout</a>
+    </div>
+  </mat-toolbar>
 </header>

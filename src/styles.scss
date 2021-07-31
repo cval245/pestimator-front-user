@@ -69,20 +69,15 @@ body {
 //app-header,
 app-nav,
 app-main,
-app-aside,
-app-footer {
-    padding: 20px;
-    margin: 5px;
+app-aside {
+  padding: 20px;
+  margin: 5px;
 }
 
-// app-header {
-//     //flex: 0 0 100px;
-//     //background: map-get($theme-primary, 'lighter');
-//     /* order:1; */
-//     /* height:100px; */
-//     /* flex:0 1 100%; */
-//     /* background: #f1b5b5; */
-// }
+app-footer {
+  padding: 20px;
+  margin: 0px;
+}
 
 app-nav {
     flex: 0 2 150px;
@@ -109,29 +104,37 @@ app-footer {
 
     h3 {
         font-weight: bold;
-        padding-top: 10px;
-        text-align: center;
-        color: $light-accent-text;
+      padding-top: 10px;
+      text-align: center;
+      color: $light-accent-text;
     }
 
 
 }
-.mat-first-col{
-    background: map-get($theme-primary, 'lighter');
+
+.mat-first-col {
+  background: map-get($theme-primary, 'lighter');
 }
 
-.formContainer{
-    background-color: map-get($theme-primary, 'darker');
-    color: $light-accent-text;
-    h2 {
+.light-accent-background {
+  background-color: map-get($theme-primary, 'lighter')
+}
+
+.formContainer {
+  background-color: map-get($theme-primary, 'darker');
+  color: $light-accent-text;
+
+  h2 {
     margin-bottom: 0px;
-    }
-    mat-vertical-stepper{
-        .mat-step-header{
-            background-color: map-get($theme-primary, 'lighter');
+  }
+
+  mat-vertical-stepper {
+    .mat-step-header {
+      background-color: map-get($theme-primary, 'lighter');
         }
         .form-row {
-            margin: 10px;
+          color: $dark-accent-text;
+          margin: 10px;
         }
         .mat-step-icon{
             color: $light-text;

@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Actions, ofType, createEffect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { tap, map, switchMap, exhaustMap, catchError } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from '@ngrx/effects';
+import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
 import {User} from '../../account/_models/user.model';
-import { AccountService } from '../../account/_services/account.service';
+import {AccountService} from '../../account/_services/account.service';
 
 
 import {
-  login, loginComplete, logoutComplete, logout,
-  refreshAccess, refreshAccessSuccess, restartTimer, loginFailure
+  login,
+  loginComplete,
+  loginFailure,
+  logout,
+  logoutComplete,
+  refreshAccess,
+  refreshAccessSuccess,
+  restartTimer
 } from '../actions/auth.action';
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {of} from "rxjs";
 
 @Injectable()
@@ -29,42 +35,51 @@ export class AuthEffectsNew {
                 this.authService.login(action.credentials.username,
                                     action.credentials.password)
                     .pipe(map(profile => {
-                      return loginComplete({
+                        console.log('beeeee')
+                        return loginComplete({
                           profile,
                           isLoggedIn: true,
-                          refreshTimer: this.getExpTimeAccess(profile.access)})
-                      }),
-                          tap(() => this.router.navigate(['/home']))
-                    ,catchError(x => {
-                      return of({type: '[Auth] loginFailure'})
-                        //return of({loginFailure({ x })})
-                    })
+                          refreshTimer: this.getExpTimeAccess(profile.access)
+                        })
+                      })
+                      , tap(() => this.router.navigate(['/home']))
+                      , catchError(error => {
+                        console.log('burt')
+                        //return of({type: '[Auth] loginFailure'})
+                        return of(loginFailure({error}))
+                        //return loginFailure({ error })
+                      })
                     )
             )))
 
     getExpTimeAccess(access_token: string){
         const jwtToken = JSON.parse(atob(access_token
             .split('.')[1]));
-        const expires = new Date(jwtToken.exp * 1000)
-        return expires
+      const expires = new Date(jwtToken.exp * 1000)
+      return expires
     }
 
-    logout$ = createEffect(()=>
-        this.authActions$.pipe(
-            ofType(logout),
-            map(() => logoutComplete())
-            ))
+  logout$ = createEffect(() =>
+    this.authActions$.pipe(
+      ofType(logout),
+      map(() => logoutComplete())
+    ))
 
+  // loginFailure$ = createEffect(()=>
+  //   this.authActions$.pipe(
+  //     ofType(loginFailure)
+  //   )
+  // )
 
-    initStuff$ = createEffect(() =>
-        this.authActions$.pipe(
-            ofType(ROOT_EFFECTS_INIT),
-            switchMap(() => this.store.select('authCred')
-            .pipe(map(x => {
-                if (x.profile.access.length > 0){
-                    console.log('refreshAccess through init')
-                    return refreshAccess({profile: x.profile })
-                } else
+  initStuff$ = createEffect(() =>
+    this.authActions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      switchMap(() => this.store.select('authCred')
+        .pipe(map(x => {
+            if (x.profile.access.length > 0) {
+              console.log('refreshAccess through init')
+              return refreshAccess({profile: x.profile})
+            } else
                     console.log('ttt', x)
                     throw "ddddd error"
                     //return logout()
@@ -74,7 +89,6 @@ export class AuthEffectsNew {
     refresh$ = createEffect(() =>
         this.authActions$.pipe(
             ofType(refreshAccess),
-            //exhaustMap(() => this.store.select('authCred')
             exhaustMap(action => {
                 let user = action.profile
                 let a =this.authService.refreshToken_two(user.refresh)
