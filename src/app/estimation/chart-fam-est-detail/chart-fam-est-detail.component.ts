@@ -41,15 +41,20 @@ export class ChartFamEstDetailComponent implements OnChanges {
         tension: 0
       }
     },
-        scales: {
-          x: {},
-          y:
-            {
-              position: 'left',
-              stacked: true,
-            },
+    scales: {
+      x: {},
+      y:
+        {
+          position: 'left',
+          stacked: true,
         },
-    };
+    },
+    plugins: {
+      legend: {
+        position: 'right'
+      }
+    }
+  };
 
     constructor() { }
 

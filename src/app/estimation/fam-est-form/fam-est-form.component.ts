@@ -1,17 +1,9 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FamEstForm} from '../_models/FamEstForm.model';
 import {ApplType} from '../../characteristics/_models/applType.model';
 import {Country} from '../../characteristics/_models/Country.model';
 import {EntitySize} from '../../characteristics/_models/entitySize.model';
-import {forEach} from "lodash";
 
 
 @Component({
@@ -83,7 +75,6 @@ export class FamEstFormComponent implements OnInit {
             this.setInternationalMethod()
           })
         }
-
     }
 
     onCheckboxChange(e: any, country_id: number) {

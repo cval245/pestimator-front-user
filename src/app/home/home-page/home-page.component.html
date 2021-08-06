@@ -1,14 +1,15 @@
-<div gdcolumns="repeat(auto-fill, minmax(300px, 1fr))" gdgap="10px"
-      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;"
+<div gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
+     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;"
 >
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>More Estimates</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <p>
-                Create another estimate here
-            </p>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>New Estimate</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Create another estimate here
+      </p>
+      <img src="assets/images/Peregrine-falcon.svg" style="width: 100%">
         </mat-card-content>
         <mat-card-footer>
             <mat-card-actions align="end">
@@ -21,41 +22,34 @@
 
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Details</mat-card-title>
+          <mat-card-title>Coming Soon...</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-            <ul>
-                <li>See Account Details</li>
-                <li>List of some previous estimates</li>
-                <li>Button for viewing past estimates</li>
-                <li>Button for Creating New Estimates</li>
-
-                <li>Customizing Variables</li>
-                <ul>
-                    <li>Customize Law Firm</li>
-                    <li>Customize Default number of OAs for each country</li>
-                    <li>Customize default path for each country</li>
-                </ul>
-            </ul>
-        </mat-card-content>
+      <mat-card-content>
+        <img src="assets/images/Cardinal.svg" style="width: 100%">
+        <ul fxLayout="column" fxLayoutAlign="start start">
+          <li>Custom Fees</li>
+          <li>Custom Filing Dates</li>
+          <li>Custom Number of Office Actions</li>
+        </ul>
+      </mat-card-content>
         <mat-card-footer>
-            <p>Do this stuff</p>
         </mat-card-footer>
     </mat-card>
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>View Estimates</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <p>
-                View Estimates
-            </p>
-        </mat-card-content>
-        <mat-card-footer>
-            <mat-card-actions align="end">
-                <button mat-flat-button color="accent" style="right: 15px"
-                        routerLink="/estimations">
-                    View Estimates</button>
+  <mat-card gdcolumn="auto / span 2" style="grid-column: auto / span 2;">
+    <mat-card-header>
+      <mat-card-title>View Estimates</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-family-estimate-table [famEsts]="famEsts"
+                                 [pageSize]="pageSize">
+      </app-family-estimate-table>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="accent" style="right: 15px"
+                routerLink="/estimations">
+          View All
+        </button>
             </mat-card-actions>
         </mat-card-footer>
     </mat-card>

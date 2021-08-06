@@ -1,7 +1,7 @@
-import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {mergeMap, switchMap} from 'rxjs/operators';
+import {filter, mergeMap, switchMap} from 'rxjs/operators';
 import {assign, defaults, each, groupBy, keyBy, keys, map, mapValues, reduce, values} from 'lodash';
 import {FamEstDetail} from '../_models/FamEstDetail.model';
 import {FamEstDetailService} from '../_services/fam-est-detail.service';
@@ -9,13 +9,17 @@ import {FamEstDetailService} from '../_services/fam-est-detail.service';
 import * as XLSX from 'xlsx/dist/xlsx.core.min';
 import {FamilyService} from 'src/app/portfolio/_services/family.service';
 import {Family} from 'src/app/portfolio/_models/family.model';
-import {CountryService} from 'src/app/characteristics/_services/country.service';
 import {ApplicationService} from 'src/app/application/_services/application.service';
 import {ApplDetailService} from 'src/app/application/_services/appl-detail.service';
 import {Application} from 'src/app/application/_models/application.model';
 import {Country} from 'src/app/characteristics/_models/Country.model';
-import {ApplTypeService} from "../../characteristics/_services/appl-type.service";
 import {ApplType} from "../../characteristics/_models/applType.model";
+import {FamEstFormService} from "../_services/fam-est-form.service";
+import {FamEstFormFull} from "../_models/FamEstForm.model";
+import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
+import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {CountryAllService} from "../../characteristics/_services/country-all.service";
+import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
 
 @Component({
   selector: 'app-fam-est-detail',
@@ -40,20 +44,66 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   public famEstDetails: FamEstDetail[]
   private countries: Country[] = [new Country(0, '', '', false, false, '', '')]
   private combinedSub: Subscription;
-  //private familySub: Subscription;
+  public famform: FamEstFormFull = new FamEstFormFull(
+    '',
+    '',
+    new EntitySize(0, ''),
+    new Date(),
+    new Country(0, '', '', false, false, '', ''),
+    new ApplType(0, '', ''),
+    0,
+    0,
+    0,
+    0,
+    false,
+    new Country(0, '', '', false, false, '', ''),
+    [],
+    false
+  )
+  private tableCombineSub: Subscription;
   private applTypes: ApplType[] = [new ApplType(0, '', '')];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private famEstDetSer: FamEstDetailService,
     private familySer: FamilyService,
-    private countrySer: CountryService,
+    private countrySer: CountryAllService,
     private applSer: ApplicationService,
-    private applTypeSer: ApplTypeService,
+    private applTypeSer: ApplTypeAllService,
     private applDetSer: ApplDetailService,
+    private famformSer: FamEstFormService,
+    private entitySizeSer: EntitySizeService
   ) {
     this.famEstDetails = [new FamEstDetail()]
     this.family = new Family
+    this.tableCombineSub = combineLatest([this.activatedRoute.params,
+      this.famformSer.entities$.pipe(filter(z => z.length > 0)),
+      this.countrySer.entities$.pipe(filter(z => z.length > 0)),
+      this.applTypeSer.entities$.pipe(filter(z => z.length > 0)),
+      this.entitySizeSer.entities$.pipe(filter(z => z.length > 0))])
+      .subscribe(x => {
+        let famforms = x[1]
+        let famform = famforms.find(y => y.id == x[0].id)!
+        let countries = x[2]
+        let applTypes = x[3]
+        let entitySizes = x[4]
+        this.famform.init_appl_country = countries.find(y => y.id == famform.init_appl_country)!
+        this.famform.meth_country = countries.find(y => y.id == famform.meth_country)!
+        this.famform.init_appl_type = applTypes.find(y => y.id == famform.init_appl_type)!
+        this.famform.countries = map(famform.countries, z => countries.find(y => y.id == z))
+        this.famform.entity_size = entitySizes.find(y => y.id == famform.entity_size)!
+        this.famform.id = famform.id
+        this.famform.family_name = famform.family_name
+        this.famform.family_no = famform.family_no
+        this.famform.init_appl_filing_date = famform.init_appl_filing_date
+        this.famform.init_appl_claims = famform.init_appl_claims
+        this.famform.init_appl_indep_claims = famform.init_appl_indep_claims
+        this.famform.init_appl_pages = famform.init_appl_pages
+        this.famform.init_appl_drawings = famform.init_appl_drawings
+        this.famform.method = famform.method
+        this.famform.ep_method = famform.ep_method
+      })
+
 
     let famEstDetails$ = this.activatedRoute.params.pipe(
       switchMap(x => {
@@ -67,6 +117,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       family$, this.applTypeSer.entities$).pipe(
       mergeMap(([countries, famEstDetails,
                   family, applTypes]) => {
+        console.log('more stuff', famEstDetails)
         this.famEstDetails = map(famEstDetails, x => {
           let country = countries.find(y => y.id == x.country)
           return {...x, 'country': country}
@@ -95,10 +146,13 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
       this.countrySer.getAll()
       this.applTypeSer.getAll()
+      this.entitySizeSer.getAll()
+      this.famformSer.getAll()
     }
 
     ngOnDestroy(): void{
-        this.combinedSub.unsubscribe()
+      this.combinedSub.unsubscribe()
+      this.tableCombineSub.unsubscribe()
     }
 
     getFamEstDetailByFormId(id: number): Observable<FamEstDetail[]>{
@@ -121,94 +175,185 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.famEstDetSer.update(famEstDetail)
     }
 
-    calcSynopsis(family: Family, famEstDetails: FamEstDetail[]){
-        // family_name | Family_no
-        // country 1 | total cost
-        // country 2 | total cost
-        // total     | total cost overall
-        let super_top_row = ['Family Name', 'Family Number']
-        let top_row = [family.family_name, family.family_no]
-        let header_row = ['Country', 'Cost']
-        let synopsis = map(groupBy(famEstDetails, 'country'), x => {
-            let sum = reduce(x, (acc, value)=>{
-                if (value.total_cost_sum != undefined){
-                    return acc + value.total_cost_sum
-                } else{
-                    return acc+0
-                }
-            }, 0)
-            return [x[0].country.country, sum]
-        })
-        synopsis.unshift(header_row)
-        synopsis.unshift(top_row)
-        synopsis.unshift(super_top_row)
-        //add total rows
-        let total_row = reduce(famEstDetails, (acc, value)=>{
-            if (value.total_cost_sum != undefined){
-                return acc + value.total_cost_sum
-            } else{
-                return acc+0
+    calcSynopsis(family: Family, famEstDetails: FamEstDetail[]) {
+      // family_name | Family_no
+      // country 1 | total cost
+      // country 2 | total cost
+      // total     | total cost overall
+      let super_top_row = ['Family Name', 'Family Number']
+      let top_row = [family.family_name, family.family_no]
+      let header_row = ['Country', 'Cost']
+      let synopsis = map(groupBy(famEstDetails, x => x.country.id), x => {
+
+        let sum = reduce(x, (acc, value) => {
+          if (value.total_cost_sum != undefined) {
+            return acc + value.total_cost_sum
+          } else {
+            return acc + 0
+          }
+        }, 0)
+        return [x[0].country.country, sum]
+      })
+      let bill = groupBy(famEstDetails, x => x.country.id)
+
+
+      synopsis.unshift(header_row)
+      synopsis.unshift(top_row)
+      synopsis.unshift(super_top_row)
+      //add total rows
+      let total_row = reduce(famEstDetails, (acc, value) => {
+        if (value.total_cost_sum != undefined) {
+          return acc + value.total_cost_sum
+        } else {
+          return acc + 0
             }
         }, 0)
         synopsis.push(['total_row', total_row])
         return synopsis
     }
 
-    exportXLSX(){
+    exportXLSX() {
 
-        const wb: XLSX.WorkBook = XLSX.utils.book_new()
+      const wb: XLSX.WorkBook = XLSX.utils.book_new()
 
-        //let bb =map(omit(this.famEstDetails,'id'))
-        let synopsis = this.calcSynopsis(this.family, this.famEstDetails)
-        let ws_synopsis: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(synopsis)
-        XLSX.utils.book_append_sheet(wb, ws_synopsis, 'Synopsis')
+      let synopsis = this.calcSynopsis(this.family, this.famEstDetails)
+      let ws_synopsis: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(synopsis)
+      XLSX.utils.book_append_sheet(wb, ws_synopsis, 'Synopsis')
 
-        let countryAggedNorm = this.convert_collection_json_to_aoa(this.countryAgged)
-        let ws_two: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(countryAggedNorm)
-        XLSX.utils.book_append_sheet(wb, ws_two, 'Total Costs')
+      let keys = this.convert_collection_json_to_aoa(this.countryAgged)
+      let countryAggedNorm = keys
+      for (let c of this.countryAgged) {
+        let acc: string[] = values(c)
+        let country: string = acc.pop()!
+        acc.unshift(country)
+        countryAggedNorm.push(acc)
+      }
+      let ws_two: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(countryAggedNorm)
+      XLSX.utils.book_append_sheet(wb, ws_two, 'Total Costs')
 
-        // rearrange so first row is titles
-        let law_temp = this.calcLawFirmTot(this.famEstDetails)
-        let law = this.json_to_aoa(law_temp)
-        let law_keys = this.json_to_aoa_keys(law_temp)
-        let off = values(this.calcOfficialCost(this.famEstDetails))
-        off.unshift(off.pop())
-        let arr_obj = [law_keys, law, off]
-        let ws_three: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_obj)
-        XLSX.utils.book_append_sheet(wb, ws_three, 'Type of Cost')
+      // rearrange so first row is titles
+      let law_temp = this.calcLawFirmTot(this.famEstDetails)
+      let law = this.json_to_aoa(law_temp)
+      let law_keys = this.json_to_aoa_keys(law_temp)
+      let off = values(this.calcOfficialCost(this.famEstDetails))
+      off.unshift(off.pop())
+      let arr_obj = [law_keys, law, off]
+      let ws_three: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_obj)
+      XLSX.utils.book_append_sheet(wb, ws_three, 'Type of Cost')
 
-        let sheetCountries = this.calcCountryTotalMatrix()
-        this.convert_collection_nested_json_to_aoa(sheetCountries)
+      let arr_famform = this.convertFamformArr(this.famform)
+      console.log('aaa', arr_famform)
+      let ws_four: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_famform)
+      XLSX.utils.book_append_sheet(wb, ws_four, 'Parameters')
+      //let sheetCountries = this.calcCountryTotalMatrix()
+      //this.convert_collection_nested_json_to_aoa(sheetCountries)
 
 
-        XLSX.writeFile(wb, 'out.xlsb')
+      XLSX.writeFile(wb, 'out.xlsb')
     }
 
-    calcLawFirmTot(famEstDetails: any){
-
-        let bob=reduce(famEstDetails, function (obj: any, item: any){
-            if (item.law_firm_cost_sum != undefined){
-                obj[item.year] = item.law_firm_cost_sum
-            } else{
-                obj[item.year] = 0
-            }
-            return obj
-        },{})
-        bob['type']='total_law_firm_costs'
-        return bob
+  convertFamformArr(famform: FamEstFormFull) {
+    let arr = []
+    arr.push(['Family Name', famform.family_name])
+    arr.push(['Family Ref. No.', famform.family_no])
+    arr.push(['Entity Size', famform.entity_size.entity_size])
+    arr.push(['Initial Filing Date', famform.init_appl_filing_date])
+    arr.push(['Number of Claims', famform.init_appl_claims])
+    arr.push(['Number of Indep Claims', famform.init_appl_indep_claims])
+    arr.push(['Number of Drawings', famform.init_appl_drawings])
+    arr.push(['Number of Pages', famform.init_appl_pages])
+    arr.push(['Using PCT Method', famform.method])
+    arr.push(['PCT Country', famform.meth_country.long_name])
+    arr.push(['Using EP Method', famform.ep_method])
+    arr.push(['National Phase Countries', ''])
+    arr.unshift(['Parameters'])
+    arr.unshift(['', ''])
+    let i = 1;
+    for (let c of famform.countries) {
+      arr.push([i.toString() + '.', c.long_name])
+      i++
     }
+    arr.forEach(x => x.unshift(''))
+
+    return arr
+  }
+
+  calcLawFirmTot(famEstDetails: FamEstDetail[]) {
+
+    let bob = reduce(famEstDetails, function (obj: any, item: any) {
+      if (item.law_firm_cost_sum != undefined) {
+        if (obj[item.year]) {
+          obj[item.year] = item.law_firm_cost_sum + obj[item.year]
+        } else {
+          obj[item.year] = item.law_firm_cost_sum
+        }
+      } else {
+        if (!obj[item.year]) {
+          obj[item.year] = 0
+        }
+      }
+      return obj
+    }, {})
+    // find min max year by parsing keys
+    // keys()
+    let arr_keys = keys(bob)
+    arr_keys.sort((a, b) => parseInt(a) - parseInt(b))
+    // select keys not present
+    let new_keys = []
+    let key = parseInt(arr_keys[0])
+    let last_key = parseInt(arr_keys[arr_keys.length - 1])
+    while (key <= last_key) {
+      // if key is not in
+      if (!bob[key.toString()]) {
+        new_keys.push(key.toString())
+      }
+      key++
+    }
+    // add keys in between
+    for (let k of new_keys) {
+      bob[k] = 0
+    }
+    bob['type'] = 'law_firm_costs'
+    return bob
+  }
     calcOfficialCost(famEstDetails: any){
 
         let bob=reduce(famEstDetails, function (obj: any, item: any){
-            if (item.official_cost_sum != undefined){
+            if (item.official_cost_sum != undefined) {
+              if (obj[item.year]) {
+                obj[item.year] = item.official_cost_sum + obj[item.year]
+              } else {
                 obj[item.year] = item.official_cost_sum
-            } else{
+              }
+            } else {
+              if (!obj[item.year]) {
                 obj[item.year] = 0
+              }
             }
-            return obj
-        },{})
-        bob['type']='total_official_costs'
-        return bob
+          return obj
+        }, {})
+
+      let arr_keys = keys(bob)
+      arr_keys.sort((a, b) => parseInt(a) - parseInt(b))
+      // select keys not present
+      let new_keys = []
+      let key = parseInt(arr_keys[0])
+      let last_key = parseInt(arr_keys[arr_keys.length - 1])
+      while (key <= last_key) {
+        // if key is not in
+        if (!bob[key.toString()]) {
+          new_keys.push(key.toString())
+        }
+        key++
+      }
+      // add keys in between
+      for (let k of new_keys) {
+        bob[k] = 0
+      }
+      bob['type'] = 'law_firm_costs'
+
+      bob['type'] = 'total_official_costs'
+      return bob
     }
 
     calcColumns(countryAgged: any){
@@ -329,13 +474,16 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         return obj
       }, {}))
     }
-    convert_collection_json_to_aoa(collection:any){
-        let keys = this.json_to_aoa_keys(collection[0])
-        let accumulator=[keys]
-        for (let item of collection){
-            item.country = item.country.country
-        }
-        return accumulator
+    convert_collection_json_to_aoa(collection:any) {
+      console.log('bbb', collection)
+      let keys = this.json_to_aoa_keys(collection[0])
+      let accumulator = [keys]
+      for (let row of collection) {
+        console.log('item', row)
+        row.country = row.country.country
+      }
+      console.log('accc', accumulator)
+      return accumulator
     }
     convert_collection_nested_json_to_aoa(collection:any){
         let keys = this.json_to_aoa_keys(collection[0])

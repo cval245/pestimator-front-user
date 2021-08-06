@@ -6,18 +6,7 @@
 html, body { height: 100%; width:100% }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-// .title{
-//     text: mat.font-size($fontConfig, 'display-4');
-//     //text: map-get($fontConfig, 'display-4');
-// }
 
-// #footer {
-//     position: absolute;
-//     bottom:0;
-//     width:100%;
-//     height:60px;
-//     //background: map-get($theme-primary, 'darker');
-// }
 .blurb-container{
     padding: 30px;
     background: map-get($theme-primary, 'lighter');
@@ -55,18 +44,14 @@ body {
 }
 
 .container {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    /* align-items: stretch; */
-    /* display:flex; */
-    /* flex-flow:row wrap; */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 0 auto;
 }
-.over-main{
-    flex: 1;
-    display: flex;
+.over-main {
+  flex: 1 1 auto;
 }
-//app-header,
 app-nav,
 app-main,
 app-aside {
@@ -85,32 +70,37 @@ app-nav {
 }
 
 app-main {
-    flex: 1 1 300px;
-    min-height:300px;
+  flex: 1 1 300px;
+  min-height: 300px;
+  max-width: 1050px;
 }
 
 app-aside {
-    flex:0 2 200px;
+  flex: 0 2 150px;
 }
 
 app-footer {
-    flex: 0 0 40px;
-    background: map-get($theme-primary, 'darker');
-    color: $light-accent-text;
+  flex: 0 0 40px;
+  background: map-get($theme-primary, 'darker');
+  color: $light-accent-text;
 }
 
-.mat-header-cell{
-    background: map-get($theme-primary, 'darker');
-
-    h3 {
-        font-weight: bold;
-      padding-top: 10px;
-      text-align: center;
-      color: $light-accent-text;
-    }
-
-
+.fullSize {
+  flex: 1 1 300px;
+  max-width: 100%;
 }
+
+.mat-header-cell {
+  background: map-get($theme-accent, 'lighter');
+
+  h3 {
+    font-weight: bold;
+    padding-top: 10px;
+    text-align: center;
+    color: $dark-primary-text;
+  }
+}
+
 
 .mat-first-col {
   background: map-get($theme-primary, 'lighter');

@@ -1,32 +1,29 @@
-<div fxLayout="column" fxLayoutAlign="center start" >
-    <table mat-table [dataSource]="applications">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
-            <td mat-cell *matCellDef="let element">{{element.id}}</td>
-        </ng-container>
-        <ng-container matColumnDef="country">
-            <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>Country</h3></th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="element.country">
-                    {{element.country.country}}
-                </div>
-            </td>
-        </ng-container>
+<div fxLayout="column" fxLayoutAlign="center start" class="overContainer">
+  <table mat-table [dataSource]="applications">
+
+    <ng-container matColumnDef="country">
+      <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>Country</h3></th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="element.country">
+          {{element.country.country}}
+        </div>
+      </td>
+    </ng-container>
         <ng-container matColumnDef="application_type">
             <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>Application Type</h3></th>
             <td mat-cell *matCellDef="let element">
-                <div *ngIf="element.application_type">
-                    {{element.application_type.application_type}}
-                </div>
+              <div *ngIf="element.application_type">
+                {{element.application_type.long_name}}
+              </div>
             </td>
         </ng-container>
         <ng-container matColumnDef="date_filing">
             <th mat-header-cell class="header-cell" *matHeaderCellDef>
                 <h3>Projected Filing Date</h3></th>
             <td mat-cell *matCellDef="let element">
-                <div *ngIf="element.date_filing">
-                    {{element.date_filing}}
-                </div>
+              <div *ngIf="element.date_filing">
+                {{element.date_filing | date:"MMMM, YYYY"}}
+              </div>
             </td>
         </ng-container>
 

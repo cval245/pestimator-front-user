@@ -7,17 +7,19 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from "@angular/material/list";
+import {EstimationModule} from "../estimation/estimation.module";
 
 @NgModule({
   declarations: [HomePageComponent],
     imports: [
-        CommonModule,
-        FlexLayoutModule,
-        MatButtonModule,
-        MatCardModule,
-        MatGridListModule,
-        HomeRoutingModule,
-        MatListModule,
+      CommonModule,
+      FlexLayoutModule,
+      MatButtonModule,
+      MatCardModule,
+      MatGridListModule,
+      HomeRoutingModule,
+      MatListModule,
+      EstimationModule,
     ],
 })
 export class HomeModule {

@@ -7,5 +7,6 @@ export class Country{
       public pct_analysis_bool: boolean,
       public color: string,
       public long_name: string,
+      public col?: number
     ){}
 }

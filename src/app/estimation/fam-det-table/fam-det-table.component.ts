@@ -1,24 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Application } from 'src/app/application/_models/application.model';
+import {Component, Input} from '@angular/core';
+import {Application} from 'src/app/application/_models/application.model';
 
 @Component({
   selector: 'app-fam-det-table',
   templateUrl: './fam-det-table.component.html',
   styleUrls: ['./fam-det-table.component.scss']
 })
-export class FamDetTableComponent implements OnInit {
+export class FamDetTableComponent {
 
-    @Input() applications: Application[]
-    public displayedColumns = ['id', 'country', 'application_type', 'date_filing']
-    constructor() {
-        this.applications = [new Application]
-    }
+  @Input() applications: Application[]
+  public displayedColumns = ['country', 'application_type', 'date_filing']
 
-    ngOnInit(): void {
-    }
-
-    ngOnChanges(){
-        console.log('this.applications', this.applications)
-    }
-
+  constructor() {
+    this.applications = [new Application]
+  }
 }

@@ -165,18 +165,29 @@
         <form [formGroup]="nationalPhaseForm">
             <ng-template matStepLabel>National Phase</ng-template>
             <div fxLayout="column" fxLayoutAlign="center center">
-            <div class="form-row">
+              <div class="form-row">
                 <h2>Select Jurisdictions to File</h2>
-            </div>
-            <div class="form-row">
-            <div *ngFor="let country of countries; let i=index">
-              <mat-checkbox [formControl]="getCountriesFormCtrlName(country.id)"
-                            (change)="onCheckboxChange($event, country.id)">
-                {{country.long_name}}
-              </mat-checkbox>
-
-            </div>
-            </div>
+              </div>
+              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div *ngFor="let country of countries; let i=index">
+                    <mat-checkbox *ngIf="country.col===1"
+                                  [formControl]="getCountriesFormCtrlName(country.id)"
+                                  (change)="onCheckboxChange($event, country.id)">
+                      {{country.long_name}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div *ngFor="let country of countries; let i=index">
+                    <mat-checkbox *ngIf="country.col===2"
+                                  [formControl]="getCountriesFormCtrlName(country.id)"
+                                  (change)="onCheckboxChange($event, country.id)">
+                      {{country.long_name}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
             <div class="form-row">
                 <button mat-flat-button color="warn"  style="margin: 5px;"
                         (click)="stepper.reset()"

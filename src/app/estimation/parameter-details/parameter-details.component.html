@@ -1,0 +1,58 @@
+<div class="mat-typography" *ngIf="formData.init_appl_country">
+  <h2>Summary of Estimate</h2>
+  <mat-list style="text-align: left;">
+    <mat-divider></mat-divider>
+    <div matSubheader>Family Details</div>
+    <mat-list-item class="mat-body-2">
+      <p matLine></p>
+      <div matLine>
+        Family Name:  {{formData.family_name}}
+      </div>
+      <div matLine>Family Reference No:  {{formData.family_no}}</div>
+      <div matLine>Entity Size:  {{formData.entity_size.entity_size}}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Details on First Application</div>
+    <mat-list-item>
+      <p matLine></p>
+      <p matLine>
+        Filing Date:  {{formData.init_appl_filing_date | date:"longDate"}}
+      </p>
+      <p matLine>
+        Country:  {{formData.init_appl_country.country}}
+      </p>
+      <p matLine>
+        Application Type:  {{formData.init_appl_type.application_type}}
+      </p>
+      <p matLine>
+        Claims:  {{formData.init_appl_claims}}
+      </p>
+      <p matLine>
+        Independent Claims:  {{formData.init_appl_indep_claims}}
+      </p>
+      <p matLine>
+        Drawings:  {{formData.init_appl_drawings}}
+      </p>
+      <p matLine>
+        Pages:  {{formData.init_appl_pages}}
+      </p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>International Filing Methods</div>
+    <mat-list-item>
+      <p matLine></p>
+      <p matLine>Using PCT Method:  {{formData.method}}</p>
+      <p matLine>PCT Country:  {{formData.meth_country.country}}</p>
+      <p matLine>Using EPO Method:  {{formData.ep_method}}</p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div mat-subheader>National Phase Countries</div>
+    <mat-list-item>
+      <div *ngIf="formData.countries.length > 0">
+        <div matLine *ngFor="let c of formData.countries">
+          <li>{{c.country}}</li>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

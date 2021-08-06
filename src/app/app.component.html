@@ -1,17 +1,19 @@
 <div class="container">
-    <app-header>
-    </app-header>
-    <div class="over-main" fxLayout="row" fxLayout.xs="column">
-        <app-nav *ngIf="isLoggedIn" fxShow fxHide.xs="true">
-        </app-nav>
+  <app-header>
+  </app-header>
+  <div class="over-main" fxLayout="row" fxLayoutAlign="space-between"
+  >
+    <app-nav *ngIf="isLoggedIn" fxShow fxHide.xs="true">
+    </app-nav>
+    <app-main *ngIf="isLoggedIn; else fullSizeMain">
+    </app-main>
+    <ng-template #fullSizeMain>
+      <app-main class="fullSize"></app-main>
+    </ng-template>
 
-
-        <app-main>
-        </app-main>
-
-        <app-aside *ngIf="isLoggedIn" fxShow fxHide.sm="true" fxHide.md="true">
-        </app-aside>
-    </div>
+    <app-aside *ngIf="isLoggedIn" fxShow fxHide.lt-md="true">
+    </app-aside>
+  </div>
     <app-footer>
     </app-footer>
 </div>

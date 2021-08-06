@@ -1,10 +1,21 @@
-.chartContainer{
-    width:900px;
-    height:300px;
+.chartOverContainer {
+  margin-bottom: 200px;
 }
+
 .buttonContainer {
   margin: 5px;
+  margin-top: 0px;
   padding: 10px;
+  max-width: 100px;
+}
+
+.spacer {
+  height: 50px;
+  margin: 20px;
+}
+
+.overContainer {
+  margin: 20px;
 }
 
 .buttonContainerTitle {

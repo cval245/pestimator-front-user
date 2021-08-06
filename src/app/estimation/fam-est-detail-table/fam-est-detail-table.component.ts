@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, HostBinding, Input, OnChanges, ViewChild} from '@angular/core';
-import {FamEstDetail} from '../_models/FamEstDetail.model';
-import {cloneDeep, each} from 'lodash';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, ViewChild} from '@angular/core';
+import {cloneDeep} from 'lodash';
 
 
 @Component({
@@ -28,7 +27,7 @@ export class FamEstDetailTableComponent implements OnChanges, AfterViewInit {
   @ViewChild('matTableCell') matTableCell: any;
 
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngAfterViewInit(){
@@ -37,6 +36,7 @@ export class FamEstDetailTableComponent implements OnChanges, AfterViewInit {
     this.num_cells = Math.floor(this.num_cells)
     this.displayColumns = this.publicTotCol.slice(0, this.num_cells)
     this.calcRemainColumns()
+    this.cd.detectChanges()
   }
 
   ngOnChanges() {

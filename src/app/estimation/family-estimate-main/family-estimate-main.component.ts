@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { FamEst } from '../_models/FamEst.model';
-import { FamEstService } from '../_services/fam-est.service';
-import { FamilyService } from 'src/app/portfolio/_services/family.service';
-import { Family } from 'src/app/portfolio/_models/family.model';
-import { map } from 'lodash';
+import {Component, OnInit} from '@angular/core';
+import {combineLatest, Observable, Subscription} from 'rxjs';
+import {FamEst} from '../_models/FamEst.model';
+import {FamEstService} from '../_services/fam-est.service';
+import {FamilyService} from 'src/app/portfolio/_services/family.service';
+import {Family} from 'src/app/portfolio/_models/family.model';
+import {map} from 'lodash';
 
 @Component({
   selector: 'app-family-estimate-main',
@@ -13,8 +13,8 @@ import { map } from 'lodash';
 })
 export class FamilyEstimateMainComponent implements OnInit {
 
-    loading$: Observable<boolean>;
-    famEst$: Observable<FamEst[]>;
+  loading$: Observable<boolean>;
+  famEst$: Observable<FamEst[]>;
     family$: Observable<Family[]>
     famEsts: FamEst[];
     famEstSub: Subscription;
@@ -23,8 +23,8 @@ export class FamilyEstimateMainComponent implements OnInit {
         private famEstSer: FamEstService,
         private familySer: FamilyService
     ) {
-        this.famEsts = [new FamEst()]
-        this.families = [new Family()]
+      this.famEsts = [new FamEst('')]
+      this.families = [new Family()]
         this.loading$ = famEstSer.loading$;
         this.famEst$ = famEstSer.entities$;
         this.family$ = familySer.getAll();

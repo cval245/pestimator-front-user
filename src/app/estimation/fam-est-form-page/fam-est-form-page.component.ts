@@ -11,6 +11,7 @@ import {FamEstFormService} from '../_services/fam-est-form.service';
 import {Router} from '@angular/router';
 import {FamEstConfirmComponent} from "../fam-est-confirm/fam-est-confirm.component";
 import {MatDialog} from "@angular/material/dialog";
+import {map} from "lodash";
 
 @Component({
   selector: 'app-fam-est-form-page',
@@ -59,7 +60,14 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.countriesSub = this.getCountries().subscribe(x => {
-      this.countries = x
+
+      this.countries = map(x, (y, i) => {
+        if (i <= x.length / 2) {
+          return {...y, 'col': 1}
+        } else {
+          return {...y, 'col': 2}
+        }
+      })
       this.pct_countries = this.countries.filter(y => y.pct_analysis_bool)
     });
     this.applTypesSub = this.getApplTypes().subscribe(x => this.applTypes = x);
@@ -147,8 +155,6 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
         if(result.event == 'save') {
           this.onSubmit()
-        } else {
-          console.log('canceled')
         }
       })
     }
