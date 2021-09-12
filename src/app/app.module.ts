@@ -155,6 +155,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'conditions/',
       collectionResourceUrl: environment.API_URL + 'conditions/',
     },
+    ComplexConditions: {
+      entityResourceUrl: environment.API_URL + 'complex-conditions/',
+      collectionResourceUrl: environment.API_URL + 'complex-conditions/',
+    },
+    ComplexTimeConditions: {
+      entityResourceUrl: environment.API_URL + 'complex-time-conditions/',
+      collectionResourceUrl: environment.API_URL + 'complex-time-conditions/',
+    },
     LawFirmEstTemp: {
       entityResourceUrl: environment.API_URL + 'lawfirm-est-template/',
       collectionResourceUrl: environment.API_URL + 'lawfirm-est-template/',

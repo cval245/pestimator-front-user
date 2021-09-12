@@ -1,14 +1,12 @@
 <table mat-table [dataSource]="tableData">
     <ng-container matColumnDef="id">
-        <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
+        <th mat-header-cell class="header-cell" *matHeaderCellDef><h4>ID</h4></th>
         <td mat-cell class="mat-cell" *matCellDef="let element">
         {{element.id}}</td>
     </ng-container>
-
-
     <ng-container matColumnDef="official_cost">
-        <th mat-header-cell  class="header-cell" *matHeaderCellDef>
-        <h3>Official Cost</h3></th>
+      <th mat-header-cell class="header-cell" *matHeaderCellDef>
+        <h4>Official Cost</h4></th>
         <td mat-cell *matCellDef="let element">
           <div *ngIf="editingRow===element.id; else officialCost">
             <div [formGroup]="form">
@@ -24,10 +22,115 @@
           </ng-template>
         </td>
     </ng-container>
+  <ng-container matColumnDef="fee_code">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Fee Code</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else feeCode">
+        <div [formGroup]="form">
+          <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Fee Code</mat-label>
+            <input matInput type="text"
+                   formControlName="fee_code">
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-template #feeCode>
+        {{element.fee_code}}
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Description</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else description">
+        <div [formGroup]="form">
+          <mat-form-field class="megaInput" appearance="outline" color="accent">
+            <mat-label>Description</mat-label>
+            <input matInput type="text"
+                   formControlName="description">
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-template #description>
+        {{element.description}}
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="prior_pct">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Prior PCT</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else priorPCT">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Prior PCT</mat-label>
+              <input matInput type="text"
+                     formControlName="prior_pct">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #priorPCT>
+        <div *ngIf="element.conditions">
+          {{element.conditions.prior_pct}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="prev_appl_date_excl_intermediary_time">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Prev Appl Date Excl Intermediary Time</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else priorPrevApplDateExcl">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Previous Appl Date excl Intermediary Time</mat-label>
+              <input matInput type="text"
+                     formControlName="prev_appl_date_excl_intermediary_time">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #priorPrevApplDateExcl>
+        <div *ngIf="element.conditions">
+          {{element.conditions.prev_appl_date_excl_intermediary_time}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="prior_pct_same_country">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Prior PCT Same Country</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else priorPCTSameCountry">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Prior PCT Same Country</mat-label>
+              <input matInput type="text"
+                     formControlName="prior_pct_same_country">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #priorPCTSameCountry>
+        <div *ngIf="element.conditions">
+          {{element.conditions.prior_pct_same_country}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
 
   <ng-container matColumnDef="appl_type">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>ApplType</h3></th>
+      <h4>ApplType</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else applType">
         <div [formGroup]="form">
@@ -54,7 +157,7 @@
 
   <ng-container matColumnDef="condition_claims_min">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Claims Min</h3></th>
+      <h4>Claims Min</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsClaimsMin">
         <div [formGroup]="form">
@@ -77,7 +180,7 @@
 
   <ng-container matColumnDef="condition_claims_max">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Claims Max</h3></th>
+      <h4>Claims Max</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsClaimsMax">
         <div [formGroup]="form">
@@ -98,9 +201,80 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="condition_annual_prosecution_fee">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Annual prosecution Fee</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else conditionsAnnualProsecutionFee">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Annual Prosecution Fee</mat-label>
+              <input matInput type="text"
+                     formControlName="condition_annual_prosecution_fee">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #conditionsAnnualProsecutionFee>
+        <div *ngIf="element.conditions">
+          {{element.conditions.condition_annual_prosecution_fee}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="condition_indep_claims_min">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Indep Claims Min</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else conditionsIndepClaimsMin">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Claims Min</mat-label>
+              <input matInput type="text"
+                     formControlName="condition_indep_claims_min">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #conditionsIndepClaimsMin>
+        <div *ngIf="element.conditions">
+          {{element.conditions.condition_indep_claims_min}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="condition_indep_claims_max">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Indep Claims Max</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else conditionsIndepClaimsMax">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Claims Min</mat-label>
+              <input matInput type="text"
+                     formControlName="condition_indep_claims_max">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #conditionsIndepClaimsMax>
+        <div *ngIf="element.conditions">
+          {{element.conditions.condition_indep_claims_max}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+
   <ng-container matColumnDef="condition_pages_min">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Pages Min</h3></th>
+      <h4>Pages Min</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsPagesMin">
         <div [formGroup]="form">
@@ -124,7 +298,7 @@
 
   <ng-container matColumnDef="condition_pages_max">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Pages Max</h3></th>
+      <h4>Pages Max</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsPagesMax">
         <div [formGroup]="form">
@@ -147,7 +321,7 @@
 
   <ng-container matColumnDef="condition_drawings_min">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Drawings Min</h3></th>
+      <h4>Drawings Min</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsDrawingsMin">
         <div [formGroup]="form">
@@ -170,7 +344,7 @@
 
   <ng-container matColumnDef="condition_drawings_max">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Drawings Max</h3></th>
+      <h4>Drawings Max</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsDrawingsMax">
         <div [formGroup]="form">
@@ -193,22 +367,87 @@
 
   <ng-container matColumnDef="condition_entity_size">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Entity Size</h3></th>
+      <h4>Entity Size</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsEntitySize">
         <div [formGroup]="form">
           <div formGroupName="conditions">
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Entity Size</mat-label>
-              <input matInput type="text"
-                     formControlName="condition_entity_size">
+              <mat-select class="custom-select"
+                          formControlName="condition_entity_size">
+                <mat-option *ngFor="let t of entitySizes"
+                            [value]="t.id">
+                  {{t.entity_size}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
       </div>
       <ng-template #conditionsEntitySize>
         <div *ngIf="element.conditions">
-          {{element.conditions.condition_entity_size}}
+          <div *ngIf="element.conditions.condition_entity_size">
+            {{element.conditions.condition_entity_size.entity_size}}
+          </div>
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="condition_complex">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Complex Conditions</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else conditionsComplex">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Complex Conditions</mat-label>
+              <mat-select class="custom-select"
+                          formControlName="condition_complex">
+                <mat-option *ngFor="let t of complexConditions"
+                            [value]="t.id">
+                  {{t.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #conditionsComplex>
+        <div *ngIf="element.conditions">
+          <div *ngIf="element.conditions.condition_complex">
+            {{element.conditions.condition_complex.name}}
+          </div>
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="condition_time_complex">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
+      <h4>Complex Time Conditions</h4></th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="editingRow===element.id; else conditionsTimeComplex">
+        <div [formGroup]="form">
+          <div formGroupName="conditions">
+            <mat-form-field class="megaInput" appearance="outline" color="accent">
+              <mat-label>Complex Time Conditions</mat-label>
+              <mat-select class="custom-select"
+                          formControlName="condition_time_complex">
+                <mat-option *ngFor="let t of complexTimeConditions"
+                            [value]="t.id">
+                  {{t.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <ng-template #conditionsTimeComplex>
+        <div *ngIf="element.conditions">
+          <div *ngIf="element.conditions.condition_time_complex">
+            {{element.conditions.condition_time_complex.name}}
+          </div>
         </div>
       </ng-template>
     </td>
@@ -216,7 +455,7 @@
 
   <ng-container matColumnDef="law_firm_cost">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>LawFirm Cost</h3></th>
+      <h4>LawFirm Cost</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else conditionsLawFirmCost">
         <div [formGroup]="form">
@@ -239,7 +478,7 @@
 
   <ng-container matColumnDef="law_firm_date_diff">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>LawFirm Date Diff </h3></th>
+      <h4>LawFirm Date Diff </h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else LawFirmDateDiff">
         <div [formGroup]="form">
@@ -261,7 +500,7 @@
   </ng-container>
 
   <ng-container matColumnDef="date_diff">
-    <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
+    <th mat-header-cell class="header-cell" *matHeaderCellDef><h4>Date Diff</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else datediff">
         <div [formGroup]="form">
@@ -281,7 +520,7 @@
 
   <ng-container matColumnDef="buttons">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
-      <h3>Buttons</h3></th>
+      <h4>Buttons</h4></th>
     <td mat-cell *matCellDef="let element">
       <div *ngIf="editingRow===element.id; else buttonsRow">
         <button mat-button (click)="submit()">

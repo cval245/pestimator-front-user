@@ -6,5 +6,8 @@ export interface IUSOAEstTemp {
   appl_type: any;
   conditions: any;
   law_firm_template: any;
-  oa_type: string;
+  oa_final_bool: boolean;
+  oa_first_final_bool: boolean;
+  description: string;
+  fee_code: string;
 }

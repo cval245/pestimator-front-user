@@ -94,6 +94,8 @@ const entityMetadata: EntityMetadataMap = {
   },
   LawFirmEstTemp: {},
   Conditions: {},
+  ComplexConditions: {},
+  ComplexTimeConditions: {},
 };
 
 // because the plural of "hero" is not "heros"

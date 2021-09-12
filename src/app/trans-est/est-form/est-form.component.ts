@@ -1,8 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {concat, dropRight, takeRight} from 'lodash';
+import {concat, dropRight, forOwn, takeRight} from 'lodash';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {Country} from 'src/app/characteristics/_models/Country.model';
+import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {IComplexConditions} from "../_models/ComplexConditions.model";
+import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
 
 interface TableWise {
   id: number | undefined
@@ -23,23 +26,34 @@ export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
   @Input() country: Country = new Country(0, '', '', false, false, '', '')
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
+  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '')]
+  @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
+  @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
-  public displayedColumns: string[] = ['id', 'official_cost', 'appl_type',
-    'date_diff',
+  public displayedColumns: string[] = ['id',
+    'fee_code', 'description',
+    'official_cost', 'appl_type',
+    'date_diff', 'prior_pct', 'prior_pct_same_country',
+    'prev_appl_date_excl_intermediary_time',
     'condition_claims_min', 'condition_claims_max',
+    'condition_indep_claims_min', 'condition_indep_claims_max',
     'condition_pages_min', 'condition_pages_max',
     'condition_drawings_min', 'condition_drawings_max',
-    'condition_entity_size', 'law_firm_cost', 'law_firm_date_diff',
+    'condition_entity_size', 'condition_annual_prosecution_fee',
+    'condition_complex', 'condition_time_complex',
+    'law_firm_cost', 'law_firm_date_diff',
     'buttons']
-                //'conditions', 'law_firm_template']
+  //'conditions', 'law_firm_template']
   public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       id: [undefined],
       country: ['', Validators.required],
+      fee_code: [''],
+      description: [''],
       official_cost: ['', Validators.required],
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
@@ -47,11 +61,19 @@ export class EstFormComponent {
         id: [undefined],
         condition_claims_min: [undefined],
         condition_claims_max: [undefined],
+        condition_indep_claims_min: [undefined],
+        condition_indep_claims_max: [undefined],
         condition_pages_min: [undefined],
         condition_pages_max: [undefined],
         condition_drawings_min: [undefined],
         condition_drawings_max: [undefined],
         condition_entity_size: [undefined],
+        condition_annual_prosecution_fee: [false],
+        condition_complex: [undefined],
+        condition_time_complex: [undefined],
+        prior_pct: [undefined],
+        prior_pct_same_country: [undefined],
+        prev_appl_date_excl_intermediary_time: [false],
       }),
       law_firm_template: this.fb.group({
         id: [''],
@@ -81,38 +103,64 @@ export class EstFormComponent {
         official_cost: 0, appl_type: '', conditions: '', law_firm_template: ''
       })
     }
-
   }
 
   editRow(row: any) {
     this.editingRow = row.id
     this.form.patchValue({
       id: row.id,
+      fee_code: row.fee_code,
+      description: row.description,
       country: this.country,
       date_diff: row.date_diff,
       official_cost: row.official_cost,
       appl_type: row.appl_type.id,
     })
+    console.log('sssdfhsdfljshkdfjh', row)
     this.form.controls.conditions.setValue({
       id: row.conditions.id,
       condition_claims_min: row.conditions.condition_claims_min,
       condition_claims_max: row.conditions.condition_claims_max,
+      condition_indep_claims_min: row.conditions.condition_indep_claims_min,
+      condition_indep_claims_max: row.conditions.condition_indep_claims_max,
       condition_pages_min: row.conditions.condition_pages_min,
       condition_pages_max: row.conditions.condition_pages_max,
       condition_drawings_min: row.conditions.condition_drawings_min,
       condition_drawings_max: row.conditions.condition_drawings_max,
-      condition_entity_size: row.conditions.condition_entity_size,
+      condition_entity_size: null,
+      condition_annual_prosecution_fee: row.conditions.condition_annual_prosecution_fee,
+      condition_complex: null,
+      condition_time_complex: null,
+      prior_pct: row.conditions.prior_pct,
+      prior_pct_same_country: row.conditions.prior_pct_same_country,
+      prev_appl_date_excl_intermediary_time: row.conditions.prev_appl_date_excl_intermediary_time,
     })
+    if (row.conditions.condition_entity_size) {
+      this.form.controls.conditions.patchValue({
+        condition_entity_size: row.conditions.condition_entity_size.id
+      })
+    }
+    if (row.conditions.condition_complex) {
+      this.form.controls.conditions.patchValue({
+        condition_complex: row.conditions.condition_complex.id
+      })
+    }
     this.form.controls.law_firm_template.setValue({
       id: row.law_firm_template.id,
       law_firm_cost: row.law_firm_template.law_firm_cost,
       date_diff: row.law_firm_template.date_diff,
-
     })
   }
 
-  submit(){
+  submit() {
     this.form.patchValue({country: this.country})
+    let data = this.form.value
+    let conditions_data = forOwn(data.conditions, (value, key) => {
+      if (value === "") {
+        data.conditions[key] = null
+      }
+    })
+    console.log('this.form.value', this.form.value)
     this.formData.emit(this.form.value)
 
     //reset editing row
@@ -120,11 +168,9 @@ export class EstFormComponent {
   }
 
   cancel(){
-    console.log('cancel', this.form.value)
     if (this.form.controls.id.value == 0 || this.form.controls.id.value == null){
       this.tableData = dropRight(this.tableData, 1)
     }
-    console.log('this.tableData', this.tableData)
     this.editingRow = 0
     this.form.reset()
   }

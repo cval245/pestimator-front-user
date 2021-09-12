@@ -237,16 +237,15 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       let law_keys = this.json_to_aoa_keys(law_temp)
       let off = values(this.calcOfficialCost(this.famEstDetails))
       off.unshift(off.pop())
-      let arr_obj = [law_keys, law, off]
+      let translation = values(this.calcTranslationCost(this.famEstDetails))
+      translation.unshift(translation.pop())
+      let arr_obj = [law_keys, law, off, translation]
       let ws_three: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_obj)
       XLSX.utils.book_append_sheet(wb, ws_three, 'Type of Cost')
 
       let arr_famform = this.convertFamformArr(this.famform)
-      console.log('aaa', arr_famform)
       let ws_four: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_famform)
       XLSX.utils.book_append_sheet(wb, ws_four, 'Parameters')
-      //let sheetCountries = this.calcCountryTotalMatrix()
-      //this.convert_collection_nested_json_to_aoa(sheetCountries)
 
 
       XLSX.writeFile(wb, 'out.xlsb')
@@ -356,14 +355,53 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       return bob
     }
 
-    calcColumns(countryAgged: any){
-        let columns = [
-            {
-                columnDef: 'country',
-                header: 'Country',
-                cell: 'country'
-            },
-        ]
+  calcTranslationCost(famEstDetails: any) {
+
+    let bob = reduce(famEstDetails, function (obj: any, item: any) {
+      if (item.official_cost_sum != undefined) {
+        if (obj[item.year]) {
+          obj[item.year] = item.translation_cost_sum + obj[item.year]
+        } else {
+          obj[item.year] = item.translation_cost_sum
+        }
+      } else {
+        if (!obj[item.year]) {
+          obj[item.year] = 0
+        }
+      }
+      return obj
+    }, {})
+
+    let arr_keys = keys(bob)
+    arr_keys.sort((a, b) => parseInt(a) - parseInt(b))
+    // select keys not present
+    let new_keys = []
+    let key = parseInt(arr_keys[0])
+    let last_key = parseInt(arr_keys[arr_keys.length - 1])
+    while (key <= last_key) {
+      // if key is not in
+      if (!bob[key.toString()]) {
+        new_keys.push(key.toString())
+      }
+      key++
+    }
+    // add keys in between
+    for (let k of new_keys) {
+      bob[k] = 0
+    }
+    bob['type'] = 'translation_costs'
+    return bob
+  }
+
+
+  calcColumns(countryAgged: any) {
+    let columns = [
+      {
+        columnDef: 'country',
+        header: 'Country',
+        cell: 'country'
+      },
+    ]
         // find minimum year and maximum year
         let min_max_year = this.findMinMaxYear(countryAgged)
         let year = min_max_year['min_year']
@@ -475,11 +513,9 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       }, {}))
     }
     convert_collection_json_to_aoa(collection:any) {
-      console.log('bbb', collection)
       let keys = this.json_to_aoa_keys(collection[0])
       let accumulator = [keys]
       for (let row of collection) {
-        console.log('item', row)
         row.country = row.country.country
       }
       console.log('accc', accumulator)

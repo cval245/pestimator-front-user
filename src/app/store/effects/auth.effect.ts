@@ -77,10 +77,8 @@ export class AuthEffectsNew {
       switchMap(() => this.store.select('authCred')
         .pipe(map(x => {
             if (x.profile.access.length > 0) {
-              console.log('refreshAccess through init')
               return refreshAccess({profile: x.profile})
             } else
-                    console.log('ttt', x)
                     throw "ddddd error"
                     //return logout()
             })
@@ -91,18 +89,17 @@ export class AuthEffectsNew {
             ofType(refreshAccess),
             exhaustMap(action => {
                 let user = action.profile
-                let a =this.authService.refreshToken_two(user.refresh)
+              let a = this.authService.refreshToken_two(user.refresh)
                 .pipe(map(access => {
-                    let user_two = new User('','','')
+                    let user_two = new User('', '', '')
                     user_two.access = access.access
                     user_two.refresh = user.refresh
                     user_two.username = user.username
-                return refreshAccessSuccess({'profile': user_two})
-            })//,catchError(x => {throw(x)})
-            )
-            return a
-        }),
-
+                    return refreshAccessSuccess({'profile': user_two})
+                  }), catchError(x => of(logout()))
+                )
+              return a
+            })
             ))
 
     loginComplete$ = createEffect(() =>
@@ -111,10 +108,7 @@ export class AuthEffectsNew {
             map(action =>{
                 return restartTimer({'refreshTimer': this.getExpTimeAccess(action.profile.access)})
             }),
-
         ))
-
-
 
     refreshAccSuc$ = createEffect(() =>
         this.authActions$.pipe(

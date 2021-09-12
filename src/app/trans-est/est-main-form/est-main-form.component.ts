@@ -5,7 +5,6 @@ import {forkJoin, Subject} from 'rxjs';
 import {mergeMap, takeUntil} from 'rxjs/operators';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {Country} from 'src/app/characteristics/_models/Country.model';
-import {ApplTypeService} from 'src/app/characteristics/_services/appl-type.service';
 import {CountryAllService} from 'src/app/characteristics/_services/country-all.service';
 import {IAllowEstTemp} from '../_models/AllowEstTemp.model';
 import {IConditions} from '../_models/Conditions.model';
@@ -24,6 +23,24 @@ import {PublEstTempService} from '../_services/publ-est-temp.service';
 import {IUSOAEstTemp} from "../_models/IUSOAEstTemp";
 import {UsOaEstTempService} from "../_services/us-oa-est-temp.service";
 import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
+import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
+import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {ComplexConditionsService} from "../_services/complex-conditions.service";
+import {IComplexConditions} from "../_models/ComplexConditions.model";
+import {ComplexTimeConditionsService} from "../../estimation/_services/complex-time-conditions.service";
+import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
+
+interface GenericTemp {
+  id: number,
+  country: any;
+  appl_type: any;
+  conditions: any;
+  law_firm_template: any;
+  official_cost: number;
+  date_diff: string;
+  description: string;
+  fee_code: string;
+}
 
 interface CountryWise {
   id: number,
@@ -35,15 +52,45 @@ interface ApplTypeWise {
   appl_type: any;
 }
 
-interface ConditionsWise{
-    id: number,
-    conditions: any;
-  }
+interface EntitySizeWise {
+  id: number,
+  condition_entity_size: any;
+}
 
-interface LawFirmWise{
-    id: number,
-    law_firm_template: any;
-  }
+interface OverEntitySizeWise {
+  id: number,
+  conditions: EntitySizeWise;
+}
+
+interface ComplexConditionWise {
+  id: number,
+  condition_complex: IComplexConditions | number;
+}
+
+interface ComplexTimeConditionWise {
+  id: number,
+  condition_time_complex: IComplexTimeConditions | number;
+}
+
+interface OverComplexConditionsWise {
+  id: number,
+  conditions: ComplexConditionWise;
+}
+
+interface OverComplexTimeConditionsWise {
+  id: number,
+  conditions: ComplexTimeConditionWise;
+}
+
+interface ConditionsWise {
+  id: number,
+  conditions: any;
+}
+
+interface LawFirmWise {
+  id: number,
+  law_firm_template: any;
+}
 
 
 @Component({
@@ -65,9 +112,12 @@ export class EstMainFormComponent implements OnInit {
   public issueEstTemp = new Array<IIssueEstTemp>()
   public countryControl = new FormControl()
   public conditions = new Array<IConditions>()
+  public complexConditions = new Array<IComplexConditions>()
   public lawFirmTemp = new Array<ILawFirmEstTemp>()
   public country_us: boolean = false;
+  public entitySizes = new Array<EntitySize>();
   private country_us_id: number = 0;
+  public complexTimeConditions = new Array<IComplexTimeConditions>();
 
   constructor(
     private countrySer: CountryAllService,
@@ -79,7 +129,10 @@ export class EstMainFormComponent implements OnInit {
     private issueEstSer: IssueEstTempService,
     private applTypeSer: ApplTypeAllService,
     private conditionSer: ConditionsService,
+    private complexConditionSer: ComplexConditionsService,
+    private complexTimeConditionSer: ComplexTimeConditionsService,
     private lawFirmTempSer: LawFirmTempService,
+    private entitySizeSer: EntitySizeService,
   ) {
     this.countrySer.entities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -87,6 +140,9 @@ export class EstMainFormComponent implements OnInit {
         this.country_us_id = x.find(y => y.country == 'US')?.id || 0
         this.countries = x
       })
+    this.entitySizeSer.entities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => this.entitySizes = x)
 
     this.applTypeSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -95,6 +151,14 @@ export class EstMainFormComponent implements OnInit {
     this.conditionSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.conditions = x)
+
+    this.complexConditionSer.entities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => this.complexConditions = x)
+
+    this.complexTimeConditionSer.entities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => this.complexTimeConditions = x)
 
     this.lawFirmTempSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -131,45 +195,40 @@ export class EstMainFormComponent implements OnInit {
       this.filEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.filEstTemp = this.lawFirmTempSet(this.conditionsSet(
-                      this.applTypeSet(this.countrySet(x))))
+        this.filEstTemp = this.replaceFkWithObject(x)
       })
       this.publEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.publEstTemp = this.lawFirmTempSet(this.conditionsSet(
-          this.applTypeSet(this.countrySet(x))))
+        this.publEstTemp = this.replaceFkWithObject(x)
       })
     this.oaEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.oaEstTemp = this.lawFirmTempSet(this.conditionsSet(
-          this.applTypeSet(this.countrySet(x))))
-        console.log('this.oaEstTemp', this.oaEstTemp)
+        this.oaEstTemp = this.replaceFkWithObject(x)
       })
     this.usoaEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        console.log('x', x)
-        this.usoaEstTemp = this.lawFirmTempSet(this.conditionsSet(
-          this.applTypeSet(this.countrySet(x))))
-        console.log('this.usoaEstTemp', this.usoaEstTemp)
+        //this.usoaEstTemp = this.replaceFkWithObject(x)
+        this.usoaEstTemp = this.complexTimeConditionsSet(
+          this.complexConditionsSet(this.entitySizeSet(
+            this.lawFirmTempSet(this.conditionsSet(
+              this.applTypeSet(this.countrySet(x)))))))
       })
     this.allowEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.allowEstTemp = this.lawFirmTempSet(this.conditionsSet(
-          this.applTypeSet(this.countrySet(x))))
+        this.allowEstTemp = this.replaceFkWithObject(x)
       })
     this.issueEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.issueEstTemp = this.lawFirmTempSet(this.conditionsSet(
-          this.applTypeSet(this.countrySet(x))))
+        this.issueEstTemp = this.replaceFkWithObject(x)
       })
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.countrySer.getAll()
     this.applTypeSer.getAll()
     this.filEstSer.getAll()
@@ -179,7 +238,16 @@ export class EstMainFormComponent implements OnInit {
     this.allowEstSer.getAll()
     this.issueEstSer.getAll()
     this.conditionSer.getAll()
+    this.complexConditionSer.getAll()
+    this.complexTimeConditionSer.getAll()
     this.lawFirmTempSer.getAll()
+    this.entitySizeSer.getAll()
+  }
+
+  replaceFkWithObject(data: GenericTemp[]) {
+    return this.complexTimeConditionsSet(this.complexConditionsSet(this.entitySizeSet(
+      this.lawFirmTempSet(this.conditionsSet(
+        this.applTypeSet(this.countrySet(data)))))))
   }
 
   countrySet<TCountryWise extends CountryWise>(arg: TCountryWise[]): TCountryWise[] {
@@ -195,6 +263,31 @@ export class EstMainFormComponent implements OnInit {
       return {...x, 'appl_type': d}
     })
   }
+
+  entitySizeSet<TEntitySizeWise extends OverEntitySizeWise>(arg: TEntitySizeWise[]): TEntitySizeWise[] {
+    return map<TEntitySizeWise, TEntitySizeWise>(arg, (x: TEntitySizeWise) => {
+      let d = this.entitySizes.find(y => y.id == x.conditions.condition_entity_size);
+      let conditions = {...x.conditions, 'condition_entity_size': d}
+      return {...x, conditions}
+    })
+  }
+
+  complexConditionsSet<TComplexCondition extends OverComplexConditionsWise>(arg: TComplexCondition[]): TComplexCondition[] {
+    return map<TComplexCondition, TComplexCondition>(arg, (x: TComplexCondition) => {
+      let d = this.complexConditions.find(y => y.id == x.conditions.condition_complex);
+      let conditions = {...x.conditions, 'condition_complex': d}
+      return {...x, conditions}
+    })
+  }
+
+  complexTimeConditionsSet<TComplexTimeCondition extends OverComplexTimeConditionsWise>(arg: TComplexTimeCondition[]): TComplexTimeCondition[] {
+    return map<TComplexTimeCondition, TComplexTimeCondition>(arg, (x: TComplexTimeCondition) => {
+      let d = this.complexTimeConditions.find(y => y.id == x.conditions.condition_time_complex);
+      let conditions = {...x.conditions, 'condition_time_complex': d}
+      return {...x, conditions}
+    })
+  }
+
 
   conditionsSet<TConditionsWise extends ConditionsWise>(arg: TConditionsWise[]): TConditionsWise[] {
     return map<TConditionsWise, TConditionsWise>(arg, (x: TConditionsWise) => {
@@ -363,8 +456,6 @@ export class EstMainFormComponent implements OnInit {
   delIssueEstTemp(row: IIssueEstTemp): void{
     this.issueEstSer.delete(row)
   }
-
-
 
   updateConditionLawFirm(conditions: IConditions, law_firm_template: ILawFirmEstTemp ){
     let condition$ = this.conditionSer.update(conditions)
