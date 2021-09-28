@@ -9,6 +9,8 @@ export interface IConditions {
   condition_indep_claims_max?: number;
   condition_pages_min?: number;
   condition_pages_max?: number;
+  condition_pages_desc_min?: number;
+  condition_pages_desc_max?: number;
   condition_drawings_min?: number;
   condition_drawings_max?: number;
   condition_entity_size?: any;

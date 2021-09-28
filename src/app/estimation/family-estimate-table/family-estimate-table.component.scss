@@ -10,9 +10,7 @@ tr.detail-row {
     height: 0;
 }
 
-tr.element-row:not(.expanded-row):hover {
-    background: #777;
-}
+
 
 tr.element-row:not(.expanded-row):active {
     background: #efefef;
@@ -27,16 +25,16 @@ tr.element-row:not(.expanded-row):active {
     display: flex;
     flex-direction: row;
   justify-content: center;
+
+  a{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
 }
 
 
-.element-symbol {
-    font-weight: bold;
-    font-size: 40px;
-    line-height: normal;
-}
 
-.element-description {
+element-description {
     padding: 16px;
   //flex-grow: 1;
 }

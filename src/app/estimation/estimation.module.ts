@@ -17,7 +17,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatTableModule} from '@angular/material/table';
-import {ChartsModule} from 'ng2-charts';
+import {NgChartsModule} from 'ng2-charts';
 import {FamEstDetailTableComponent} from './fam-est-detail-table/fam-est-detail-table.component';
 import {ChartFamEstDetailComponent} from './chart-fam-est-detail/chart-fam-est-detail.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -60,7 +60,7 @@ import {ParameterDetailsComponent} from './parameter-details/parameter-details.c
     MatPaginatorModule,
     MatDialogModule,
     FlexLayoutModule,
-    ChartsModule,
+    NgChartsModule,
     ReactiveFormsModule,
     MatListModule,
   ],

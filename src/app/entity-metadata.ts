@@ -13,6 +13,7 @@ import {IPublTrans} from './trans-est/_models/PublTrans.model';
 import {IUSOAEstTemp} from "./trans-est/_models/IUSOAEstTemp";
 
 const entityMetadata: EntityMetadataMap = {
+  UserDetail: {},
   LawFirm: {},
   FamEst: {},
   FamEstDetail: {},

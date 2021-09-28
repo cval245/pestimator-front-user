@@ -34,7 +34,13 @@
         Drawings:  {{formData.init_appl_drawings}}
       </p>
       <p matLine>
-        Pages:  {{formData.init_appl_pages}}
+        Pages for Specification:  {{formData.init_appl_pages_desc}}
+      </p>
+      <p matLine>
+        Pages for Claims:  {{formData.init_appl_pages_claims}}
+      </p>
+      <p matLine>
+        Pages for Drawings:  {{formData.init_appl_pages_drawings}}
       </p>
     </mat-list-item>
     <mat-divider></mat-divider>
@@ -42,7 +48,7 @@
     <mat-list-item>
       <p matLine></p>
       <p matLine>Using PCT Method:  {{formData.method}}</p>
-      <p matLine>PCT Country:  {{formData.meth_country.country}}</p>
+        <p matLine *ngIf="formData.method">PCT Country:  {{formData.meth_country.country}}</p>
       <p matLine>Using EPO Method:  {{formData.ep_method}}</p>
     </mat-list-item>
     <mat-divider></mat-divider>

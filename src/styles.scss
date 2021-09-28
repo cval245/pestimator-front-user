@@ -51,12 +51,7 @@ body {
 }
 .over-main {
   flex: 1 1 auto;
-}
-app-nav,
-app-main,
-app-aside {
-  padding: 20px;
-  margin: 5px;
+  background-color: $light-background;
 }
 
 app-footer {
@@ -67,16 +62,24 @@ app-footer {
 app-nav {
     flex: 0 2 150px;
     background: map-get($theme-primary, 'lighter');
+    color: map-get($theme-accent, 'darker');
 }
 
 app-main {
   flex: 1 1 300px;
   min-height: 300px;
   max-width: 1050px;
+  background-color: $light-background;
+
+
+}
+.logged-in-over-main{
+  padding: 20px;
 }
 
 app-aside {
   flex: 0 2 150px;
+  background-color: $light-background;
 }
 
 app-footer {
@@ -94,7 +97,7 @@ app-footer {
   background: map-get($theme-accent, 'lighter');
 
   h3 {
-    font-weight: bold;
+    //font-weight: bold;
     padding-top: 10px;
     text-align: center;
     color: $dark-primary-text;
@@ -107,6 +110,17 @@ app-footer {
 }
 
 .light-accent-background {
+  //background-color: #d8e3ec;
+  background-color: $light-background;
+  //background-color: map-get($theme-primary, 'lighter')
+}
+
+.light-accent-background-two{
+  //background-color: map-get($theme-primary, 'lighter');
+  color: $dark-accent-text;
+}
+
+.light-primary-background{
   background-color: map-get($theme-primary, 'lighter')
 }
 
@@ -117,6 +131,10 @@ app-footer {
   h2 {
     margin-bottom: 0px;
   }
+  .header-spacer{
+    height:30px;
+  }
+
 
   mat-vertical-stepper {
     .mat-step-header {
@@ -149,4 +167,26 @@ app-footer {
             }
         }
     }
+}
+
+
+.icon-background {
+  background-color: map-get($theme-primary, 'main');
+}
+.desc-box-offcolor{
+  background-color: map-get($theme-primary, 'lighter');
+}
+.desc-box{
+  h1{
+    color:$dark-primary-text;
+  }
+  p{
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: justify;
+  }
+}
+tr.element-row:not(.expanded-row):hover {
+  //background: #777;
+  background-color: map-get($theme-primary, 'lighter');
 }

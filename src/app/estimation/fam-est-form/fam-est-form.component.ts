@@ -18,8 +18,6 @@ export class FamEstFormComponent implements OnInit {
   @Input() entitySizes: EntitySize[];
   @Output() formData = new EventEmitter;
   public aggFormData: FamEstForm;
-  //public method: Boolean;
-  //public ep_method: Boolean = false;
   public interOption: Boolean = true;
   public isEditable;
   public familyForm: FormGroup;
@@ -30,13 +28,12 @@ export class FamEstFormComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private cdRef: ChangeDetectorRef,
   ) {
-    //this.method = false;
-    //this.ep_method = false;
     this.isEditable = true;
     this.aggFormData = new FamEstForm('',
-      '', 0, '', 0, 0,
-      0, 0, 0, 0, false, 0,
-      '', false, 0);
+      '',0,'',0,0,
+      0,0,0,0,0,0,
+      false,0,'', false, 0);
+
     this.applTypes = [new ApplType(0, '', '')];
     this.countries = [new Country(0, '', '', false, false, '', '')];
     this.pct_countries = [new Country(0, '', '', false, false, '', '')];
@@ -57,12 +54,16 @@ export class FamEstFormComponent implements OnInit {
         Validators.pattern('[0-9]+$')])],
       num_drawings: ['', Validators.compose([Validators.required,
         Validators.pattern('[0-9]+$')])],
-      num_pages: ['', Validators.compose([Validators.required,
+      num_pages_desc: ['', Validators.compose([Validators.required,
+        Validators.pattern('[0-9]+$')])],
+      num_pages_claims: ['', Validators.compose([Validators.required,
+        Validators.pattern('[0-9]+$')])],
+      num_pages_drawings: ['', Validators.compose([Validators.required,
         Validators.pattern('[0-9]+$')])],
     })
     this.internationalStageForm = this.fb.group({
       method: [false],
-      meth_country: [''],
+      meth_country: [],
       ep_method: [false],
     })
     this.nationalPhaseForm = this.fb.group({
@@ -85,13 +86,20 @@ export class FamEstFormComponent implements OnInit {
         } else {
           let i: number = 0;
           checkArray.controls.forEach((item: AbstractControl) => {
-            if (item.value == country_id) {
+            console.log('sdf', i)
+            console.log('sdfddd', item.value)
+            //if (item.value == country_id) {
+            if (item.value == false) {
+              console.log('i',i)
               checkArray.removeAt(i);
               return;
             }
             i++;
           });
         }
+        console.log('che', this.nationalPhaseForm.controls.countries.value)
+        checkArray.controls.forEach(item => console.log('item', item))
+
     }
 
     getCountriesFormCtrlName(country_id: number){
@@ -108,9 +116,10 @@ export class FamEstFormComponent implements OnInit {
     if(this.familyForm.valid && this.firstApplForm.valid
       && this.internationalStageForm.valid && this.nationalPhaseForm.valid) {
       this.aggFormData = new FamEstForm('',
-        '', 0, '', 0, 0,
-        0, 0, 0, 0, false, 0,
-        '', false, 0);
+        '',0,'',0,0,
+        0,0,0,0,0,0,
+        false,0,'', false, 0);
+
       // Family Details
       this.aggFormData.family_name = this.familyForm.controls.family_name.value
       this.aggFormData.family_no = this.familyForm.controls.family_no.value
@@ -121,7 +130,9 @@ export class FamEstFormComponent implements OnInit {
       this.aggFormData.init_appl_country = this.firstApplForm.controls.country.value
       this.aggFormData.init_appl_type = this.firstApplForm.controls.application_type.value
       this.aggFormData.init_appl_drawings = this.firstApplForm.controls.num_drawings.value
-      this.aggFormData.init_appl_pages = this.firstApplForm.controls.num_pages.value
+      this.aggFormData.init_appl_pages_desc = this.firstApplForm.controls.num_pages_desc.value
+      this.aggFormData.init_appl_pages_claims = this.firstApplForm.controls.num_pages_claims.value
+      this.aggFormData.init_appl_pages_drawings = this.firstApplForm.controls.num_pages_drawings.value
       this.aggFormData.init_appl_claims = this.firstApplForm.controls.num_claims.value
       this.aggFormData.init_appl_indep_claims = this.firstApplForm.controls.num_indep_claims.value
 

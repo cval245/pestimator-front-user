@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserProfile } from '../_models/userProfile.model';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserProfile} from '../_models/userProfile.model';
 
 @Component({
   selector: 'app-account-details-form',
@@ -23,6 +23,7 @@ export class AccountDetailsFormComponent implements OnInit {
             city: ['', Validators.required],
             state: ['', Validators.required],
             zip_code: ['', Validators.required],
+            estimates_remaining:['']
         })
     }
 

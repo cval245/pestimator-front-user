@@ -47,6 +47,7 @@ export class JwtInterceptor implements HttpInterceptor {
             }
             //return EMPTY //of(er);
             //return of(er.error);
+
             return throwError(er);
 
           }));

@@ -4,3 +4,7 @@
                   [applTypes]="applTypes"
                   (formData)="verifySubmission($event)"
 ></app-fam-est-form>
+<div *ngIf="error_display_bool">
+<p>{{error_notification}}</p>
+<a mat-flat-button color="accent" routerLink="/account/buy-new-estimate">More Estimates</a>
+</div>

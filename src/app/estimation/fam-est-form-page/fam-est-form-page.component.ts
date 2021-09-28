@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {Country} from 'src/app/characteristics/_models/Country.model';
 import {EntitySize} from 'src/app/characteristics/_models/entitySize.model';
@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
 import {FamEstConfirmComponent} from "../fam-est-confirm/fam-est-confirm.component";
 import {MatDialog} from "@angular/material/dialog";
 import {map} from "lodash";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-fam-est-form-page',
@@ -35,8 +36,10 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   private entitySizesSub: Subscription;
   private famformData: FamEstForm = new FamEstForm('',
     '',0,'',0,0,
-    0,0,0,0,false,0,
-    '',false,0);
+    0,0,0,0,0,0,
+    false,0,'', false, 0);
+  public error_notification: string = '';
+  public error_display_bool: boolean = false;
 
   constructor(
     private famEstFormSer: FamEstFormService,
@@ -112,8 +115,22 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
       const dateParts = datetime.split("T")
       const dateSplit = dateParts[0].split('\"')
       this.famformData.init_appl_filing_date = dateSplit[1]
-      this.add(this.famformData).subscribe(x => {
-        this.router.navigate(['estimations/' + x.id])
+      this.add(this.famformData).pipe(catchError(err => {
+        console.log('err.error', err.error)
+        console.log('err.error.error', err.error.error)
+        this.error_notification = err.error.error.detail
+        this.error_display_bool = true
+        return of(
+          new FamEstForm('',
+          '',0,'',0,0,
+          0,0,0,0,0,0,
+          false,0,'', false, 0)
+        )
+      })).subscribe(x => {
+        if(x.id !=0){
+          this.error_display_bool = false
+          this.router.navigate(['estimations/' + x.id])
+        }
       })
     }
 
@@ -139,7 +156,9 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
         fullFormData.init_appl_claims,
         fullFormData.init_appl_drawings,
         fullFormData.init_appl_indep_claims,
-        fullFormData.init_appl_pages,
+        fullFormData.init_appl_pages_desc,
+        fullFormData.init_appl_pages_claims,
+        fullFormData.init_appl_pages_drawings,
         fullFormData.method,
         meth_country,
         countries,

@@ -1,5 +1,6 @@
 <div class="formContainer">
-<h2>Estimation Form</h2>
+<!--<h2>Estimation Form</h2>-->
+  <div class="header-spacer"></div>
 <mat-vertical-stepper #stepper linear>
     <mat-step [stepControl]="familyForm" [editable]="isEditable">
         <form [formGroup]="familyForm" fxLayout="column">
@@ -97,9 +98,17 @@
                     <input matInput type="text" formControlName="num_drawings">
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Number of Pages: </mat-label>
-                    <input matInput type="text" formControlName="num_pages">
+                    <mat-label>Number of Pages for Specification: </mat-label>
+                    <input matInput type="text" formControlName="num_pages_desc">
                 </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Number of Pages for Claims: </mat-label>
+                <input matInput type="text" formControlName="num_pages_claims">
+              </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Number of Pages for Drawings: </mat-label>
+                <input matInput type="text" formControlName="num_pages_drawings">
+              </mat-form-field>
             </div>
 
             <div class="form-row">

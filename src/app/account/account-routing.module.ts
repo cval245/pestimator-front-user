@@ -1,19 +1,24 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
-import { SignupComponent } from './signup/signup.component';
-import { AccountComponent } from './account/account.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ResetUsernameComponent } from './reset-username/reset-username.component';
-import { ActivateComponent } from './activate/activate.component';
-import { ResetPasswordEmailComponent } from './reset-password-email/reset-password-email.component';
-import { ResetPasswordEmailConfirmationComponent } from './reset-password-email-confirmation/reset-password-email-confirmation.component';
-import { PasswordResetSuccessComponent } from './password-reset-success/password-reset-success.component';
-import { PasswordResetEmailSentComponent } from './password-reset-email-sent/password-reset-email-sent.component';
-import { ActivateEmailSentComponent } from './activate-email-sent/activate-email-sent.component';
-import { RetrieveUsernameComponent } from './retrieve-username/retrieve-username.component';
-import { LoggedInGuard } from '../_guards/logged-in.guard';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LoginComponent} from './login/login.component';
+import {LogoutComponent} from './logout/logout.component';
+import {SignupComponent} from './signup/signup.component';
+import {AccountComponent} from './account/account.component';
+import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {ResetUsernameComponent} from './reset-username/reset-username.component';
+import {ActivateComponent} from './activate/activate.component';
+import {ResetPasswordEmailComponent} from './reset-password-email/reset-password-email.component';
+import {ResetPasswordEmailConfirmationComponent} from './reset-password-email-confirmation/reset-password-email-confirmation.component';
+import {PasswordResetSuccessComponent} from './password-reset-success/password-reset-success.component';
+import {PasswordResetEmailSentComponent} from './password-reset-email-sent/password-reset-email-sent.component';
+import {ActivateEmailSentComponent} from './activate-email-sent/activate-email-sent.component';
+import {RetrieveUsernameComponent} from './retrieve-username/retrieve-username.component';
+import {LoggedInGuard} from '../_guards/logged-in.guard';
+import {BuyNewEstimateComponent} from "./buy-new-estimate/buy-new-estimate.component";
+import {CheckoutSuccessComponent} from "./checkout-success/checkout-success.component";
+import {CheckoutCancelComponent} from "./checkout-cancel/checkout-cancel.component";
+import {UserProfileComponent} from "./user-profile/user-profile.component";
+import {BuyEstimateGuard} from "./buy-estimate.guard";
 
 const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -47,6 +52,10 @@ const routes: Routes = [
     {path: 'account/password-reset/success',
      component: PasswordResetSuccessComponent},
     {path: 'account/retrieve-username', component:RetrieveUsernameComponent},
+    {path: 'account/buy-new-estimate', component: BuyNewEstimateComponent, canActivate: [BuyEstimateGuard]},
+    {path: 'account/checkout/success', component: CheckoutSuccessComponent},
+    {path: 'account/checkout/cancel', component: CheckoutCancelComponent },
+    {path: 'account/user-profile', component: UserProfileComponent },
 ];
 
 @NgModule({

@@ -1,11 +1,13 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {concat, dropRight, forOwn, takeRight} from 'lodash';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {Country} from 'src/app/characteristics/_models/Country.model';
 import {EntitySize} from "../../characteristics/_models/entitySize.model";
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 interface TableWise {
   id: number | undefined
@@ -16,7 +18,7 @@ interface TableWise {
   conditions: any,
   law_firm_template: any,
 }
-
+export interface IIndexable<T = any> { [key: string]: T }
 @Component({
   selector: 'app-est-form',
   templateUrl: './est-form.component.html',
@@ -31,6 +33,10 @@ export class EstFormComponent {
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
+  @ViewChild(MatSort) sort: MatSort = new MatSort()
+  applTypeFilter = new FormControl()
+
+  public dataSource = new MatTableDataSource<TableWise>()
   editingRow: number = 0;
   public displayedColumns: string[] = ['id',
     'fee_code', 'description',
@@ -40,6 +46,7 @@ export class EstFormComponent {
     'condition_claims_min', 'condition_claims_max',
     'condition_indep_claims_min', 'condition_indep_claims_max',
     'condition_pages_min', 'condition_pages_max',
+    'condition_pages_desc_min', 'condition_pages_desc_max',
     'condition_drawings_min', 'condition_drawings_max',
     'condition_entity_size', 'condition_annual_prosecution_fee',
     'condition_complex', 'condition_time_complex',
@@ -49,6 +56,10 @@ export class EstFormComponent {
   public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
+    this.applTypeFilter.valueChanges.subscribe(x => {
+      this.dataSource = new MatTableDataSource(this.tableData)
+      this.dataSource.data = this.dataSource.data.filter(y => y.appl_type.id == x)
+    })
     this.form = this.fb.group({
       id: [undefined],
       country: ['', Validators.required],
@@ -67,6 +78,8 @@ export class EstFormComponent {
         condition_pages_max: [undefined],
         condition_drawings_min: [undefined],
         condition_drawings_max: [undefined],
+        condition_pages_desc_min: [undefined],
+        condition_pages_desc_max: [undefined],
         condition_entity_size: [undefined],
         condition_annual_prosecution_fee: [false],
         condition_complex: [undefined],
@@ -81,6 +94,40 @@ export class EstFormComponent {
         date_diff: ['', Validators.required]
       })
     })
+    // this.form.valueChanges.subscribe(x => {
+    //   if (this.form.valid){
+    //     this.submit()
+    //   }
+    // })
+  }
+  ngOnChanges(){
+    this.dataSource = new MatTableDataSource(this.tableData)
+    this.dataSource.sort = this.sort
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch(property) {
+        case 'appl_type': return item.appl_type.application_type;
+        case 'condition_pages_min': return item.conditions.condition_pages_min;
+        case 'condition_pages_max': return item.conditions.condition_pages_max;
+        case 'condition_pages_desc_min': return item.conditions.condition_pages_desc_min;
+        case 'condition_pages_desc_max': return item.conditions.condition_pages_desc_max;
+        case 'condition_claims_min': return item.conditions.condition_claims_min;
+        case 'condition_claims_max': return item.conditions.condition_claims_max;
+        case 'condition_indep_claims_min': return item.conditions.condition_indep_claims_min;
+        case 'condition_indep_claims_max': return item.conditions.condition_indep_claims_max;
+        case 'condition_drawings_min': return item.conditions.condition_drawings_min;
+        case 'condition_drawings_max': return item.conditions.condition_drawings_max;
+        case 'condition_entity_size': return item.conditions.condition_entity_size;
+        case 'condition_annual_prosecution_fee': return item.conditions.condition_annual_prosecution_fee;
+        case 'condition_complex': return item.conditions.condition_complex;
+        case 'condition_time_complex': return item.conditions.condition_time_complex;
+        case 'prior_pct': return item.conditions.prior_pct;
+        case 'prior_pct_same_country': return item.conditions.prior_pct_same_country;
+        case 'prev_appl_date_excl_intermediary_time': return item.conditions.prev_appl_date_excl_intermediary_time;
+        case 'law_firm_cost': return item.law_firm_template.law_firm_cost;
+        case 'date_diff': return item.law_firm_template.date_diff;
+        default: return (item as IIndexable)[property]
+      }
+    }
   }
 
 
@@ -116,7 +163,6 @@ export class EstFormComponent {
       official_cost: row.official_cost,
       appl_type: row.appl_type.id,
     })
-    console.log('sssdfhsdfljshkdfjh', row)
     this.form.controls.conditions.setValue({
       id: row.conditions.id,
       condition_claims_min: row.conditions.condition_claims_min,
@@ -125,6 +171,8 @@ export class EstFormComponent {
       condition_indep_claims_max: row.conditions.condition_indep_claims_max,
       condition_pages_min: row.conditions.condition_pages_min,
       condition_pages_max: row.conditions.condition_pages_max,
+      condition_pages_desc_min: row.conditions.condition_pages_desc_min,
+      condition_pages_desc_max: row.conditions.condition_pages_desc_max,
       condition_drawings_min: row.conditions.condition_drawings_min,
       condition_drawings_max: row.conditions.condition_drawings_max,
       condition_entity_size: null,

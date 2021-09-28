@@ -6,5 +6,6 @@ export class UserProfile{
         public city?: string,
         public state?: string,
         public zip_code?: number,
+        public estimates_remaining?: number,
     ){}
 }

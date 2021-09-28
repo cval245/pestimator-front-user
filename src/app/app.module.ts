@@ -40,10 +40,16 @@ import {EstimationModule} from './estimation/estimation.module';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {TransEstModule} from './trans-est/trans-est.module';
 import {TransEstRoutingModule} from './trans-est/trans-est-routing.module';
+import {ContentFreeRoutingModule} from "./content-free/content-free-routing.module";
+import {ContentFreeModule} from "./content-free/content-free.module";
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.API_URL,
   entityHttpResourceUrls: {
+    UserDetail: {
+      entityResourceUrl: environment.API_URL + 'user-detail/',
+      collectionResourceUrl: environment.API_URL + 'user-detail/'
+    },
     LawFirm: {
       entityResourceUrl: environment.API_URL + 'lawfirms/',
       collectionResourceUrl: environment.API_URL + 'lawfirms/'
@@ -70,38 +76,36 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     },
     ApplType: {
       entityResourceUrl: environment.API_URL + 'appl-types/',
-            collectionResourceUrl: environment.API_URL + 'appl-types/',
-        },
+      collectionResourceUrl: environment.API_URL + 'appl-types/',
+    },
     ApplTypeAll: {
       entityResourceUrl: environment.API_URL + 'appl-types-all/',
       collectionResourceUrl: environment.API_URL + 'appl-types-all/',
     },
-        FamEstForm: {
-            entityResourceUrl: environment.API_URL + 'fam-est-form-data/',
-            collectionResourceUrl: environment.API_URL + 'fam-est-form-data/',
-        },
-        Family: {
-            entityResourceUrl: environment.API_URL + 'families/',
-            collectionResourceUrl: environment.API_URL + 'families/',
-        },
-        UserProfile: {
-            entityResourceUrl: environment.API_URL + 'account/',
-            collectionResourceUrl: environment.API_URL + 'account/',
-        },
-        Application: {
-            entityResourceUrl: environment.API_URL + 'applications/',
-            collectionResourceUrl: environment.API_URL + 'applications/',
-        },
-        ApplDetail: {
-            entityResourceUrl: environment.API_URL + 'specs/',
-            collectionResourceUrl: environment.API_URL + 'specs/',
-        },
-
-
-        CustomFilTrans: {
-            entityResourceUrl: environment.API_URL + 'custom-filing-transform/',
-          collectionResourceUrl: environment.API_URL + 'custom-filing-transform/',
-        },
+    FamEstForm: {
+      entityResourceUrl: environment.API_URL + 'fam-est-form-data/',
+      collectionResourceUrl: environment.API_URL + 'fam-est-form-data/',
+    },
+    Family: {
+      entityResourceUrl: environment.API_URL + 'families/',
+      collectionResourceUrl: environment.API_URL + 'families/',
+    },
+    UserProfile: {
+      entityResourceUrl: environment.API_URL + 'account/',
+      collectionResourceUrl: environment.API_URL + 'account/',
+    },
+    Application: {
+      entityResourceUrl: environment.API_URL + 'applications/',
+      collectionResourceUrl: environment.API_URL + 'applications/',
+    },
+    ApplDetail: {
+      entityResourceUrl: environment.API_URL + 'specs/',
+      collectionResourceUrl: environment.API_URL + 'specs/',
+    },
+    CustomFilTrans: {
+      entityResourceUrl: environment.API_URL + 'custom-filing-transform/',
+      collectionResourceUrl: environment.API_URL + 'custom-filing-transform/',
+    },
     PublTrans: {
       entityResourceUrl: environment.API_URL + 'publication-transform/',
       collectionResourceUrl: environment.API_URL + 'publication-transform/',
@@ -122,7 +126,6 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'country-oanum/',
       collectionResourceUrl: environment.API_URL + 'country-oanum/',
     },
-
     BaseEstTemp: {
       entityResourceUrl: environment.API_URL + 'base-est-template/',
       collectionResourceUrl: environment.API_URL + 'base-est-template/',
@@ -173,46 +176,48 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
 
 @NgModule({
   declarations: [
-      AppComponent,
-      HeaderComponent,
-      NavComponent,
-      MainComponent,
-      AsideComponent,
-      FooterComponent,
-      NotFoundComponent,
+    AppComponent,
+    HeaderComponent,
+    NavComponent,
+    MainComponent,
+    AsideComponent,
+    FooterComponent,
+    NotFoundComponent,
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AccountModule,
-        LandingModule,
-        HomeModule,
-        LawFirmModule,
-        EstimationModule,
-        TransEstModule,
-        FlexLayoutModule,
-        MatToolbarModule,
-        MatDividerModule,
-        StoreModule.forRoot({//'fromRedu': fromRedu.reducer,
-                             'authCred': fromRedu.authReducer,
-          },
-          {metaReducers}),
-      StoreDevtoolsModule.instrument({
-        maxAge: 25,
-        logOnly: environment.production
-      }),
-      EffectsModule.forRoot([AuthEffectsNew]),
-      EntityDataModule.forRoot(entityConfig),
-      AccountRoutingModule,
-      HomeRoutingModule,
-      LawFirmRoutingModule,
-      EstimationRoutingModule,
-      TransEstRoutingModule,
-      LandingRoutingModule,
-      AppRoutingModule,
-      BrowserAnimationsModule,
-      MatButtonModule,
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AccountModule,
+    LandingModule,
+    HomeModule,
+    LawFirmModule,
+    EstimationModule,
+    ContentFreeModule,
+    TransEstModule,
+    FlexLayoutModule,
+    MatToolbarModule,
+    MatDividerModule,
+    StoreModule.forRoot({//'fromRedu': fromRedu.reducer,
+        'authCred': fromRedu.authReducer,
+      },
+      {metaReducers}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
+    EffectsModule.forRoot([AuthEffectsNew]),
+    EntityDataModule.forRoot(entityConfig),
+    AccountRoutingModule,
+    HomeRoutingModule,
+    LawFirmRoutingModule,
+    EstimationRoutingModule,
+    TransEstRoutingModule,
+    LandingRoutingModule,
+    AppRoutingModule,
+    ContentFreeRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+  ],
 
   providers: [
     {provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig},

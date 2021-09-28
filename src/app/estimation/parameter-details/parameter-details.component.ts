@@ -20,7 +20,7 @@ export class ParameterDetailsComponent {
     0,
     0,
     0,
-    0,
+    0,0,0,
     false,
     new Country(0, '', '', false, false, '', ''),
     [],

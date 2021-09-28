@@ -1,13 +1,12 @@
 <h2>Account</h2>
-<div gdcolumns="repeat(auto-fill, minmax(350px, 1fr))" gdgap="10px"
-     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;"
->
-
+<div>
     <app-account-details-form [userProfile]="userProfile"
                               (formData)="onSubmit($event)">
     </app-account-details-form>
     <div class="container" fxLayout="column" fxLayoutAlign="none">
         <div>
+          <p>username: {{userDetail.username}}</p>
+          <p>email: {{userDetail.email}}</p>
           <div class="container" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="7px">
             <button mat-raised-button color="accent"
                     (click)="disabled()"
@@ -31,4 +30,10 @@
                        (deactivate)="onDeactivate($event)"
         ></router-outlet>
     </div>
+  <div class="estimates-container">
+    <p class="mat-h3">  Remaining Estimates: {{userProfile.estimates_remaining}}</p>
+    <a mat-flat-button color="primary"
+       routerLink="/account/buy-new-estimate"
+    >Buy More Estimates</a>
+  </div>
 </div>

@@ -14,6 +14,7 @@ import {EstMainFormComponent} from './est-main-form/est-main-form.component';
 import {EstFormComponent} from './est-form/est-form.component';
 import {MatButtonModule} from "@angular/material/button";
 import {UsOaEstFormComponent} from './us-oa-est-form/us-oa-est-form.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {UsOaEstFormComponent} from './us-oa-est-form/us-oa-est-form.component';
     MatSelectModule,
     MatIconModule,
     MatButtonModule,
+    MatSortModule,
   ]
 })
 export class TransEstModule { }

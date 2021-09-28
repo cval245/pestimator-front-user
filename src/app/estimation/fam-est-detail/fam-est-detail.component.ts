@@ -55,6 +55,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     0,
     0,
     0,
+    0,
+    0,
     false,
     new Country(0, '', '', false, false, '', ''),
     [],
@@ -98,7 +100,9 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.famform.init_appl_filing_date = famform.init_appl_filing_date
         this.famform.init_appl_claims = famform.init_appl_claims
         this.famform.init_appl_indep_claims = famform.init_appl_indep_claims
-        this.famform.init_appl_pages = famform.init_appl_pages
+        this.famform.init_appl_pages_desc = famform.init_appl_pages_desc
+        this.famform.init_appl_pages_claims = famform.init_appl_pages_claims
+        this.famform.init_appl_pages_drawings = famform.init_appl_pages_drawings
         this.famform.init_appl_drawings = famform.init_appl_drawings
         this.famform.method = famform.method
         this.famform.ep_method = famform.ep_method
@@ -260,9 +264,13 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     arr.push(['Number of Claims', famform.init_appl_claims])
     arr.push(['Number of Indep Claims', famform.init_appl_indep_claims])
     arr.push(['Number of Drawings', famform.init_appl_drawings])
-    arr.push(['Number of Pages', famform.init_appl_pages])
+    arr.push(['Number of Pages for Specification', famform.init_appl_pages_desc])
+    arr.push(['Number of Pages for Claims', famform.init_appl_pages_claims])
+    arr.push(['Number of Pages for Drawings', famform.init_appl_pages_drawings])
     arr.push(['Using PCT Method', famform.method])
-    arr.push(['PCT Country', famform.meth_country.long_name])
+    if(famform.meth_country){
+      arr.push(['PCT Country', famform.meth_country.long_name])
+    }
     arr.push(['Using EP Method', famform.ep_method])
     arr.push(['National Phase Countries', ''])
     arr.unshift(['Parameters'])
