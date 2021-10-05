@@ -47,7 +47,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   public famform: FamEstFormFull = new FamEstFormFull(
     '',
     '',
-    new EntitySize(0, ''),
+    new EntitySize(0, '',''),
     new Date(),
     new Country(0, '', '', false, false, '', ''),
     new ApplType(0, '', ''),
@@ -121,7 +121,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       family$, this.applTypeSer.entities$).pipe(
       mergeMap(([countries, famEstDetails,
                   family, applTypes]) => {
-        console.log('more stuff', famEstDetails)
         this.famEstDetails = map(famEstDetails, x => {
           let country = countries.find(y => y.id == x.country)
           return {...x, 'country': country}
@@ -236,14 +235,21 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       XLSX.utils.book_append_sheet(wb, ws_two, 'Total Costs')
 
       // rearrange so first row is titles
+      // **********************************
+      // Law Firm Estimates Below
+      // **********************************
       let law_temp = this.calcLawFirmTot(this.famEstDetails)
       let law = this.json_to_aoa(law_temp)
       let law_keys = this.json_to_aoa_keys(law_temp)
+      // **********************************
+      // Law Firm Estimates above
+      // **********************************
       let off = values(this.calcOfficialCost(this.famEstDetails))
       off.unshift(off.pop())
       let translation = values(this.calcTranslationCost(this.famEstDetails))
       translation.unshift(translation.pop())
-      let arr_obj = [law_keys, law, off, translation]
+      //let arr_obj = [law_keys, law, off, translation]
+      let arr_obj = [law_keys, off, translation]
       let ws_three: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr_obj)
       XLSX.utils.book_append_sheet(wb, ws_three, 'Type of Cost')
 

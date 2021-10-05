@@ -30,6 +30,10 @@ import {CheckoutSuccessComponent} from './checkout-success/checkout-success.comp
 import {CheckoutCancelComponent} from './checkout-cancel/checkout-cancel.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {UserProfileFormComponent} from './user-profile-form/user-profile-form.component';
+import {PrivacyPolicyComponent} from './privacy-policy/privacy-policy.component';
+import {TermsOfUseComponent} from './terms-of-use/terms-of-use.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {RecaptchaFormsModule, RecaptchaModule} from "ng-recaptcha";
 
 @NgModule({
     declarations: [
@@ -53,10 +57,14 @@ import {UserProfileFormComponent} from './user-profile-form/user-profile-form.co
         CheckoutCancelComponent,
         UserProfileComponent,
         UserProfileFormComponent,
+        PrivacyPolicyComponent,
+        TermsOfUseComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
+        RecaptchaModule,
+        RecaptchaFormsModule,
         MatInputModule,
         MatFormFieldModule,
         MatButtonModule,
@@ -65,6 +73,7 @@ import {UserProfileFormComponent} from './user-profile-form/user-profile-form.co
         ReactiveFormsModule,
         AccountRoutingModule,
         NgxStripeModule.forRoot(environment.STRIPE_PUBLISHABLE_KEY),
+        MatCheckboxModule,
     ],
     providers: [
     ]

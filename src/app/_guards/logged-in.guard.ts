@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {Observable, Subject} from 'rxjs';
+import {takeUntil} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,13 @@ import { Observable } from 'rxjs';
 export class LoggedInGuard implements CanActivate {
 
   private isLoggedIn: Boolean = false
+  private destroyed = new Subject<void>();
 
   constructor(
                 private store: Store<{authCred: any}>,
                 private router: Router
             ){
-              this.store.select('authCred').subscribe(x => 
+              this.store.select('authCred').pipe(takeUntil(this.destroyed)).subscribe(x =>
                 this.isLoggedIn=x.isLoggedIn)
 
   }
@@ -28,5 +30,9 @@ export class LoggedInGuard implements CanActivate {
         return this.router.parseUrl('/login')
       }
   }
-  
+  ngOnDestroy(){
+    this.destroyed.next()
+    this.destroyed.complete()
+  }
+
 }

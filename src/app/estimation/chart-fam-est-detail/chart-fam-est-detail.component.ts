@@ -61,9 +61,9 @@ export class ChartFamEstDetailComponent implements OnChanges {
     ngOnChanges(): void {
         if (this.countryAggeds[0] != undefined){
             if (this.countryAggeds[0].country != undefined){
-                console.log('this.countryAggeds', this.countryAggeds)
                 this.chartData.datasets = map(this.countryAggeds, (obj) => {
                   let data = values(omit(obj, 'country'))
+                  data = map(data, x => x.toFixed(2))
                   return {
                     'label': obj.country.country, 'data': data,
                     backgroundColor: obj.country.color,
@@ -79,7 +79,6 @@ export class ChartFamEstDetailComponent implements OnChanges {
               this.chartData.labels = keys(omit(this.countryAggeds[0],
                 'country'))
               this.chart?.update();
-              console.log('this.chart', this.chartData)
             }
         }
     }

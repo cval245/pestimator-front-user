@@ -26,7 +26,7 @@ import {AuthEffectsNew} from './store/effects/auth.effect';
 //import { reducers } from './store/app.states';
 import {LandingRoutingModule} from './landing/landing-routing.module';
 import {LandingModule} from './landing/landing.module';
-import * as fromRedu from './store/reducers/auth.reducers';
+import {authReducer} from './store/reducers/auth.reducers';
 import {MyHttpUrlGenerator} from './my-http-url-generator';
 import {EstimationRoutingModule} from './estimation/estimation-routing.module';
 import {HomeModule} from './home/home.module';
@@ -38,10 +38,16 @@ import {FooterComponent} from './footer/footer.component';
 import {LawFirmModule} from './law-firm/law-firm.module';
 import {EstimationModule} from './estimation/estimation.module';
 import {NotFoundComponent} from './not-found/not-found.component';
-import {TransEstModule} from './trans-est/trans-est.module';
-import {TransEstRoutingModule} from './trans-est/trans-est-routing.module';
 import {ContentFreeRoutingModule} from "./content-free/content-free-routing.module";
 import {ContentFreeModule} from "./content-free/content-free.module";
+import {loadingReducer} from "./store/reducers/loading.reducers";
+import {LoadingScreenInterceptor} from "./account/_helpers/loading-screen.interceptor";
+import {LoadingComponent} from "./loading/loading.component";
+import {MatIconModule} from "@angular/material/icon";
+import {RECAPTCHA_SETTINGS, RecaptchaSettings} from "ng-recaptcha";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {menuOpenReducer} from "./store/reducers/menu.reducers";
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.API_URL,
@@ -183,6 +189,7 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     AsideComponent,
     FooterComponent,
     NotFoundComponent,
+    LoadingComponent,
   ],
   imports: [
     HttpClientModule,
@@ -193,12 +200,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     LawFirmModule,
     EstimationModule,
     ContentFreeModule,
-    TransEstModule,
+    // TransEstModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatDividerModule,
-    StoreModule.forRoot({//'fromRedu': fromRedu.reducer,
-        'authCred': fromRedu.authReducer,
+    StoreModule.forRoot({
+        'loading': loadingReducer,
+        'authCred': authReducer,
+        'menuOpen': menuOpenReducer,
       },
       {metaReducers}),
     StoreDevtoolsModule.instrument({
@@ -211,12 +220,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     HomeRoutingModule,
     LawFirmRoutingModule,
     EstimationRoutingModule,
-    TransEstRoutingModule,
     LandingRoutingModule,
     AppRoutingModule,
     ContentFreeRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
   ],
 
   providers: [
@@ -225,8 +236,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor, multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingScreenInterceptor, multi: true
+    },
     {provide: HttpUrlGenerator, useClass: MyHttpUrlGenerator},
     {provide: DEFAULT_CURRENCY_CODE, useValue: 'USD'},
+    {provide: RECAPTCHA_SETTINGS,
+    useValue: {siteKey: environment.RECAPTCHA_SITE_KEY} as RecaptchaSettings}
   ],
   bootstrap: [AppComponent]
 })

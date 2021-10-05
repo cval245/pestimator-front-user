@@ -37,7 +37,7 @@ export class FamEstFormComponent implements OnInit {
     this.applTypes = [new ApplType(0, '', '')];
     this.countries = [new Country(0, '', '', false, false, '', '')];
     this.pct_countries = [new Country(0, '', '', false, false, '', '')];
-    this.entitySizes = [new EntitySize(0, '')];
+    this.entitySizes = [new EntitySize(0, '','')];
 
     this.familyForm = this.fb.group({
       family_name: ['', Validators.required],
@@ -86,19 +86,13 @@ export class FamEstFormComponent implements OnInit {
         } else {
           let i: number = 0;
           checkArray.controls.forEach((item: AbstractControl) => {
-            console.log('sdf', i)
-            console.log('sdfddd', item.value)
-            //if (item.value == country_id) {
             if (item.value == false) {
-              console.log('i',i)
               checkArray.removeAt(i);
               return;
             }
             i++;
           });
         }
-        console.log('che', this.nationalPhaseForm.controls.countries.value)
-        checkArray.controls.forEach(item => console.log('item', item))
 
     }
 

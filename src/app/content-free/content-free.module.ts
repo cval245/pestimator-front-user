@@ -4,17 +4,21 @@ import {FeaturesDemonstrationComponent} from './features-demonstration/features-
 import {RouterModule} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {PricingComponent} from './pricing/pricing.component';
+import {MatDividerModule} from "@angular/material/divider";
 
 
 @NgModule({
   declarations: [
-    FeaturesDemonstrationComponent
+    FeaturesDemonstrationComponent,
+    PricingComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatButtonModule,
-    MatIconModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+    ]
 })
 export class ContentFreeModule { }

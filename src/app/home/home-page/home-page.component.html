@@ -1,4 +1,4 @@
-<div gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
+<div fxShow.sm fxShow.gt-sm fxHide gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;"
 >
   <mat-card>
@@ -25,11 +25,12 @@
           <mat-card-title>Coming Soon...</mat-card-title>
         </mat-card-header>
       <mat-card-content>
-        <img src="assets/images/Cardinal.svg" style="width: 100%">
+        <img  src="assets/images/Cardinal.svg" style="width: 100%">
         <ul fxLayout="column" fxLayoutAlign="start start">
+          <li>Lawyer Fee Estimates</li>
           <li>Custom Fees</li>
           <li>Custom Filing Dates</li>
-          <li>Custom Number of Office Actions</li>
+          <li>Custom Office Actions</li>
         </ul>
       </mat-card-content>
         <mat-card-footer>
@@ -53,5 +54,56 @@
             </mat-card-actions>
         </mat-card-footer>
     </mat-card>
-
+</div>
+<div fxHide fxShow.lt-sm>
+  <mat-card class="mat-card-mobile">
+    <mat-card-header>
+      <mat-card-title>New Estimate</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Create another estimate here
+      </p>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="accent" style="right: 15px"
+                routerLink="/fam-est-form">
+          Create Estimate</button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card  class="mat-card-mobile">
+    <mat-card-header>
+      <mat-card-title>Coming Soon...</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul fxLayout="column" fxLayoutAlign="start start">
+        <li>Lawyer Fee Estimates</li>
+        <li>Custom Fees</li>
+        <li>Custom Filing Dates</li>
+        <li>Custom Office Actions</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-footer>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card class="mat-card-mobile">
+    <mat-card-header>
+      <mat-card-title>View Estimates</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-family-estimate-table [famEsts]="famEsts"
+                                 [pageSize]="pageSize">
+      </app-family-estimate-table>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="accent" style="right: 15px"
+                routerLink="/estimations">
+          View All
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
 </div>

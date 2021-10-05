@@ -19,7 +19,5 @@ export class BuyNewEstimateComponent implements OnInit {
     this.userProfileSer.getAll().subscribe(x => this.userProfile = x[0])
   }
 
-  buyAnother() {
-    console.log('buy another')
-  }
+
 }

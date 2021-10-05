@@ -1,8 +1,12 @@
 <div>
+  <p>Price: $8/estimate</p>
   <mat-form-field appearance="outline">
   <mat-label>Number of Estimates</mat-label>
   <input matInput type="number" min="0" max="10" [formControl]="quantity_form">
 </mat-form-field>
+
+  <p *ngIf="quantity_form.errors" style="color:red">Only orders between 0 and 10 estimates are accepted</p>
 </div>
 
+<p>Total: ${{total_cost}}</p>
 <button mat-flat-button color="accent" (click)="checkout()">Go To Checkout</button>

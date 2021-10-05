@@ -29,6 +29,7 @@ import {FamEstConfirmComponent} from './fam-est-confirm/fam-est-confirm.componen
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatListModule} from "@angular/material/list";
 import {ParameterDetailsComponent} from './parameter-details/parameter-details.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -44,26 +45,27 @@ import {ParameterDetailsComponent} from './parameter-details/parameter-details.c
     FamEstConfirmComponent,
     ParameterDetailsComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCheckboxModule,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatStepperModule,
-    MatTableModule,
-    MatDividerModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    FlexLayoutModule,
-    NgChartsModule,
-    ReactiveFormsModule,
-    MatListModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatCheckboxModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatStepperModule,
+        MatTableModule,
+        MatDividerModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        FlexLayoutModule,
+        NgChartsModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatTooltipModule,
+    ],
   exports: [
     FamEstFormComponent,
     FamEstDetailTableComponent,

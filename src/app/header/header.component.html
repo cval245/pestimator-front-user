@@ -1,5 +1,5 @@
 <header class="mat-typography">
-    <mat-toolbar *ngIf="!isLoggedIn" color="primary">
+    <mat-toolbar *ngIf="!isLoggedIn" color="primary"  fxHide fxShow.gt-sm>
       <a routerLink="/">
         <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
           <img style="width: 100%; height: 100%; object-fit: cover"
@@ -9,10 +9,11 @@
       <a mat-button routerLink="/"><p class="mat-display-1" style="margin-bottom: 0px">EstPat</p></a>
       <div fxFlex fxLayout="row" fxLayoutAlign="end center">
         <a mat-button routerLink="/features"><p class="mat-h3">Features</p></a>
+        <a mat-button routerLink="/pricing"><p class="mat-h3">Pricing</p></a>
         <a mat-flat-button color="accent" routerLink="/login"> <p class="mat-h3">Login</p></a>
       </div>
     </mat-toolbar>
-  <mat-toolbar *ngIf="isLoggedIn" color="primary">
+  <mat-toolbar *ngIf="isLoggedIn" color="primary" fxHide fxShow.gt-sm>
     <a routerLink="/home">
       <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
         <img style="width: 100%; height: 100%; object-fit: cover"
@@ -23,6 +24,53 @@
     <div fxFlex fxLayout="row" fxLayoutAlign="end center">
       <a mat-flat-button color="accent" routerLink="/account"><p class="mat-h3">Account</p></a>
       <a mat-button (click)="logout()"><p class="mat-h3">Logout</p></a>
+    </div>
+  </mat-toolbar>
+
+  <mat-toolbar *ngIf="!isLoggedIn" color="primary"   fxHide fxShow.lt-md>
+    <a routerLink="/">
+      <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
+        <img style="width: 100%; height: 100%; object-fit: cover"
+             src="assets/images/estpat-logo-trans.svg" alt="">
+      </div>
+    </a>
+    <a mat-button routerLink="/"><p class="mat-display-1" style="margin-bottom: 0px">EstPat</p></a>
+    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+      <a mat-menu-item routerLink="/features"><p class="mat-h3">Features</p></a>
+      <a mat-menu-item routerLink="/pricing"><p class="mat-h3">Pricing</p></a>
+        <a mat-menu-item routerLink="/signup"><p class="mat-h3">Sign up</p></a>
+      <a mat-menu-item color="accent" routerLink="/login"> <p class="mat-h3">Login</p></a>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+
+
+  <mat-toolbar *ngIf="isLoggedIn" color="primary" fxHide fxShow.lt-md
+  fxLayout="row" fxLayoutAlign="center center">
+
+    <button mat-icon-button (click)="showMenu()"><mat-icon>menu</mat-icon></button>
+
+    <span class="example-spacer"></span>
+    <a routerLink="/home">
+      <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
+        <img style="width: 100%; height: 100%; object-fit: cover"
+             src="assets/images/estpat-logo-trans.svg" alt="">
+      </div>
+    </a>
+
+    <span class="example-spacer"></span>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item color="accent" routerLink="/account"> <p class="mat-h3">Account</p></a>
+        <a mat-menu-item (click)="logout()"><p class="mat-h3">Logout</p></a>
+      </mat-menu>
     </div>
   </mat-toolbar>
 </header>

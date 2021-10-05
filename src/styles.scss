@@ -19,7 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .blurb{
-    width:500px;
+    max-width:500px;
 }
 
 app-root {
@@ -41,6 +41,7 @@ body {
     padding: 0;
     text-align: center;
     font-family: sans-serif;
+    background-color: $light-background;
 }
 
 .container {
@@ -58,8 +59,14 @@ app-footer {
   padding: 20px;
   margin: 0px;
 }
+app-header{
+  position: fixed;
+  z-index: 10;
+  width:100%;
+}
 
 app-nav {
+    margin-top: 50px;
     flex: 0 2 150px;
     background: map-get($theme-primary, 'lighter');
     color: map-get($theme-accent, 'darker');
@@ -70,11 +77,17 @@ app-main {
   min-height: 300px;
   max-width: 1050px;
   background-color: $light-background;
-
-
 }
+
 .logged-in-over-main{
+  margin-top: 60px;
+  //padding-top: 200px;
   padding: 20px;
+}
+.fullSize {
+  margin-top: 60px;
+  flex: 1 1 300px;
+  max-width: 100%;
 }
 
 app-aside {
@@ -88,10 +101,7 @@ app-footer {
   color: $light-accent-text;
 }
 
-.fullSize {
-  flex: 1 1 300px;
-  max-width: 100%;
-}
+
 
 .mat-header-cell {
   background: map-get($theme-accent, 'lighter');
@@ -110,13 +120,10 @@ app-footer {
 }
 
 .light-accent-background {
-  //background-color: #d8e3ec;
   background-color: $light-background;
-  //background-color: map-get($theme-primary, 'lighter')
 }
 
 .light-accent-background-two{
-  //background-color: map-get($theme-primary, 'lighter');
   color: $dark-accent-text;
 }
 
@@ -127,6 +134,7 @@ app-footer {
 .formContainer {
   background-color: map-get($theme-primary, 'darker');
   color: $light-accent-text;
+  //max-width: 1000px;
 
   h2 {
     margin-bottom: 0px;
@@ -142,7 +150,8 @@ app-footer {
         }
         .form-row {
           color: $dark-accent-text;
-          margin: 10px;
+          margin-top: 10px;
+          margin-bottom: 10px;
         }
         .mat-step-icon{
             color: $light-text;
@@ -152,23 +161,33 @@ app-footer {
             color: $light-text;
             background-color: map-get($theme-accent, 'main');
         }
-        form{
-            //background: map-get($theme-primary, 'lighter');
-            mat-form-field{
-                padding-left: 10px;
-                padding-right: 10px;
 
-                // mat-label{
-                //     //color: $dark-text;
-                // }
-                input{
-                    color: $dark-text;
-                }
-            }
+    form {
+      //background: map-get($theme-primary, 'lighter');
+      mat-form-field {
+        padding-left: 10px;
+        padding-right: 10px;
+
+
+        .ng-star-inserted {
+          color: $dark-accent-text;
         }
-    }
-}
 
+        input {
+          color: $dark-text;
+        }
+
+
+      }
+    }
+  }
+}
+.mat-select-min-line{
+  color: $dark-text!important;
+}
+.mat-accent .mat-option.mat-selected:not(.mat-option-disabled){
+  color: $dark-text;
+}
 
 .icon-background {
   background-color: map-get($theme-primary, 'main');
@@ -189,4 +208,130 @@ app-footer {
 tr.element-row:not(.expanded-row):hover {
   //background: #777;
   background-color: map-get($theme-primary, 'lighter');
+}
+.button-overcontainer{
+  background-color: map-get($theme-primary, 'lighter');
+}
+.button-super-over{
+  background-color: map-get($theme-primary, 'lighter');
+}
+.pricing-card{
+  background-color: map-get($theme-primary, 'lighter');
+}
+
+
+
+@keyframes loader {
+  0%   { transform: scale(0.0); }
+  40%  { transform: scale(1.0); }
+  80%  { transform: scale(1.0); }
+  100% { transform: scale(0.0); }
+}
+
+
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -2.7em;
+  margin-left: -2.7em;
+  width: 5.4em;
+  height: 5.4em;
+  background-color: transparent;
+}
+
+#hill {
+  position: absolute;
+  width: 7.1em;
+  height: 7.1em;
+  top: 1.7em;
+  left: 1.7em;
+  background-color: transparent;
+  border-left: .25em solid map-get($theme-primary, 'darker') ;
+  transform: rotate(45deg);
+}
+
+#hill:after {
+  content: '';
+  position: absolute;
+  width: 7.1em;
+  height: 7.1em;
+  left: 0;
+  background-color: transparent;
+}
+
+#box {
+  position: absolute;
+  left: 0;
+  bottom: -.1em;
+  width: 1em;
+  height: 1em;
+  background-color: transparent;
+  border: .25em solid map-get($theme-primary, 'main');
+  border-radius: 15%;
+  transform: translate(0, -1em) rotate(-45deg);
+  animation: push 2.5s cubic-bezier(.79, 0, .47, .97) infinite;
+}
+
+@keyframes push {
+  0% {
+    transform: translate(0, -1em) rotate(-45deg);
+  }
+  5% {
+    transform: translate(0, -1em) rotate(-50deg);
+  }
+  20% {
+    transform: translate(1em, -2em) rotate(47deg);
+  }
+  25% {
+    transform: translate(1em, -2em) rotate(45deg);
+  }
+  30% {
+    transform: translate(1em, -2em) rotate(40deg);
+  }
+  45% {
+    transform: translate(2em, -3em) rotate(137deg);
+  }
+  50% {
+    transform: translate(2em, -3em) rotate(135deg);
+  }
+  55% {
+    transform: translate(2em, -3em) rotate(130deg);
+  }
+  70% {
+    transform: translate(3em, -4em) rotate(217deg);
+  }
+  75% {
+    transform: translate(3em, -4em) rotate(220deg);
+  }
+  100% {
+    transform: translate(0, -1em) rotate(-225deg);
+  }
+}
+.loading-background{
+  background-color: $light-background;
+  height: 100%;
+  width: 100%;
+}
+
+
+.super-over{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+
+  .over-policy{
+    padding-top: 40px;
+    margin-left: 10px;
+    margin-right:10px;
+    margin-bottom: 10px;
+    max-width: 500px;
+    text-align: justify;
+
+    h3{
+      font-weight: bold;
+      margin-bottom: 1px;
+    }
+  }
 }

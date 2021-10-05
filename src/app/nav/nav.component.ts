@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {Store} from "@ngrx/store";
+import {menuOpen} from "../store/actions/menu.action";
 
 @Component({
   selector: 'app-nav',
@@ -7,7 +9,10 @@ import {Component} from '@angular/core';
 })
 export class NavComponent {
 
-  constructor() { }
+  constructor(private store: Store<{menuOpen: boolean}> ) { }
 
 
+  closeMenu() {
+    this.store.dispatch(menuOpen({menuOpen: false}))
+  }
 }

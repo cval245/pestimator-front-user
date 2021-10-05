@@ -1,3 +1,5 @@
+<div fxLayout="column" fxLayoutAlign="start center">
+  <p class="mat-display-1" style="margin-bottom: 20px;margin-top: 20px;">New Estimation</p>
 <div class="formContainer">
 <!--<h2>Estimation Form</h2>-->
   <div class="header-spacer"></div>
@@ -9,7 +11,7 @@
                 <div class="form-row">
                     <h2>Details on Patent Family:</h2>
                 </div>
-            <div class="form-row" fxLayout="row">
+            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
                 <mat-form-field color="accent" appearance="outline">
                     <mat-label>Family Name:</mat-label>
                     <input matInput type="text" formControlName="family_name">
@@ -21,15 +23,17 @@
             </div>
                 <mat-divider></mat-divider>
             <div class="form-row">
-                <h3>Details on Corporation Filing the Application:</h3>
+                <h3>Entity Size:</h3>
             </div>
-            <div class="form-row" fxLayout="row">
+            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
                 <mat-form-field color="accent" appearance="outline">
                     <mat-label>Entity Size:</mat-label>
                     <mat-select class="custom-select"
                                 formControlName="entity_size">
                         <mat-option *ngFor="let t of entitySizes"
-                                    [value]="t.id+''">
+                                    [value]="t.id+''"
+                        [matTooltip]=t.description
+                        matTooltipPosition="right">
                             {{t.entity_size}}
                         </mat-option>
                     </mat-select>
@@ -49,7 +53,7 @@
             <div class="form-row">
                 <h2>First Application:</h2>
             </div>
-            <div class="form-row">
+            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
             <mat-form-field appearance="outline">
             <mat-label>Country</mat-label>
             <mat-select class="custom-select"
@@ -82,31 +86,33 @@
                 <mat-divider></mat-divider>
             </div>
             <div class="form-row">
-                <h3>Specifications of the First Application:</h3>
+                <h3>Details of the First Application:</h3>
             </div>
-            <div class="form-row">
+            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" >
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Number of Claims:</mat-label>
+                    <mat-label>No. Claims:</mat-label>
                     <input matInput type="text" formControlName="num_claims">
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Independent Claims:</mat-label>
+                    <mat-label>No. Independent Claims:</mat-label>
                     <input matInput type="text" formControlName="num_indep_claims">
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Number of Drawings:</mat-label>
+                    <mat-label>No Drawings:</mat-label>
                     <input matInput type="text" formControlName="num_drawings">
                 </mat-form-field>
+              </div>
+              <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Number of Pages for Specification: </mat-label>
+                    <mat-label>No. Pages - Specification: </mat-label>
                     <input matInput type="text" formControlName="num_pages_desc">
                 </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
-                <mat-label>Number of Pages for Claims: </mat-label>
+                <mat-label>No. Pages - Claims: </mat-label>
                 <input matInput type="text" formControlName="num_pages_claims">
               </mat-form-field>
               <mat-form-field appearance="outline" color="accent">
-                <mat-label>Number of Pages for Drawings: </mat-label>
+                <mat-label>No. Pages - Drawings: </mat-label>
                 <input matInput type="text" formControlName="num_pages_drawings">
               </mat-form-field>
             </div>
@@ -177,7 +183,7 @@
               <div class="form-row">
                 <h2>Select Jurisdictions to File</h2>
               </div>
-              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
                 <div fxLayout="column" fxLayoutAlign="start start">
                   <div *ngFor="let country of countries; let i=index">
                     <mat-checkbox *ngIf="country.col===1"
@@ -192,11 +198,24 @@
                     <mat-checkbox *ngIf="country.col===2"
                                   [formControl]="getCountriesFormCtrlName(country.id)"
                                   (change)="onCheckboxChange($event, country.id)">
-                      {{country.long_name}}
+                      <p>{{country.long_name}}</p>
                     </mat-checkbox>
                   </div>
                 </div>
               </div>
+
+              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div *ngFor="let country of countries; let i=index">
+                    <mat-checkbox
+                                  [formControl]="getCountriesFormCtrlName(country.id)"
+                                  (change)="onCheckboxChange($event, country.id)">
+                      {{country.long_name}}
+                    </mat-checkbox>
+                  </div>
+                  </div>
+                </div>
+
             <div class="form-row">
                 <button mat-flat-button color="warn"  style="margin: 5px;"
                         (click)="stepper.reset()"
@@ -214,4 +233,5 @@
         </form>
     </mat-step>
 </mat-vertical-stepper>
+</div>
 </div>

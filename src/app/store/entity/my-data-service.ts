@@ -1,19 +1,14 @@
-import { Injectable, Type } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {
-    DefaultDataService,
-    HttpUrlGenerator,
-    Logger,
-} from '@ngrx/data';
-import { Update } from '@ngrx/entity';
-import { Observable } from 'rxjs';
-import { defaultDataServiceConfig } from '../../app.module';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {DefaultDataService, HttpUrlGenerator, Logger,} from '@ngrx/data';
+import {Update} from '@ngrx/entity';
+import {Observable} from 'rxjs';
+import {defaultDataServiceConfig} from '../../app.module';
 
 @Injectable()
 export class MyDataService extends DefaultDataService<any> {
     constructor(http: HttpClient, httpUrlGenerator: HttpUrlGenerator, logger: Logger) {
         super('account', http, httpUrlGenerator, defaultDataServiceConfig);
-        logger.log('Created custom Hero EntityDataService');
         this.entitiesUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.collectionResourceUrl
         this.entityUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.entityResourceUrl
     }

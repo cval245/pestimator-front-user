@@ -28,7 +28,7 @@ export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
   @Input() country: Country = new Country(0, '', '', false, false, '', '')
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
-  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '')]
+  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '','')]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter

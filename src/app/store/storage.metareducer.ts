@@ -1,5 +1,6 @@
-import {ActionReducer, Action, MetaReducer} from '@ngrx/store';
+import {Action, ActionReducer, MetaReducer} from '@ngrx/store';
 import {merge, pick} from 'lodash';
+import {logout} from "./actions/auth.action";
 
 function setSavedState(state: any, localStorageKey: string) {
   localStorage.setItem(localStorageKey, JSON.stringify(state));
@@ -30,5 +31,13 @@ export function storageMetaReducer<S, A extends Action = Action> (reducer: Actio
     return nextState;
   };
 }
+export function clearOnLogoutMetaReducer<S, A extends Action=Action>(reducer: ActionReducer<S,A>){
+  return function(state: S, action: A): S{
+    if(action.type === logout.type){
+      return reducer(undefined, action);
+    }
+    return reducer(state, action)
+  }
+}
 
-export const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
+export const metaReducers: MetaReducer<any>[] = [storageMetaReducer, clearOnLogoutMetaReducer];

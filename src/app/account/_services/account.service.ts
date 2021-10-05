@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Observable, interval, from, Subject} from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {from, Observable, Subject} from 'rxjs';
+import {Store} from '@ngrx/store';
 
-import { User } from '../_models/user.model';
-import { environment } from '../../../environments/environment';
-import { logout } from '../../store/actions/auth.action';
+import {User} from '../_models/user.model';
+import {environment} from '../../../environments/environment';
+import {logout} from '../../store/actions/auth.action';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ import { logout } from '../../store/actions/auth.action';
 
 export class AccountService {
     baseUrl = environment.API_URL + 'auth/';
-    //timerSubj = new Subject()
 
     constructor(private http: HttpClient,
                 private store: Store<{authCred: any}>,
@@ -23,14 +21,7 @@ export class AccountService {
     }
 
     login(username: string, password: string): Observable<any>{
-      console.log('log')
         const url = this.baseUrl + 'jwt/create/'
-      // return this.http.post<User>(url, {username, password})
-      //   .pipe(map(user => {
-      //     user.username = username
-      //     console.log('user', user)
-      //     return user;
-      //   }))
         return this.http.post<User>(url, {username, password})
     }
 
@@ -73,7 +64,6 @@ export class AccountService {
 
     public startRefreshTokenTimer_two(refresh_time: Date): Observable<any>{
         var time_diff = refresh_time.getTime() - Date.now() - (60 * 1000);
-        console.log('time_diff = ', time_diff)
         if (time_diff < 0){
             throw "negative time on access token"
         }
@@ -81,7 +71,6 @@ export class AccountService {
         setTimeout(() => {
             timerSubj.next()
             timerSubj.complete()
-            console.log('setTimeout Is Complete')
             //this.timerSubj.next(1)
             //this.timerSubj.complete()
         }, time_diff)

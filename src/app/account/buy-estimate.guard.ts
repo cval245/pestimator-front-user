@@ -17,10 +17,12 @@ export class BuyEstimateGuard implements CanActivate {
     this.userProfileSer.getAll().subscribe(data => {
       this.userProfile = data[0]
       if(this.userProfile === undefined || this.userProfile.id==undefined){
+        console.log('ddd')
         this.router.navigateByUrl('/account/user-profile')
         this.return_bool=false;
       }
       else{
+        console.log('eee')
         this.return_bool = true
         this.router.navigateByUrl('/account/buy-new-estimate')
       }
@@ -28,5 +30,4 @@ export class BuyEstimateGuard implements CanActivate {
 
     return this.return_bool;
   }
-
 }

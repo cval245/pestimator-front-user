@@ -19,6 +19,8 @@ import {CheckoutSuccessComponent} from "./checkout-success/checkout-success.comp
 import {CheckoutCancelComponent} from "./checkout-cancel/checkout-cancel.component";
 import {UserProfileComponent} from "./user-profile/user-profile.component";
 import {BuyEstimateGuard} from "./buy-estimate.guard";
+import {PrivacyPolicyComponent} from "./privacy-policy/privacy-policy.component";
+import {TermsOfUseComponent} from "./terms-of-use/terms-of-use.component";
 
 const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -26,10 +28,6 @@ const routes: Routes = [
     {path: 'signup', component: SignupComponent},
     {path: 'account', component: AccountComponent,
      children: [
-         {
-             path: '', component: AccountComponent,
-             outlet: 'master'
-         },
          {
              path: 'username-form',
              component: ResetUsernameComponent,
@@ -39,9 +37,20 @@ const routes: Routes = [
              path: 'password-form',
              component: ResetPasswordComponent,
              outlet: 'resetpassword',
-         }],
+         },
+       {
+         path: '', component: AccountComponent,
+         outlet: 'master'
+       },
+         ],
+
      canActivate: [LoggedInGuard],
     },
+  {path: 'account/checkout/success', component: CheckoutSuccessComponent, canActivate: [LoggedInGuard]},
+  {path: 'account/checkout/cancel', component: CheckoutCancelComponent, canActivate: [LoggedInGuard]},
+  {path: 'account/user-profile', component: UserProfileComponent, canActivate: [LoggedInGuard]},
+    {path: 'account/buy-new-estimate', component: BuyNewEstimateComponent,
+    canActivate: [BuyEstimateGuard, LoggedInGuard]},
     {path: 'account/activation-sent/:email', component: ActivateEmailSentComponent },
     {path: 'account/activate/:uid/:token', component: ActivateComponent},
     {path: 'account/reset_password', component: ResetPasswordEmailComponent},
@@ -52,10 +61,8 @@ const routes: Routes = [
     {path: 'account/password-reset/success',
      component: PasswordResetSuccessComponent},
     {path: 'account/retrieve-username', component:RetrieveUsernameComponent},
-    {path: 'account/buy-new-estimate', component: BuyNewEstimateComponent, canActivate: [BuyEstimateGuard]},
-    {path: 'account/checkout/success', component: CheckoutSuccessComponent},
-    {path: 'account/checkout/cancel', component: CheckoutCancelComponent },
-    {path: 'account/user-profile', component: UserProfileComponent },
+    {path: 'account/privacy-policy', component: PrivacyPolicyComponent},
+    {path: 'account/terms-of-use', component: TermsOfUseComponent},
 ];
 
 @NgModule({

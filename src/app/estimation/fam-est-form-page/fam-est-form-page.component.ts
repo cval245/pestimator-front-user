@@ -11,7 +11,7 @@ import {FamEstFormService} from '../_services/fam-est-form.service';
 import {Router} from '@angular/router';
 import {FamEstConfirmComponent} from "../fam-est-confirm/fam-est-confirm.component";
 import {MatDialog} from "@angular/material/dialog";
-import {map} from "lodash";
+import {map, orderBy} from "lodash";
 import {catchError} from "rxjs/operators";
 
 @Component({
@@ -31,7 +31,7 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
   public pct_countries: Country[];
 
-  public entitySizes: EntitySize[] = [new EntitySize(0,'')];
+  public entitySizes: EntitySize[] = [new EntitySize(0,'','')];
   private entitySizes$: Observable<EntitySize[]>;
   private entitySizesSub: Subscription;
   private famformData: FamEstForm = new FamEstForm('',
@@ -56,7 +56,7 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     this.countries$ = countrySer.entities$;
     this.countriesSub = new Subscription();
     this.pct_countries = [new Country(0, '', '', false, false, '', '')];
-    this.entitySizes = [new EntitySize(0, '')];
+    this.entitySizes = [new EntitySize(0, '','')];
     this.entitySizes$ = entitySizeSer.entities$;
     this.entitySizesSub = new Subscription();
   }
@@ -64,7 +64,8 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.countriesSub = this.getCountries().subscribe(x => {
 
-      this.countries = map(x, (y, i) => {
+      this.countries = map(orderBy(x, ['long_name'], ['asc']),
+        (y, i) => {
         if (i <= x.length / 2) {
           return {...y, 'col': 1}
         } else {

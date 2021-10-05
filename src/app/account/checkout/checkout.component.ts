@@ -15,15 +15,21 @@ interface objID{
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent {
-
-  //quantity: number = 1;
+  total_cost: number = 0
+  price = 8
   quantity_form = new FormControl(1,
     [Validators.max(10), Validators.min(1)])
 
   constructor(
     private http: HttpClient,
     private stripeService: StripeService
-  ) { }
+  ) {
+    this.total_cost = this.price * this.quantity_form.value
+    this.quantity_form.valueChanges.subscribe(x => {
+      this.total_cost = x * this.price
+    })
+
+  }
 
   checkout(){
     if(this.quantity_form.valid) {

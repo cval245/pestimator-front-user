@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
-import {filter} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {login} from '../../store/actions/auth.action';
 import {Credentials} from '../_models/credentials.model';
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   })
   message = ''
 
+    private destroyed = new Subject<void>()
 
     constructor(private fb: FormBuilder,
                 private route: ActivatedRoute,
@@ -33,16 +35,12 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
       this.store.select('authCred').pipe(
+        takeUntil(this.destroyed),
         filter(x => x.error)
       )
         .subscribe(error => {
-          console.log('this.error_bool', this.error_bool)
           this.error_bool = true
-
-          console.log('this.error_bool', this.error_bool)
           this.error = error
-          console.log('ttt', this.error)
-          console.log('ttt', this.error.error.error.error.detail)
         })
     }
 
@@ -54,9 +52,12 @@ export class LoginComponent implements OnInit {
         this.submitted = true;
         if (this.loginForm.valid){
             let credentials = new Credentials(this.f.username.value, this.f.password.value)
-            console.log('payload', credentials)
             this.store.dispatch(login({credentials}))
         }
+    }
+    ngOnDestroy(){
+      this.destroyed.next()
+      this.destroyed.complete()
     }
 
 }

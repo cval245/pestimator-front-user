@@ -75,4 +75,29 @@
 //.desc-box-offcolor{
 //  background-color:white;
 //}
+.button-super-over {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
 
+  .button-overcontainer {
+    height: 100px;
+    width: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+
+    a {
+      .mat-h2 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

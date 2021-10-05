@@ -35,7 +35,6 @@ export class AuthEffectsNew {
                 this.authService.login(action.credentials.username,
                                     action.credentials.password)
                     .pipe(map(profile => {
-                        console.log('beeeee')
                         return loginComplete({
                           profile,
                           isLoggedIn: true,
@@ -44,10 +43,7 @@ export class AuthEffectsNew {
                       })
                       , tap(() => this.router.navigate(['/home']))
                       , catchError(error => {
-                        console.log('burt')
-                        //return of({type: '[Auth] loginFailure'})
                         return of(loginFailure({error}))
-                        //return loginFailure({ error })
                       })
                     )
             )))

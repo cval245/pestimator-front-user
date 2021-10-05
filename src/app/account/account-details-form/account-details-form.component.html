@@ -2,13 +2,13 @@
 <form [formGroup]="acctForm" fxLayout="column" style="padding: 20px;">
     <ng-template matStepLabel>Family Details</ng-template>
     <div fxLayout="column" fxLayoutAlign="center center">
-        <div class="form-row" fxLayout="row">
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
             <mat-form-field color="accent" appearance="outline">
                 <mat-label>Company Name:</mat-label>
                 <input matInput type="text" formControlName="company_name">
             </mat-form-field>
         </div>
-        <div class="form-row" fxLayout="row">
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
             <mat-form-field color="accent" appearance="outline">
                 <mat-label>Address:</mat-label>
                 <input matInput type="text" formControlName="address">
@@ -18,7 +18,7 @@
                 <input matInput type="text" formControlName="city">
         </mat-form-field>
         </div>
-        <div class="form-row" fxLayout="row">
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
             <mat-form-field color="accent" appearance="outline">
                 <mat-label>State:</mat-label>
                 <input matInput type="text" formControlName="state">

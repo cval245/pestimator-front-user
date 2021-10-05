@@ -27,7 +27,7 @@ export class FamEstFormFull{
   constructor(
     public family_name: string,
     public family_no: string,
-    public entity_size: EntitySize = new EntitySize(0, ''),
+    public entity_size: EntitySize = new EntitySize(0, '',''),
     public init_appl_filing_date: any,
     public init_appl_country: Country = new Country(0, '','',
       false, false,'',''),

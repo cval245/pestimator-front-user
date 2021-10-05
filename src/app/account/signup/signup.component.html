@@ -41,7 +41,18 @@
 									 [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
           <mat-error *ngIf="f.re_password.errors">{{getRePassErrorMessage()}}</mat-error>
 				</mat-form-field>
+
         </div>
+      <mat-checkbox formControlName="terms_agreed">
+        <p style="margin-bottom: 0px;"> agree to the <a routerLink="/account/terms-of-use">Terms of Use</a></p>
+      </mat-checkbox>
+      <div class="recaptcha-container">
+      <re-captcha
+        formControlName="recaptcha"
+      >
+      </re-captcha>
+      </div>
+      <p style="color:red;">{{errorMessages}}</p>
 				<button mat-flat-button color="accent" [disabled]="loading">
 								<span *ngIf="loading"
 											class="spinner-border spinner-border-sm mr-1">
@@ -51,4 +62,5 @@
 						<a mat-flat-button routerLink="../login">Login</a>
 		</form>
 </div>
+
 </div>

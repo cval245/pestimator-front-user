@@ -1,0 +1,40 @@
+.pricing-card{
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 300px;
+}
+.pricing-cards-over{
+  margin-top: 40px;
+  margin-bottom: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.signupbutton{
+  margin-top: 20px;
+}
+//.strikethrough{
+//  text-decoration: line-through;
+//}
+s, strike{text-decoration:none;position:relative;}
+s::before, strike::before {
+  top: 45%; /*tweak this to adjust the vertical position if it's off a bit due to your font family */
+  background:red; /*this is the color of the line*/
+  opacity:.7;
+  content: '';
+  width: 115%;
+  position: absolute;
+  height:.13em;
+  border-radius:.1em;
+  left: -5%;
+  white-space:nowrap;
+  display: block;
+  transform: rotate(-25deg);
+}
+s.straight::before, strike.straight::before{transform: rotate(0deg);left:-1%;width:102%;}
+
+.second-text{
+  font-size: 14px;
+}
+

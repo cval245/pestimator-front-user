@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms'
-import { AccountService } from '../_services/account.service';
-import { first } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators} from '@angular/forms'
+import {AccountService} from '../_services/account.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +11,9 @@ import { first } from 'rxjs/operators';
 })
 export class SignupComponent implements OnInit {
 
+
     signupForm = this.fb.group({
+        recaptcha:[null, Validators.required],
         email:['', Validators.compose([Validators.email,
                     Validators.required])],
         username:['', Validators.required],
@@ -23,7 +25,8 @@ export class SignupComponent implements OnInit {
       re_password:['', Validators.compose(
         [this.PasswordSameValidator(),
           Validators.required]
-      )]
+      )],
+      terms_agreed: [false, Validators.requiredTrue],
         })
     returnUrl = ''
     loading = false;
@@ -100,11 +103,7 @@ export class SignupComponent implements OnInit {
 
     onSubmit(){
         this.submitted = true;
-
-        if (this.signupForm.controls.password == this.signupForm.controls.re_password){
-
-        }
-
+        console.log(this.signupForm)
         if(this.signupForm.valid) {
             this.loading = true;
             this.accService.register(this.signupForm.value)
@@ -116,6 +115,7 @@ export class SignupComponent implements OnInit {
                     },
                     error => {
                         let arr=[]
+                      console.log('[eee', error.error)
                         this.errorMessages = Object.keys(error.error)
                             .map((key) => [ error.error[key]] )
                         this.loading = false;
@@ -132,6 +132,7 @@ export class SignupComponent implements OnInit {
     // do that in account.service.ts
 
     // return and send to login page
+
 
 
 }

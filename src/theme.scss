@@ -244,7 +244,8 @@ $altTheme: (
   padding: 0 1.15em;
   margin: 0 .65em;
   min-width: 3em;
-  line-height: 36.4px
+  line-height: 36.4px;
+  background-color: transparent;
 }
 
 .mat-standard-chip {
@@ -295,27 +296,7 @@ body {
     font-family: sans-serif;
 }
 
-//.container {
-//    min-height: 100%;
-//    display: flex;
-//    flex-direction: column;
-    /* align-items: stretch; */
-    /* display:flex; */
-    /* flex-flow:row wrap; */
-//}
-//.over-main{
-//    flex: 1;
-//    display: flex
-//}
 
-app-header {
-    //flex: 0 0 100px;
-    //background: map-get($theme-primary, 'lighter');
-    /* order:1; */
-    /* height:100px; */
-    /* flex:0 1 100%; */
-    /* background: #f1b5b5; */
-}
 
 app-nav {
     flex: 0 2 150px;
@@ -354,36 +335,34 @@ app-footer {
     background: map-get($theme-primary, 'lighter');
 }
 
-.formContainer{
-    background-color: map-get($theme-primary, 'darker');
-    mat-vertical-stepper{
-        .mat-step-header{
-            background-color: map-get($theme-primary, 'lighter');
-        }
-        .form-row {
-            margin: 10px;
-        }
-        .mat-step-icon{
-            color: $light-text;
-            background-color: map-get($theme-accent, 'darker');
-        }
-        .mat-step-icon-selected{
-            color: $light-text;
-            background-color: map-get($theme-accent, 'main');
-        }
-        form{
-            //background: map-get($theme-primary, 'lighter');
-            mat-form-field{
-                padding-left: 10px;
-                padding-right: 10px;
-
-                mat-label{
-                    //color: $dark-text;
-                }
-                input{
-                    color: $dark-text;
-                }
-            }
-        }
-    }
-}
+//.formContainer{
+//    background-color: map-get($theme-primary, 'darker');
+//    mat-vertical-stepper{
+//        .mat-step-header{
+//            background-color: map-get($theme-primary, 'lighter');
+//        }
+//        .form-row {
+//            margin: 10px;
+//        }
+//        .mat-step-icon{
+//            color: $light-text;
+//            background-color: map-get($theme-accent, 'darker');
+//        }
+//        .mat-step-icon-selected{
+//            color: $light-text;
+//            background-color: map-get($theme-accent, 'main');
+//        }
+//        form{
+//            //background: map-get($theme-primary, 'lighter');
+//            mat-form-field{
+//                padding-left: 10px;
+//                padding-right: 10px;
+//
+//
+//                input{
+//                    color: $dark-text;
+//                }
+//            }
+//        }
+//    }
+//}
