@@ -41,7 +41,7 @@ export class AuthEffectsNew {
                           refreshTimer: this.getExpTimeAccess(profile.access)
                         })
                       })
-                      , tap(() => this.router.navigate(['/home']))
+                      , tap(() => this.router.navigate(['/home/home']))
                       , catchError(error => {
                         return of(loginFailure({error}))
                       })

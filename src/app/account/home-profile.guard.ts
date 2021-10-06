@@ -23,7 +23,7 @@ export class HomeProfileGuard implements CanActivate {
       }
       else{
         this.return_bool = true
-        this.router.navigateByUrl('/home')
+        this.router.navigateByUrl('/home/home')
       }
     })
 

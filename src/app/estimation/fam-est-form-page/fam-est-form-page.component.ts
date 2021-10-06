@@ -130,7 +130,7 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
       })).subscribe(x => {
         if(x.id !=0){
           this.error_display_bool = false
-          this.router.navigate(['estimations/' + x.id])
+          this.router.navigate(['estimation/estimations/' + x.id])
         }
       })
     }

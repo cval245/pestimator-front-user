@@ -11,6 +11,9 @@ import {keys, map, omit, values} from 'lodash'
 export class ChartFamEstDetailComponent implements OnChanges {
   @Input() countryAggeds: any
   public lineChartType: ChartType = 'bar'
+
+  public divStyle: number = 100;
+  public enlargedChart: boolean = false;
   public chartData: ChartConfiguration['data'] = {
     datasets: [
       {
@@ -82,4 +85,14 @@ export class ChartFamEstDetailComponent implements OnChanges {
             }
         }
     }
+
+  canvasClicked() {
+    if (this.enlargedChart) {
+      this.divStyle = 100;
+      this.enlargedChart = false
+    } else {
+      this.divStyle = 200;
+      this.enlargedChart = true
+    }
+  }
 }

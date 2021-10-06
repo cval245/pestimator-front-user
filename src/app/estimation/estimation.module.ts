@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {RouterModule} from '@angular/router';
 
 import {FamilyEstimateMainComponent} from './family-estimate-main/family-estimate-main.component';
 import {FamilyEstimateTableComponent} from './family-estimate-table/family-estimate-table.component';
@@ -17,7 +16,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatTableModule} from '@angular/material/table';
-import {NgChartsModule} from 'ng2-charts';
 import {FamEstDetailTableComponent} from './fam-est-detail-table/fam-est-detail-table.component';
 import {ChartFamEstDetailComponent} from './chart-fam-est-detail/chart-fam-est-detail.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -30,6 +28,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatListModule} from "@angular/material/list";
 import {ParameterDetailsComponent} from './parameter-details/parameter-details.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {EstimationRoutingModule} from "./estimation-routing.module";
+import {NgChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -46,25 +46,26 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     ParameterDetailsComponent,
   ],
     imports: [
-        CommonModule,
-        RouterModule,
-        MatCheckboxModule,
-        MatInputModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatStepperModule,
-        MatTableModule,
-        MatDividerModule,
-        MatPaginatorModule,
-        MatDialogModule,
-        FlexLayoutModule,
-        NgChartsModule,
-        ReactiveFormsModule,
-        MatListModule,
-        MatTooltipModule,
+      CommonModule,
+      // RouterModule,
+      EstimationRoutingModule,
+      MatCheckboxModule,
+      MatInputModule,
+      MatButtonModule,
+      MatFormFieldModule,
+      MatSelectModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatStepperModule,
+      MatTableModule,
+      MatDividerModule,
+      MatPaginatorModule,
+      MatDialogModule,
+      FlexLayoutModule,
+      ReactiveFormsModule,
+      MatListModule,
+      MatTooltipModule,
+      NgChartsModule,
     ],
   exports: [
     FamEstFormComponent,

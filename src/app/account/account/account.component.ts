@@ -43,10 +43,10 @@ export class AccountComponent implements OnInit {
         this.isDisabled = false;
     }
     onSubmit(formData: UserProfile){
-        if(formData.id == undefined){
-            this.userProfSer.add(formData)
-        } else{
-            this.userProfSer.update(formData)
+        if (formData.id == 0) {
+          this.userProfSer.add(formData)
+        } else {
+          this.userProfSer.update(formData)
         }
     }
 }

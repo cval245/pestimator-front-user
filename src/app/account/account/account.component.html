@@ -11,15 +11,14 @@
             <button mat-raised-button color="accent"
                     (click)="disabled()"
                     [disabled]="isDisabled"
-                    [routerLink]="['/account', {outlets: {resetusername: ['username-form']}}]">
+                    [routerLink]="['/account/', {outlets: {resetusername: ['username-form']}}]">
               Change Username
             </button>
             <button mat-raised-button color="accent"
                     (click)="disabled()"
                     [disabled]="isDisabled"
-                    [routerLink]="['/account',
-                                             {outlets: {resetpassword: ['password-form']}}]">
-                Change Password
+                    [routerLink]="[{outlets: {resetpassword: ['password-form']}}]">
+              Change Password
             </button>
             </div>
         </div>

@@ -43,6 +43,7 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('home page init')
     this.famEstSer.getAll()
     this.familySer.getAll()
   }

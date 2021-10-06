@@ -1,3 +1,8 @@
+<head>
+  <meta name="description" content="EstPat home page for learning about patent cost estimations.
+  Accurate prediction of patent costs tool. Insights into patent portfolio fees and expenditures">
+</head>
+
 <div fxShow.sm fxShow.gt-sm fxHide gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;"
 >
@@ -9,33 +14,34 @@
       <p>
         Create another estimate here
       </p>
-      <img src="assets/images/Peregrine-falcon.svg" style="width: 100%">
-        </mat-card-content>
-        <mat-card-footer>
-            <mat-card-actions align="end">
-                <button mat-flat-button color="accent" style="right: 15px"
-                        routerLink="/fam-est-form">
-                    Create Estimate</button>
-            </mat-card-actions>
-        </mat-card-footer>
-    </mat-card>
+      <img src="assets/images/Peregrine-falcon.webp" style="width: 100%">
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="accent" style="right: 15px"
+                routerLink="/estimation/fam-est-form">
+          Create Estimate
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
 
-    <mat-card>
-        <mat-card-header>
-          <mat-card-title>Coming Soon...</mat-card-title>
-        </mat-card-header>
-      <mat-card-content>
-        <img  src="assets/images/Cardinal.svg" style="width: 100%">
-        <ul fxLayout="column" fxLayoutAlign="start start">
-          <li>Lawyer Fee Estimates</li>
-          <li>Custom Fees</li>
-          <li>Custom Filing Dates</li>
-          <li>Custom Office Actions</li>
-        </ul>
-      </mat-card-content>
-        <mat-card-footer>
-        </mat-card-footer>
-    </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Coming Soon...</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <img src="assets/images/Cardinal.webp" style="width: 100%">
+      <ul fxLayout="column" fxLayoutAlign="start start">
+        <li>Lawyer Fee Estimates</li>
+        <li>Custom Fees</li>
+        <li>Custom Filing Dates</li>
+        <li>Custom Office Actions</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-footer>
+    </mat-card-footer>
+  </mat-card>
   <mat-card gdcolumn="auto / span 2" style="grid-column: auto / span 2;">
     <mat-card-header>
       <mat-card-title>View Estimates</mat-card-title>
@@ -48,12 +54,12 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimations">
+                routerLink="/estimation/estimations">
           View All
         </button>
-            </mat-card-actions>
-        </mat-card-footer>
-    </mat-card>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
 </div>
 <div fxHide fxShow.lt-sm>
   <mat-card class="mat-card-mobile">
@@ -68,12 +74,13 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/fam-est-form">
-          Create Estimate</button>
+                routerLink="/estimation/fam-est-form">
+          Create Estimate
+        </button>
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
-  <mat-card  class="mat-card-mobile">
+  <mat-card class="mat-card-mobile">
     <mat-card-header>
       <mat-card-title>Coming Soon...</mat-card-title>
     </mat-card-header>
@@ -100,7 +107,7 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimations">
+                routerLink="/estimation/estimations">
           View All
         </button>
       </mat-card-actions>

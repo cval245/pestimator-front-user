@@ -168,7 +168,6 @@ app-footer {
         padding-left: 10px;
         padding-right: 10px;
 
-
         .ng-star-inserted {
           color: $dark-accent-text;
         }
@@ -247,7 +246,7 @@ tr.element-row:not(.expanded-row):hover {
   top: 1.7em;
   left: 1.7em;
   background-color: transparent;
-  border-left: .25em solid map-get($theme-primary, 'darker') ;
+  border-left: .25em solid map-get($theme-primary, 'lighter');
   transform: rotate(45deg);
 }
 
@@ -267,7 +266,7 @@ tr.element-row:not(.expanded-row):hover {
   width: 1em;
   height: 1em;
   background-color: transparent;
-  border: .25em solid map-get($theme-primary, 'main');
+  border: .25em solid map-get($theme-primary, 'lighter');
   border-radius: 15%;
   transform: translate(0, -1em) rotate(-45deg);
   animation: push 2.5s cubic-bezier(.79, 0, .47, .97) infinite;
@@ -308,10 +307,20 @@ tr.element-row:not(.expanded-row):hover {
     transform: translate(0, -1em) rotate(-225deg);
   }
 }
-.loading-background{
-  background-color: $light-background;
-  height: 100%;
-  width: 100%;
+.loading-background {
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 10000 !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: fixed !important;
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  visibility: visible !important;
+  transition: visibility 0s, opacity 0.4s linear !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: wait !important;
 }
 
 

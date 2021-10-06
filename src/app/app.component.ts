@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
     [Breakpoints.Large, 'Large'],
     [Breakpoints.XLarge, 'XLarge'],
   ]);
+  contentClass: string = 'fullSize';
 
   constructor(
     breakpointObserver: BreakpointObserver,
@@ -57,20 +58,29 @@ export class AppComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-
   }
 
   ngOnInit(): void {
-    this.store.select('authCred').pipe(takeUntil(this.destroyed), delay(0)).subscribe(x => {
+    console.log('does this get created twice')
+    console.log('premature logged in', this.isLoggedIn)
+    this.store.select('authCred').pipe(takeUntil(this.destroyed), delay(0)
+    ).subscribe(x => {
+      console.log('thisSUPER.isLoggedIn', this.isLoggedIn)
       this.isLoggedIn = x.isLoggedIn
-      this.changeDetectorRef.detectChanges()
+      if (this.isLoggedIn) {
+        this.contentClass = 'logged-in-over-main'
+      } else {
+        this.contentClass = 'fullSize'
+      }
+      // this.changeDetectorRef.detectChanges()
       console.log('this.isLoggedIn', this.isLoggedIn)
+
     })
-    this.store.select('loading').pipe(takeUntil(this.destroyed),delay(0), debounceTime(200))
+    this.store.select('loading').pipe(takeUntil(this.destroyed), delay(0), debounceTime(500))
       .subscribe((value: any) => {
         this.loading = value.loading
       })
-    this.store.select('menuOpen').pipe(takeUntil(this.destroyed), delay(0)).subscribe((x: any)=> {
+    this.store.select('menuOpen').pipe(takeUntil(this.destroyed), delay(0)).subscribe((x: any) => {
       this.showMenuBool = x.menuOpen
     })
   }

@@ -1,38 +1,33 @@
 <div class="container">
   <app-header>
   </app-header>
-  <div *ngIf="loading; else notLoading" class="loading-background">
+  <div *ngIf="loading" class="loading-background">
+    <!--  <div *ngIf="loading" class="loading-background">-->
     <app-loading></app-loading>
   </div>
-  <ng-template #notLoading>
-    <div class="over-main" fxLayout="row" fxLayoutAlign="space-between">
-      <mat-sidenav-container fxFlex class="example-sidenav-container">
-        <mat-sidenav *ngIf="!mobile_bool && isLoggedIn" mode="side" fixedTopGap="56" opened
-                     fxShow FxHide.xs="true">
-          <app-nav *ngIf="isLoggedIn" fxFlex>
-          </app-nav>
-        </mat-sidenav>
+  <!--  <div>-->
+  <div class="over-main" fxLayout="row" fxLayoutAlign="space-between">
+    <mat-sidenav-container fxFlex class="example-sidenav-container">
+      <mat-sidenav *ngIf="!mobile_bool && isLoggedIn" mode="side" fixedTopGap="56" opened
+                   fxShow FxHide.xs="true">
+        <app-nav *ngIf="isLoggedIn" fxFlex>
+        </app-nav>
+      </mat-sidenav>
         <mat-sidenav *ngIf="mobile_bool" [(opened)]="showMenuBool">
           <app-nav *ngIf="isLoggedIn" fxFlex>
           </app-nav>
         </mat-sidenav>
-        <mat-sidenav-content *ngIf="isLoggedIn" class="logged-in-over-main">
-          <ng-container *ngTemplateOutlet="mainApp"></ng-container>
-<!--        <app-main>-->
-<!--        </app-main>-->
-          <app-aside *ngIf="isLoggedIn" fxShow fxHide.lt-md="true">
-          </app-aside>
-        </mat-sidenav-content>
-        <mat-sidenav-content *ngIf="!isLoggedIn" class="fullSize">
-<!--            <app-main></app-main>-->
-          <ng-container *ngTemplateOutlet="mainApp"></ng-container>
-        </mat-sidenav-content>
-        <ng-template #mainApp>
-          <app-main></app-main>
-        </ng-template>
-      </mat-sidenav-container>
-    </div>
-  </ng-template>
-  <app-footer>
-  </app-footer>
+      <mat-sidenav-content [ngClass]="contentClass">
+        <ng-container *ngTemplateOutlet="mainApp"></ng-container>
+        <app-aside *ngIf="isLoggedIn" fxShow fxHide.lt-md="true">
+        </app-aside>
+      </mat-sidenav-content>
+      <ng-template #mainApp>
+        <app-main></app-main>
+      </ng-template>
+    </mat-sidenav-container>
+  </div>
 </div>
+<app-footer>
+</app-footer>
+<!--</div>-->

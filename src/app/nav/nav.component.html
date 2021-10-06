@@ -1,16 +1,17 @@
 <div>
     <div fxLayoutAlign="center none" fxLayout="column">
         <a mat-button
-           routerLink="/home">
+           routerLink="/home/home"
+           (click)="closeMenu()">
           <p class="mat-h3">Home</p>
-            </a>
+        </a>
         <a mat-button
-           routerLink="/estimations"
-        (click)="closeMenu()">
+           routerLink="/estimation/estimations"
+           (click)="closeMenu()">
           <p class="mat-h3">Estimations</p>
             </a>
         <a mat-button
-           routerLink="/fam-est-form"
+           routerLink="/estimation/fam-est-form"
            (click)="closeMenu()">
           <p class="mat-h3">New Estimation</p>
             </a>

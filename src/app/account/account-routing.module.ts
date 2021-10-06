@@ -23,46 +23,53 @@ import {PrivacyPolicyComponent} from "./privacy-policy/privacy-policy.component"
 import {TermsOfUseComponent} from "./terms-of-use/terms-of-use.component";
 
 const routes: Routes = [
-    {path: 'login', component: LoginComponent},
-    {path: 'logout', component: LogoutComponent},
-    {path: 'signup', component: SignupComponent},
-    {path: 'account', component: AccountComponent,
-     children: [
-         {
-             path: 'username-form',
-             component: ResetUsernameComponent,
-             outlet: 'resetusername',
-         },
-         {
-             path: 'password-form',
-             component: ResetPasswordComponent,
-             outlet: 'resetpassword',
-         },
-       {
-         path: '', component: AccountComponent,
-         outlet: 'master'
-       },
-         ],
+  {path: 'login', component: LoginComponent},
+  {path: 'logout', component: LogoutComponent},
+  {path: 'signup', component: SignupComponent},
 
-     canActivate: [LoggedInGuard],
-    },
-  {path: 'account/checkout/success', component: CheckoutSuccessComponent, canActivate: [LoggedInGuard]},
-  {path: 'account/checkout/cancel', component: CheckoutCancelComponent, canActivate: [LoggedInGuard]},
-  {path: 'account/user-profile', component: UserProfileComponent, canActivate: [LoggedInGuard]},
-    {path: 'account/buy-new-estimate', component: BuyNewEstimateComponent,
-    canActivate: [BuyEstimateGuard, LoggedInGuard]},
-    {path: 'account/activation-sent/:email', component: ActivateEmailSentComponent },
-    {path: 'account/activate/:uid/:token', component: ActivateComponent},
-    {path: 'account/reset_password', component: ResetPasswordEmailComponent},
-    {path: 'account/reset_password/email-success',
-     component: PasswordResetEmailSentComponent},
-    {path: 'account/password-reset/:uid/:token',
-     component: ResetPasswordEmailConfirmationComponent },
-    {path: 'account/password-reset/success',
-     component: PasswordResetSuccessComponent},
-    {path: 'account/retrieve-username', component:RetrieveUsernameComponent},
-    {path: 'account/privacy-policy', component: PrivacyPolicyComponent},
-    {path: 'account/terms-of-use', component: TermsOfUseComponent},
+  {path: 'checkout/success', component: CheckoutSuccessComponent, canActivate: [LoggedInGuard]},
+  {path: 'checkout/cancel', component: CheckoutCancelComponent, canActivate: [LoggedInGuard]},
+  {path: 'user-profile', component: UserProfileComponent, canActivate: [LoggedInGuard]},
+  {
+    path: 'buy-new-estimate', component: BuyNewEstimateComponent,
+    canActivate: [BuyEstimateGuard, LoggedInGuard]
+  },
+  {path: 'activation-sent/:email', component: ActivateEmailSentComponent},
+  {path: 'activate/:uid/:token', component: ActivateComponent},
+  {path: 'reset_password', component: ResetPasswordEmailComponent},
+  {
+    path: 'reset_password/email-success',
+    component: PasswordResetEmailSentComponent
+  },
+  {
+    path: 'password-reset/:uid/:token',
+    component: ResetPasswordEmailConfirmationComponent
+  },
+  {
+    path: 'password-reset/success',
+    component: PasswordResetSuccessComponent
+  },
+  {path: 'retrieve-username', component: RetrieveUsernameComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'terms-of-use', component: TermsOfUseComponent},
+
+  {
+    path: '', component: AccountComponent,
+    children: [
+      {
+        path: 'username-form',
+        component: ResetUsernameComponent,
+        outlet: 'resetusername',
+      },
+      {
+        path: 'password-form',
+        component: ResetPasswordComponent,
+        outlet: 'resetpassword',
+      },
+    ],
+
+    canActivate: [LoggedInGuard],
+  },
 ];
 
 @NgModule({

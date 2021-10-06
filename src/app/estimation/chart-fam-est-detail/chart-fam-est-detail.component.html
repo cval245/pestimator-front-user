@@ -1,11 +1,10 @@
-<div class="flex chartOverContainer">
-  <div class="flex-item">
-    <div style="display: block; ">
-      <canvas baseChart height="1" width="2"
-              [data]="chartData"
-              [options]="lineChartOptions"
-              [type]="lineChartType"
-      ></canvas>
-    </div>
+<div class="chartOverContainer">
+  <div style="display: block; " [ngStyle.lt-sm]="{'width.%': divStyle}">
+    <canvas baseChart height="1" width="2"
+            [data]="chartData"
+            [options]="lineChartOptions"
+            [type]="lineChartType"
+            (chartClick)="canvasClicked()"
+    ></canvas>
   </div>
 </div>

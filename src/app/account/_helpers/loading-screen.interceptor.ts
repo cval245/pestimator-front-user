@@ -26,19 +26,21 @@ export class LoadingScreenInterceptor implements HttpInterceptor {
     }
     if (displayLoadingScreen) {
       if (this.activeRequests === 0) {
-        setTimeout(() =>
-        {
-          if(this.activeRequests === 0){
-            console.log('sdf')
+        setTimeout(() => {
+          if (this.activeRequests === 0) {
+            console.log('this.activeRequests', this.activeRequests)
           } else {
+            console.log('this.activeRequests not 0', this.activeRequests)
             this.store.dispatch(loading({loading: true}))
-        }}, 200)
+          }
+        }, 300)
         // start loading
       }
       this.activeRequests++
       return next.handle(request).pipe(
         finalize(() => {
           this.activeRequests--;
+          console.log('this.activeREquests just decreased', this.activeRequests)
           if (this.activeRequests === 0) {
             this.store.dispatch(loading({loading: false}))
             // stop loading

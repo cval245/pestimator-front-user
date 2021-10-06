@@ -17,13 +17,13 @@ export class AccountDetailsFormComponent implements OnInit {
     constructor(private fb: FormBuilder) {
         this.userProfile = new UserProfile()
         this.acctForm = this.fb.group({
-            id: [undefined],
-            company_name : ['', Validators.required],
-            address: ['', Validators.required],
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            zip_code: ['', Validators.required],
-            estimates_remaining:['']
+          id: [0],
+          company_name: ['', Validators.required],
+          address: ['', Validators.required],
+          city: ['', Validators.required],
+          state: ['', Validators.required],
+          zip_code: ['', Validators.required],
+          estimates_remaining: ['']
         })
     }
 

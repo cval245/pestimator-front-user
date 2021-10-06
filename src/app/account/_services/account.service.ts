@@ -27,7 +27,7 @@ export class AccountService {
 
     logout(){
         this.store.dispatch(logout());
-        let succ = this.router.navigate(['logout'])
+        let succ = this.router.navigate(['account/logout'])
         return from(succ)
     }
 

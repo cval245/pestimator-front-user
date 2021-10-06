@@ -1,7 +1,7 @@
 <div style="max-width: 1030px">
   <h1>Family Name: {{family.family_name}}</h1>
-  <app-chart-fam-est-detail class="chartOverContainer"
-                            [countryAggeds]="countryAgged"></app-chart-fam-est-detail>
+  <app-chart-fam-est-detail
+    [countryAggeds]="countryAgged"></app-chart-fam-est-detail>
   <div *ngIf="countryAgged.length>0 && displayedColumns.length>1">
     <app-fam-est-detail-table [displayedColumns]="displayedColumns"
                               [countryAggeds]="countryAgged"
