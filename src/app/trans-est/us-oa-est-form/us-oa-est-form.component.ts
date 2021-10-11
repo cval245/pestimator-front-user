@@ -26,9 +26,9 @@ interface TableWise {
 export class UsOaEstFormComponent {
 
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
-  @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
-  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '','')]
+  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
+  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '', '')]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter

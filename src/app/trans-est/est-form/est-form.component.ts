@@ -26,9 +26,9 @@ export interface IIndexable<T = any> { [key: string]: T }
 })
 export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
-  @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
-  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '','')]
+  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
+  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '', '')]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter
@@ -208,7 +208,6 @@ export class EstFormComponent {
         data.conditions[key] = null
       }
     })
-    console.log('this.form.value', this.form.value)
     this.formData.emit(this.form.value)
 
     //reset editing row

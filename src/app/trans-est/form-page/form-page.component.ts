@@ -4,8 +4,6 @@ import {map} from 'lodash';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
-import {Country} from 'src/app/characteristics/_models/Country.model';
-import {ApplTypeService} from 'src/app/characteristics/_services/appl-type.service';
 import {CountryAllService} from 'src/app/characteristics/_services/country-all.service';
 import {IAllowTrans} from '../_models/AllowTrans.model';
 import {ICountryOANum} from '../_models/CountryOANum.model';
@@ -20,6 +18,7 @@ import {IssueTransService} from '../_services/issue-trans.service';
 import {OaTransService} from '../_services/oa-trans.service';
 import {PublTransService} from '../_services/publ-trans.service';
 import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
+import {CountryAll} from "../../characteristics/_models/CountryAll.model";
 
 interface CountryWise {
   id: number,
@@ -34,8 +33,8 @@ interface CountryWise {
 export class FormPageComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
-  public countries: Country[] = [new Country(0, '', '', false, false, '', '')]
-  public applTypes: ApplType[] = [new ApplType(0, '', '')]
+  public countries: CountryAll[] = [new CountryAll(0, '', '', false, false, false, '', '', [0], [0])]
+  public applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   public cstmFilTrans = new Array<ICustomFilTrans>()
   public publTrans = new Array<IPublTrans>()
   public oaTrans = new Array<IOATrans>()
@@ -43,7 +42,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
   public issueTrans = new Array<IIssueTrans>()
   public oaNum = new Array<ICountryOANum>()
   public countryControl = new FormControl()
-  public country: Country = new Country(0, '', '', false, false, '', '')
+  public country: CountryAll = new CountryAll(0, '', '', false, false, false, '', '', [0], [0])
 
   constructor(
     private countrySer: CountryAllService,
@@ -63,10 +62,10 @@ export class FormPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.applTypes = x)
 
-      this.countryControl.valueChanges
+    this.countryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.country = x
+      .subscribe((x: number) => {
+        this.country = this.countries.find(y => y.id == x)!
         this.cstmFilSer.setFilter({
           country_id: x
         })
@@ -126,6 +125,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.allowTranSer.getAll()
     this.issueTranSer.getAll()
     this.applTypeSer.getAll()
+    this.oaNumSer.getAll()
   }
 
   ngOnDestroy(): void {
@@ -155,7 +155,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
 
 
   onSubmitPublTrans(formData: IPublTrans): void {
-    console.log('formDATa', formData)
     if (formData.id == undefined) {
       this.publTranSer.add(formData)
     } else {
@@ -167,7 +166,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitOATrans(formData: IOATrans): void {
-    console.log('formDATa', formData)
     if (formData.id == undefined){
       this.oaTranSer.add(formData)
     } else {
@@ -179,7 +177,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitAllowTrans(formData: IAllowTrans): void {
-    console.log('formDATa', formData)
     if (formData.id == undefined){
       this.allowTranSer.add(formData)
     } else {
@@ -191,7 +188,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitIssueTrans(formData: IIssueTrans): void {
-    console.log('formDATa', formData)
     if (formData.id == undefined){
       this.issueTranSer.add(formData)
     } else {
@@ -215,7 +211,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitOanum(formData: ICountryOANum): void{
-    console.log('formData', formData)
     if (formData.id == undefined){
       this.oaNumSer.add(formData)
     } else {
@@ -223,8 +218,15 @@ export class FormPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  delOanum(row: ICountryOANum): void{
+  delOanum(row: ICountryOANum): void {
     this.oaNumSer.delete(row)
   }
 
+  submitCountryForm(formData: CountryAll) {
+    if (formData.id == undefined) {
+      this.countrySer.add(formData)
+    } else {
+      this.countrySer.update(formData)
+    }
+  }
 }

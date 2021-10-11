@@ -48,7 +48,9 @@
     </mat-card-header>
     <mat-card-content>
       <app-family-estimate-table [famEsts]="famEsts"
-                                 [pageSize]="pageSize">
+                                 [pageSize]="pageSize"
+                                 (famEstFormdataID)="seeDetails($event)">
+        >
       </app-family-estimate-table>
     </mat-card-content>
     <mat-card-footer>

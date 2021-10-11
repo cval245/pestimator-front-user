@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ResetPasswordEmailService } from '../reset-password-email.service';
-import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ResetPasswordEmailService} from '../reset-password-email.service';
+import {FormControl, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-reset-password-email',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ResetPasswordEmailComponent implements OnInit {
 
-    public email = new FormControl('', Validators.required);
+  public email = new FormControl('', Validators.required);
 
     constructor(
         private route: ResetPasswordEmailService,
@@ -22,7 +22,6 @@ export class ResetPasswordEmailComponent implements OnInit {
     }
 
     resetEmail() {
-        console.log('sdf')
         //let context = this.email.value
         let context = {'email': this.email.value}
         this.route.postResetPassword(context).subscribe(complete => {

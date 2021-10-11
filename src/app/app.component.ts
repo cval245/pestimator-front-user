@@ -61,11 +61,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('does this get created twice')
-    console.log('premature logged in', this.isLoggedIn)
     this.store.select('authCred').pipe(takeUntil(this.destroyed), delay(0)
     ).subscribe(x => {
-      console.log('thisSUPER.isLoggedIn', this.isLoggedIn)
       this.isLoggedIn = x.isLoggedIn
       if (this.isLoggedIn) {
         this.contentClass = 'logged-in-over-main'
@@ -73,7 +70,6 @@ export class AppComponent implements OnInit {
         this.contentClass = 'fullSize'
       }
       // this.changeDetectorRef.detectChanges()
-      console.log('this.isLoggedIn', this.isLoggedIn)
 
     })
     this.store.select('loading').pipe(takeUntil(this.destroyed), delay(0), debounceTime(500))

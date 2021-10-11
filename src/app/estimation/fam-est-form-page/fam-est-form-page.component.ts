@@ -21,7 +21,7 @@ import {catchError} from "rxjs/operators";
 })
 export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
-  public applTypes: ApplType[] = [new ApplType(0, '', '')];
+  public applTypes: ApplType[] = [new ApplType(0, '', '', [0])];
   private applTypes$: Observable<ApplType[]>;
   private applTypesSub: Subscription;
 
@@ -30,14 +30,15 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   private countriesSub: Subscription;
 
   public pct_countries: Country[];
+  public ep_countries: Country[];
 
   public entitySizes: EntitySize[] = [new EntitySize(0,'','')];
   private entitySizes$: Observable<EntitySize[]>;
   private entitySizesSub: Subscription;
   private famformData: FamEstForm = new FamEstForm('',
-    '',0,'',0,0,
-    0,0,0,0,0,0,
-    false,0,'', false, 0);
+    '', 0, '', 0, 0,
+    0, 0, 0, 0, 0, 0,
+    false, 0, 0, '', false, 0, 0, 0, 0);
   public error_notification: string = '';
   public error_display_bool: boolean = false;
 
@@ -49,14 +50,15 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
   ) {
-    this.applTypes = [new ApplType(0, '', '')];
+    this.applTypes = [new ApplType(0, '', '', [0])];
     this.applTypes$ = applTypeSer.entities$;
     this.applTypesSub = new Subscription();
-    this.countries = [new Country(0, '', '', false, false, '', '')];
+    this.countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
     this.countries$ = countrySer.entities$;
     this.countriesSub = new Subscription();
-    this.pct_countries = [new Country(0, '', '', false, false, '', '')];
-    this.entitySizes = [new EntitySize(0, '','')];
+    this.pct_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
+    this.ep_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
+    this.entitySizes = [new EntitySize(0, '', '')];
     this.entitySizes$ = entitySizeSer.entities$;
     this.entitySizesSub = new Subscription();
   }
@@ -66,15 +68,19 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
 
       this.countries = map(orderBy(x, ['long_name'], ['asc']),
         (y, i) => {
-        if (i <= x.length / 2) {
-          return {...y, 'col': 1}
-        } else {
-          return {...y, 'col': 2}
-        }
-      })
+          if (i <= x.length / 2) {
+            return {...y, 'col': 1}
+          } else {
+            return {...y, 'col': 2}
+          }
+        })
       this.pct_countries = this.countries.filter(y => y.pct_analysis_bool)
+      this.ep_countries = this.countries.filter(y => y.ep_bool)
     });
-    this.applTypesSub = this.getApplTypes().subscribe(x => this.applTypes = x);
+    this.applTypesSub = this.getApplTypes().subscribe(x => {
+      this.applTypes = x
+      console.log('tsdf', this.applTypes)
+    });
     this.entitySizesSub = this.getEntitySize().subscribe(x => this.entitySizes = x);
   }
 
@@ -117,36 +123,41 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
       const dateSplit = dateParts[0].split('\"')
       this.famformData.init_appl_filing_date = dateSplit[1]
       this.add(this.famformData).pipe(catchError(err => {
-        console.log('err.error', err.error)
-        console.log('err.error.error', err.error.error)
         this.error_notification = err.error.error.detail
         this.error_display_bool = true
         return of(
           new FamEstForm('',
-          '',0,'',0,0,
-          0,0,0,0,0,0,
-          false,0,'', false, 0)
+            '', 0, '', 0, 0,
+            0, 0, 0, 0, 0, 0,
+            false, 0, 0, '', false, 0, 0, 0, 0)
         )
       })).subscribe(x => {
         if(x.id !=0){
           this.error_display_bool = false
-          this.router.navigate(['estimation/estimations/' + x.id])
+          this.router.navigate(['estimation/estimations/' + x.unique_display_no])
         }
       })
     }
 
-    verifySubmission(formData: FamEstForm){
+    verifySubmission(formData: FamEstForm) {
       this.famformData = formData
-      console.log('this.famformData', this.famformData)
       let fullFormData = formData
       let totalFormData: FamEstFormFull;
       let entity_size = this.entitySizes.find(x => x.id == fullFormData.entity_size)!
-      let init_appl_country= this.countries.find(x => x.id == fullFormData.init_appl_country)!
+      let init_appl_country = this.countries.find(x => x.id == fullFormData.init_appl_country)!
       let init_appl_type = this.applTypes.find(x => x.id == fullFormData.init_appl_type)!
-      let countries = fullFormData.countries.map((x: number) => {
+
+      let pct_country = this.countries.find(x => x.id == fullFormData.pct_country)!
+      let isa_country = this.countries.find(x => x.id == fullFormData.isa_country)!
+      let pct_countries = fullFormData.pct_countries.map((x: number) => {
         return this.countries.find(y => y.id == x)
       })
-      let meth_country= this.countries.find(x => x.id == fullFormData.meth_country)!
+      let ep_countries = fullFormData.ep_countries.map((x: number) => {
+        return this.countries.find(y => y.id == x)
+      })
+      let paris_countries = fullFormData.paris_countries.map((x: number) => {
+        return this.countries.find(y => y.id == x)
+      })
       totalFormData = new FamEstFormFull(
         fullFormData.family_name,
         fullFormData.family_no,
@@ -160,13 +171,15 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
         fullFormData.init_appl_pages_desc,
         fullFormData.init_appl_pages_claims,
         fullFormData.init_appl_pages_drawings,
-        fullFormData.method,
-        meth_country,
-        countries,
+        fullFormData.pct_method,
+        pct_country,
+        isa_country,
+        pct_countries,
         fullFormData.ep_method,
+        ep_countries,
+        paris_countries,
         fullFormData.id,
       );
-      console.log('totalFormData', totalFormData)
 
        let dialogRef = this.dialog.open(FamEstConfirmComponent, {
          width: '500px',

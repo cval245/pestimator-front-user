@@ -21,7 +21,6 @@ export class BuyEstimateGuard implements CanActivate {
         this.return_bool=false;
       }
       else{
-        console.log('eee')
         this.return_bool = true
         this.router.navigateByUrl('/account/buy-new-estimate')
       }

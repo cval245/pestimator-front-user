@@ -8,5 +8,8 @@ export class CountryAll{
       public pct_analysis_bool: boolean,
       public color: string,
       public long_name: string,
-    ){}
+      public available_appl_types: [number],
+      public isa_countries: [number]
+    ) {
+    }
 }

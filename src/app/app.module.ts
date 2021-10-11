@@ -16,7 +16,6 @@ import {metaReducers} from './store/storage.metareducer';
 import {entityConfig} from './entity-metadata';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-// import {LawFirmRoutingModule} from './law-firm/law-firm-routing.module';
 import {JwtInterceptor} from './account/_helpers/jwt.interceptor';
 import {environment} from '../environments/environment';
 import {AuthEffectsNew} from './store/effects/auth.effect';
@@ -24,14 +23,11 @@ import {LandingRoutingModule} from './landing/landing-routing.module';
 import {LandingModule} from './landing/landing.module';
 import {authReducer} from './store/reducers/auth.reducers';
 import {MyHttpUrlGenerator} from './my-http-url-generator';
-// import {EstimationRoutingModule} from './estimation/estimation-routing.module';
 import {HeaderComponent} from './header/header.component';
 import {NavComponent} from './nav/nav.component';
 import {MainComponent} from './main/main.component';
 import {AsideComponent} from './aside/aside.component';
 import {FooterComponent} from './footer/footer.component';
-// import {LawFirmModule} from './law-firm/law-firm.module';
-// import {EstimationModule} from './estimation/estimation.module';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {ContentFreeRoutingModule} from "./content-free/content-free-routing.module";
 import {ContentFreeModule} from "./content-free/content-free.module";
@@ -60,11 +56,7 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
   imports: [
     HttpClientModule,
     BrowserModule,
-    // AccountModule,
     LandingModule,
-    // HomeModule,
-    // LawFirmModule,
-    // EstimationModule,
     ContentFreeModule,
     FlexLayoutModule,
     MatToolbarModule,
@@ -81,10 +73,6 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
     }),
     EffectsModule.forRoot([AuthEffectsNew]),
     EntityDataModule.forRoot(entityConfig),
-    // AccountRoutingModule,
-    // HomeRoutingModule,
-    // LawFirmRoutingModule,
-    // EstimationRoutingModule,
     LandingRoutingModule,
     AppRoutingModule,
     ContentFreeRoutingModule,

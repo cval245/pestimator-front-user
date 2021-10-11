@@ -47,15 +47,15 @@
     <div mat-subheader>International Filing Methods</div>
     <mat-list-item>
       <p matLine></p>
-      <p matLine>Using PCT Method:  {{formData.method}}</p>
-        <p matLine *ngIf="formData.method">PCT Country:  {{formData.meth_country.country}}</p>
+      <p matLine>Using PCT Method:  {{formData.pct_method}}</p>
+      <p matLine *ngIf="formData.pct_method">PCT Country:  {{formData.pct_country.country}}</p>
       <p matLine>Using EPO Method:  {{formData.ep_method}}</p>
     </mat-list-item>
     <mat-divider></mat-divider>
     <div mat-subheader>National Phase Countries</div>
     <mat-list-item>
-      <div *ngIf="formData.countries.length > 0">
-        <div matLine *ngFor="let c of formData.countries">
+      <div *ngIf="formData.pct_countries.length > 0">
+        <div matLine *ngFor="let c of formData.pct_countries">
           <li>{{c.country}}</li>
         </div>
       </div>

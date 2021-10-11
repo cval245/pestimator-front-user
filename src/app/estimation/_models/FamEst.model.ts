@@ -6,5 +6,6 @@ export class FamEst{
       public official_cost?: number,
       public translation_cost?: number,
       public total_cost?: number,
+      public famestformdata?: number,
     ){}
 }

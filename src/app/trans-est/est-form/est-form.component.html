@@ -69,8 +69,11 @@
           <div formGroupName="conditions">
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Prior PCT</mat-label>
-              <input matInput type="text"
-                     formControlName="prior_pct">
+              <mat-select class="custom-select"
+                          formControlName="prior_pct">
+                <mat-option [value]=true>True</mat-option>
+                <mat-option [value]=false>False</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
@@ -92,8 +95,11 @@
           <div formGroupName="conditions">
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Previous Appl Date excl Intermediary Time</mat-label>
-              <input matInput type="text"
-                     formControlName="prev_appl_date_excl_intermediary_time">
+              <mat-select class="custom-select"
+                          formControlName="prev_appl_date_excl_intermediary_time">
+                <mat-option [value]=true>True</mat-option>
+                <mat-option [value]=false>False</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
@@ -115,8 +121,11 @@
           <div formGroupName="conditions">
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Prior PCT Same Country</mat-label>
-              <input matInput type="text"
-                     formControlName="prior_pct_same_country">
+              <mat-select class="custom-select"
+                          formControlName="prior_pct_same_country">
+                <mat-option [value]=true>True</mat-option>
+                <mat-option [value]=false>False</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
@@ -219,8 +228,11 @@
           <div formGroupName="conditions">
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Annual Prosecution Fee</mat-label>
-              <input matInput type="text"
-                     formControlName="condition_annual_prosecution_fee">
+              <mat-select class="custom-select"
+                          formControlName="condition_annual_prosecution_fee">
+                <mat-option [value]=true>True</mat-option>
+                <mat-option [value]=false>False</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>

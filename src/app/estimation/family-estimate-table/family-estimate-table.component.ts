@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FamEst} from '../_models/FamEst.model';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -20,6 +20,7 @@ export class FamilyEstimateTableComponent implements AfterViewInit {
 
   @Input() famEsts: FamEst[] = [new FamEst('')];
   @Input() pageSize = 20;
+  @Output() famEstFormdataID = new EventEmitter()
   public displayedColumns: string[] = ['']
   dataSource: MatTableDataSource<FamEst>;
   expandedElement: FamEst | null = null;
@@ -35,13 +36,16 @@ export class FamilyEstimateTableComponent implements AfterViewInit {
         this.dataSource.paginator = this.paginator
     }
 
-    ngOnInit(): void {
-        this.displayedColumns = ['family_no', 'family_name', 'total_cost']
-    }
+  ngOnInit(): void {
+    this.displayedColumns = ['family_no', 'family_name', 'total_cost']
+  }
 
-    ngAfterViewInit(){
-        this.dataSource.paginator = this.paginator
-    }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator
+  }
 
 
+  seeDetails(element: FamEst) {
+    this.famEstFormdataID.emit(element.famestformdata)
+  }
 }

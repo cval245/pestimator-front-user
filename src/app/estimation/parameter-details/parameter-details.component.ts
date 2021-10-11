@@ -13,18 +13,19 @@ export class ParameterDetailsComponent {
   @Input() formData: FamEstFormFull = new FamEstFormFull(
     '',
     '',
-    new EntitySize(0, '',''),
+    new EntitySize(0, '', ''),
     new Date(),
-    new Country(0, '', '', false, false, '', ''),
-    new ApplType(0, '', ''),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new ApplType(0, '', '', [0]),
     0,
     0,
     0,
-    0,0,0,
+    0, 0, 0,
     false,
-    new Country(0, '', '', false, false, '', ''),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
     [],
-    false
+    false, 0, 0, 0, 0
   )
 
   constructor() {

@@ -12,7 +12,7 @@ const routes: Routes = [
     canActivate: [LoggedInGuard]
   },
   {
-    path: 'estimations/:id', component: FamEstDetailComponent,
+    path: 'estimations/:udn', component: FamEstDetailComponent,
     canActivate: [LoggedInGuard]
   },
   {

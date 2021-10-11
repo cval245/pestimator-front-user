@@ -11,7 +11,7 @@ import {Country} from 'src/app/characteristics/_models/Country.model';
 export class GenTransComponent {
 
   @Input() tableData: any
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
+  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
@@ -35,20 +35,18 @@ export class GenTransComponent {
     this.editingRow = row.id
     this.form.setValue({
       id: row.id,
-      country: this.country,
+      country: this.country.id,
       date_diff: row.date_diff,
     })
-    console.log('editing row', row)
   }
 
   submit(){
-    this.form.patchValue({country: this.country})
+    this.form.patchValue({country: this.country.id})
     this.formData.emit(this.form.value)
     this.editingRow = 0
   }
 
   cancel(){
-    console.log('cancel', this.form)
     if (this.form.controls.id.value == undefined){
       this.tableData = dropRight(this.tableData, 1)
     }

@@ -12,8 +12,8 @@ import {concat, dropRight} from 'lodash';
   styleUrls: ['./trans-form-table.component.scss']
 })
 export class TransFormTableComponent {
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
-  @Input() applTypes: ApplType[] = [new ApplType(0, '', '')]
+  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   @Input() cstmFilTrans = new Array<ICustomFilTrans>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
@@ -21,6 +21,7 @@ export class TransFormTableComponent {
   displayedColumns: string[] = ['id', 'prev_appl_type',
     'appl_type', 'date_diff']
   public form: FormGroup;
+  public applTypesCorrect: ApplType[] = [new ApplType(0, '', '', [0])]
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -32,10 +33,23 @@ export class TransFormTableComponent {
     })
   }
 
-  newRow(){
-    this.cstmFilTrans = concat(this.cstmFilTrans, {id: 0,
-      country:'',date_diff:'', appl_type: '', prev_appl_type: ''})
+  ngOnChanges() {
+    console.log('this.count', this.country.id)
+    this.applTypesCorrect = this.applTypes.filter(applType => {
+      return applType.country_set.some(countryId => countryId == this.country.id)
+    })
+    // this.form.controls.country.valueChanges.subscribe(country_id => {
+    //   this.applTypesCorrect = this.applTypes.filter(applType => applType.country_set.some(countryId => countryId == country_id))
+    // })
   }
+
+  newRow() {
+    this.cstmFilTrans = concat(this.cstmFilTrans, {
+      id: 0,
+      country: '', date_diff: '', appl_type: '', prev_appl_type: ''
+    })
+  }
+
   editRow(row: ICustomFilTrans) {
     this.editingRow = row.id!
     if (row.prev_appl_type == undefined) {
@@ -44,17 +58,15 @@ export class TransFormTableComponent {
 
     this.form.setValue({
       id: row.id,
-      country: row.country,
+      country: row.country.id,
       date_diff: row.date_diff,
       appl_type: row.appl_type,
       prev_appl_type: row.prev_appl_type,
     })
-    console.log('editing row', row)
   }
 
   submit() {
-    console.log('form = ', this.form)
-    this.form.patchValue({country: this.country})
+    this.form.patchValue({country: this.country.id})
     this.formData.emit(this.form.value)
   }
 
@@ -62,7 +74,6 @@ export class TransFormTableComponent {
     if (this.form.controls.id.value == undefined) {
       this.cstmFilTrans = dropRight(this.cstmFilTrans, 1)
     }
-    console.log('cancel')
     this.editingRow = 0
     this.form.reset()
   }

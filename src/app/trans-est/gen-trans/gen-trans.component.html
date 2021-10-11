@@ -4,22 +4,28 @@
         <td mat-cell class="mat-cell" *matCellDef="let element">
         {{element.id}}</td>
     </ng-container>
-    
+
     <ng-container matColumnDef="date_diff">
         <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
         <td mat-cell *matCellDef="let element">
-        <div *ngIf="editingRow==element.id; else datediff">
-        <div [formGroup]="form">
-        <mat-form-field appearance="outline" color="accent">
-            <mat-label>Date Diff</mat-label>
-            <input matInput type="text"
-                    formControlName="date_diff">
-        </mat-form-field>
-        <button mat-button (click)="submit()"><mat-icon>done</mat-icon></button>
-        <button mat-button (click)="cancel()"><mat-icon>close</mat-icon></button>
-        <button mat-button (click)="delete(element)"><mat-icon>delete_outline</mat-icon></button>
+          <div *ngIf="editingRow===element.id; else datediff">
+            <div [formGroup]="form">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>Date Diff</mat-label>
+                <input matInput type="text"
+                       formControlName="date_diff">
+              </mat-form-field>
+              <button mat-button (click)="submit()">
+                <mat-icon>done</mat-icon>
+              </button>
+              <button mat-button (click)="cancel()">
+                <mat-icon>close</mat-icon>
+              </button>
+              <button mat-button (click)="delete(element)">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
 
-        </div>
+            </div>
         </div>
         <ng-template #datediff>
         {{element.date_diff}}
@@ -27,11 +33,8 @@
         </td>
     </ng-container>
 
-    
 
-
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row (dblclick)="editRow(row)"
     *matRowDef="let row; columns: displayedColumns;">
     </tr>

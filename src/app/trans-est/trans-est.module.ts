@@ -16,6 +16,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {UsOaEstFormComponent} from './us-oa-est-form/us-oa-est-form.component';
 import {MatSortModule} from "@angular/material/sort";
 import {TransEstRoutingModule} from "./trans-est-routing.module";
+import {ApplTypeFormComponent} from './appl-type-form/appl-type-form.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -27,6 +29,7 @@ import {TransEstRoutingModule} from "./trans-est-routing.module";
     EstMainFormComponent,
     EstFormComponent,
     UsOaEstFormComponent,
+    ApplTypeFormComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +42,7 @@ import {TransEstRoutingModule} from "./trans-est-routing.module";
     MatIconModule,
     MatButtonModule,
     MatSortModule,
+    MatCheckboxModule,
   ]
 })
 export class TransEstModule { }

@@ -74,17 +74,17 @@
             <mat-form-field appearance="outline" color="accent">
             <mat-label>Application Type</mat-label>
                 <mat-select class="custom-select"
-                        formControlName="application_type">
-                    <mat-option *ngFor="let t of applTypes"
-                            [value]="t.id+''">
-                        {{t.long_name}}
-                    </mat-option>
+                            formControlName="application_type"
+                >
+                  <mat-option *ngFor="let t of applTypesCorrect"
+                              [value]="t.id+''">
+                    {{t.long_name}}
+                  </mat-option>
                 </mat-select>
             </mat-form-field>
             </div>
-            <div class="form-row">
+
                 <mat-divider></mat-divider>
-            </div>
             <div class="form-row">
                 <h3>Details of the First Application:</h3>
             </div>
@@ -107,64 +107,36 @@
                     <mat-label>No. Pages - Specification: </mat-label>
                     <input matInput type="text" formControlName="num_pages_desc">
                 </mat-form-field>
-              <mat-form-field appearance="outline" color="accent">
-                <mat-label>No. Pages - Claims: </mat-label>
-                <input matInput type="text" formControlName="num_pages_claims">
-              </mat-form-field>
-              <mat-form-field appearance="outline" color="accent">
-                <mat-label>No. Pages - Drawings: </mat-label>
-                <input matInput type="text" formControlName="num_pages_drawings">
-              </mat-form-field>
-            </div>
-
-            <div class="form-row">
-        <div class="button-container">
-            <button mat-flat-button color="primary" style="margin: 5px;"
-                    matStepperPrevious>Back</button>
-            <button mat-flat-button color="accent" style="margin: 5px;"
-                    matStepperNext>Next</button>
-        </div>
-        </div>
-            </div>
-        </form>
-    </mat-step>
-    <mat-step  *ngIf="interOption"
-               [formGroup]="internationalStageForm" [stepControl]="internationalStageForm">
-        <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
-            <ng-template matStepLabel>International Stage</ng-template>
-            <div fxLayout="column" fxLayoutAlign="center center">
-                <div class="form-row">
-                    <h2>File Through PCT (optional):</h2>
-                </div>
-                <div class="form-row">
-                    <mat-checkbox formControlName="method">
-                        PCT
-                    </mat-checkbox>
-                </div>
-                <div fxLayout="column" fxLayoutAlign="center center"
-                  class="form-row" *ngIf="internationalStageForm.controls.method.value">
-                    <mat-divider></mat-divider>
-                    <h3>PCT Examining Country</h3>
-                    <mat-form-field appearance="outline" color="accent">
-                      <mat-label>
-                        PCT Country
-                      </mat-label>
-                      <mat-select class="custom-select"
-                                  formControlName="meth_country">
-                        <mat-option *ngFor="let t of pct_countries"
-                                    [value]="t.id+''">
-                          {{t.long_name}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                </div>
-              <div class="form-row">
-                <mat-checkbox formControlName="ep_method">
-                  EPO for European Patents?
-                </mat-checkbox>
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>No. Pages - Claims:</mat-label>
+                  <input matInput type="text" formControlName="num_pages_claims">
+                </mat-form-field>
+                <mat-form-field appearance="outline" color="accent">
+                  <mat-label>No. Pages - Drawings:</mat-label>
+                  <input matInput type="text" formControlName="num_pages_drawings">
+                </mat-form-field>
               </div>
+
+              <mat-divider></mat-divider>
               <div class="form-row">
-                <div>
+                <h3>International Filing Methods:</h3>
+              </div>
+              <div fxLayout="row">
+                <div class="form-row">
+                  <mat-checkbox formControlName="ep_method">
+                    File through EP
+                  </mat-checkbox>
+                </div>
+                <div class="form-row">
+                  <mat-checkbox formControlName="pct_method">
+                    File through PCT
+                  </mat-checkbox>
+                </div>
+              </div>
+
+
+              <div class="form-row">
+                <div class="button-container">
                   <button mat-flat-button color="primary" style="margin: 5px;"
                           matStepperPrevious>Back
                   </button>
@@ -172,32 +144,192 @@
                           matStepperNext>Next
                   </button>
                 </div>
+                <div *ngIf="firstApplForm.errors?.InvalidApplType
+              && (firstApplForm.touched || firstApplForm.dirty)">
+                  <p style="color:red;">Application Type is invalid for Country</p>
+                </div>
               </div>
             </div>
+
         </form>
     </mat-step>
-    <mat-step [formGroup]="nationalPhaseForm">
-        <form [formGroup]="nationalPhaseForm">
-            <ng-template matStepLabel>National Phase</ng-template>
-            <div fxLayout="column" fxLayoutAlign="center center">
-              <div class="form-row">
-                <h2>Select Jurisdictions to File</h2>
+  <mat-step *ngIf="firstApplForm.controls.pct_method.value"
+            [formGroup]="internationalStageForm" [stepControl]="internationalStageForm">
+    <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
+      <ng-template matStepLabel>PCT Stage (optional)</ng-template>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div class="form-row">
+          <h2>File Through PCT (optional):</h2>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="center center"
+             class="form-row">
+          <mat-divider></mat-divider>
+          <h3>PCT Examining Country</h3>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>
+              PCT Receiving Office
+            </mat-label>
+            <mat-select class="custom-select"
+                        formControlName="pct_country">
+              <mat-option *ngFor="let t of pct_countries"
+                          [value]="t.id+''">
+                {{t.long_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>
+              PCT International Search Authority (ISA)
+            </mat-label>
+            <mat-select class="custom-select"
+                        formControlName="isa_country">
+              <mat-option *ngFor="let t of isa_countries"
+                          [value]="t.id+''">
+                {{t.long_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <ng-template matStepLabel>PCT National Phase</ng-template>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div class="form-row">
+            <h2>Select Jurisdictions to File</h2>
+          </div>
+          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of pct_countries; let i=index">
+                <mat-checkbox *ngIf="country.col===1"
+                              [formControl]="getCountriesFormCtrlNamePCT(country.id)"
+                              (change)="onPCTCheckboxChange($event, country.id)">
+                  {{country.long_name}}
+                </mat-checkbox>
               </div>
-              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
-                <div fxLayout="column" fxLayoutAlign="start start">
-                  <div *ngFor="let country of countries; let i=index">
-                    <mat-checkbox *ngIf="country.col===1"
-                                  [formControl]="getCountriesFormCtrlName(country.id)"
-                                  (change)="onCheckboxChange($event, country.id)">
-                      {{country.long_name}}
-                    </mat-checkbox>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of pct_countries; let i=index">
+                <mat-checkbox *ngIf="country.col===2"
+                              [formControl]="getCountriesFormCtrlNamePCT(country.id)"
+                              (change)="onPCTCheckboxChange($event, country.id)">
+                  <p>{{country.long_name}}</p>
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of pct_countries; let i=index">
+                <mat-checkbox
+                  [formControl]="getCountriesFormCtrlNamePCT(country.id)"
+                  (change)="onPCTCheckboxChange($event, country.id)">
+                  {{country.long_name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-row">
+            <div>
+              <button mat-flat-button color="primary" style="margin: 5px;"
+                      matStepperPrevious>Back
+              </button>
+              <button mat-flat-button color="accent" style="margin: 5px;"
+                      matStepperNext>Next
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step *ngIf="firstApplForm.controls.ep_method.value"
+            [formGroup]="epStageForm" [stepControl]="epStageForm">
+    <form [formGroup]="epStageForm" fxLayout="column" fxLayoutAlign="center center">
+      <ng-template matStepLabel>EP Stage</ng-template>
+      <div fxLayout="column" fxLayoutAlign="center center">
+
+
+        <ng-template matStepLabel>EPO Validation Phase</ng-template>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div class="form-row">
+            <h2>Select Jurisdictions to File</h2>
+          </div>
+          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of ep_countries; let i=index">
+                <mat-checkbox *ngIf="country.col===1"
+                              [formControl]="getCountriesFormCtrlNameEP(country.id)"
+                              (change)="onEPCheckboxChange($event, country.id)">
+                  {{country.long_name}}
+                </mat-checkbox>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of ep_countries; let i=index">
+                <mat-checkbox *ngIf="country.col===2"
+                              [formControl]="getCountriesFormCtrlNameEP(country.id)"
+                              (change)="onEPCheckboxChange($event, country.id)">
+                  <p>{{country.long_name}}</p>
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let country of ep_countries; let i=index">
+                <mat-checkbox
+                  [formControl]="getCountriesFormCtrlNameEP(country.id)"
+                  (change)="onEPCheckboxChange($event, country.id)">
+                  {{country.long_name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <button mat-flat-button color="primary" style="margin: 5px;"
+                      matStepperPrevious>Back
+              </button>
+              <button mat-flat-button color="accent" style="margin: 5px;"
+                      matStepperNext>Next
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step [formGroup]="parisStageForm">
+    <form [formGroup]="parisStageForm">
+      <ng-template matStepLabel>Paris International Filing Phase</ng-template>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div class="form-row">
+          <h2>Select Jurisdictions to File</h2>
+        </div>
+        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div *ngFor="let country of countries; let i=index">
+              <mat-checkbox *ngIf="country.col===1"
+                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                            (change)="onParisCheckboxChange($event, country.id)">
+                {{country.long_name}}
+              </mat-checkbox>
                   </div>
                 </div>
                 <div fxLayout="column" fxLayoutAlign="start start">
                   <div *ngFor="let country of countries; let i=index">
                     <mat-checkbox *ngIf="country.col===2"
-                                  [formControl]="getCountriesFormCtrlName(country.id)"
-                                  (change)="onCheckboxChange($event, country.id)">
+                                  [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                                  (change)="onParisCheckboxChange($event, country.id)">
                       <p>{{country.long_name}}</p>
                     </mat-checkbox>
                   </div>
@@ -208,8 +340,8 @@
                 <div fxLayout="column" fxLayoutAlign="start start">
                   <div *ngFor="let country of countries; let i=index">
                     <mat-checkbox
-                                  [formControl]="getCountriesFormCtrlName(country.id)"
-                                  (change)="onCheckboxChange($event, country.id)">
+                      [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                      (change)="onParisCheckboxChange($event, country.id)">
                       {{country.long_name}}
                     </mat-checkbox>
                   </div>
@@ -222,12 +354,12 @@
                         (click)="formReset()">Reset</button>
                 <button mat-flat-button color="primary" style="margin: 5px;"
                         matStepperPrevious>Back</button>
-                <button mat-flat-button color="accent" type="submit"
-                        style="margin: 5px;"
-                        (click)="onSubmit()"
-                        [disabled]="!nationalPhaseForm.valid">
-                    Submit
-                </button>
+              <button mat-flat-button color="accent" type="submit"
+                      style="margin: 5px;"
+                      (click)="onSubmit()"
+                      [disabled]="!parisStageForm.valid">
+                Submit
+              </button>
             </div>
             </div>
         </form>

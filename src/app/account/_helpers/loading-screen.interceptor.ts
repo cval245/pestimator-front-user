@@ -28,9 +28,7 @@ export class LoadingScreenInterceptor implements HttpInterceptor {
       if (this.activeRequests === 0) {
         setTimeout(() => {
           if (this.activeRequests === 0) {
-            console.log('this.activeRequests', this.activeRequests)
           } else {
-            console.log('this.activeRequests not 0', this.activeRequests)
             this.store.dispatch(loading({loading: true}))
           }
         }, 300)
@@ -40,7 +38,6 @@ export class LoadingScreenInterceptor implements HttpInterceptor {
       return next.handle(request).pipe(
         finalize(() => {
           this.activeRequests--;
-          console.log('this.activeREquests just decreased', this.activeRequests)
           if (this.activeRequests === 0) {
             this.store.dispatch(loading({loading: false}))
             // stop loading

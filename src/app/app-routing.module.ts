@@ -20,6 +20,7 @@ const routes: Routes = [
     path: 'account', //resolve: {isLoggedIn: IsLoggedInResolver},
     loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
   },
+  {path: '**', component: NotFoundComponent},
 ];
 
 @NgModule({

@@ -1,0 +1,75 @@
+<button mat-flat-button color="primary" (click)="toggleForm()"
+        style="margin-bottom: 10px;"
+>Toggle CountryForm
+</button>
+
+<form [formGroup]="form">
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>Country:</mat-label>
+    <input matInput type="text" formControlName="country">
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>Long Name:</mat-label>
+    <input matInput type="text" formControlName="long_name">
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>ep bool:</mat-label>
+    <mat-select class="custom-select"
+                formControlName="ep_bool">
+      <mat-option [value]=true>True</mat-option>
+      <mat-option [value]=false>False</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>PCT Analysis Bool:</mat-label>
+    <mat-select class="custom-select"
+                formControlName="pct_analysis_bool">
+      <mat-option [value]=true>True</mat-option>
+      <mat-option [value]=false>False</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>active bool:</mat-label>
+    <mat-select class="custom-select"
+                formControlName="active_bool">
+      <mat-option [value]=true>True</mat-option>
+      <mat-option [value]=false>False</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>Color:</mat-label>
+    <input matInput type="text" formControlName="color">
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>Currency Name:</mat-label>
+    <input matInput type="text" formControlName="currency_name">
+  </mat-form-field>
+
+  <div class="form-row" fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" fxLayoutAlign="start start">
+      <p>Application Types</p>
+      <div *ngFor="let applType of applTypes; let i=index">
+        <mat-checkbox
+          [disabled]="!formActive"
+          [formControl]="getApplTypesFormCtrlName(applType.id)"
+          (change)="onApplTypeCheckboxChange($event, applType.id)">
+          {{applType.long_name}}
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class="form-row" fxLayout="row" fxLayoutAlign="center">
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <p>ISA Countries</p>
+        <div *ngFor="let country of countries; let i=index">
+          <mat-checkbox
+            [disabled]="!formActive"
+            [formControl]="getCountriesFormCtrlName(country.id)"
+            (change)="onISACheckboxChange($event, country.id)">
+            {{country.long_name}}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button mat-flat-button color=primary style="margin-top: 10px;" (click)="onSubmit()">Submit</button>
+</form>

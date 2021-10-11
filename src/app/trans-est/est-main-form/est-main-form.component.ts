@@ -101,9 +101,9 @@ interface LawFirmWise {
 export class EstMainFormComponent implements OnInit {
 
   private unsubscribe$ = new Subject<void>();
-  public countries: Country[] = [new Country(0, '', '', false, false, '', '')]
-  public country: Country = new Country(0, '', '', false, false, '', '')
-  public applTypes: ApplType[] = [new ApplType(0, '', '')]
+  public countries: Country[] = [new Country(0, '', '', false, false, '', '', [0], [0])]
+  public country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  public applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   public filEstTemp = new Array<IFileEstTemp>()
   public publEstTemp = new Array<IPublEstTemp>()
   public oaEstTemp = new Array<IOAEstTemp>()

@@ -36,7 +36,7 @@
                [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
             <div class="element-description">
               <a mat-flat-button
-                 [routerLink]="['/estimation/estimations/', element.famestformdata]"
+                 (click)="seeDetails(element)"
                  color="accent">
                 See Details</a>
             </div>

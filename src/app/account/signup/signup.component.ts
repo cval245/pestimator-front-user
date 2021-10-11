@@ -103,7 +103,6 @@ export class SignupComponent implements OnInit {
 
     onSubmit(){
         this.submitted = true;
-        console.log(this.signupForm)
         if(this.signupForm.valid) {
             this.loading = true;
             this.accService.register(this.signupForm.value)
@@ -115,7 +114,6 @@ export class SignupComponent implements OnInit {
                     },
                     error => {
                         let arr=[]
-                      console.log('[eee', error.error)
                         this.errorMessages = Object.keys(error.error)
                             .map((key) => [ error.error[key]] )
                         this.loading = false;

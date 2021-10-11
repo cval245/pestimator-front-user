@@ -1,25 +1,32 @@
 
 <mat-form-field appearance="outline">
-    <mat-label>Country</mat-label>
-    <mat-select class="custom-select"
-        [formControl]="countryControl">
-        <mat-option *ngFor="let t of countries"
+  <mat-label>Country</mat-label>
+  <mat-select class="custom-select"
+              [formControl]="countryControl">
+    <mat-option *ngFor="let t of countries"
                 [value]="t.id+''">
-                {{t.country}}
-        </mat-option>
-    </mat-select>
+      {{t.country}}
+    </mat-option>
+  </mat-select>
 </mat-form-field>
-
+<div>
+  <app-appl-type-form
+    [country]="country"
+    [countries]="countries"
+    [applTypes]="applTypes"
+    (formEmitter)="submitCountryForm($event)"
+  ></app-appl-type-form>
+</div>
 <div fxLayout="column" fxLayoutAlign="start start">
-<h2>Custom Filing Transforms</h2>
-<app-trans-form-table 
+  <h2>Custom Filing Transforms</h2>
+  <app-trans-form-table
     [cstmFilTrans]="cstmFilTrans"
     [applTypes]="applTypes"
     [country]="country"
     (formData)="onSubmitCstmFilTrans($event)"
     (delEmit)="delCstmFilTrans($event)"
->
-</app-trans-form-table>
+  >
+  </app-trans-form-table>
 </div>
 <div fxLayout="column" fxLayoutAlign="start start">
 <h2>Publication Transforms</h2>

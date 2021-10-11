@@ -45,11 +45,20 @@ export class ChartFamEstDetailComponent implements OnChanges {
       }
     },
     scales: {
-      x: {},
+      x: {
+        title: {
+          display: true,
+          text: 'Year',
+        },
+      },
       y:
         {
           position: 'left',
           stacked: true,
+          title: {
+            display: true,
+            text: 'USD',
+          },
         },
     },
     plugins: {

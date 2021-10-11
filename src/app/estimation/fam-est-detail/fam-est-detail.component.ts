@@ -42,15 +42,15 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     cell: ''
   }]
   public famEstDetails: FamEstDetail[]
-  private countries: Country[] = [new Country(0, '', '', false, false, '', '')]
+  private countries: Country[] = [new Country(0, '', '', false, false, '', '', [0], [0])]
   private combinedSub: Subscription;
   public famform: FamEstFormFull = new FamEstFormFull(
     '',
     '',
-    new EntitySize(0, '',''),
+    new EntitySize(0, '', ''),
     new Date(),
-    new Country(0, '', '', false, false, '', ''),
-    new ApplType(0, '', ''),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new ApplType(0, '', '', [0]),
     0,
     0,
     0,
@@ -58,12 +58,17 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     0,
     0,
     false,
-    new Country(0, '', '', false, false, '', ''),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, '', '', [0], [0]),
     [],
-    false
+    false,
+    0,
+    0,
+    0,
+    0,
   )
   private tableCombineSub: Subscription;
-  private applTypes: ApplType[] = [new ApplType(0, '', '')];
+  private applTypes: ApplType[] = [new ApplType(0, '', '', [0])];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -78,21 +83,23 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   ) {
     this.famEstDetails = [new FamEstDetail()]
     this.family = new Family
-    this.tableCombineSub = combineLatest([this.activatedRoute.params,
+    this.tableCombineSub = combineLatest([
+      this.activatedRoute.params,
+      // this.activatedRoute.data,
       this.famformSer.entities$.pipe(filter(z => z.length > 0)),
       this.countrySer.entities$.pipe(filter(z => z.length > 0)),
       this.applTypeSer.entities$.pipe(filter(z => z.length > 0)),
       this.entitySizeSer.entities$.pipe(filter(z => z.length > 0))])
       .subscribe(x => {
         let famforms = x[1]
-        let famform = famforms.find(y => y.id == x[0].id)!
+        let famform = famforms.find(y => y.unique_display_no == x[0].udn)!
         let countries = x[2]
         let applTypes = x[3]
         let entitySizes = x[4]
         this.famform.init_appl_country = countries.find(y => y.id == famform.init_appl_country)!
-        this.famform.meth_country = countries.find(y => y.id == famform.meth_country)!
+        this.famform.pct_country = countries.find(y => y.id == famform.pct_country)!
         this.famform.init_appl_type = applTypes.find(y => y.id == famform.init_appl_type)!
-        this.famform.countries = map(famform.countries, z => countries.find(y => y.id == z))
+        this.famform.pct_countries = map(famform.pct_countries, z => countries.find(y => y.id == z))
         this.famform.entity_size = entitySizes.find(y => y.id == famform.entity_size)!
         this.famform.id = famform.id
         this.famform.family_name = famform.family_name
@@ -104,18 +111,20 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.famform.init_appl_pages_claims = famform.init_appl_pages_claims
         this.famform.init_appl_pages_drawings = famform.init_appl_pages_drawings
         this.famform.init_appl_drawings = famform.init_appl_drawings
-        this.famform.method = famform.method
+        this.famform.pct_method = famform.pct_method
         this.famform.ep_method = famform.ep_method
+        this.famform.ep_countries = map(famform.ep_countries, z => countries.find(y => y.id == z))
+        this.famform.paris_countries = map(famform.paris_countries, z => countries.find(y => y.id == z))
       })
 
 
     let famEstDetails$ = this.activatedRoute.params.pipe(
       switchMap(x => {
-        return this.getFamEstDetailByFormId(x.id)
+        return this.getFamEstDetailByFormUDN(x.udn)
       }))
     let family$ = this.activatedRoute.params.pipe(
       switchMap(x => {
-        return this.familySer.getWithQuery('FamEstFormData=' + x.id)
+        return this.familySer.getWithQuery('FamEstFormDataUDN=' + x.udn)
       }))
     this.combinedSub = combineLatest(this.countrySer.getAll(), famEstDetails$,
       family$, this.applTypeSer.entities$).pipe(
@@ -130,8 +139,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.countryAgged = this.calcTotalMatrix()
         this.displayedColumns = this.calcColumns(this.countryAgged)
         this.family = family[0]
-        let appl$ = this.applSer.getWithQuery('family=' + family[0].id)
-        let applDet$ = this.applDetSer.getWithQuery('family=' + family[0].id)
+        let appl$ = this.applSer.getWithQuery('familyUDN=' + family[0].unique_display_no)
+        let applDet$ = this.applDetSer.getWithQuery('familyUDN=' + family[0].unique_display_no)
         return combineLatest(appl$, applDet$)
       })).subscribe(([applications, applDetails]) => {
       this.applications = applications.map(appl => {
@@ -153,22 +162,22 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       this.famformSer.getAll()
     }
 
-    ngOnDestroy(): void{
-      this.combinedSub.unsubscribe()
-      this.tableCombineSub.unsubscribe()
-    }
+  ngOnDestroy(): void {
+    this.combinedSub.unsubscribe()
+    this.tableCombineSub.unsubscribe()
+  }
 
-    getFamEstDetailByFormId(id: number): Observable<FamEstDetail[]>{
-        return this.famEstDetSer.getWithQuery('FamEstFormData='+id)
-    }
+  getFamEstDetailByFormUDN(udn: number): Observable<FamEstDetail[]> {
+    return this.famEstDetSer.getWithQuery('FamEstFormDataUDN=' + udn)
+  }
 
-    add(famEstDetail: FamEstDetail){
-        this.famEstDetSer.add(famEstDetail);
-    }
+  add(famEstDetail: FamEstDetail) {
+    this.famEstDetSer.add(famEstDetail);
+  }
 
-    delete(famEstDetail: FamEstDetail){
-        this.famEstDetSer.delete(famEstDetail)
-    }
+  delete(famEstDetail: FamEstDetail) {
+    this.famEstDetSer.delete(famEstDetail)
+  }
 
     getFamEsts(){
         this.famEstDetSer.getAll();
@@ -273,16 +282,16 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     arr.push(['Number of Pages for Specification', famform.init_appl_pages_desc])
     arr.push(['Number of Pages for Claims', famform.init_appl_pages_claims])
     arr.push(['Number of Pages for Drawings', famform.init_appl_pages_drawings])
-    arr.push(['Using PCT Method', famform.method])
-    if(famform.meth_country){
-      arr.push(['PCT Country', famform.meth_country.long_name])
+    arr.push(['Using PCT Method', famform.pct_method])
+    if (famform.pct_country) {
+      arr.push(['PCT Country', famform.pct_country.long_name])
     }
     arr.push(['Using EP Method', famform.ep_method])
     arr.push(['National Phase Countries', ''])
     arr.unshift(['Parameters'])
     arr.unshift(['', ''])
     let i = 1;
-    for (let c of famform.countries) {
+    for (let c of famform.pct_countries) {
       arr.push([i.toString() + '.', c.long_name])
       i++
     }
@@ -532,7 +541,6 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       for (let row of collection) {
         row.country = row.country.country
       }
-      console.log('accc', accumulator)
       return accumulator
     }
     convert_collection_nested_json_to_aoa(collection:any){

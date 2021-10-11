@@ -10,7 +10,7 @@ import {ICountryOANum} from '../_models/CountryOANum.model';
   styleUrls: ['./oa-num-form.component.scss']
 })
 export class OaNumFormComponent {
-  @Input() country: Country = new Country(0, '', '', false, false, '', '')
+  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
   @Input() oanum = new Array<ICountryOANum>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
@@ -40,7 +40,6 @@ export class OaNumFormComponent {
   }
 
   editRow(row: ICountryOANum) {
-    console.log('rowo', row)
     this.editingRow = row.id!
 
     this.form.setValue({
@@ -49,12 +48,10 @@ export class OaNumFormComponent {
       //date_diff: row.date_diff,
       oa_total: row.oa_total,
     })
-    console.log('editing row', row)
   }
 
   submit(){
-    console.log('form = ', this.form.value)
-    this.form.patchValue({country: this.country})
+    this.form.patchValue({country: this.country.id})
     if (this.form.controls.id.value == 0){
       this.form.patchValue({id: undefined})
     }
@@ -64,7 +61,6 @@ export class OaNumFormComponent {
     if (this.form.controls.id.value == undefined){
       this.oanum = dropRight(this.oanum, 1)
     }
-    console.log('cancel')
     this.editingRow = 0
     this.form.reset()
   }
