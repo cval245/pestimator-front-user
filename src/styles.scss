@@ -2,6 +2,8 @@
 @use '~@angular/material' as mat;
 
 @import './theme.scss';
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 html, body { height: 100%; width:100% }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -338,9 +340,36 @@ tr.element-row:not(.expanded-row):hover {
     max-width: 500px;
     text-align: justify;
 
-    h3{
+    h3 {
       font-weight: bold;
       margin-bottom: 1px;
     }
+  }
+}
+
+.est-form-grid {
+  .ag-cell-label-container {
+    /* Necessary to allow for text to grow vertically */
+    height: 100%;
+  }
+
+  .ag-header-cell-label {
+    /* Necessary to allow for text to grow vertically */
+    height: 100%;
+    padding: 0 !important;
+  }
+
+  .ag-header-cell-label .ag-header-cell-text {
+    /* Force the width corresponding at how much width
+    we need once the text is laid out vertically */
+    width: 55px;
+    writing-mode: vertical-lr;
+    -ms-writing-mode: tb-lr;
+    line-height: 2em;
+    margin-top: 60px;
+    //transform: rotate(90deg);
+    //margin-top: 50px;
+    /* Since we are rotating a span */
+    //display: inline-block;
   }
 }

@@ -26,7 +26,7 @@ export interface IIndexable<T = any> { [key: string]: T }
 })
 export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   @Input() entitySizes: EntitySize[] = [new EntitySize(0, '', '')]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
@@ -132,6 +132,7 @@ export class EstFormComponent {
 
 
   newRow() {
+    console.log('sdfsf', this.tableData.length)
     if (this.tableData.length == 0) {
       this.tableData = concat(this.tableData, {
         id: 0, country: '',

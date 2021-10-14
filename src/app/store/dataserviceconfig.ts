@@ -127,6 +127,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     LawFirmEstTemp: {
       entityResourceUrl: environment.API_URL + 'lawfirm-est-template/',
       collectionResourceUrl: environment.API_URL + 'lawfirm-est-template/',
+    },
+    Language: {
+      entityResourceUrl: environment.API_URL + 'languages/',
+      collectionResourceUrl: environment.API_URL + 'languages/',
     }
   }
 }

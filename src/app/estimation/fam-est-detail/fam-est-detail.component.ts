@@ -42,14 +42,14 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     cell: ''
   }]
   public famEstDetails: FamEstDetail[]
-  private countries: Country[] = [new Country(0, '', '', false, false, '', '', [0], [0])]
+  private countries: Country[] = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])]
   private combinedSub: Subscription;
   public famform: FamEstFormFull = new FamEstFormFull(
     '',
     '',
     new EntitySize(0, '', ''),
     new Date(),
-    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
     new ApplType(0, '', '', [0]),
     0,
     0,
@@ -58,8 +58,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     0,
     0,
     false,
-    new Country(0, '', '', false, false, '', '', [0], [0]),
-    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
     [],
     false,
     0,

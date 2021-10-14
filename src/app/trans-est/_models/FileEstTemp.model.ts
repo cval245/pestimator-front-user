@@ -1,5 +1,5 @@
 export interface IFileEstTemp{
-  id: number;
+  id: number,
   official_cost: number,
   date_diff: string;
   country: any;

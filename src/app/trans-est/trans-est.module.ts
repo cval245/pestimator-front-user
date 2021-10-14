@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormPageComponent} from './form-page/form-page.component';
 import {TransFormTableComponent} from './trans-form-table/trans-form-table.component';
 import {MatInputModule} from '@angular/material/input';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatSelectModule} from '@angular/material/select';
@@ -18,6 +18,11 @@ import {MatSortModule} from "@angular/material/sort";
 import {TransEstRoutingModule} from "./trans-est-routing.module";
 import {ApplTypeFormComponent} from './appl-type-form/appl-type-form.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {DatePickerComponent, EstTemplateGridComponent} from './est-template-grid/est-template-grid.component';
+import {AgGridModule} from "ag-grid-angular";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 
 @NgModule({
@@ -30,19 +35,27 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     EstFormComponent,
     UsOaEstFormComponent,
     ApplTypeFormComponent,
+    EstTemplateGridComponent,
+    DatePickerComponent,
   ],
   imports: [
     CommonModule,
-    TransEstRoutingModule,
-    MatInputModule,
-    ReactiveFormsModule,
     MatTableModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    TransEstRoutingModule,
+    FormsModule,
     FlexLayoutModule,
     MatSelectModule,
     MatIconModule,
     MatButtonModule,
     MatSortModule,
     MatCheckboxModule,
+    AgGridModule,
+    AgGridModule.withComponents([])
   ]
 })
 export class TransEstModule { }

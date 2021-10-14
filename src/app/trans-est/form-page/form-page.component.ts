@@ -19,6 +19,8 @@ import {OaTransService} from '../_services/oa-trans.service';
 import {PublTransService} from '../_services/publ-trans.service';
 import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
 import {CountryAll} from "../../characteristics/_models/CountryAll.model";
+import {LanguageService} from "../../characteristics/_services/language.service";
+import {Language} from "../../characteristics/_models/Language.model";
 
 interface CountryWise {
   id: number,
@@ -33,7 +35,7 @@ interface CountryWise {
 export class FormPageComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
-  public countries: CountryAll[] = [new CountryAll(0, '', '', false, false, false, '', '', [0], [0])]
+  public countries: CountryAll[] = [new CountryAll(0, '', '', false, false, false, false, '', '', [0], [0], [0])]
   public applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   public cstmFilTrans = new Array<ICustomFilTrans>()
   public publTrans = new Array<IPublTrans>()
@@ -42,7 +44,8 @@ export class FormPageComponent implements OnInit, OnDestroy {
   public issueTrans = new Array<IIssueTrans>()
   public oaNum = new Array<ICountryOANum>()
   public countryControl = new FormControl()
-  public country: CountryAll = new CountryAll(0, '', '', false, false, false, '', '', [0], [0])
+  public country: CountryAll = new CountryAll(0, '', '', false, false, false, false, '', '', [0], [0], [0])
+  public languages: Language[] = new Array<Language>();
 
   constructor(
     private countrySer: CountryAllService,
@@ -53,12 +56,17 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private issueTranSer: IssueTransService,
     private oaNumSer: CountryOanumService,
     private applTypeSer: ApplTypeAllService,
-    ) {
+    private languageSer: LanguageService,
+  ) {
+    this.languageSer.entities$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.languages = x
+      })
     this.countrySer.entities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.countries = x)
 
-      this.applTypeSer.entities$
+    this.applTypeSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.applTypes = x)
 
@@ -126,6 +134,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.issueTranSer.getAll()
     this.applTypeSer.getAll()
     this.oaNumSer.getAll()
+    this.languageSer.getAll()
   }
 
   ngOnDestroy(): void {

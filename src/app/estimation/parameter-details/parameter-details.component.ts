@@ -15,15 +15,15 @@ export class ParameterDetailsComponent {
     '',
     new EntitySize(0, '', ''),
     new Date(),
-    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
     new ApplType(0, '', '', [0]),
     0,
     0,
     0,
     0, 0, 0,
     false,
-    new Country(0, '', '', false, false, '', '', [0], [0]),
-    new Country(0, '', '', false, false, '', '', [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
+    new Country(0, '', '', false, false, false, '', '', [0], [0], [0]),
     [],
     false, 0, 0, 0, 0
   )

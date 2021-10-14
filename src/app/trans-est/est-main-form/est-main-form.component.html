@@ -1,23 +1,34 @@
 <mat-form-field appearance="outline">
-    <mat-label>Country</mat-label>
-    <mat-select class="custom-select"
-        [formControl]="countryControl">
-        <mat-option *ngFor="let t of countries"
+  <mat-label>Country</mat-label>
+  <mat-select class="custom-select"
+              [formControl]="countryControl">
+    <mat-option *ngFor="let t of countries"
                 [value]="t.id+''">
-                {{t.country}}
-        </mat-option>
-    </mat-select>
+      {{t.country}}
+    </mat-option>
+  </mat-select>
 </mat-form-field>
-<div>
-<p>Filing Estimate Template</p>
-<app-est-form
-  [tableData]="filEstTemp"
-  [country]="country"
+<app-est-template-grid
   [applTypes]="applTypes"
+  [country]="country"
+  [countries]="countries"
+  [rowData]="filEstTemp"
   [entitySizes]="entitySizes"
   [complexConditions]="complexConditions"
   [complexTimeConditions]="complexTimeConditions"
   (formData)="onSubmitFilEstTemp($event)"
+>
+</app-est-template-grid>
+<div>
+  <p>Filing Estimate Template</p>
+  <app-est-form
+    [tableData]="filEstTemp"
+    [country]="country"
+    [applTypes]="applTypes"
+    [entitySizes]="entitySizes"
+    [complexConditions]="complexConditions"
+    [complexTimeConditions]="complexTimeConditions"
+    (formData)="onSubmitFilEstTemp($event)"
   (delEmit)="delFileEstTemp($event)"
 >
 </app-est-form>

@@ -81,6 +81,7 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
     MatIconModule,
     MatMenuModule,
     MatSidenavModule,
+
   ],
 
   providers: [

@@ -101,8 +101,8 @@ interface LawFirmWise {
 export class EstMainFormComponent implements OnInit {
 
   private unsubscribe$ = new Subject<void>();
-  public countries: Country[] = [new Country(0, '', '', false, false, '', '', [0], [0])]
-  public country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  public countries: Country[] = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])]
+  public country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
   public applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   public filEstTemp = new Array<IFileEstTemp>()
   public publEstTemp = new Array<IPublEstTemp>()
@@ -134,6 +134,7 @@ export class EstMainFormComponent implements OnInit {
     private lawFirmTempSer: LawFirmTempService,
     private entitySizeSer: EntitySizeService,
   ) {
+
     this.countrySer.entities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
@@ -167,7 +168,8 @@ export class EstMainFormComponent implements OnInit {
     this.countryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.country = x
+        this.country = this.countries.find(y => y.id == x)!
+        console.log('main country', this.country)
         this.country_us = false
         if (x == this.country_us_id) {
           this.country_us = true
@@ -304,7 +306,11 @@ export class EstMainFormComponent implements OnInit {
   }
 
   onSubmitFilEstTemp(formData: IFileEstTemp): void {
-    if (formData.id == undefined) {
+    console.log('formData.id', formData.id)
+    console.log('formData.appl_type', formData.appl_type)
+    console.log('formData.law_firm_template', formData.law_firm_template.date_diff)
+    console.log('formData.codntioins.min_claims', formData.conditions.condition_claims_min)
+    if (formData.id == 0 || undefined) {
       let cmb$ = this.addConditionLawFirm(formData.conditions,
         formData.law_firm_template)
 

@@ -136,14 +136,15 @@
 
 
               <div class="form-row">
-                <div class="button-container">
-                  <button mat-flat-button color="primary" style="margin: 5px;"
-                          matStepperPrevious>Back
-                  </button>
-                  <button mat-flat-button color="accent" style="margin: 5px;"
-                          matStepperNext>Next
-                  </button>
-                </div>
+                <ng-template *ngTemplateOutlet="normalButtons"></ng-template>
+                <!--                <div class="button-container">-->
+                <!--                  <button mat-flat-button color="primary" style="margin: 5px;"-->
+                <!--                          matStepperPrevious>Back-->
+                <!--                  </button>-->
+                <!--                  <button mat-flat-button color="accent" style="margin: 5px;"-->
+                <!--                          matStepperNext>Next-->
+                <!--                  </button>-->
+                <!--                </div>-->
                 <div *ngIf="firstApplForm.errors?.InvalidApplType
               && (firstApplForm.touched || firstApplForm.dirty)">
                   <p style="color:red;">Application Type is invalid for Country</p>
@@ -153,13 +154,75 @@
 
         </form>
     </mat-step>
-  <mat-step *ngIf="firstApplForm.controls.pct_method.value"
-            [formGroup]="internationalStageForm" [stepControl]="internationalStageForm">
-    <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
-      <ng-template matStepLabel>PCT Stage (optional)</ng-template>
+
+  <mat-step [formGroup]="parisStageForm" [stepControl]="parisStageForm"> >
+    <form [formGroup]="parisStageForm">
+      <ng-template matStepLabel>Direct Filing Phase</ng-template>
       <div fxLayout="column" fxLayoutAlign="center center">
         <div class="form-row">
-          <h2>File Through PCT (optional):</h2>
+          <h2>Select Jurisdictions to File</h2>
+        </div>
+        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div *ngFor="let country of paris_countries; let i=index">
+              <mat-checkbox *ngIf="country.col===1"
+                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                            (change)="onParisCheckboxChange($event, country.id)">
+                {{country.long_name}}
+              </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div *ngFor="let country of paris_countries; let i=index">
+              <mat-checkbox *ngIf="country.col===2"
+                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                            (change)="onParisCheckboxChange($event, country.id)">
+                <p>{{country.long_name}}</p>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div *ngFor="let country of paris_countries; let i=index">
+              <mat-checkbox
+                [formControl]="getCountriesFormCtrlNameParis(country.id)"
+                (change)="onParisCheckboxChange($event, country.id)">
+                {{country.long_name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <ng-template
+            *ngIf="finalStep === FINAL_STEPS.PARIS_STAGE; then finalButtons; else normalButtons"></ng-template>
+          <!--          <button mat-flat-button color="warn"  style="margin: 5px;"-->
+          <!--                  (click)="stepper.reset()"-->
+          <!--                  (click)="formReset()">Reset</button>-->
+          <!--          <button mat-flat-button color="primary" style="margin: 5px;"-->
+          <!--                  matStepperPrevious>Back</button>-->
+          <!--          <button mat-flat-button color="accent" type="submit"-->
+          <!--                  style="margin: 5px;"-->
+          <!--                  (click)="onSubmit()"-->
+          <!--                  [disabled]="!parisStageForm.valid">-->
+          <!--            Submit-->
+          <!--          </button>-->
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step *ngIf="firstApplForm.controls.pct_method.value"
+            [formGroup]="internationalStageForm"
+            [stepControl]="internationalStageForm">
+    <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
+      <ng-template matStepLabel>PCT Stage</ng-template>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div class="form-row">
+          <h2>File Through PCT:</h2>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="center center"
@@ -172,7 +235,7 @@
             </mat-label>
             <mat-select class="custom-select"
                         formControlName="pct_country">
-              <mat-option *ngFor="let t of pct_countries"
+              <mat-option *ngFor="let t of pct_ro_countries"
                           [value]="t.id+''">
                 {{t.long_name}}
               </mat-option>
@@ -196,11 +259,11 @@
         <ng-template matStepLabel>PCT National Phase</ng-template>
         <div fxLayout="column" fxLayoutAlign="center center">
           <div class="form-row">
-            <h2>Select Jurisdictions to File</h2>
+            <h2>Select National Phase Countries:</h2>
           </div>
           <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_countries; let i=index">
+              <div *ngFor="let country of pct_accept_countries; let i=index">
                 <mat-checkbox *ngIf="country.col===1"
                               [formControl]="getCountriesFormCtrlNamePCT(country.id)"
                               (change)="onPCTCheckboxChange($event, country.id)">
@@ -209,7 +272,7 @@
               </div>
             </div>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_countries; let i=index">
+              <div *ngFor="let country of pct_accept_countries; let i=index">
                 <mat-checkbox *ngIf="country.col===2"
                               [formControl]="getCountriesFormCtrlNamePCT(country.id)"
                               (change)="onPCTCheckboxChange($event, country.id)">
@@ -221,7 +284,7 @@
 
           <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_countries; let i=index">
+              <div *ngFor="let country of pct_accept_countries; let i=index">
                 <mat-checkbox
                   [formControl]="getCountriesFormCtrlNamePCT(country.id)"
                   (change)="onPCTCheckboxChange($event, country.id)">
@@ -233,14 +296,16 @@
 
 
           <div class="form-row">
-            <div>
-              <button mat-flat-button color="primary" style="margin: 5px;"
-                      matStepperPrevious>Back
-              </button>
-              <button mat-flat-button color="accent" style="margin: 5px;"
-                      matStepperNext>Next
-              </button>
-            </div>
+            <ng-template
+              *ngIf="finalStep === FINAL_STEPS.PCT_STAGE; then finalButtons; else normalButtons"></ng-template>
+            <!--            <div>-->
+            <!--              <button mat-flat-button color="primary" style="margin: 5px;"-->
+            <!--                      matStepperPrevious>Back-->
+            <!--              </button>-->
+            <!--              <button mat-flat-button color="accent" style="margin: 5px;"-->
+            <!--                      matStepperNext>Next-->
+            <!--              </button>-->
+            <!--            </div>-->
           </div>
 
         </div>
@@ -258,7 +323,7 @@
         <ng-template matStepLabel>EPO Validation Phase</ng-template>
         <div fxLayout="column" fxLayoutAlign="center center">
           <div class="form-row">
-            <h2>Select Jurisdictions to File</h2>
+            <h2>Select EP Validation Jurisdictions</h2>
           </div>
           <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
             <div fxLayout="column" fxLayoutAlign="start start">
@@ -292,14 +357,16 @@
             </div>
           </div>
           <div class="form-row">
-            <div>
-              <button mat-flat-button color="primary" style="margin: 5px;"
-                      matStepperPrevious>Back
-              </button>
-              <button mat-flat-button color="accent" style="margin: 5px;"
-                      matStepperNext>Next
-              </button>
-            </div>
+            <ng-template
+              *ngIf="finalStep === FINAL_STEPS.EP_STAGE; then finalButtons; else normalButtons"></ng-template>
+            <!--            <div>-->
+            <!--              <button mat-flat-button color="primary" style="margin: 5px;"-->
+            <!--                      matStepperPrevious>Back-->
+            <!--              </button>-->
+            <!--              <button mat-flat-button color="accent" style="margin: 5px;"-->
+            <!--                      matStepperNext>Next-->
+            <!--              </button>-->
+            <!--            </div>-->
           </div>
 
         </div>
@@ -308,62 +375,36 @@
   </mat-step>
 
 
-  <mat-step [formGroup]="parisStageForm">
-    <form [formGroup]="parisStageForm">
-      <ng-template matStepLabel>Paris International Filing Phase</ng-template>
-      <div fxLayout="column" fxLayoutAlign="center center">
-        <div class="form-row">
-          <h2>Select Jurisdictions to File</h2>
-        </div>
-        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
-          <div fxLayout="column" fxLayoutAlign="start start">
-            <div *ngFor="let country of countries; let i=index">
-              <mat-checkbox *ngIf="country.col===1"
-                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                            (change)="onParisCheckboxChange($event, country.id)">
-                {{country.long_name}}
-              </mat-checkbox>
-                  </div>
-                </div>
-                <div fxLayout="column" fxLayoutAlign="start start">
-                  <div *ngFor="let country of countries; let i=index">
-                    <mat-checkbox *ngIf="country.col===2"
-                                  [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                                  (change)="onParisCheckboxChange($event, country.id)">
-                      <p>{{country.long_name}}</p>
-                    </mat-checkbox>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
-                <div fxLayout="column" fxLayoutAlign="start start">
-                  <div *ngFor="let country of countries; let i=index">
-                    <mat-checkbox
-                      [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                      (change)="onParisCheckboxChange($event, country.id)">
-                      {{country.long_name}}
-                    </mat-checkbox>
-                  </div>
-                  </div>
-                </div>
-
-            <div class="form-row">
-                <button mat-flat-button color="warn"  style="margin: 5px;"
-                        (click)="stepper.reset()"
-                        (click)="formReset()">Reset</button>
-                <button mat-flat-button color="primary" style="margin: 5px;"
-                        matStepperPrevious>Back</button>
-              <button mat-flat-button color="accent" type="submit"
-                      style="margin: 5px;"
-                      (click)="onSubmit()"
-                      [disabled]="!parisStageForm.valid">
-                Submit
-              </button>
-            </div>
-            </div>
-        </form>
-    </mat-step>
 </mat-vertical-stepper>
 </div>
 </div>
+<ng-template #finalButtons>
+  <button mat-flat-button color="warn" style="margin: 5px;"
+          (click)="stepper.reset()"
+          (click)="formReset()">Reset
+  </button>
+  <button mat-flat-button color="primary" style="margin: 5px;"
+          (click)="stepper.previous()">Back
+  </button>
+  <button mat-flat-button color="accent" type="submit"
+          style="margin: 5px;"
+          (click)="onSubmit()"
+  >
+    Submit
+  </button>
+</ng-template>
+
+<ng-template #normalButtons>
+  <div class="form-row">
+    <div>
+      <button mat-flat-button color="primary" style="margin: 5px;"
+              (click)="stepper.previous()"
+      >Back
+      </button>
+      <button mat-flat-button color="accent" style="margin: 5px;"
+              (click)="stepper.next()"
+      >Next
+      </button>
+    </div>
+  </div>
+</ng-template>

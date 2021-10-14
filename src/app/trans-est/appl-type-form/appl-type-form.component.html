@@ -21,9 +21,17 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field color="accent" appearance="outline">
-    <mat-label>PCT Analysis Bool:</mat-label>
+    <mat-label>PCT RO Bool:</mat-label>
     <mat-select class="custom-select"
-                formControlName="pct_analysis_bool">
+                formControlName="pct_ro_bool">
+      <mat-option [value]=true>True</mat-option>
+      <mat-option [value]=false>False</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline">
+    <mat-label>PCT Accept Bool:</mat-label>
+    <mat-select class="custom-select"
+                formControlName="pct_accept_bool">
       <mat-option [value]=true>True</mat-option>
       <mat-option [value]=false>False</mat-option>
     </mat-select>
@@ -44,8 +52,18 @@
     <mat-label>Currency Name:</mat-label>
     <input matInput type="text" formControlName="currency_name">
   </mat-form-field>
-
   <div class="form-row" fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" fxLayoutAlign="start start">
+      <p>Languages</p>
+      <div *ngFor="let lang of languages; let i=index">
+        <mat-checkbox
+          [disabled]="!formActive"
+          [formControl]="getLangFormCtrlName(lang.id)"
+          (change)="onLangCheckboxChange($event, lang.id)">
+          {{lang.name}}
+        </mat-checkbox>
+      </div>
+    </div>
     <div fxLayout="column" fxLayoutAlign="start start">
       <p>Application Types</p>
       <div *ngFor="let applType of applTypes; let i=index">

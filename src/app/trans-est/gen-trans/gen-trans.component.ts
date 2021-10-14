@@ -11,7 +11,7 @@ import {Country} from 'src/app/characteristics/_models/Country.model';
 export class GenTransComponent {
 
   @Input() tableData: any
-  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
@@ -28,7 +28,7 @@ export class GenTransComponent {
 
 
   newRow(){
-    this.tableData = concat(this.tableData, {id:'',country:'',date_diff:''})
+    this.tableData = concat(this.tableData, {id: 0, country: '', date_diff: ''})
   }
 
   editRow(row: any) {

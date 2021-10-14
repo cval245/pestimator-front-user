@@ -1,11 +1,13 @@
 <app-fam-est-form [entitySizes]="entitySizes"
                   [countries]="countries"
-                  [pct_countries]="pct_countries"
+                  [pct_ro_countries]="pct_ro_countries"
+                  [pct_accept_countries]="pct_accept_countries"
                   [ep_countries]="ep_countries"
+                  [paris_basic_countries]="paris_basic_countries"
                   [applTypes]="applTypes"
                   (formData)="verifySubmission($event)"
 ></app-fam-est-form>
 <div *ngIf="error_display_bool">
-<p>{{error_notification}}</p>
-<a mat-flat-button color="accent" routerLink="/account/buy-new-estimate">More Estimates</a>
+  <p>{{error_notification}}</p>
+  <a mat-flat-button color="accent" routerLink="/account/buy-new-estimate">More Estimates</a>
 </div>

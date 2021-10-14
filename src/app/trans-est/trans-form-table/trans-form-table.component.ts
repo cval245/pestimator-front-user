@@ -12,7 +12,7 @@ import {concat, dropRight} from 'lodash';
   styleUrls: ['./trans-form-table.component.scss']
 })
 export class TransFormTableComponent {
-  @Input() country: Country = new Country(0, '', '', false, false, '', '', [0], [0])
+  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
   @Input() cstmFilTrans = new Array<ICustomFilTrans>()
   @Output() formData = new EventEmitter

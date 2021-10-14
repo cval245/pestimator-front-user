@@ -23,8 +23,10 @@ import {EntitySize} from '../../characteristics/_models/entitySize.model';
 export class FamEstFormComponent implements OnInit {
   @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])];
   @Input() countries: Country[];
-  @Input() pct_countries: Country[];
+  @Input() pct_ro_countries: Country[];
+  @Input() pct_accept_countries: Country[];
   @Input() ep_countries: Country[];
+  @Input() paris_basic_countries: Country[];
   @Input() entitySizes: EntitySize[];
   @Output() formData = new EventEmitter;
   public aggFormData: FamEstForm;
@@ -37,7 +39,15 @@ export class FamEstFormComponent implements OnInit {
   public epStageForm: FormGroup;
   public parisStageForm: FormGroup;
   public applTypesCorrect: ApplType[] = [new ApplType(0, '', '', [0])];
-  isa_countries: Country[] = [new Country(0, '', '', false, false, '', '', [0], [0])];
+  isa_countries: Country[] = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+  private removeInitApplFromParisCountries: boolean = false;
+  public paris_countries: Country[] = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+  public FINAL_STEPS = {
+    PARIS_STAGE: "parisstage",
+    EP_STAGE: "epstage",
+    PCT_STAGE: "pctstage"
+  }
+  public finalStep = this.FINAL_STEPS.PARIS_STAGE
 
   constructor(private fb: FormBuilder,
               private cdRef: ChangeDetectorRef,
@@ -51,9 +61,11 @@ export class FamEstFormComponent implements OnInit {
       0, 0, 0);
 
     this.applTypes = [new ApplType(0, '', '', [0])];
-    this.countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
-    this.pct_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
-    this.ep_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
+    this.countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.pct_ro_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.pct_accept_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.ep_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.paris_basic_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
     this.entitySizes = [new EntitySize(0, '', '')];
 
     this.familyForm = this.fb.group({
@@ -83,13 +95,13 @@ export class FamEstFormComponent implements OnInit {
     this.internationalStageForm = this.fb.group({
       pct_country: [],
       isa_country: [],
-      pct_countries: this.fb.array([], Validators.required),
+      pct_countries: this.fb.array([], this.PCTFormValidator()),
     })
     this.epStageForm = this.fb.group({
-      ep_countries: this.fb.array([], Validators.required),
+      ep_countries: this.fb.array([], this.EPFormValidator()),
     })
     this.parisStageForm = this.fb.group({
-      paris_countries: this.fb.array([], Validators.required),
+      paris_countries: this.fb.array([]),
     })
     this.firstApplForm.controls.country.valueChanges.subscribe(country_id => {
       this.applTypesCorrect = this.applTypes.filter(applType => applType.country_set.some(countryId => countryId == country_id))
@@ -98,9 +110,13 @@ export class FamEstFormComponent implements OnInit {
       } else {
         this.firstApplForm.controls.application_type.disable()
       }
-      if (country_id == this.countries.find(x => x.country == 'EP')!.id) {
-        this.pct_countries = this.pct_countries.filter(x => x != this.countries.find(y => y.country == 'EP'))
-      }
+      this.blockOutParisCountries()
+      this.filterParisCountries()
+      // adjust other factors
+
+      // if (country_id == this.countries.find(x => x.country == 'EP')!.id) {
+      //   this.pct_countries = this.pct_countries.filter(x => x != this.countries.find(y => y.country == 'EP'))
+      // }
     })
     this.internationalStageForm.controls.pct_country.valueChanges.subscribe(country_id => {
       let country = this.countries.find(x => x.id == country_id)
@@ -108,16 +124,123 @@ export class FamEstFormComponent implements OnInit {
         this.isa_countries = this.countries.filter(x => country!.isa_countries.some(y => y == x.id))
       }
     })
+    this.firstApplForm.controls.ep_method.valueChanges.subscribe(x => {
+      this.filterParisCountries()
+      this.autoSelectEP()
+      this.detFinalButtons()
+      if (x) {
+        this.epStageForm.controls.ep_countries.setValidators([Validators.required])
+      } else {
+        this.epStageForm.controls.ep_countries.setValidators([])
+      }
+    })
+    this.firstApplForm.controls.pct_method.valueChanges.subscribe(x => {
+      this.filterParisCountries()
+      this.autoSelectEP()
+      this.detFinalButtons()
+      if (x) {
+        let bob = this.internationalStageForm.get('pct_country') as FormControl
+        bob.add([])
+        this.internationalStageForm.controls.pct_country.addValidators([Validators.required])
+        this.internationalStageForm.controls.isa_country.addValidators([Validators.required])
+        this.internationalStageForm.controls.pct_countries.addValidators([Validators.required])
+      } else {
+        this.internationalStageForm.controls.pct_country.setValidators([])
+        this.internationalStageForm.controls.isa_country.setValidators([])
+        this.internationalStageForm.controls.pct_countries.setValidators([])
+      }
+    })
   }
-    ngOnInit(): void {
-        if(this.firstApplForm.get('application_type') !== null){
-          this.firstApplForm.controls.application_type.valueChanges.subscribe((applType) => {
-            this.setInternationalMethod()
-            this.firstApplForm.controls.ep_method.enable()
-            this.firstApplForm.controls.pct_method.enable()
-            this.internationalStageForm.controls.pct_country.enable()
-            this.firstApplForm.patchValue({ep_method: false})
-            this.firstApplForm.patchValue({pct_method: false})
+
+  detFinalButtons() {
+    if (this.firstApplForm.controls.ep_method.value) {
+      this.finalStep = this.FINAL_STEPS.EP_STAGE
+    } else if (this.firstApplForm.controls.pct_method.value) {
+      this.finalStep = this.FINAL_STEPS.PCT_STAGE
+    } else {
+      this.finalStep = this.FINAL_STEPS.PARIS_STAGE
+    }
+  }
+
+  autoSelectEP() {
+    const checkArray: FormArray = this.parisStageForm.get('paris_countries') as FormArray;
+    if (this.firstApplForm.controls.ep_method.value
+      && !this.firstApplForm.controls.pct_method.value) {
+      console.log('sdfgggg', this.countries.find(x => x.country == 'EP'))
+      checkArray.push(new FormControl({
+        value: this.countries.find(x => x.country == 'EP')!.id,
+        disabled: true
+      }));
+    } else {
+      console.log('sdggggssss', checkArray.controls.some(x => x.value == this.countries.find(y => y.country == 'EP')!.id))
+      if (checkArray.controls.some(x => x.value == this.countries.find(y => y.country == 'EP')!.id)) {
+        let i: number = 0;
+        checkArray.controls.forEach((item: AbstractControl) => {
+          console.log('item.value', item.value)
+          if (item.value == this.countries.find(x => x.country == 'EP')!.id) {
+            checkArray.at(i).enable();
+            checkArray.removeAt(i);
+            return;
+          }
+          i++;
+        })
+      }
+    }
+  }
+
+  filterParisCountries() {
+    this.paris_countries = this.paris_basic_countries
+    if (!this.firstApplForm.controls.ep_method.value) {
+      this.paris_countries = this.paris_countries.filter((x: Country) => x.country != 'EP')
+    }
+    // if (!this.firstApplForm.controls.pct_method.value) {
+    //   let cur_par_countries = this.parisStageForm.controls.paris_countries.value
+    //   this.paris_countries = this.paris_countries.filter((x: Country)=> x.country != 'IB')
+    // }
+    // this.cdRef.detectChanges()
+  }
+
+  blockOutParisCountries() {
+    this.removeInitApplFromParisCountries = false
+    const checkArray: FormArray = this.parisStageForm.get('paris_countries') as FormArray;
+    // checkArray.clear()
+    let i: number = 0;
+    checkArray.controls.forEach((item: AbstractControl) => {
+      if (item.disabled) {
+        checkArray.at(i).enable();
+        checkArray.removeAt(i);
+        return;
+      }
+      i++;
+    })
+
+
+    if (this.firstApplForm.controls.application_type.value !== undefined) {
+      if (this.firstApplForm.controls.application_type.value
+        == this.applTypes.find(x => x.application_type == 'utility')!.id
+        || this.firstApplForm.controls.application_type.value
+        == this.applTypes.find(x => x.application_type == 'pct')!.id
+      ) {
+        console.log('sssdsfff', this.firstApplForm.controls.country.value)
+        checkArray.push(new FormControl({
+          value: this.firstApplForm.controls.country.value,
+          disabled: true
+        }));
+        this.removeInitApplFromParisCountries = true
+        // this.parisStageForm.controls.paris_countries.patchValue({value: [this.firstApplForm.controls.country.value]})
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    // if(this.firstApplForm.get('application_type') !== null){
+    this.firstApplForm.controls.application_type.valueChanges.subscribe((applType) => {
+      this.setInternationalMethod()
+      this.firstApplForm.controls.ep_method.enable()
+      this.firstApplForm.controls.pct_method.enable()
+      this.internationalStageForm.controls.pct_country.enable()
+      this.firstApplForm.patchValue({ep_method: false})
+      this.firstApplForm.patchValue({pct_method: false})
             this.internationalStageForm.controls.pct_country.reset()
             if (applType == this.applTypes.find(x => x.application_type == 'ep')!.id) {
               this.firstApplForm.patchValue({ep_method: true})
@@ -131,13 +254,20 @@ export class FamEstFormComponent implements OnInit {
               })
               this.internationalStageForm.controls.pct_country.disable()
             }
+      this.blockOutParisCountries()
           })
-        }
+    // }
     }
 
   ngOnChanges(): void {
-    console.log('sdfggg', this.applTypes)
-    console.log('sdfggg', this.applTypesCorrect)
+    // console.log('this_ro_countries', this.pct_ro_countries)
+    // console.log('this_accept_countries', this.pct_accept_countries)
+    // console.log('this_countries', this.countries)
+    console.log('this.countr', this.countries.length)
+    this.paris_countries = this.paris_basic_countries
+    console.log('this.paris', this.paris_countries)
+    this.filterParisCountries()
+
   }
 
   onPCTCheckboxChange(e: any, country_id: number) {
@@ -199,8 +329,22 @@ export class FamEstFormComponent implements OnInit {
     console.log('this.first', this.firstApplForm.valid)
     console.log('this.internationSTageForm', this.internationalStageForm.valid)
     console.log('this.epStageForm', this.epStageForm.valid)
+    if (this.removeInitApplFromParisCountries) {
+      const checkArray: FormArray = this.parisStageForm.get('paris_countries') as FormArray;
+      let init_country = this.firstApplForm.controls.country.value
+      let i: number = 0;
+      checkArray.controls.forEach((item: AbstractControl) => {
+        if (item.value == init_country) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      })
+    }
     if (this.familyForm.valid && this.firstApplForm.valid
-      && this.internationalStageForm.valid && this.epStageForm.valid
+      // && (this.internationalStageForm.valid || !this.firstApplForm.controls.pct_method )
+      && this.internationalStageForm.valid
+      && this.epStageForm.valid
       && this.parisStageForm.valid) {
       this.aggFormData = new FamEstForm('',
         '', 0, '', 0, 0,
@@ -293,4 +437,37 @@ export class FamEstFormComponent implements OnInit {
       return null
     }
   }
+
+  EPFormValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      let ep_method = this.firstApplForm.get('ep_method')
+      if (ep_method) {
+        let epCountries = control.get('ep_countries')
+        if (epCountries !== null)
+          return epCountries.value.length > 0 ? null : {InvalidEPCountries: true}
+      }
+      return null
+    }
+  }
+
+  PCTFormValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      let pct_method = this.firstApplForm.get('pct_method')
+      if (pct_method) {
+        let pctCountries = control.get('pct_countries')
+        if (pctCountries !== null)
+          return pctCountries.value.length > 0 ? null : {InvalidPCTCountries: true}
+      }
+      return null
+    }
+  }
+
 }

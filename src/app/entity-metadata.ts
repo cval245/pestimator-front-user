@@ -23,6 +23,7 @@ const entityMetadata: EntityMetadataMap = {
   EntitySize: {},
   ApplType: {},
   ApplTypeAll: {},
+  Language: {},
   OAType: {},
   Family: {},
   Application: {},

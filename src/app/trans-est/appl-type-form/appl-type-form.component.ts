@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {ApplType} from "../../characteristics/_models/applType.model";
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {CountryAll} from "../../characteristics/_models/CountryAll.model";
+import {Language} from "../../characteristics/_models/Language.model";
 
 
 @Component({
@@ -13,11 +14,12 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
 
   @Input() country = new CountryAll(0,
     '', '', false,
-    false, false, '', '', [0], [0])
+    false, false, false, '', '', [0], [0], [0])
   @Input() applTypes = [new ApplType(0, '', '', [0])]
   @Input() countries = [new CountryAll(0,
-    '', '', false,
-    false, false, '', '', [0], [0])]
+    '', '', false, false,
+    false, false, '', '', [0], [0], [0])]
+  @Input() languages = new Array<Language>()
   @Output() formEmitter = new EventEmitter()
   public form: FormGroup;
   public formActive: boolean = false;
@@ -30,13 +32,14 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       currency_name: [''],
       active_bool: [false],
       ep_bool: [false],
-      pct_analysis_bool: [false],
+      pct_ro_bool: [false],
+      pct_accept_bool: [false],
       color: [''],
       long_name: [''],
       available_appl_types: this.fb.array([false]),
       isa_countries: this.fb.array([false]),
+      languages_set: this.fb.array([false]),
     })
-
   }
 
   ngOnInit(): void {
@@ -54,7 +57,8 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       currency_name: this.country.currency_name,
       active_bool: this.country.active_bool,
       ep_bool: this.country.ep_bool,
-      pct_analysis_bool: this.country.pct_analysis_bool,
+      pct_ro_bool: this.country.pct_ro_bool,
+      pct_accept_bool: this.country.pct_accept_bool,
       color: this.country.color,
       long_name: this.country.long_name,
     })
@@ -68,9 +72,15 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
     const isaCheckArray: FormArray = this.form.get('isa_countries') as FormArray;
     isaCheckArray.reset()
     for (let country_id of this.country.isa_countries) {
-      console.log('country_id', country_id)
       if (country_id > 0) {
         isaCheckArray.push(new FormControl(country_id));
+      }
+    }
+    const langCheckArray: FormArray = this.form.get('languages_set') as FormArray;
+    langCheckArray.reset()
+    for (let lang of this.country.languages_set) {
+      if (lang > 0) {
+        langCheckArray.push(new FormControl(lang));
       }
     }
 
@@ -78,24 +88,15 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
 
 
   onSubmit() {
-    // this.form.patchValue({country: this.country.id})
-    // const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
-    //
-    // let i: number = 0;
-    // checkArray.controls.forEach((item: AbstractControl) => {
-    //   if (item.value == null) {
-    //     checkArray.removeAt(i);
-    //     return;
-    //   }
-    //   i++;
-    // });
-
     let formValues = this.form.value
     // formValues.available_appl_types =
     formValues.available_appl_types = formValues.available_appl_types.filter((item: number) => {
       return item != null
     })
     formValues.isa_countries = formValues.isa_countries.filter((item: number) => {
+      return item != null
+    })
+    formValues.languages_set = formValues.languages_set.filter((item: number) => {
       return item != null
     })
     this.formEmitter.emit(formValues)
@@ -116,7 +117,6 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
         i++;
       });
     }
-
   }
 
   onApplTypeCheckboxChange(e: any, applType_id: number) {
@@ -134,8 +134,25 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
         i++;
       });
     }
-
   }
+
+  onLangCheckboxChange(e: any, applType_id: number) {
+    const checkArray: FormArray = this.form.get('languages_set') as FormArray;
+
+    if (e.checked) {
+      checkArray.push(new FormControl(applType_id));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach((item: AbstractControl) => {
+        if (item.value == false) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
 
   getCountriesFormCtrlName(country_id: number) {
     const checkArray: FormArray = this.form.get('isa_countries') as FormArray;
@@ -148,6 +165,15 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
 
   getApplTypesFormCtrlName(applType_id: number) {
     const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
+    let ctrl = checkArray.controls.find(x => x.value == applType_id) as FormControl
+    if (ctrl == undefined) {
+      return new FormControl()
+    }
+    return ctrl
+  }
+
+  getLangFormCtrlName(applType_id: number) {
+    const checkArray: FormArray = this.form.get('languages_set') as FormArray;
     let ctrl = checkArray.controls.find(x => x.value == applType_id) as FormControl
     if (ctrl == undefined) {
       return new FormControl()

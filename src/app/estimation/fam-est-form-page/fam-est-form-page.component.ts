@@ -29,10 +29,13 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   private countries$: Observable<Country[]>;
   private countriesSub: Subscription;
 
-  public pct_countries: Country[];
+  public pct_ro_countries: Country[];
+  public pct_accept_countries: Country[];
   public ep_countries: Country[];
+  public paris_basic_countries: Country[];
 
-  public entitySizes: EntitySize[] = [new EntitySize(0,'','')];
+
+  public entitySizes: EntitySize[] = [new EntitySize(0, '', '')];
   private entitySizes$: Observable<EntitySize[]>;
   private entitySizesSub: Subscription;
   private famformData: FamEstForm = new FamEstForm('',
@@ -53,11 +56,14 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     this.applTypes = [new ApplType(0, '', '', [0])];
     this.applTypes$ = applTypeSer.entities$;
     this.applTypesSub = new Subscription();
-    this.countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
+    this.countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
     this.countries$ = countrySer.entities$;
     this.countriesSub = new Subscription();
-    this.pct_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
-    this.ep_countries = [new Country(0, '', '', false, false, '', '', [0], [0])];
+    this.pct_ro_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.pct_accept_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.ep_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    this.paris_basic_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
+    // this.direct_file_countries = [new Country(0, '', '', false, false, false, '', '', [0], [0], [0])];
     this.entitySizes = [new EntitySize(0, '', '')];
     this.entitySizes$ = entitySizeSer.entities$;
     this.entitySizesSub = new Subscription();
@@ -74,12 +80,14 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
             return {...y, 'col': 2}
           }
         })
-      this.pct_countries = this.countries.filter(y => y.pct_analysis_bool)
+      this.pct_ro_countries = this.countries.filter(y => y.pct_ro_bool)
+      this.pct_accept_countries = this.countries.filter(y => y.pct_accept_bool)
       this.ep_countries = this.countries.filter(y => y.ep_bool)
+      this.paris_basic_countries = this.countries.filter(y => y.country != 'IB')
+      // this.direct_file_countries = this.countries.filter(y => y)
     });
     this.applTypesSub = this.getApplTypes().subscribe(x => {
       this.applTypes = x
-      console.log('tsdf', this.applTypes)
     });
     this.entitySizesSub = this.getEntitySize().subscribe(x => this.entitySizes = x);
   }
