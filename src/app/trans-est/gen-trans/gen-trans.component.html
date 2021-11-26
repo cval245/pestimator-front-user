@@ -33,6 +33,34 @@
         </td>
     </ng-container>
 
+  <ng-container matColumnDef="complex_time_conditions">
+    <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+      <h3>Complex Time Conditions</h3></th>
+    <td mat-cell *matCellDef="let element">
+
+      <div *ngIf="editingRow===element.id; else transCompTimes">
+        <div [formGroup]="form">
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Complex Time Conditions</mat-label>
+            <mat-select class="custom-select"
+                        formControlName="complex_time_conditions">
+              <mat-option *ngFor="let t of transComplexTimes"
+                          [value]="t.id+''">
+                {{t.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-template #transCompTimes>
+        <div *ngIf="element.complex_time_conditions !== undefined && element.complex_time_conditions !== null">
+          {{element.complex_time_conditions.name}}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+
+
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row (dblclick)="editRow(row)"

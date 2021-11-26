@@ -1,6 +1,7 @@
 export interface IAllowEstTemp{
   id: number;
   official_cost: number,
+  official_cost_currency: string,
   date_diff: string;
   country: any;
   appl_type: any;
@@ -8,4 +9,5 @@ export interface IAllowEstTemp{
   law_firm_template: any;
   description: string;
   fee_code: string;
+  isa_country_fee_only: boolean;
 }

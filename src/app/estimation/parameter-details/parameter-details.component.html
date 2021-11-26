@@ -1,64 +1,82 @@
-<div class="mat-typography" *ngIf="formData.init_appl_country">
-  <h2>Summary of Estimate</h2>
-  <mat-list style="text-align: left;">
-    <mat-divider></mat-divider>
-    <div matSubheader>Family Details</div>
-    <mat-list-item class="mat-body-2">
-      <p matLine></p>
-      <div matLine>
-        Family Name:  {{formData.family_name}}
-      </div>
-      <div matLine>Family Reference No:  {{formData.family_no}}</div>
-      <div matLine>Entity Size:  {{formData.entity_size.entity_size}}</div>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <div mat-subheader>Details on First Application</div>
-    <mat-list-item>
-      <p matLine></p>
-      <p matLine>
-        Filing Date:  {{formData.init_appl_filing_date | date:"longDate"}}
-      </p>
-      <p matLine>
-        Country:  {{formData.init_appl_country.country}}
-      </p>
-      <p matLine>
-        Application Type:  {{formData.init_appl_type.application_type}}
-      </p>
-      <p matLine>
-        Claims:  {{formData.init_appl_claims}}
-      </p>
-      <p matLine>
-        Independent Claims:  {{formData.init_appl_indep_claims}}
-      </p>
-      <p matLine>
-        Drawings:  {{formData.init_appl_drawings}}
-      </p>
-      <p matLine>
-        Pages for Specification:  {{formData.init_appl_pages_desc}}
-      </p>
-      <p matLine>
-        Pages for Claims:  {{formData.init_appl_pages_claims}}
-      </p>
-      <p matLine>
-        Pages for Drawings:  {{formData.init_appl_pages_drawings}}
-      </p>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <div mat-subheader>International Filing Methods</div>
-    <mat-list-item>
-      <p matLine></p>
-      <p matLine>Using PCT Method:  {{formData.pct_method}}</p>
-      <p matLine *ngIf="formData.pct_method">PCT Country:  {{formData.pct_country.country}}</p>
-      <p matLine>Using EPO Method:  {{formData.ep_method}}</p>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <div mat-subheader>National Phase Countries</div>
-    <mat-list-item>
-      <div *ngIf="formData.pct_countries.length > 0">
-        <div matLine *ngFor="let c of formData.pct_countries">
-          <li>{{c.country}}</li>
-        </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
-</div>
+<!--<div class="mat-typography" *ngIf="formData.init_appl_country">-->
+<!--  <h2>Summary of Estimate</h2>-->
+<!--  <mat-list style="text-align: left;">-->
+<!--    <mat-divider></mat-divider>-->
+<!--    <div matSubheader>Family Details</div>-->
+<!--    <mat-list-item class="mat-body-2">-->
+<!--      <p matLine></p>-->
+<!--      <div matLine>-->
+<!--        Family Name:  {{formData.family_name}}-->
+<!--      </div>-->
+<!--      <div matLine>Family Reference No:  {{formData.family_no}}</div>-->
+<!--&lt;!&ndash;      <div matLine>Entity Size:  {{formData.entity_size.entity_size}}</div>&ndash;&gt;-->
+<!--    </mat-list-item>-->
+<!--    <mat-divider></mat-divider>-->
+<!--    <div mat-subheader>Details on First Application</div>-->
+<!--    <mat-list-item>-->
+<!--      <p matLine></p>-->
+<!--      <p matLine>-->
+<!--        Filing Date:  {{formData.init_appl_filing_date | date:"longDate"}}-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--        Country:  {{formData.init_appl_country.country}}-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--        Application Type:  {{formData.init_appl_type.application_type}}-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Claims:  {{formData.init_appl_claims}}&ndash;&gt;-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Independent Claims:  {{formData.init_appl_indep_claims}}&ndash;&gt;-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Drawings:  {{formData.init_appl_drawings}}&ndash;&gt;-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Pages for Specification:  {{formData.init_appl_pages_desc}}&ndash;&gt;-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Pages for Claims:  {{formData.init_appl_pages_claims}}&ndash;&gt;-->
+<!--      </p>-->
+<!--      <p matLine>-->
+<!--&lt;!&ndash;        Pages for Drawings:  {{formData.init_appl_pages_drawings}}&ndash;&gt;-->
+<!--      </p>-->
+<!--    </mat-list-item>-->
+<!--&lt;!&ndash;    <mat-divider></mat-divider>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div mat-subheader>International Filing Methods</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      <p matLine></p>&ndash;&gt;-->
+<!--&lt;!&ndash;      <p matLine>Using PCT Method:  {{formData.pct_method}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <p matLine *ngIf="formData.pct_method">PCT Country:  {{formData.pct_country.country}}</p>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      <p matLine>Using EPO Method:  {{formData.ep_method}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    </mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-divider></mat-divider>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div mat-subheader>Direct File Countries</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div *ngIf="formData.paris_countries.length > 0">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div matLine *ngFor="let c of formData.paris_countries">&ndash;&gt;-->
+<!--&lt;!&ndash;          <li>{{c.country.long_name}}</li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div mat-subheader>PCT National Phase Countries</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div *ngIf="formData.pct_countries.length > 0">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div matLine *ngFor="let c of formData.pct_countries">&ndash;&gt;-->
+<!--&lt;!&ndash;          <li>{{c.country.long_name}}</li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div mat-subheader>EP Validation Phase Countries</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div *ngIf="formData.ep_countries.length > 0">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div matLine *ngFor="let c of formData.ep_countries">&ndash;&gt;-->
+<!--&lt;!&ndash;          <li>{{c.country.long_name}}</li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </mat-list-item>&ndash;&gt;-->
+
+
+<!--  </mat-list>-->
+<!--</div>-->

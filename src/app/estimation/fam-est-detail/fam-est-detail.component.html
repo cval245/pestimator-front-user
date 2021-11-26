@@ -14,7 +14,9 @@
   <div class="overContainer" fxLayout="row" fxLayoutAlign="space-between start"
        fxLayout.lt-md="column"
   >
-    <app-parameter-details [formData]="famform"></app-parameter-details>
+    <app-famestformdata-summary [formData]="famform">
+    </app-famestformdata-summary>
+<!--    <app-parameter-details [formData]="famform"></app-parameter-details>-->
     <div>
       <app-fam-det-table [applications]="applications"></app-fam-det-table>
     </div>
@@ -23,7 +25,8 @@
       <div class="buttonContainerTitle">
         <h3>Export</h3>
       </div>
-      <button mat-flat-button color="accent" (click)="exportXLSX()">Excel</button>
+      <button mat-flat-button color="accent" (click)="retrieveXLSX()">Excel</button>
+      <button mat-flat-button color="accent" (click)="retrievePDF()">PDF</button>
     </div>
   </div>
 

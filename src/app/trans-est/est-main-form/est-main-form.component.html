@@ -1,69 +1,107 @@
+<!--<ng-template [cdkPortalOutlet]="templatePortal"></ng-template>-->
+<ng-template cdkConnectedOverlay></ng-template>
+<ng-template #templatePortalContent
+  >
+  <div class="countrySelector">
 <mat-form-field appearance="outline">
   <mat-label>Country</mat-label>
-  <mat-select class="custom-select"
+  <mat-select
               [formControl]="countryControl">
     <mat-option *ngFor="let t of countries"
-                [value]="t.id+''">
+                [value]="t.id">
       {{t.country}}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<app-est-template-grid
+  </div>
+</ng-template>
+<div class="over-grid">
+<h3>Super Filing Estimate Template</h3>
+<app-est-template-grid-v2
   [applTypes]="applTypes"
+  [currencies_list]="currencies_list"
   [country]="country"
   [countries]="countries"
   [rowData]="filEstTemp"
   [entitySizes]="entitySizes"
+  [docFormats]="docFormats"
   [complexConditions]="complexConditions"
   [complexTimeConditions]="complexTimeConditions"
   (formData)="onSubmitFilEstTemp($event)"
->
-</app-est-template-grid>
-<div>
-  <p>Filing Estimate Template</p>
-  <app-est-form
-    [tableData]="filEstTemp"
-    [country]="country"
-    [applTypes]="applTypes"
-    [entitySizes]="entitySizes"
-    [complexConditions]="complexConditions"
-    [complexTimeConditions]="complexTimeConditions"
-    (formData)="onSubmitFilEstTemp($event)"
   (delEmit)="delFileEstTemp($event)"
 >
-</app-est-form>
+</app-est-template-grid-v2>
 </div>
 
-<div>
-<p>Publication Estimate Template</p>
-  <app-est-form
-    [tableData]="publEstTemp"
-    [country]="country"
+<!--<p>Filing Estimate Template</p>-->
+<!--<app-est-template-grid-->
+<!--  [applTypes]="applTypes"-->
+<!--  [currencies_list]="currencies_list"-->
+<!--  [country]="country"-->
+<!--  [countries]="countries"-->
+<!--  [rowData]="filEstTemp"-->
+<!--  [entitySizes]="entitySizes"-->
+<!--  [complexConditions]="complexConditions"-->
+<!--  [complexTimeConditions]="complexTimeConditions"-->
+<!--  (formData)="onSubmitFilEstTemp($event)"-->
+<!--  (delEmit)="delFileEstTemp($event)"-->
+<!--&gt;-->
+<!--</app-est-template-grid>-->
+  <div class="over-grid">
+<h3>Publication Estimate Template</h3>
+  <app-est-template-grid-v2
     [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
+    [rowData]="publEstTemp"
     [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     (formData)="onSubmitPublEstTemp($event)"
     (delEmit)="delPublEstTemp($event)"
   >
-  </app-est-form>
+  </app-est-template-grid-v2>
 </div>
 
-<div *ngIf="country_us === false">
-  <p>OA Estimate Template</p>
-  <app-est-form
-    [tableData]="oaEstTemp"
-    [country]="country"
+<div class="over-grid">
+  <h3>Request Exam Template</h3>
+  <app-est-template-grid-v2
     [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
+    [rowData]="reqEstTemp"
     [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
+    [complexConditions]="complexConditions"
+    [complexTimeConditions]="complexTimeConditions"
+    (formData)="onSubmitReqEstTemp($event)"
+    (delEmit)="delReqEstTemp($event)"
+  >
+  </app-est-template-grid-v2>
+</div>
+
+
+<div *ngIf="country_us === false" class="over-grid">
+  <p>OA Estimate Template</p>
+  <app-est-template-grid-v2
+    [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
+    [rowData]="oaEstTemp"
+    [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     (formData)="onSubmitOAEstTemp($event)"
     (delEmit)="delOAEstTemp($event)"
   >
-  </app-est-form>
+  </app-est-template-grid-v2>
 </div>
-<div *ngIf="country_us === true">
+<div *ngIf="country_us === true" class="over-grid">
   <p>US OA Estimate Template</p>
   <app-us-oa-est-form
     [tableData]="usoaEstTemp"
@@ -77,32 +115,38 @@
   </app-us-oa-est-form>
 </div>
 
-<div>
-<p>Allow Estimate Template</p>
-  <app-est-form
-    [tableData]="allowEstTemp"
-    [country]="country"
+<div class="over-grid">
+<h3>Allow Estimate Template</h3>
+  <app-est-template-grid-v2
     [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
+    [rowData]="allowEstTemp"
     [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     (formData)="onSubmitAllowEstTemp($event)"
     (delEmit)="delAllowEstTemp($event)"
   >
-  </app-est-form>
+  </app-est-template-grid-v2>
 </div>
 
-<div>
-<p>Issue Estimate Template</p>
-  <app-est-form
-    [tableData]="issueEstTemp"
-    [country]="country"
+<div class="over-grid">
+<h3>Issue Estimate Template</h3>
+  <app-est-template-grid-v2
     [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
+    [rowData]="issueEstTemp"
     [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     (formData)="onSubmitIssueEstTemp($event)"
     (delEmit)="delIssueEstTemp($event)"
   >
-  </app-est-form>
+  </app-est-template-grid-v2>
 </div>

@@ -30,6 +30,12 @@ import {ParameterDetailsComponent} from './parameter-details/parameter-details.c
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {EstimationRoutingModule} from "./estimation-routing.module";
 import {NgChartsModule} from 'ng2-charts';
+import {MatRadioModule} from "@angular/material/radio";
+import {CustomDetailsFormComponent} from './custom-details-form/custom-details-form.component';
+import {MatIconModule} from "@angular/material/icon";
+import {CustomCountryDetailsPipe} from './custom-country-details.pipe';
+import {FamestformdataSummaryComponent} from './famestformdata-summary/famestformdata-summary.component';
+import {CustomOptionsFormComponent} from './custom-options-form/custom-options-form.component';
 
 @NgModule({
   declarations: [
@@ -44,28 +50,35 @@ import {NgChartsModule} from 'ng2-charts';
     FamDetTableComponent,
     FamEstConfirmComponent,
     ParameterDetailsComponent,
+    CustomDetailsFormComponent,
+    CustomCountryDetailsPipe,
+    FamestformdataSummaryComponent,
+    CustomOptionsFormComponent,
   ],
     imports: [
-      CommonModule,
-      // RouterModule,
-      EstimationRoutingModule,
-      MatCheckboxModule,
-      MatInputModule,
-      MatButtonModule,
-      MatFormFieldModule,
-      MatSelectModule,
-      MatDatepickerModule,
-      MatNativeDateModule,
-      MatStepperModule,
-      MatTableModule,
-      MatDividerModule,
-      MatPaginatorModule,
-      MatDialogModule,
-      FlexLayoutModule,
-      ReactiveFormsModule,
-      MatListModule,
-      MatTooltipModule,
-      NgChartsModule,
+        CommonModule,
+        // RouterModule,
+        // HttpClientModule,
+        EstimationRoutingModule,
+        MatCheckboxModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatStepperModule,
+        MatTableModule,
+        MatDividerModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        FlexLayoutModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatTooltipModule,
+        NgChartsModule,
+        MatRadioModule,
+        MatIconModule,
     ],
   exports: [
     FamEstFormComponent,

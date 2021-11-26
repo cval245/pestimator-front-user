@@ -40,6 +40,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {menuOpenReducer} from "./store/reducers/menu.reducers";
 import {defaultDataServiceConfig} from "./store/dataserviceconfig";
+import {customDetailsReducer} from "./store/reducers/customDetails.reducers";
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
         'loading': loadingReducer,
         'authCred': authReducer,
         'menuOpen': menuOpenReducer,
+        'customDetails': customDetailsReducer,
       },
       {metaReducers}),
     StoreDevtoolsModule.instrument({
@@ -74,8 +76,8 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
     EffectsModule.forRoot([AuthEffectsNew]),
     EntityDataModule.forRoot(entityConfig),
     LandingRoutingModule,
-    AppRoutingModule,
     ContentFreeRoutingModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,

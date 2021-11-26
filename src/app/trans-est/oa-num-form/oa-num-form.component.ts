@@ -10,7 +10,7 @@ import {ICountryOANum} from '../_models/CountryOANum.model';
   styleUrls: ['./oa-num-form.component.scss']
 })
 export class OaNumFormComponent {
-  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
+  @Input() country: Country = new Country()
   @Input() oanum = new Array<ICountryOANum>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter

@@ -15,6 +15,9 @@
     [countries]="countries"
     [applTypes]="applTypes"
     [languages]="languages"
+    [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
+    [epValidationTranslate]="epValidationTranslate"
     (formEmitter)="submitCountryForm($event)"
   ></app-appl-type-form>
 </div>
@@ -23,7 +26,9 @@
   <app-trans-form-table
     [cstmFilTrans]="cstmFilTrans"
     [applTypes]="applTypes"
+    [transComplexTimes]="transComplexTimes"
     [country]="country"
+    [reqs]="reqs"
     (formData)="onSubmitCstmFilTrans($event)"
     (delEmit)="delCstmFilTrans($event)"
   >
@@ -34,16 +39,29 @@
 <app-gen-trans
     [tableData]="publTrans"
     [country]="country"
+    [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitPublTrans($event)"
     (delEmit)="delPublTrans($event)"
     >
 </app-gen-trans>
+</div>
+<div fxLayout="column" fxLayoutAlign="start start">
+  <h2>Request Examination Transforms</h2>
+  <app-gen-trans
+    [tableData]="reqTrans"
+    [country]="country"
+    [transComplexTimes]="transComplexTimes"
+    (formData)="onSubmitReqTrans($event)"
+    (delEmit)="delReqTrans($event)"
+  >
+  </app-gen-trans>
 </div>
 <div fxLayout="column" fxLayoutAlign="start start" style="margin-right:5px;">
 <h2>Office Action Transforms</h2>
 <app-gen-trans
     [tableData]="oaTrans"
     [country]="country"
+    [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitOATrans($event)"
     (delEmit)="delOATrans($event)"
     >
@@ -65,6 +83,7 @@
 <app-gen-trans
     [tableData]="allowTrans"
     [country]="country"
+    [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitAllowTrans($event)"
     (delEmit)="delAllowTrans($event)"
     >
@@ -76,6 +95,7 @@
 <app-gen-trans
     [tableData]="issueTrans"
     [country]="country"
+    [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitIssueTrans($event)"
     (delEmit)="delIssueTrans($event)"
     >

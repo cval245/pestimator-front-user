@@ -4,6 +4,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Country} from 'src/app/characteristics/_models/Country.model';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {concat, dropRight} from 'lodash';
+import {ITransComplexTime} from "../_models/TransComplexTime";
+import {ITransFilReqFull} from "../_models/TransFilReq.model";
+import {CountryAll} from "../../characteristics/_models/CountryAll.model";
 
 
 @Component({
@@ -12,29 +15,32 @@ import {concat, dropRight} from 'lodash';
   styleUrls: ['./trans-form-table.component.scss']
 })
 export class TransFormTableComponent {
-  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
-  @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
+  @Input() country: Country = new Country()
+  @Input() applTypes: ApplType[] = [new ApplType()]
+  @Input() transComplexTimes = new Array<ITransComplexTime>()
   @Input() cstmFilTrans = new Array<ICustomFilTrans>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
   displayedColumns: string[] = ['id', 'prev_appl_type',
-    'appl_type', 'date_diff']
+    'appl_type', 'date_diff', 'complex_time_conditions']
   public form: FormGroup;
-  public applTypesCorrect: ApplType[] = [new ApplType(0, '', '', [0])]
+  public applTypesCorrect: ApplType[] = [new ApplType()]
+  // @ts-ignore
+  @Input() reqs: ITransFilReqFull = {} as ITransFilReqFull;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      id: [undefined],
+      id: [0],
       country: ['', Validators.required],
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
-      prev_appl_type: ['']
-    })
+      prev_appl_type: [''],
+      complex_time_conditions: [null]
+  })
   }
 
   ngOnChanges() {
-    console.log('this.count', this.country.id)
     this.applTypesCorrect = this.applTypes.filter(applType => {
       return applType.country_set.some(countryId => countryId == this.country.id)
     })
@@ -46,7 +52,8 @@ export class TransFormTableComponent {
   newRow() {
     this.cstmFilTrans = concat(this.cstmFilTrans, {
       id: 0,
-      country: '', date_diff: '', appl_type: '', prev_appl_type: ''
+      country: '', date_diff: '', appl_type: '', prev_appl_type: '',
+      complex_time_conditions:0
     })
   }
 
@@ -55,19 +62,36 @@ export class TransFormTableComponent {
     if (row.prev_appl_type == undefined) {
       row.prev_appl_type = ''
     }
+    if (row.complex_time_conditions == undefined){
+      row.complex_time_conditions = 0
+    }
 
     this.form.setValue({
       id: row.id,
       country: row.country.id,
       date_diff: row.date_diff,
-      appl_type: row.appl_type,
-      prev_appl_type: row.prev_appl_type,
+      appl_type: row.appl_type.id,
+      prev_appl_type: row.prev_appl_type.id,
+      complex_time_conditions: row.complex_time_conditions,
     })
+    console.log('fff', this.form)
   }
 
   submit() {
-    this.form.patchValue({country: this.country.id})
+    console.log('feeeff', this.form.value)
+    if (this.form.controls.complex_time_conditions.value ==0){
+      this.form.patchValue({complex_time_conditions: null})
+    }
+    if (this.form.controls.id.value ==0){
+      this.form.patchValue({id:undefined})
+    }
+    this.form.patchValue({country: this.country.id,
+                                // appl_type: this.form.get('appl_type')!.value.id,
+                                // prev_appl_type: this.form.get('prev_appl_type')!.value.id
+    })
+    console.log('feeeff', this.form.value)
     this.formData.emit(this.form.value)
+    this.editingRow = 0
   }
 
   cancel() {

@@ -1,7 +1,9 @@
 export class EntitySize{
-    constructor(
-        public id: number,
-        public entity_size: string,
-        public description: string,
-    ) {}
+        public id: number = 0
+        public entity_size: string = 'default'
+        public description: string = 'default'
+
+  constructor(init?:Partial<EntitySize>){
+    Object.assign(this, init)
+  }
 }

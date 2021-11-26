@@ -1,16 +1,17 @@
-<p>est-template-grid works!</p>
 <button (click)="addRow()">Add New</button>
 <button (click)="deleteRow()">Delete</button>
 <button (click)="removeFilters()">Remove Filters</button>
 <div class="est-form-grid">
 
   <ag-grid-angular
-    style="width: 1200px; height: 500px;"
+    style="width: 1600px; height: 800px;"
     class="ag-theme-alpine"
     [rowData]="rowData"
     [columnDefs]="columnDefs"
     [rowSelection]="rowSelection"
+    [floatingFiltersHeight]="floatingFiltersHeight"
     [headerHeight]="headerHeight"
+    [defaultColDef]="defaultColDef"
     [immutableData]="true"
     [getRowNodeId]="getRowNodeId"
     (cellValueChanged)="onCellValueChanged($event)"

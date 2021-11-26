@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {map} from 'lodash';
-import {Subject} from 'rxjs';
+import {cloneDeep, forEach, map, find} from 'lodash';
+import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {CountryAllService} from 'src/app/characteristics/_services/country-all.service';
@@ -21,6 +21,18 @@ import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.
 import {CountryAll} from "../../characteristics/_models/CountryAll.model";
 import {LanguageService} from "../../characteristics/_services/language.service";
 import {Language} from "../../characteristics/_models/Language.model";
+import {ITransComplexTime} from "../_models/TransComplexTime";
+import {TransComplexTimeService} from "../_services/trans-complex-time.service";
+import {EpValidationTranslationRequiredService} from "../../characteristics/_services/ep-validation-translation-required.service";
+import {IEPValidationTranslationRequired} from "../../characteristics/_models/IEPValidationTranslationRequired.model";
+import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
+import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {TransFilingRequirementsService} from "../_services/trans-filing-requirements.service";
+import {ITransFilReq, ITransFilReqFull} from "../_models/TransFilReq.model";
+import {RequestExamTransService} from "../_services/request-exam-trans.service";
+import {IRequestExamTrans} from "../_models/RequestExamTrans.model";
+import {DocFormatService} from "../../characteristics/_services/doc-format.service";
+import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 
 interface CountryWise {
   id: number,
@@ -35,36 +47,97 @@ interface CountryWise {
 export class FormPageComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();//  = new Subject<void>;
-  public countries: CountryAll[] = [new CountryAll(0, '', '', false, false, false, false, '', '', [0], [0], [0])]
-  public applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
+  public countries: CountryAll[] = [new CountryAll()]
+  public applTypes: ApplType[] = [new ApplType()]
   public cstmFilTrans = new Array<ICustomFilTrans>()
   public publTrans = new Array<IPublTrans>()
+  public reqTrans = new Array<IRequestExamTrans>()
   public oaTrans = new Array<IOATrans>()
   public allowTrans = new Array<IAllowTrans>()
   public issueTrans = new Array<IIssueTrans>()
+  public transComplexTimes = new Array<ITransComplexTime>()
   public oaNum = new Array<ICountryOANum>()
   public countryControl = new FormControl()
-  public country: CountryAll = new CountryAll(0, '', '', false, false, false, false, '', '', [0], [0], [0])
+  public country: CountryAll = new CountryAll()
   public languages: Language[] = new Array<Language>();
+  public entitySizes: EntitySize[] = [new EntitySize()]
+  public docFormats: IDocFormat[] = new Array<IDocFormat>()
+  public countryRequirements = new Array<ITransFilReqFull>()
+  public epValidationTranslate: IEPValidationTranslationRequired[] = new Array<IEPValidationTranslationRequired>();
+  public reqs: ITransFilReqFull = {} as ITransFilReqFull;
 
   constructor(
     private countrySer: CountryAllService,
     private cstmFilSer: CustomFilTransService,
     private publTranSer: PublTransService,
+    private reqTranSer: RequestExamTransService,
     private oaTranSer: OaTransService,
     private allowTranSer: AllowTransService,
     private issueTranSer: IssueTransService,
     private oaNumSer: CountryOanumService,
     private applTypeSer: ApplTypeAllService,
     private languageSer: LanguageService,
+    private transComplexTimeSer: TransComplexTimeService,
+    private epValidatSer: EpValidationTranslationRequiredService,
+    private entSer: EntitySizeService,
+    private docFormatSer: DocFormatService,
+    private tranFilReqSer: TransFilingRequirementsService,
   ) {
+    combineLatest([
+      this.applTypeSer.entities$,
+      this.countrySer.entities$,
+      this.tranFilReqSer.getData(),
+    ])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(([applTypes, countries, reqs ]) =>{
+        forEach(reqs, (y: ITransFilReq) => {
+          let cTrans = {country: find(countries, (z: CountryAll) => y.country == z.id)!}//, required_transforms: []}
+          let required_transforms: {appl_type: ApplType, prev_appl_type: ApplType}[] = []
+          forEach(y.required_transforms, z => {
+            let appl_type = find(applTypes, x => x.id == z.appl_type)!
+            let prev_appl_type = find(applTypes, x => x.id == z.prev_appl_type)!
+            required_transforms.push({appl_type: appl_type, prev_appl_type: prev_appl_type})
+          })
+          this.countryRequirements.push({... cTrans, required_transforms: required_transforms})
+        })
+    })
+
+    this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.docFormats = x
+      })
+
+      this.entSer.entities$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.entitySizes = x
+      })
+    this.epValidatSer.entities$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.epValidationTranslate = x
+      })
+    this.transComplexTimeSer.entities$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.transComplexTimes = x
+      })
     this.languageSer.entities$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.languages = x
       })
     this.countrySer.entities$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => this.countries = x)
+      .subscribe(x => {
+        this.countries = x.sort((a,b) =>{
+          let countryA = a.country.toUpperCase()
+          let countryB = b.country.toUpperCase()
+          if(countryA < countryB){
+            return -1;
+          }
+          if (countryA > countryB){
+            return 1;
+          }
+          return 0;
+        })
+      })
 
     this.applTypeSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -92,6 +165,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
         this.oaNumSer.setFilter({
           country_id: x
         })
+        this.reqs = find(this.countryRequirements, y => y.country.id == x)!
       })
       this.cstmFilSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -102,6 +176,11 @@ export class FormPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.publTrans = this.countrySet(x)
+      })
+      this.reqTranSer.filteredEntities$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.reqTrans = this.countrySet(x)
       })
       this.oaTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -129,12 +208,16 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.cstmFilSer.getAll()
     this.countrySer.getAll()
     this.publTranSer.getAll()
+    this.reqTranSer.getAll()
     this.oaTranSer.getAll()
     this.allowTranSer.getAll()
     this.issueTranSer.getAll()
     this.applTypeSer.getAll()
     this.oaNumSer.getAll()
     this.languageSer.getAll()
+    this.transComplexTimeSer.getAll()
+    this.epValidatSer.getAll()
+    this.entSer.getAll()
   }
 
   ngOnDestroy(): void {
@@ -147,10 +230,12 @@ export class FormPageComponent implements OnInit, OnDestroy {
     let d = this.countries.find(y => y.id == x.country);
     let applType = this.applTypes.find(z => z.id == x.appl_type)
     let prevApplType = this.applTypes.find(a => a.id == x.prev_appl_type)
+    let timeComplexConditions = this.transComplexTimes.find(b => b.id == x.complex_time_conditions)
     return {
       ...x, 'country': d,
       'appl_type': applType,
       'prev_appl_type': prevApplType,
+      'complex_time_conditions': timeComplexConditions,
     }
   })
   }
@@ -173,6 +258,18 @@ export class FormPageComponent implements OnInit, OnDestroy {
   delPublTrans(row: IPublTrans): void{
     this.publTranSer.delete(row)
   }
+
+  onSubmitReqTrans(formData: IRequestExamTrans): void {
+    if (formData.id == undefined) {
+      this.reqTranSer.add(formData)
+    } else {
+      this.reqTranSer.update(formData)
+    }
+  }
+  delReqTrans(row: IRequestExamTrans): void{
+    this.reqTranSer.delete(row)
+  }
+
 
   onSubmitOATrans(formData: IOATrans): void {
     if (formData.id == undefined){
@@ -235,7 +332,13 @@ export class FormPageComponent implements OnInit, OnDestroy {
     if (formData.id == undefined) {
       this.countrySer.add(formData)
     } else {
-      this.countrySer.update(formData)
+      this.countrySer.update(formData).subscribe(x => {
+        let countries = cloneDeep(this.countries)
+        let countryI = this.countries.findIndex(y => y.id == x.id)
+        countries[countryI] = x
+        this.countries = countries
+        this.country=x
+      })
     }
   }
 }

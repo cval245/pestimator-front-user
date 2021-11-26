@@ -68,6 +68,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'publication-transform/',
       collectionResourceUrl: environment.API_URL + 'publication-transform/',
     },
+    RequestExamTrans: {
+      entityResourceUrl: environment.API_URL + 'request-examination-transform/',
+      collectionResourceUrl: environment.API_URL + 'request-examination-transform/',
+    },
     OATrans: {
       entityResourceUrl: environment.API_URL + 'oa-transform/',
       collectionResourceUrl: environment.API_URL + 'oa-transform/',
@@ -95,6 +99,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     PublEstTemp: {
       entityResourceUrl: environment.API_URL + 'publication-est-template/',
       collectionResourceUrl: environment.API_URL + 'publication-est-template/',
+    },
+    RequestExamEstTemp: {
+      entityResourceUrl: environment.API_URL + 'request-exam-est-template/',
+      collectionResourceUrl: environment.API_URL + 'request-exam-est-template/',
     },
     OAEstTemp: {
       entityResourceUrl: environment.API_URL + 'oa-est-template/',
@@ -131,6 +139,22 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     Language: {
       entityResourceUrl: environment.API_URL + 'languages/',
       collectionResourceUrl: environment.API_URL + 'languages/',
+    },
+    Currency: {
+      entityResourceUrl: environment.API_URL + 'currency/',
+      collectionResourceUrl: environment.API_URL + 'currency/',
+    },
+    DocFormat: {
+      entityResourceUrl: environment.API_URL + 'doc-formats/',
+      collectionResourceUrl: environment.API_URL + 'doc-formats/',
+    },
+    TransComplexTime: {
+      entityResourceUrl: environment.API_URL + 'trans-complex-time/',
+      collectionResourceUrl: environment.API_URL + 'trans-complex-time/',
+    },
+    EPValidationTranslationRequired: {
+      entityResourceUrl: environment.API_URL + 'epvalidation-translation-required/',
+      collectionResourceUrl: environment.API_URL + 'epvalidation-translation-required/',
     }
   }
 }

@@ -203,7 +203,7 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="condition_pages_min">
+  <ng-container matColumnDef="condition_pages_total_min">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
       <h4>Pages Min</h4></th>
     <td mat-cell *matCellDef="let element">
@@ -213,21 +213,21 @@
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Pages Min</mat-label>
               <input matInput type="text"
-                     formControlName="condition_pages_min">
+                     formControlName="condition_pages_total_min">
             </mat-form-field>
           </div>
         </div>
       </div>
       <ng-template #conditionsPagesMin>
         <div *ngIf="element.conditions">
-          {{element.conditions.condition_pages_min}}
+          {{element.conditions.condition_pages_total_min}}
         </div>
       </ng-template>
     </td>
   </ng-container>
 
 
-  <ng-container matColumnDef="condition_pages_max">
+  <ng-container matColumnDef="condition_pages_total_max">
     <th mat-header-cell class="header-cell" *matHeaderCellDef>
       <h4>Pages Max</h4></th>
     <td mat-cell *matCellDef="let element">
@@ -237,14 +237,14 @@
             <mat-form-field class="megaInput" appearance="outline" color="accent">
               <mat-label>Pages Max</mat-label>
               <input matInput type="text"
-                     formControlName="condition_pages_max">
+                     formControlName="condition_pages_total_max">
             </mat-form-field>
           </div>
         </div>
       </div>
       <ng-template #conditionsPagesMax>
         <div *ngIf="element.conditions">
-          {{element.conditions.condition_pages_max}}
+          {{element.conditions.condition_pages_total_max}}
         </div>
       </ng-template>
     </td>

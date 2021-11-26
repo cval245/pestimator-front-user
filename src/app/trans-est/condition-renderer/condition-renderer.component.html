@@ -1,0 +1,10 @@
+<div>
+  <div>
+    <mat-chip-list *ngFor="let c of adjustConditions">
+      <mat-chip selectable=true removable=true (removed)="remove(c)">
+        {{c[0]}} = <b>{{c[2]}}</b>
+      </mat-chip>
+    </mat-chip-list>
+    <mat-chip (click)="editConditions()"><mat-icon color="primary">create</mat-icon></mat-chip>
+  </div>
+</div>

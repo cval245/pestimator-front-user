@@ -3,12 +3,12 @@ import {
     EntityCollectionServiceBase,
     EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { FamEstForm } from '../_models/FamEstForm.model'
+import {FamEstForm, FamEstFormSubmit} from '../_models/FamEstForm.model'
 
 @Injectable({
   providedIn: 'root'
 })
-export class FamEstFormService extends EntityCollectionServiceBase<FamEstForm>{
+export class FamEstFormService extends EntityCollectionServiceBase<FamEstFormSubmit>{
 
     constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
         super('FamEstForm', serviceElementsFactory)

@@ -71,6 +71,7 @@ export class ChartFamEstDetailComponent implements OnChanges {
     constructor() { }
 
     ngOnChanges(): void {
+      console.log('this.cou', this.countryAggeds)
         if (this.countryAggeds[0] != undefined){
             if (this.countryAggeds[0].country != undefined){
                 this.chartData.datasets = map(this.countryAggeds, (obj) => {

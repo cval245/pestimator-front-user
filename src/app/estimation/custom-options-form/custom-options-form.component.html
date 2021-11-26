@@ -1,0 +1,20 @@
+<div class="customForm">
+<form [formGroup]="custApplOptionsForm">
+  <div class="form-row">
+  <h3>Prosecution Modifiers</h3>
+  </div>
+  <div class="form-row">
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Request Examination Early</mat-label>
+    <mat-select formControlName="request_examination_early_bool">
+      <mat-option [value]=true>True</mat-option>
+      <mat-option [value]=false>False</mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+</form>
+<div class="form-row">
+  <button mat-button color="primary" (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="accent" (click)="submit()">Submit</button>
+</div>
+</div>

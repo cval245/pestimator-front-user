@@ -1,6 +1,7 @@
 export interface IUSOAEstTemp {
   id: number;
   official_cost: number,
+  official_cost_currency: string;
   date_diff: string;
   country: any;
   appl_type: any;
@@ -10,4 +11,5 @@ export interface IUSOAEstTemp {
   oa_first_final_bool: boolean;
   description: string;
   fee_code: string;
+  isa_country_fee_only: boolean;
 }

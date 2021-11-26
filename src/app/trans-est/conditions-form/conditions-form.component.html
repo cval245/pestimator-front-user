@@ -1,0 +1,209 @@
+<h1 mat-dialog-title>min and max values are inclusive lte gte</h1>
+<div mat-dialog-content>
+  <form [formGroup]="condForm">
+    <div class="formGroup">
+      <mat-form-field appearance="outline">
+        <mat-label>Claims Min</mat-label>
+        <input matInput type="text"
+               formControlName="condition_claims_min">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Claims Max</mat-label>
+        <input matInput type="text"
+               formControlName="condition_claims_max">
+      </mat-form-field>
+   <mat-divider vertical="true"></mat-divider>
+    <mat-form-field appearance="outline">
+      <mat-label>Claims Indep Min</mat-label>
+      <input matInput type="text"
+             formControlName="condition_indep_claims_min">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Claims Indep Max</mat-label>
+      <input matInput type="text"
+             formControlName="condition_indep_claims_max">
+    </mat-form-field>
+    </div>
+    <div class="formGroup">
+      <mat-form-field appearance="outline">
+        <mat-label>Claims Multiple Dependent Min</mat-label>
+        <input matInput type="text"
+               formControlName="condition_claims_multiple_dependent_min">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Claims Multiple Dependent Max</mat-label>
+        <input matInput type="text"
+               formControlName="condition_claims_multiple_dependent_max">
+      </mat-form-field>
+    </div>
+    <div class="formGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>Pages Min</mat-label>
+      <input matInput type="text"
+             formControlName="condition_pages_total_min">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Pages Max</mat-label>
+      <input matInput type="text"
+             formControlName="condition_pages_total_max">
+    </mat-form-field>
+      <mat-divider vertical="true"></mat-divider>
+    <mat-form-field appearance="outline">
+      <mat-label>Pages Desc Min</mat-label>
+      <input matInput type="text"
+             formControlName="condition_pages_desc_min">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Pages Desc Max</mat-label>
+      <input matInput type="text"
+             formControlName="condition_pages_desc_max">
+    </mat-form-field>
+    </div>
+    <div class="formGroup">
+      <mat-form-field appearance="outline">
+        <mat-label>Pages Claims Min</mat-label>
+        <input matInput type="text"
+               formControlName="condition_pages_claims_min">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pages Claims Max</mat-label>
+        <input matInput type="text"
+               formControlName="condition_pages_claims_max">
+      </mat-form-field>
+      <mat-divider vertical="true"></mat-divider>
+      <mat-form-field appearance="outline">
+        <mat-label>Pages Drawings Min</mat-label>
+        <input matInput type="text"
+               formControlName="condition_pages_drawings_min">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pages Drawings Max</mat-label>
+        <input matInput type="text"
+               formControlName="condition_pages_drawings_max">
+      </mat-form-field>
+    </div>
+    <div class="formGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>Drawings Min</mat-label>
+      <input matInput type="text"
+             formControlName="condition_drawings_min">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Drawings Max</mat-label>
+      <input matInput type="text"
+             formControlName="condition_drawings_max">
+    </mat-form-field>
+    </div>
+    <div class="formGroup">
+      <mat-form-field class="megaInput" appearance="outline" color="accent">
+        <mat-label>Entity Size</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_entity_size">
+          <mat-option *ngFor="let t of entitySizes"
+                      [value]="t">
+            {{t.entity_size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="megaInput" appearance="outline" color="accent">
+        <mat-label>Doc Format</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="doc_format">
+          <mat-option *ngFor="let t of docFormats"
+                      [value]="t">
+            {{t.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="formGroup">
+    <mat-form-field class="superWide" appearance="outline" color="accent">
+      <mat-label>Complex Conditions</mat-label>
+      <mat-select class="custom-select"
+                  formControlName="condition_complex">
+        <mat-option *ngFor="let t of complexConditions"
+                    [value]="t">
+          {{t.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+      <mat-form-field class="superWide" appearance="outline" color="accent">
+        <mat-label>Complex Time Conditions</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_time_complex">
+          <mat-option *ngFor="let t of complexTimeConditions"
+                      [value]="t">
+            {{t.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="formGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>Annual Prosecution Fee</mat-label>
+      <mat-select class="custom-select"
+                  formControlName="condition_annual_prosecution_fee">
+        <mat-option [value]=true>True</mat-option>
+        <mat-option [value]=false>False</mat-option>
+      </mat-select>
+    </mat-form-field>
+      <mat-form-field  class="wide"  appearance="outline">
+        <mat-label>Annual Prosecution Fee Until Grant</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_annual_prosecution_fee_until_grant">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider vertical="true"></mat-divider>
+      <mat-form-field class="wide" appearance="outline">
+        <mat-label>Renewal Fee from filing After Grant</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_renewal_fee_from_filing_after_grant">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="formGroup">
+      <mat-form-field appearance="outline">
+        <mat-label>Prior PCT</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="prior_pct">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Prior PCT Same Country</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="prior_pct_same_country">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider vertical="true"></mat-divider>
+    <mat-form-field class="wide" appearance="outline">
+      <mat-label>Prev Appl Date Excl Intermediary Time</mat-label>
+      <mat-select class="custom-select"
+                  formControlName="prev_appl_date_excl_intermediary_time">
+        <mat-option [value]=true>True</mat-option>
+        <mat-option [value]=false>False</mat-option>
+      </mat-select>
+    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Prior appl exists</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="prior_appl_exists">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>
+<mat-dialog-actions>
+  <button mat-flat-button color="primary" (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="accent" (click)="save()">Submit</button>
+</mat-dialog-actions>

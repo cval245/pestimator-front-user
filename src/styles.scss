@@ -47,14 +47,22 @@ body {
 }
 
 .container {
-  min-height: 100%;
+  //min-height: 100%;
+  //display: flex;
+  //flex-direction: column;
+  //flex: 0 auto;
   display: flex;
+  min-height: 100%;
   flex-direction: column;
-  flex: 0 auto;
 }
 .over-main {
-  flex: 1 1 auto;
-  background-color: $light-background;
+  //flex: 1 1 auto;
+  //background-color: $light-background;
+
+  //display: flex;
+  //min-height: 100vh;
+  //flex-direction: column;
+  flex: 1;
 }
 
 app-footer {
@@ -87,9 +95,11 @@ app-main {
   padding: 20px;
 }
 .fullSize {
-  margin-top: 60px;
-  flex: 1 1 300px;
-  max-width: 100%;
+  padding-top: 60px;
+  //flex: 1 1 300px;
+  //max-width: 100%;
+
+  flex: 1;
 }
 
 app-aside {
@@ -149,23 +159,30 @@ app-footer {
   mat-vertical-stepper {
     .mat-step-header {
       background-color: map-get($theme-primary, 'lighter');
-        }
-        .form-row {
-          color: $dark-accent-text;
-          margin-top: 10px;
-          margin-bottom: 10px;
-        }
-        .mat-step-icon{
-            color: $light-text;
-            background-color: map-get($theme-accent, 'darker');
-        }
-        .mat-step-icon-selected{
-            color: $light-text;
-            background-color: map-get($theme-accent, 'main');
-        }
+    }
+
+    .form-row {
+      color: $dark-accent-text;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mat-step-icon {
+      color: $light-text;
+      background-color: map-get($theme-accent, 'darker');
+    }
+
+    .mat-step-icon-selected {
+      color: $light-text;
+      background-color: map-get($theme-accent, 'main');
+    }
 
     form {
-      //background: map-get($theme-primary, 'lighter');
+      .custom-details-list {
+        color: red;
+      }
+
+
       mat-form-field {
         padding-left: 10px;
         padding-right: 10px;
@@ -177,16 +194,45 @@ app-footer {
         input {
           color: $dark-text;
         }
-
-
       }
     }
   }
 }
-.mat-select-min-line{
-  color: $dark-text!important;
+.customForm {
+  form {
+    .custom-details-list {
+      color: red;
+    }
+
+
+    mat-form-field {
+      padding-left: 10px;
+      padding-right: 10px;
+
+      .ng-star-inserted {
+        color: $dark-accent-text;
+      }
+
+      input {
+        color: $dark-text;
+      }
+    }
+  }
 }
-.mat-accent .mat-option.mat-selected:not(.mat-option-disabled){
+.mat-list-base .mat-list-item{
+  font-size: 14px;
+}
+.mat-list-base .mat-subheader{
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 2px;
+}
+
+.mat-select-min-line {
+  color: $dark-text !important;
+}
+
+.mat-accent .mat-option.mat-selected:not(.mat-option-disabled) {
   color: $dark-text;
 }
 
@@ -371,5 +417,22 @@ tr.element-row:not(.expanded-row):hover {
     //margin-top: 50px;
     /* Since we are rotating a span */
     //display: inline-block;
+  }
+
+  .ag-floating-filter-body input {
+    height: 49px;
+  }
+
+  .ag-floating-filter-button {
+    margin-top: -49px;
+  }
+
+  .ag-floating-filter-button button {
+    height: 49px
+  }
+
+  .ag-floating-filter-body input {
+    font-size: 15px;
+    font-weight: bold;
   }
 }

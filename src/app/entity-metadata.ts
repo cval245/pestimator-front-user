@@ -11,6 +11,8 @@ import {IOATrans} from './trans-est/_models/OATrans.model';
 import {IPublEstTemp} from './trans-est/_models/PublEstTemp.model';
 import {IPublTrans} from './trans-est/_models/PublTrans.model';
 import {IUSOAEstTemp} from "./trans-est/_models/IUSOAEstTemp";
+import {IRequestExamEstTemp} from "./trans-est/_models/RequestExamEstTemp.model";
+import {IRequestExamTrans} from "./trans-est/_models/RequestExamTrans.model";
 
 const entityMetadata: EntityMetadataMap = {
   UserDetail: {},
@@ -19,16 +21,20 @@ const entityMetadata: EntityMetadataMap = {
   FamEstDetail: {},
   FamEstForm: {},
   Country: {},
+  Currency: {},
   CountryAll: {},
   EntitySize: {},
+  EPValidationTranslationRequired: {},
   ApplType: {},
   ApplTypeAll: {},
   Language: {},
+  DocFormat: {},
   OAType: {},
   Family: {},
   Application: {},
   ApplDetail: {},
   UserProfile: {},
+  TransComplexTime: {},
   CustomFilTrans: {
     filterFn: (entities: ICustomFilTrans[], country_id: any) => {
       return entities.filter(entity => entity.country == country_id.country_id)
@@ -36,6 +42,11 @@ const entityMetadata: EntityMetadataMap = {
   },
   PublTrans: {
     filterFn: (entities: IPublTrans[], country_id: any) => {
+      return entities.filter(entity => entity.country == country_id.country_id)
+    }
+  },
+  RequestExamTrans: {
+    filterFn: (entities: IRequestExamTrans[], country_id: any) => {
       return entities.filter(entity => entity.country == country_id.country_id)
     }
   },
@@ -71,6 +82,11 @@ const entityMetadata: EntityMetadataMap = {
   },
   PublEstTemp: {
     filterFn: (entities: IPublEstTemp[], country_id: any) => {
+      return entities.filter(entity => entity.country == country_id.country_id)
+    }
+  },
+  RequestExamEstTemp: {
+    filterFn: (entities: IRequestExamEstTemp[], country_id: any) => {
       return entities.filter(entity => entity.country == country_id.country_id)
     }
   },

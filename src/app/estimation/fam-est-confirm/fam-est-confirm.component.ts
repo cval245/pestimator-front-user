@@ -1,6 +1,6 @@
-import {Component, Inject } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import { FamEstFormFull} from "../_models/FamEstForm.model";
+import {FamEstForm} from "../_models/FamEstForm.model";
 
 @Component({
   selector: 'app-fam-est-confirm',
@@ -11,7 +11,7 @@ export class FamEstConfirmComponent {
 
   constructor(
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public formData: FamEstFormFull) { }
+    @Inject(MAT_DIALOG_DATA) public formData: FamEstForm) { }
 
 
   save(){

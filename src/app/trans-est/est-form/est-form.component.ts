@@ -26,9 +26,9 @@ export interface IIndexable<T = any> { [key: string]: T }
 })
 export class EstFormComponent {
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
-  @Input() applTypes: ApplType[] = [new ApplType(0, '', '', [0])]
-  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '', '')]
+  @Input() country: Country = new Country()
+  @Input() applTypes: ApplType[] = [new ApplType()]
+  @Input() entitySizes: EntitySize[] = [new EntitySize()]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData = new EventEmitter
@@ -45,7 +45,7 @@ export class EstFormComponent {
     'prev_appl_date_excl_intermediary_time',
     'condition_claims_min', 'condition_claims_max',
     'condition_indep_claims_min', 'condition_indep_claims_max',
-    'condition_pages_min', 'condition_pages_max',
+    'condition_pages_total_min', 'condition_pages_total_max',
     'condition_pages_desc_min', 'condition_pages_desc_max',
     'condition_drawings_min', 'condition_drawings_max',
     'condition_entity_size', 'condition_annual_prosecution_fee',
@@ -74,8 +74,8 @@ export class EstFormComponent {
         condition_claims_max: [undefined],
         condition_indep_claims_min: [undefined],
         condition_indep_claims_max: [undefined],
-        condition_pages_min: [undefined],
-        condition_pages_max: [undefined],
+        condition_pages_total_min: [undefined],
+        condition_pages_total_max: [undefined],
         condition_drawings_min: [undefined],
         condition_drawings_max: [undefined],
         condition_pages_desc_min: [undefined],
@@ -106,8 +106,8 @@ export class EstFormComponent {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property) {
         case 'appl_type': return item.appl_type.application_type;
-        case 'condition_pages_min': return item.conditions.condition_pages_min;
-        case 'condition_pages_max': return item.conditions.condition_pages_max;
+        case 'condition_pages_total_min': return item.conditions.condition_pages_total_min;
+        case 'condition_pages_total_max': return item.conditions.condition_pages_total_max;
         case 'condition_pages_desc_min': return item.conditions.condition_pages_desc_min;
         case 'condition_pages_desc_max': return item.conditions.condition_pages_desc_max;
         case 'condition_claims_min': return item.conditions.condition_claims_min;
@@ -170,8 +170,8 @@ export class EstFormComponent {
       condition_claims_max: row.conditions.condition_claims_max,
       condition_indep_claims_min: row.conditions.condition_indep_claims_min,
       condition_indep_claims_max: row.conditions.condition_indep_claims_max,
-      condition_pages_min: row.conditions.condition_pages_min,
-      condition_pages_max: row.conditions.condition_pages_max,
+      condition_pages_total_min: row.conditions.condition_pages_total_min,
+      condition_pages_total_max: row.conditions.condition_pages_total_max,
       condition_pages_desc_min: row.conditions.condition_pages_desc_min,
       condition_pages_desc_max: row.conditions.condition_pages_desc_max,
       condition_drawings_min: row.conditions.condition_drawings_min,

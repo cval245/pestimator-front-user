@@ -5,7 +5,12 @@
                   [ep_countries]="ep_countries"
                   [paris_basic_countries]="paris_basic_countries"
                   [applTypes]="applTypes"
+                  [docFormats]="docFormats"
+                  [allCustomDetails]="allCustomDetails"
+                  [customOpt]="customOpt"
                   (formData)="verifySubmission($event)"
+                  (customAppl)="editCustomApplDetails($event)"
+                  (customApplOptions)="editCustomApplOptions($event)"
 ></app-fam-est-form>
 <div *ngIf="error_display_bool">
   <p>{{error_notification}}</p>

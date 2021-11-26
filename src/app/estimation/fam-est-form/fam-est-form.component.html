@@ -3,7 +3,7 @@
 <div class="formContainer">
 <!--<h2>Estimation Form</h2>-->
   <div class="header-spacer"></div>
-<mat-vertical-stepper #stepper linear>
+<mat-vertical-stepper #stepper linear (selectionChange)="reValidateForms($event)">
     <mat-step [stepControl]="familyForm" [editable]="isEditable">
         <form [formGroup]="familyForm" fxLayout="column">
             <ng-template matStepLabel>Family Details</ng-template>
@@ -19,24 +19,6 @@
                 <mat-form-field color="accent" appearance="outline">
                     <mat-label>Family Number:</mat-label>
                     <input matInput type="text" formControlName="family_no">
-                </mat-form-field>
-            </div>
-                <mat-divider></mat-divider>
-            <div class="form-row">
-                <h3>Entity Size:</h3>
-            </div>
-            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
-                <mat-form-field color="accent" appearance="outline">
-                    <mat-label>Entity Size:</mat-label>
-                    <mat-select class="custom-select"
-                                formControlName="entity_size">
-                        <mat-option *ngFor="let t of entitySizes"
-                                    [value]="t.id+''"
-                        [matTooltip]=t.description
-                        matTooltipPosition="right">
-                            {{t.entity_size}}
-                        </mat-option>
-                    </mat-select>
                 </mat-form-field>
             </div>
             <div>
@@ -59,7 +41,7 @@
             <mat-select class="custom-select"
                         formControlName="country">
                 <mat-option *ngFor="let t of countries"
-                            [value]="t.id+''">
+                            [value]="t">
                     {{t.long_name}}
                 </mat-option>
             </mat-select>
@@ -77,7 +59,7 @@
                             formControlName="application_type"
                 >
                   <mat-option *ngFor="let t of applTypesCorrect"
-                              [value]="t.id+''">
+                              [value]="t">
                     {{t.long_name}}
                   </mat-option>
                 </mat-select>
@@ -97,6 +79,10 @@
                     <mat-label>No. Independent Claims:</mat-label>
                     <input matInput type="text" formControlName="num_indep_claims">
                 </mat-form-field>
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>No. Claims Multiple Dependent:</mat-label>
+                <input matInput type="text" formControlName="num_multiple_dependent_claims">
+              </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>No Drawings:</mat-label>
                     <input matInput type="text" formControlName="num_drawings">
@@ -116,8 +102,15 @@
                   <input matInput type="text" formControlName="num_pages_drawings">
                 </mat-form-field>
               </div>
-
               <mat-divider></mat-divider>
+              <div class="form-row">
+                <h3>Prosecution Options:</h3>
+              </div>
+              <button mat-flat-button color="accent" [matTooltip]="customApplOptionsToolTip"
+                      (click)="editInitApplOptions()">
+                Additional Prosecution Options
+              </button>
+              <mat-divider style="margin-top: 25px;"></mat-divider>
               <div class="form-row">
                 <h3>International Filing Methods:</h3>
               </div>
@@ -137,14 +130,6 @@
 
               <div class="form-row">
                 <ng-template *ngTemplateOutlet="normalButtons"></ng-template>
-                <!--                <div class="button-container">-->
-                <!--                  <button mat-flat-button color="primary" style="margin: 5px;"-->
-                <!--                          matStepperPrevious>Back-->
-                <!--                  </button>-->
-                <!--                  <button mat-flat-button color="accent" style="margin: 5px;"-->
-                <!--                          matStepperNext>Next-->
-                <!--                  </button>-->
-                <!--                </div>-->
                 <div *ngIf="firstApplForm.errors?.InvalidApplType
               && (firstApplForm.touched || firstApplForm.dirty)">
                   <p style="color:red;">Application Type is invalid for Country</p>
@@ -155,60 +140,99 @@
         </form>
     </mat-step>
 
-  <mat-step [formGroup]="parisStageForm" [stepControl]="parisStageForm"> >
+  <mat-step [formGroup]="parisStageForm" [stepControl]="parisStageForm">
     <form [formGroup]="parisStageForm">
       <ng-template matStepLabel>Direct Filing Phase</ng-template>
       <div fxLayout="column" fxLayoutAlign="center center">
         <div class="form-row">
-          <h2>Select Jurisdictions to File</h2>
+          <h2>Select Jurisdictions to File Directly from First Application</h2>
         </div>
-        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+        <div formArrayName="paris_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow
+             fxHide.lt-sm>
           <div fxLayout="column" fxLayoutAlign="start start">
-            <div *ngFor="let country of paris_countries; let i=index">
-              <mat-checkbox *ngIf="country.col===1"
-                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                            (change)="onParisCheckboxChange($event, country.id)">
-                {{country.long_name}}
-              </mat-checkbox>
+            <div
+              *ngFor="let item of parisCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container [formGroupName]="i" *ngIf="item.value.country.col===1">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
+                </mat-checkbox>
+                <button  *ngIf="item.enabled"
+                  mat-icon-button [matTooltip]="customApplToolTip"
+                  (click)="editParisCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                  </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc"
+                              [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}">
+                </ng-container>
+                  <ng-container [ngTemplateOutlet]="customOptDesc"
+                                [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">
+                  </ng-container>
+                </div>
+              </ng-container>
             </div>
           </div>
           <div fxLayout="column" fxLayoutAlign="start start">
-            <div *ngFor="let country of paris_countries; let i=index">
-              <mat-checkbox *ngIf="country.col===2"
-                            [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                            (change)="onParisCheckboxChange($event, country.id)">
-                <p>{{country.long_name}}</p>
-              </mat-checkbox>
+            <div
+              *ngFor="let item of parisCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
+                </mat-checkbox>
+                <button *ngIf="item.enabled"
+                  mat-icon-button [matTooltip]="customApplToolTip"  (click)="editParisCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="customOptDesc"
+                                [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">
+                  </ng-container>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
 
-        <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+        <div formArrayName="paris_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide
+             fxShow.lt-sm>
           <div fxLayout="column" fxLayoutAlign="start start">
-            <div *ngFor="let country of paris_countries; let i=index">
-              <mat-checkbox
-                [formControl]="getCountriesFormCtrlNameParis(country.id)"
-                (change)="onParisCheckboxChange($event, country.id)">
-                {{country.long_name}}
-              </mat-checkbox>
+            <div
+              *ngFor="let item of parisCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container [formGroupName]="i">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
+                </mat-checkbox>
+                <button *ngIf="item.enabled"
+                  mat-icon-button [matTooltip]="customApplToolTip"  (click)="editParisCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                  </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="customOptDesc"
+                                [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">
+                  </ng-container>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
+
+
+
 
         <div class="form-row">
           <ng-template
             *ngIf="finalStep === FINAL_STEPS.PARIS_STAGE; then finalButtons; else normalButtons"></ng-template>
-          <!--          <button mat-flat-button color="warn"  style="margin: 5px;"-->
-          <!--                  (click)="stepper.reset()"-->
-          <!--                  (click)="formReset()">Reset</button>-->
-          <!--          <button mat-flat-button color="primary" style="margin: 5px;"-->
-          <!--                  matStepperPrevious>Back</button>-->
-          <!--          <button mat-flat-button color="accent" type="submit"-->
-          <!--                  style="margin: 5px;"-->
-          <!--                  (click)="onSubmit()"-->
-          <!--                  [disabled]="!parisStageForm.valid">-->
-          <!--            Submit-->
-          <!--          </button>-->
         </div>
       </div>
     </form>
@@ -225,9 +249,7 @@
           <h2>File Through PCT:</h2>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center"
-             class="form-row">
-          <mat-divider></mat-divider>
+        <div fxLayout="column" fxLayoutAlign="center center" class="form-row">
           <h3>PCT Examining Country</h3>
           <mat-form-field appearance="outline" color="accent">
             <mat-label>
@@ -236,11 +258,13 @@
             <mat-select class="custom-select"
                         formControlName="pct_country">
               <mat-option *ngFor="let t of pct_ro_countries"
-                          [value]="t.id+''">
+                          [value]="t">
                 {{t.long_name}}
               </mat-option>
             </mat-select>
+
           </mat-form-field>
+
           <mat-form-field appearance="outline" color="accent">
             <mat-label>
               PCT International Search Authority (ISA)
@@ -248,66 +272,95 @@
             <mat-select class="custom-select"
                         formControlName="isa_country">
               <mat-option *ngFor="let t of isa_countries"
-                          [value]="t.id+''">
+                          [value]="t">
                 {{t.long_name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
+        <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary" (click)="editPCTCustApplDetails()">
+          <mat-icon>add_circle_outline</mat-icon> Custom Application Details
+        </button>
+        </div>
+        <div class="form-row">
+          <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:internationalStageForm.controls.pct_method_customization.value.custom_appl_details}"></ng-container>
+          <ng-container [ngTemplateOutlet]="customOptDesc"
+                        [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.pct_method_customization.value.custom_appl_options}">
+          </ng-container>
+          </div>
+        <mat-divider style="margin-top: 20px;"></mat-divider>
+        <h3 class="form-row">National Phase Countries</h3>
+        <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow
+             fxHide.lt-sm>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div
+              *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container  [formGroupName]="i" *ngIf="item.value.country.col===1">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
+                </mat-checkbox>
+                <button mat-icon-button [matTooltip]="customApplToolTip"
+                        (click)="editPCTNatCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                  </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc"
+                              [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="customOptDesc"
+                                [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.ep_method_customization.value.custom_appl_options}">
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div
+              *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
+                </mat-checkbox>
+                <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editPCTNatCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                    </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  </div>
+              </ng-container>
+            </div>
+          </div>
         </div>
 
-
-        <ng-template matStepLabel>PCT National Phase</ng-template>
-        <div fxLayout="column" fxLayoutAlign="center center">
-          <div class="form-row">
-            <h2>Select National Phase Countries:</h2>
-          </div>
-          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
-            <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_accept_countries; let i=index">
-                <mat-checkbox *ngIf="country.col===1"
-                              [formControl]="getCountriesFormCtrlNamePCT(country.id)"
-                              (change)="onPCTCheckboxChange($event, country.id)">
-                  {{country.long_name}}
+        <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide
+             fxShow.lt-sm>
+          <div fxLayout="column" fxLayoutAlign="start start">
+            <div
+              *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+              <ng-container [formGroupName]="i">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                  <div>
+                <mat-checkbox formControlName="selected">
+                  {{item.value.country.long_name}}
                 </mat-checkbox>
-              </div>
-            </div>
-            <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_accept_countries; let i=index">
-                <mat-checkbox *ngIf="country.col===2"
-                              [formControl]="getCountriesFormCtrlNamePCT(country.id)"
-                              (change)="onPCTCheckboxChange($event, country.id)">
-                  <p>{{country.long_name}}</p>
-                </mat-checkbox>
-              </div>
+                <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editPCTNatCustApplDetails(item.value.country.id)">
+                  <mat-icon>add_circle_outline</mat-icon>
+                </button>
+                  </div>
+                <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                </div>
+              </ng-container>
             </div>
           </div>
-
-          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
-            <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of pct_accept_countries; let i=index">
-                <mat-checkbox
-                  [formControl]="getCountriesFormCtrlNamePCT(country.id)"
-                  (change)="onPCTCheckboxChange($event, country.id)">
-                  {{country.long_name}}
-                </mat-checkbox>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="form-row">
-            <ng-template
-              *ngIf="finalStep === FINAL_STEPS.PCT_STAGE; then finalButtons; else normalButtons"></ng-template>
-            <!--            <div>-->
-            <!--              <button mat-flat-button color="primary" style="margin: 5px;"-->
-            <!--                      matStepperPrevious>Back-->
-            <!--              </button>-->
-            <!--              <button mat-flat-button color="accent" style="margin: 5px;"-->
-            <!--                      matStepperNext>Next-->
-            <!--              </button>-->
-            <!--            </div>-->
-          </div>
-
+        </div>
+        <div class="form-row">
+          <ng-template
+            *ngIf="finalStep === FINAL_STEPS.PCT_STAGE; then finalButtons; else normalButtons"></ng-template>
         </div>
       </div>
     </form>
@@ -319,61 +372,137 @@
       <ng-template matStepLabel>EP Stage</ng-template>
       <div fxLayout="column" fxLayoutAlign="center center">
 
-
+        <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary" (click)="editEPCustApplDetails()">
+          <mat-icon>add_circle_outline</mat-icon> Custom Application Details
+        </button>
+        <div class="form-row">
+        <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:epStageForm.controls.ep_method_customization.value.custom_appl_details}"></ng-container>
+        </div>
         <ng-template matStepLabel>EPO Validation Phase</ng-template>
         <div fxLayout="column" fxLayoutAlign="center center">
           <div class="form-row">
             <h2>Select EP Validation Jurisdictions</h2>
           </div>
-          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow fxHide.lt-sm>
+          <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow
+               fxHide.lt-sm>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of ep_countries; let i=index">
-                <mat-checkbox *ngIf="country.col===1"
-                              [formControl]="getCountriesFormCtrlNameEP(country.id)"
-                              (change)="onEPCheckboxChange($event, country.id)">
-                  {{country.long_name}}
-                </mat-checkbox>
+              <div
+                *ngFor="let item of epCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+                <ng-container [formGroupName]="i" *ngIf="item.value.country.col===1">
+                  <div fxLayout="column" fxLayoutAlign="start start">
+                    <div>
+                  <mat-checkbox formControlName="selected">
+                    {{item.value.country.long_name}}
+                  </mat-checkbox>
+                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                    </div>
+                    <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  </div>
+                </ng-container>
               </div>
             </div>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of ep_countries; let i=index">
-                <mat-checkbox *ngIf="country.col===2"
-                              [formControl]="getCountriesFormCtrlNameEP(country.id)"
-                              (change)="onEPCheckboxChange($event, country.id)">
-                  <p>{{country.long_name}}</p>
-                </mat-checkbox>
+              <div
+                *ngFor="let item of epCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+                <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">
+                  <div fxLayout="column" fxLayoutAlign="start start">
+                    <div>
+                  <mat-checkbox formControlName="selected">
+                    {{item.value.country.long_name}}
+                  </mat-checkbox>
+                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                      </div>
+                  <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                    </div>
+                </ng-container>
               </div>
             </div>
           </div>
-          <div class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.lt-sm>
+
+          <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide
+               fxShow.lt-sm>
             <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let country of ep_countries; let i=index">
-                <mat-checkbox
-                  [formControl]="getCountriesFormCtrlNameEP(country.id)"
-                  (change)="onEPCheckboxChange($event, country.id)">
-                  {{country.long_name}}
-                </mat-checkbox>
+              <div
+                *ngFor="let item of epCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+                <ng-container [formGroupName]="i">
+                  <div fxLayout="column" fxLayoutAlign="start start">
+                    <div>
+                  <mat-checkbox formControlName="selected">
+                    {{item.value.country.long_name}}
+                  </mat-checkbox>
+                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                    </div>
+                  <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
+                  </div>
+                </ng-container>
               </div>
             </div>
           </div>
+
+
+
           <div class="form-row">
             <ng-template
               *ngIf="finalStep === FINAL_STEPS.EP_STAGE; then finalButtons; else normalButtons"></ng-template>
-            <!--            <div>-->
-            <!--              <button mat-flat-button color="primary" style="margin: 5px;"-->
-            <!--                      matStepperPrevious>Back-->
-            <!--              </button>-->
-            <!--              <button mat-flat-button color="accent" style="margin: 5px;"-->
-            <!--                      matStepperNext>Next-->
-            <!--              </button>-->
-            <!--            </div>-->
+            <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsEntryPoint">
+              <p style="color:red;">EPO patent application needs an entrypoint for filing (none were provided)</p>
+              <mat-radio-group  formControlName="ep_entryPoint" fxLayout="column">
+                <mat-radio-button value="paris">File directly from first application</mat-radio-button>
+                <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>
+              </mat-radio-group>
+              <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>
+            </div>
+            <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsOnlyOneEntryPoint">
+              <p style="color:red;">EPO patent application needs exactly one entrypoint for filing (two were provided)</p>
+              <mat-radio-group  formControlName="ep_entryPoint" fxLayout="column">
+                <mat-radio-button value="paris">File directly from first application</mat-radio-button>
+                <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>
+              </mat-radio-group>
+              <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>
+            </div>
           </div>
-
         </div>
       </div>
     </form>
   </mat-step>
-
+  <mat-step *ngIf="finalStep === FINAL_STEPS.ADDL_STAGE"
+            [formGroup]="addEntitySizeForm" [stepControl]="addEntitySizeForm">
+    <form [formGroup]="addEntitySizeForm" fxLayout="column" fxLayoutAlign="center center">
+      <ng-template matStepLabel>Additional Info Stage</ng-template>
+      <div formArrayName="entity_size">
+        <div *ngFor="let c of entitySizeFormArray.controls; let i=index;">
+        <div [formGroupName]="i">
+        <mat-form-field
+            color="accent" appearance="outline">
+              <mat-label>Entity Size: {{c.value.country.long_name}}</mat-label>
+              <mat-select class="custom-select"
+                          formControlName="entity_size">
+                <mat-option *ngFor="let t of c.value.country.available_entity_sizes"
+                            [value]="t"
+                            [matTooltip]=t.description
+                            matTooltipPosition="right">
+                  {{t.entity_size}}
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <ng-template
+          *ngIf="finalStep === FINAL_STEPS.ADDL_STAGE; then finalButtons; else normalButtons"></ng-template>
+      </div>
+    </form>
+</mat-step>
 
 </mat-vertical-stepper>
 </div>
@@ -392,6 +521,9 @@
   >
     Submit
   </button>
+  <div *ngIf="utilityChecker">
+    <ng-container [ngTemplateOutlet]="duplicateEntry"></ng-container>
+  </div>
 </ng-template>
 
 <ng-template #normalButtons>
@@ -407,4 +539,46 @@
       </button>
     </div>
   </div>
+</ng-template>
+
+<ng-template #customDetDesc let-customApplDetails="customApplDetails">
+  <div style="align-items: end; text-align: right;">
+    <div class="mat-small" *ngIf="customApplDetails.num_claims">Number of Claims
+      = {{customApplDetails.num_claims}}</div>
+    <div class="mat-small" *ngIf="customApplDetails.num_indep_claims">Number of Indep Claims
+      = {{customApplDetails.num_indep_claims}}</div>
+    <div class="mat-small" *ngIf="customApplDetails.num_drawings">Number of Drawings
+      = {{customApplDetails.num_drawings}}</div>
+    <div class="mat-small" *ngIf="customApplDetails.num_pages_description">Number of Pages
+      -Description = {{customApplDetails.num_pages_description}}</div>
+    <div class="mat-small" *ngIf="customApplDetails.num_pages_claims">Number of Pages -Claims
+      = {{customApplDetails.num_pages_claims}}</div>
+    <div class="mat-small" *ngIf="customApplDetails.num_pages_drawings">Number of Pages - Drawings
+      = {{customApplDetails.num_pages_drawings}}</div>
+  </div>
+</ng-template>
+<ng-template #customOptDesc let-customApplOpts="customApplOptions">
+  <div style="align-items: end; text-align: right;">
+    <div class="mat-small" *ngIf="customApplOpts.num_claims">Number of Claims
+      = {{customApplOpts.num_claims}}</div>
+
+  </div>
+</ng-template>
+
+
+<ng-template #duplicateEntry>
+  <form [formGroup]="singleUtilityForm" *ngIf="utilityChecker">
+    <div formArrayName="double_countries">
+      <div *ngFor="let c of doubleUtilityFormArray.controls; let i=index">
+        <div [formGroupName]="i">
+          <mat-radio-group formControlName="appl_version" fxLayout="column">
+            <mat-radio-button *ngFor="let d of c.value.country.appl_versions" [value]="d">
+              {{d}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <button mat-flat-button color="primary" (click)="submitUtilityCorrections()">Correct Double Utility Patents</button>
+    </div>
+  </form>
 </ng-template>

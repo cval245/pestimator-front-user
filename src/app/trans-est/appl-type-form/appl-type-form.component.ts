@@ -3,6 +3,9 @@ import {ApplType} from "../../characteristics/_models/applType.model";
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {CountryAll} from "../../characteristics/_models/CountryAll.model";
 import {Language} from "../../characteristics/_models/Language.model";
+import {IEPValidationTranslationRequired} from "../../characteristics/_models/IEPValidationTranslationRequired.model";
+import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 
 
 @Component({
@@ -12,14 +15,13 @@ import {Language} from "../../characteristics/_models/Language.model";
 })
 export class ApplTypeFormComponent implements OnInit, OnChanges {
 
-  @Input() country = new CountryAll(0,
-    '', '', false,
-    false, false, false, '', '', [0], [0], [0])
-  @Input() applTypes = [new ApplType(0, '', '', [0])]
-  @Input() countries = [new CountryAll(0,
-    '', '', false, false,
-    false, false, '', '', [0], [0], [0])]
+  @Input() country = new CountryAll()
+  @Input() applTypes = [new ApplType()]
+  @Input() countries = [new CountryAll()]
   @Input() languages = new Array<Language>()
+  @Input() entitySizes = [new EntitySize()]
+  @Input() docFormats = new Array<IDocFormat>()
+  @Input() epValidationTranslate = new Array<IEPValidationTranslationRequired>()
   @Output() formEmitter = new EventEmitter()
   public form: FormGroup;
   public formActive: boolean = false;
@@ -39,6 +41,9 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       available_appl_types: this.fb.array([false]),
       isa_countries: this.fb.array([false]),
       languages_set: this.fb.array([false]),
+      available_entity_sizes: this.fb.array([false]),
+      ep_validation_translation_required: [0],
+      available_doc_formats: this.fb.array([false]),
     })
   }
 
@@ -48,6 +53,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.initForm()
+    console.log('eee', this.entitySizes)
   }
 
   initForm() {
@@ -61,6 +67,9 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       pct_accept_bool: this.country.pct_accept_bool,
       color: this.country.color,
       long_name: this.country.long_name,
+      ep_validation_translation_required: this.country.ep_validation_translation_required,
+      available_entity_sizes: this.country.available_entity_sizes,
+      available_doc_formats: this.country.available_doc_formats,
     })
     const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
     checkArray.reset()
@@ -83,7 +92,20 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
         langCheckArray.push(new FormControl(lang));
       }
     }
-
+    const entCheckArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
+    entCheckArray.reset()
+    for (let ent of this.country.available_entity_sizes) {
+      if (ent > 0) {
+        entCheckArray.push(new FormControl(ent));
+      }
+    }
+    const docFormatCheckArray: FormArray = this.form.get('available_doc_formats') as FormArray;
+    docFormatCheckArray.reset()
+    for (let doc of this.country.available_doc_formats) {
+      if (doc > 0) {
+        docFormatCheckArray.push(new FormControl(doc));
+      }
+    }
   }
 
 
@@ -97,6 +119,12 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       return item != null
     })
     formValues.languages_set = formValues.languages_set.filter((item: number) => {
+      return item != null
+    })
+    formValues.available_entity_sizes = formValues.available_entity_sizes.filter((item: number) => {
+      return item != null
+    })
+    formValues.available_doc_formats = formValues.available_doc_formats.filter((item: number) => {
       return item != null
     })
     this.formEmitter.emit(formValues)
@@ -152,6 +180,41 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       });
     }
   }
+  onEntCheckboxChange(e: any, ent_id: number) {
+    const checkArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
+
+    if (e.checked) {
+      checkArray.push(new FormControl(ent_id));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach((item: AbstractControl) => {
+        if (item.value == false) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
+  onDocFormatCheckboxChange(e: any, doc_id: number) {
+    const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
+
+    if (e.checked) {
+      checkArray.push(new FormControl(doc_id));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach((item: AbstractControl) => {
+        if (item.value == false) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
+
 
 
   getCountriesFormCtrlName(country_id: number) {
@@ -172,9 +235,27 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
     return ctrl
   }
 
-  getLangFormCtrlName(applType_id: number) {
+  getLangFormCtrlName(lang_id: number) {
     const checkArray: FormArray = this.form.get('languages_set') as FormArray;
-    let ctrl = checkArray.controls.find(x => x.value == applType_id) as FormControl
+    let ctrl = checkArray.controls.find(x => x.value == lang_id) as FormControl
+    if (ctrl == undefined) {
+      return new FormControl()
+    }
+    return ctrl
+  }
+
+  getEntFormCtrlName(ent_id: number) {
+    const checkArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
+    let ctrl = checkArray.controls.find(x => x.value == ent_id) as FormControl
+    if (ctrl == undefined) {
+      return new FormControl()
+    }
+    return ctrl
+  }
+
+  getDocFormatFormCtrlName(doc_id: number) {
+    const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
+    let ctrl = checkArray.controls.find(x => x.value == doc_id) as FormControl
     if (ctrl == undefined) {
       return new FormControl()
     }
@@ -184,7 +265,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
   toggleForm() {
     this.formActive = !this.formActive
     // const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
-    if (this.formActive == true) {
+    if (this.formActive) {
       this.initForm()
       this.form.enable()
       // checkArray.enable()

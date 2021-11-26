@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {GridApi, GridOptions, ICellEditorParams, ValueFormatterParams,} from "@ag-grid-community/core";
-import {ICellEditorAngularComp} from "ag-grid-angular";
+import {GridApi, GridOptions, ValueFormatterParams,} from "@ag-grid-community/core";
 import {Country} from "../../characteristics/_models/Country.model";
 import {ApplType} from "../../characteristics/_models/applType.model";
 import {EntitySize} from "../../characteristics/_models/entitySize.model";
@@ -13,6 +11,7 @@ import {FirstDataRenderedEvent, ValueGetterParams, ValueSetterParams} from "ag-g
 interface TableWise {
   id: number,
   official_cost: number,
+  official_cost_currency: string,
   date_diff: string,
   country: any,//Country | undefined,
   appl_type: any,//ApplType | undefined,
@@ -20,40 +19,7 @@ interface TableWise {
   law_firm_template: any;
   description: string;
   fee_code: string;
-}
-
-
-@Component({
-  selector: 'editor-cell',
-  template: '<mat-form-field appearance="outline" style="width:200px;">' +
-    '<input matInput [matDatepicker]="picker" [formControl]="dateValue">' +
-    '<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>' +
-    '<mat-datepicker #picker></mat-datepicker>' +
-    '</mat-form-field>'
-})
-export class DatePickerComponent implements ICellEditorAngularComp {
-  public eGridCell: HTMLElement = document.createElement('picker')
-  public params: ICellEditorParams = {} as ICellEditorParams
-  public dateValue: FormControl = new FormControl(new Date())
-
-  constructor() {
-  }
-
-  agInit(params: any) {
-    this.params = params
-    this.eGridCell = params.eGridCell
-    this.dateValue.setValue(params.value)
-  }
-
-  getValue() {
-    console.log('mat', this.dateValue.value)
-    return this.dateValue.value
-  }
-
-  isPopup(): boolean {
-    return true;
-  }
-
+  isa_country_fee_only: boolean;
 }
 
 
@@ -67,7 +33,8 @@ export class EstTemplateGridComponent implements OnInit {
 
   public columnDefs: any
   public datasource: any
-  private defaultColDef: any;
+  public floatingFiltersHeight: any;
+  public defaultColDef: any;
   public rowSelection: any;
   private gridApi: GridApi = new GridApi()
   public gridOptions: GridOptions = {}
@@ -75,25 +42,30 @@ export class EstTemplateGridComponent implements OnInit {
   public headerHeight: number = 200;
   public getRowNodeId: any;
   @Input() rowData: TableWise[] = new Array<TableWise>();
-
+  // @Input() currencies: Currency[] = new Array<Currency>()
+  @Input() currencies_list: string[] = new Array<string>()
   @Input() applTypes: ApplType[] = []
-  @Input() country: Country = new Country(0, '', '', false, false, false, '', '', [0], [0], [0])
+  @Input() country: Country = new Country()
   @Input() countries: Country[] = []
   @Input() tableData: TableWise[] = new Array<TableWise>()
-  @Input() entitySizes: EntitySize[] = [new EntitySize(0, '', '')]
+  @Input() entitySizes: EntitySize[] = [new EntitySize()]
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Output() formData: EventEmitter<TableWise> = new EventEmitter()
   @Output() delEmit: EventEmitter<TableWise[]> = new EventEmitter()
   private gridColumnApi: any;
-  private defaultEntitySize: EntitySize = new EntitySize(0, '', '');
+  // private defaultEntitySize: EntitySize = new EntitySize();
 
   constructor() {
-    this.defaultColDef = {flex: 1};
+    this.defaultColDef = {
+      // flex: 1,
+      resizable: true,
+    };
     this.rowSelection = 'multiple';
     this.getRowNodeId = function (data: any) {
       return data.id
     }
+    this.floatingFiltersHeight = 50;
   }
 
   ngOnInit(): void {
@@ -104,14 +76,11 @@ export class EstTemplateGridComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    // this.rowData = {... this.tableData}
-    // this.rowData = this.tableData.slice()
-    console.log('this.rowData', this.rowData)
-    this.defaultEntitySize = this.entitySizes.find(x => x.entity_size == 'default')!
     this.columnDefs = [
       {
         field: 'date_diff', headerName: 'Date Diff', editable: true,
-        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        width: 100,
+        sortable: true, filter: 'agTextColumnFilter',
         valueFormatter(row: ValueFormatterParams): string {
           return row.value
         },
@@ -124,6 +93,23 @@ export class EstTemplateGridComponent implements OnInit {
           return row.value
         },
         cellEditor: 'agTextCellEditor',
+        comparator: (valueA: number , valueB: number, nodeA: any, nodeB:any, isInverted: boolean) =>{
+          return valueA - valueB
+        },
+      },
+      {
+        field: 'official_cost_currency', headerName: 'Official Cost Currency',
+        editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          // this.currencies.find(x => x.currency_name)
+          return params.data.official_cost_currency
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: this.currencies_list}
       },
       // {field: 'country', headerName: 'Country', editable: true,
       //   sortable: true, filter: 'agTextColumnFilter',
@@ -142,6 +128,9 @@ export class EstTemplateGridComponent implements OnInit {
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.applTypes},
+        comparator: (valueA: ApplType, valueB: ApplType, nodeA: any, nodeB:any, isInverted: boolean) =>{
+          return (valueA.id - valueB.id)
+        },
       },
       {
         field: 'fee_code', headerName: 'Fee Code', editable: true,
@@ -166,12 +155,13 @@ export class EstTemplateGridComponent implements OnInit {
           return params.data.law_firm_template.law_firm_cost
         },
         valueSetter: (params: ValueSetterParams) => {
-          let newValue = params.newValue
           let newData = {
             ...params.data,
             law_firm_template: {
               id: params.data.law_firm_template.id,
-              law_firm_cost: newValue, date_diff: params.data.law_firm_template.date_diff
+              law_firm_cost: params.newValue,
+              law_firm_cost_currency: params.data.law_firm_template.law_firm_cost_currency,
+              date_diff: params.data.law_firm_template.date_diff
             }
           }
           params.data = newData
@@ -184,6 +174,32 @@ export class EstTemplateGridComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       {
+        field: 'law_firm_template.law_firm_cost_currency', headerName: 'LawFirm Cost Currency', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          return params.data.law_firm_template.law_firm_cost_currency
+        },
+        valueSetter: (params: ValueSetterParams) => {
+          let newData = {
+            ...params.data,
+            law_firm_template: {
+              id: params.data.law_firm_template.id,
+              law_firm_cost: params.data.law_firm_template.law_firm_cost,
+              law_firm_cost_currency: params.newValue,
+              date_diff: params.data.law_firm_template.date_diff
+            }
+          }
+          params.data = newData
+          this.onCellValueChanged(params)
+          return false
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: this.currencies_list}
+      },
+      {
         field: 'law_firm_template.date_diff', headerName: 'LawFirm Date Diff',
         editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
@@ -191,12 +207,13 @@ export class EstTemplateGridComponent implements OnInit {
           return params.data.law_firm_template.date_diff
         },
         valueSetter: (params: ValueSetterParams) => {
-          let newValue = params.newValue
           let newData = {
             ...params.data,
             law_firm_template: {
               id: params.data.law_firm_template.id,
-              law_firm_cost: params.data.law_firm_template.law_firm_cost, date_diff: newValue
+              law_firm_cost: params.data.law_firm_template.law_firm_cost,
+              law_firm_cost_currency: params.data.law_firm_template.law_firm_cost_currency,
+              date_diff: params.newValue
             }
           }
           params.data = newData
@@ -214,6 +231,30 @@ export class EstTemplateGridComponent implements OnInit {
         width: 100, sortable: true, filter: 'agTextColumnFilter',
         valueGetter: (params: ValueGetterParams) => {
           return params.data.conditions.condition_annual_prosecution_fee
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: [false, true]}
+      },
+      {
+        field: 'conditions.condition_annual_prosecution_fee_until_grant', headerName: 'Prosecution Fee (until Grant)', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          return params.data.conditions.condition_annual_prosecution_fee_until_grant
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: [false, true]}
+      },
+      {
+        field: 'conditions.condition_renewal_fee_from_filing_after_grant', headerName: 'Renewals Fee from filing(until Grant)', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          return params.data.conditions.condition_renewal_fee_from_filing_after_grant
         },
         valueFormatter(row: ValueFormatterParams): string {
           return row.value
@@ -310,10 +351,10 @@ export class EstTemplateGridComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       {
-        field: 'conditions.condition_pages_min', headerName: 'Min Pages', editable: true,
+        field: 'conditions.condition_pages_total_min', headerName: 'Min Pages', editable: true,
         width: 75, sortable: true, filter: 'agTextColumnFilter',
         valueGetter: (params: ValueGetterParams) => {
-          return params.data.conditions.condition_pages_min
+          return params.data.conditions.condition_pages_total_min
         },
         valueFormatter(row: ValueFormatterParams): string {
           return row.value
@@ -321,10 +362,10 @@ export class EstTemplateGridComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       {
-        field: 'conditions.condition_pages_max', headerName: 'Max Pages', editable: true,
+        field: 'conditions.condition_pages_total_max', headerName: 'Max Pages', editable: true,
         width: 75, sortable: true, filter: 'agTextColumnFilter',
         valueGetter: (params: ValueGetterParams) => {
-          return params.data.conditions.condition_pages_max
+          return params.data.conditions.condition_pages_total_max
         },
         valueFormatter(row: ValueFormatterParams): string {
           return row.value
@@ -344,11 +385,16 @@ export class EstTemplateGridComponent implements OnInit {
             return 'N/A'
           }
         },
+        comparator: (valueA: EntitySize, valueB: EntitySize, nodeA: any, nodeB:any, isInverted: boolean) =>{
+         return (valueA.id - valueB.id)
+        },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.entitySizes},
       },
       {
-        field: 'conditions.condition_complex', headerName: 'Condition Complex', editable: true,
+        field: 'conditions.condition_complex',
+        headerName: 'Condition Complex',
+        editable: true,
         sortable: true, filter: 'agTextColumnFilter',
         valueGetter: (params: ValueGetterParams) => {
           return params.data.conditions.condition_complex
@@ -359,6 +405,9 @@ export class EstTemplateGridComponent implements OnInit {
           } else {
             return 'N/A'
           }
+        },
+        comparator: (valueA: IComplexConditions, valueB: IComplexConditions, nodeA: any, nodeB:any, isInverted: boolean) =>{
+          return ((valueA ? valueA.id:0) - (valueB ? valueB.id: 0));
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.complexConditions},
@@ -375,6 +424,9 @@ export class EstTemplateGridComponent implements OnInit {
           } else {
             return 'N/A'
           }
+        },
+        comparator: (valueA: IComplexTimeConditions, valueB: IComplexTimeConditions, nodeA: any, nodeB:any, isInverted: boolean) =>{
+          return ((valueA ? valueA.id:0) - (valueB ? valueB.id: 0));
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.complexTimeConditions},
@@ -419,6 +471,30 @@ export class EstTemplateGridComponent implements OnInit {
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: [false, true]}
       },
+      {
+        field: 'conditions.prior_appl_exists', headerName: 'Prior Appl Exists', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          return params.data.conditions.prior_appl_exists
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: [false, true]}
+      },
+      {
+        field: 'isa_country_fee_only', headerName: 'ISA Country Fee ONly', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueGetter: (params: ValueGetterParams) => {
+          return params.data.isa_country_fee_only
+        },
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: [false, true]}
+      },
     ]
   }
 
@@ -429,8 +505,10 @@ export class EstTemplateGridComponent implements OnInit {
       country: this.country,
       appl_type: 0,
       official_cost: 0,
+      official_cost_currency:this.country.currency_name,
       fee_code: '',
       description: '',
+      isa_country_fee_only: false,
       law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},
       conditions: {id: 0, condition_annual_prosecution_fee: false},
     }
@@ -443,7 +521,6 @@ export class EstTemplateGridComponent implements OnInit {
   deleteRow = () => {
     let row_new_list = this.gridApi.getSelectedRows().filter(x => x.id == 0)
     let rowData = this.rowData.filter(x => x != row_new_list.find(y => y == x))
-    //remove(this.appls, this.gridApi.getSelectedRows().filter(x => x.id ==0))
     this.rowData = rowData
     let row_list = this.gridApi.getSelectedRows().filter(x => x.id != 0)
 
@@ -453,30 +530,33 @@ export class EstTemplateGridComponent implements OnInit {
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    // let youData = new Array<TableWise>();
-    // this.tableData.forEach(x => {
-    //   youData.push(x)
-    // })
-    // console.log('you', youData)
-    // this.gridApi.setRowData(youData)
   }
 
   onCellValueChanged(params: any) {
-    // console.log('oncell value changed', params.data.law_firm_template.date_diff)
-    // console.log('super saia', params.data)
-    console.log('newValue', params.newValue, 'oldValue', params.oldValue)
     if (params.newValue !== params.oldValue) {
       if (this.isValid(params.data)) {
         params.data.appl_type = params.data.appl_type.id
         params.data.country = this.country.id
-        if (params.data.conditions.entity_size) {
-          params.data.conditions.entity_size = params.data.conditions.entity_size.id
+        if (params.data.conditions.condition_entity_size) {
+          if (params.data.conditions.condition_entity_size.id ==0){
+            params.data.conditions.condition_entity_size = null
+          }else{
+            params.data.conditions.condition_entity_size = params.data.conditions.condition_entity_size.id
+          }
         }
         if (params.data.conditions.condition_complex) {
-          params.data.conditions.condition_complex = params.data.conditions.condition_complex.id
+          if (params.data.conditions.condition_complex.id==0){
+            params.data.conditions.condition_complex = null
+          }else{
+            params.data.conditions.condition_complex = params.data.conditions.condition_complex.id
+          }
         }
         if (params.data.conditions.condition_time_complex) {
-          params.data.conditions.condition_time_complex = params.data.conditions.condition_time_complex.id
+          if (params.data.conditions.condition_time_complex.id==0){
+            params.data.conditions.condition_time_complex = null
+          }else{
+            params.data.conditions.condition_time_complex = params.data.conditions.condition_time_complex.id
+          }
         }
         this.formData.emit(params.data)
       }
