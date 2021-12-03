@@ -11,10 +11,12 @@ import {ComplexTimeConditionsService} from "../../estimation/_services/complex-t
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
 import {ConditionsService} from "../_services/conditions.service";
-import {find, forIn} from "lodash";
+import {forIn} from "lodash";
 import {DocFormatService} from "../../characteristics/_services/doc-format.service";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 import {Country} from "../../characteristics/_models/Country.model";
+import {LanguageService} from "../../characteristics/_services/language.service";
+import {Language} from "../../characteristics/_models/Language.model";
 
 @Component({
   selector: 'app-conditions-form',
@@ -31,32 +33,36 @@ export class ConditionsFormComponent implements OnInit {
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
   public docFormatsAvail: IDocFormat[] = new Array<IDocFormat>();
   public country: Country = new Country()
+  public languages: Language[] = new Array<Language>()
 
   constructor(
     public dialogRef: MatDialogRef<ConditionsFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {conditions: IConditions, country: Country},
+    @Inject(MAT_DIALOG_DATA) public data: { conditions: IConditions, country: Country },
     private fb: FormBuilder,
     private entitySizeSer: EntitySizeService,
     private docFormatSer: DocFormatService,
     private complexCondSer: ComplexConditionsService,
     private complexTimeCondSer: ComplexTimeConditionsService,
+    private languageSer: LanguageService,
     private condSer: ConditionsService,
   ) {
     this.country = data.country
-    this.entitySizeSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: EntitySize[])=>{
+    this.entitySizeSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: EntitySize[]) => {
       this.entitySizes = x
     })
-    this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IDocFormat[])=>{
+    this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IDocFormat[]) => {
       this.docFormats = x
-      this.docFormatsAvail = x.filter(y => find(this.country.available_doc_formats, z => z == y.id))
+    })
+    this.languageSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: Language[]) => {
+      this.languages = x
     })
     this.complexCondSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IComplexConditions[]) => {
-      this.complexConditions= x
+      this.complexConditions = x
     })
     this.complexTimeCondSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IComplexConditions[]) => {
       this.complexTimeConditions = x
     })
-    this.condForm= this.fb.group({
+    this.condForm = this.fb.group({
       id: [data.conditions.id],
       condition_claims_min: [data.conditions.condition_claims_min],
       condition_claims_max: [data.conditions.condition_claims_max],
@@ -86,6 +92,7 @@ export class ConditionsFormComponent implements OnInit {
       prev_appl_date_excl_intermediary_time: [data.conditions.prev_appl_date_excl_intermediary_time],
       prior_appl_exists: [data.conditions.prior_appl_exists],
       doc_format: [data.conditions.doc_format],
+      language: [data.conditions.language],
     })
   }
 
@@ -98,19 +105,24 @@ export class ConditionsFormComponent implements OnInit {
 
   save() {
     let submitData = this.condForm.value
-    if(submitData.doc_format){
-      if (typeof(submitData.doc_format) !== 'number'){
+    if (submitData.doc_format) {
+      if (typeof (submitData.doc_format) !== 'number') {
         submitData.doc_format = submitData.doc_format.id
       }
     }
+    if (submitData.language) {
+      if (typeof (submitData.language) !== 'number') {
+        submitData.language = submitData.language.id
+      }
+    }
 
-    if (submitData.condition_entity_size){
-      if (typeof(submitData.condition_entity_size) !== 'number'){
+    if (submitData.condition_entity_size) {
+      if (typeof (submitData.condition_entity_size) !== 'number') {
         submitData.condition_entity_size = submitData.condition_entity_size.id
       }
     }
-    if (submitData.condition_complex){
-      if (typeof(submitData.condition_complex) !== 'number'){
+    if (submitData.condition_complex) {
+      if (typeof (submitData.condition_complex) !== 'number') {
         submitData.condition_complex = submitData.condition_complex.id
       }
     }
@@ -120,9 +132,12 @@ export class ConditionsFormComponent implements OnInit {
       }
     }
     forIn(submitData, (value, key) => {
-      if (value === ""){
-        value=null
+      if (value === "") {
+        value = null
+      } else if (value === 0) {
+        value = null
       }
+
       submitData[key] = value
     })
 

@@ -37,6 +37,10 @@ import {RequestExamTempService} from "../_services/request-exam-temp.service";
 import {IRequestExamEstTemp} from "../_models/RequestExamEstTemp.model";
 import {DocFormatService} from "../../characteristics/_services/doc-format.service";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {FeeCategoryService} from "../_services/fee-category.service";
+import {IFeeCategory} from "../_models/FeeCategory.model";
+import {Language} from "../../characteristics/_models/Language.model";
+import {LanguageService} from "../../characteristics/_services/language.service";
 
 interface GenericTemp {
   id: number,
@@ -50,12 +54,19 @@ interface GenericTemp {
   description: string;
   fee_code: string;
   isa_country_fee_only: boolean;
+  fee_category: any;
 }
 
 interface CountryWise {
   id: number,
   country: any;
 }
+
+interface FeeCategoryWise {
+  id: number,
+  fee_category: any;
+}
+
 
 interface ApplTypeWise {
   id: number,
@@ -80,6 +91,16 @@ interface OverDocFormatWise {
 interface OverEntitySizeWise {
   id: number,
   conditions: EntitySizeWise;
+}
+
+interface LanguageWise {
+  id: number,
+  language: any;
+}
+
+interface OverLanguageWise {
+  id: number,
+  conditions: LanguageWise
 }
 
 interface ComplexConditionWise {
@@ -137,9 +158,12 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   public lawFirmTemp = new Array<ILawFirmEstTemp>()
   public country_us: boolean = false;
   public entitySizes = new Array<EntitySize>();
+  public feeCategories: IFeeCategory[] = new Array<IFeeCategory>();
   private country_us_id: number = 0;
   public complexTimeConditions = new Array<IComplexTimeConditions>();
   public currencies: Currency[] = new Array<Currency>();
+  public languages: Language[] = new Array<Language>();
+  public filteredLanguages: Language[] = new Array<Language>();
   public currencies_list: string[] = new Array<string>();
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
   public overLayOpen: boolean = true;
@@ -166,6 +190,8 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     private entitySizeSer: EntitySizeService,
     private currencySer: CurrencyService,
     private docFormatSer: DocFormatService,
+    private languageSer: LanguageService,
+    private feeCatSer: FeeCategoryService,
     private _viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
   ) {
@@ -173,36 +199,44 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     this.docFormatSer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.docFormats = x.sort((a,b) =>{
+        this.docFormats = x.sort((a, b) => {
           let countryA = a.name.toUpperCase()
           let countryB = b.name.toUpperCase()
-          if(countryA < countryB){
+          if (countryA < countryB) {
             return -1;
           }
-          if (countryA > countryB){
+          if (countryA > countryB) {
             return 1;
           }
           return 0;
         })
       })
-
+    this.languageSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.languages = x
+        this.languages.push({name: 'N/A', id: 0})
+      })
+    this.feeCatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.feeCategories = x
+      })
     this.currencySer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.currencies = x
-        this.currencies_list = map(x, y=> y.currency_name).sort()
+        this.currencies_list = map(x, y => y.currency_name).sort()
       })
     this.countrySer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.country_us_id = x.find(y => y.country == 'US')?.id || 0
-        this.countries = x.sort((a,b) =>{
+        this.countries = x.sort((a, b) => {
           let countryA = a.country.toUpperCase()
           let countryB = b.country.toUpperCase()
-          if(countryA < countryB){
+          if (countryA < countryB) {
             return -1;
           }
-          if (countryA > countryB){
+          if (countryA > countryB) {
             return 1;
           }
           return 0;
@@ -213,7 +247,7 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.entitySizes = x
-        this.entitySizes.push({entity_size:'N/A', id:0, description:'N/A'})
+        this.entitySizes.push({entity_size: 'N/A', id: 0, description: 'N/A'})
       })
 
     this.applTypeSer.getAllUnlessAlreadyLoaded()
@@ -236,14 +270,14 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.complexConditions = x
-        this.complexConditions.push({name:'N/A', id:0})
+        this.complexConditions.push({name: 'N/A', id: 0})
       })
 
     this.complexTimeConditionSer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.complexTimeConditions = x
-        this.complexTimeConditions.push({name:'N/A', id:0})
+        this.complexTimeConditions.push({name: 'N/A', id: 0})
       })
 
     this.lawFirmTempSer.entities$
@@ -259,21 +293,25 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
           this.country_us = true
         }
         this.setFilters(x)
+        // this.filteredLanguages = map(this.country.available_languages, y => this.languages.find(z => z.id == y.language))
       })
-      this.filEstSer.filteredEntities$
+    this.filEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.filEstTemp = this.replaceFkWithObject(x)
+        console.log('eee', this.filEstTemp)
       })
-      this.publEstSer.filteredEntities$
+    this.publEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.publEstTemp = this.replaceFkWithObject(x)
       })
-      this.reqEstSer.filteredEntities$
+    this.reqEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.reqEstTemp = this.replaceFkWithObject(x)
+        console.log('x', x)
+        console.log('ttt', this.reqEstTemp)
       })
     this.oaEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -322,39 +360,51 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       scrollStrategy: scrollStrategy
     }
     const overlayRef = this.overlay.create(overlayConfig)
-    this.templatePortal= new TemplatePortal(
+    this.templatePortal = new TemplatePortal(
       this.templatePortalContent,
       this._viewContainerRef
     );
     overlayRef.attach(this.templatePortal)
   }
 
-  setFilters(country_id: number){
-   this.filEstSer.setFilter({
-     country_id: country_id
-   })
-   this.publEstSer.setFilter({
-     country_id: country_id
-   })
-   this.oaEstSer.setFilter({
-     country_id: country_id
-   })
-   this.usoaEstSer.setFilter({
-     country_id: country_id
-   })
-   this.allowEstSer.setFilter({
-     country_id: country_id
-   })
-   this.issueEstSer.setFilter({
-     country_id: country_id
-   })
- }
+  setFilters(country_id: number) {
+    this.filEstSer.setFilter({
+      country_id: country_id
+    })
+    this.publEstSer.setFilter({
+      country_id: country_id
+    })
+    this.reqEstSer.setFilter({
+      country_id: country_id
+    })
+    this.oaEstSer.setFilter({
+      country_id: country_id
+    })
+    this.usoaEstSer.setFilter({
+      country_id: country_id
+    })
+    this.allowEstSer.setFilter({
+      country_id: country_id
+    })
+    this.issueEstSer.setFilter({
+      country_id: country_id
+    })
+  }
 
   replaceFkWithObject(data: GenericTemp[]) {
-    return this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
+    return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
       this.lawFirmTempSet(this.conditionsSet(
-        this.applTypeSet(this.countrySet(data))))))))
+        this.applTypeSet(this.countrySet(this.feeCategorySet(
+          data))))))))))
   }
+
+  feeCategorySet<TFeeCategoryWise extends FeeCategoryWise>(arg: TFeeCategoryWise[]): TFeeCategoryWise[] {
+    return map<TFeeCategoryWise, TFeeCategoryWise>(arg, (x: TFeeCategoryWise) => {
+      let d = this.feeCategories.find(y => y.id == x.fee_category);
+      return {...x, 'fee_category': d}
+    })
+  }
+
 
   countrySet<TCountryWise extends CountryWise>(arg: TCountryWise[]): TCountryWise[] {
     return map<TCountryWise, TCountryWise>(arg, (x: TCountryWise) => {
@@ -377,14 +427,25 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       return {...x, conditions}
     })
   }
+
+  languageSet<TLanguageWise extends OverLanguageWise>(arg: TLanguageWise[]): TLanguageWise[] {
+    return map<TLanguageWise, TLanguageWise>(arg, (x: TLanguageWise) => {
+      let d = this.languages.find(y => y.id == x.conditions.language);
+      let conditions = {...x.conditions, 'language': d}
+      return {...x, conditions}
+    })
+  }
+
+
   docFormatSet<TDocFormatWise extends OverDocFormatWise>(arg: TDocFormatWise[]): TDocFormatWise[] {
     return map<TDocFormatWise, TDocFormatWise>(arg, (x: TDocFormatWise) => {
       let d = this.docFormats.find(y => y.id == x.conditions.doc_format);
       console.log('ddd', d)
       let conditions = {...x.conditions, 'doc_format': d}
-      return {...x, conditions }
+      return {...x, conditions}
     })
   }
+
   complexConditionsSet<TComplexCondition extends OverComplexConditionsWise>(arg: TComplexCondition[]): TComplexCondition[] {
     return map<TComplexCondition, TComplexCondition>(arg, (x: TComplexCondition) => {
       let d = this.complexConditions.find(y => y.id == x.conditions.condition_complex);
@@ -400,7 +461,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       return {...x, conditions}
     })
   }
-
 
   conditionsSet<TConditionsWise extends ConditionsWise>(arg: TConditionsWise[]): TConditionsWise[] {
     return map<TConditionsWise, TConditionsWise>(arg, (x: TConditionsWise) => {
@@ -437,8 +497,9 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       })).subscribe()
     }
   }
-  delFileEstTemp(delRows: IFileEstTemp[]): void{
-    for (let row of delRows){
+
+  delFileEstTemp(delRows: IFileEstTemp[]): void {
+    for (let row of delRows) {
       this.filEstSer.delete(row)
     }
   }
@@ -578,7 +639,8 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       })).subscribe()
     }
   }
-  delAllowEstTemp(delRows: IAllowEstTemp[]): void{
+
+  delAllowEstTemp(delRows: IAllowEstTemp[]): void {
     for (let row of delRows) {
       this.allowEstSer.delete(row)
     }
@@ -605,13 +667,14 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       })).subscribe()
     }
   }
-  delIssueEstTemp(delRows: IIssueEstTemp[]): void{
+
+  delIssueEstTemp(delRows: IIssueEstTemp[]): void {
     for (let row of delRows) {
       this.issueEstSer.delete(row)
     }
   }
 
-  updateConditionLawFirm(conditions: IConditions, law_firm_template: ILawFirmEstTemp ){
+  updateConditionLawFirm(conditions: IConditions, law_firm_template: ILawFirmEstTemp) {
     let condition$ = this.conditionSer.update(conditions)
     let lawFirmTemp$ = this.lawFirmTempSer.update(law_firm_template)
     return forkJoin([condition$, lawFirmTemp$])

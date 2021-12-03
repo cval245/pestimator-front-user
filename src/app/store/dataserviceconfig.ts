@@ -148,6 +148,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'doc-formats/',
       collectionResourceUrl: environment.API_URL + 'doc-formats/',
     },
+    DocFormatCountry: {
+      entityResourceUrl: environment.API_URL + 'doc-formats-countries/',
+      collectionResourceUrl: environment.API_URL + 'doc-formats-countries/',
+    },
+    FeeCategory: {
+      entityResourceUrl: environment.API_URL + 'fee-category/',
+      collectionResourceUrl: environment.API_URL + 'fee-category/',
+    },
     TransComplexTime: {
       entityResourceUrl: environment.API_URL + 'trans-complex-time/',
       collectionResourceUrl: environment.API_URL + 'trans-complex-time/',

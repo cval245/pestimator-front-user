@@ -6,7 +6,7 @@ import {find} from "lodash";
 export class CustomApplDetails{
   public num_indep_claims: number | null = null
   public num_claims: number | null = null
-  public num_claims_multiple_dependent: number | null = 0
+  public num_claims_multiple_dependent: number | null = null
   public num_drawings: number | null = null
   public num_pages_description: number | null = null
   public num_pages_claims: number | null = null

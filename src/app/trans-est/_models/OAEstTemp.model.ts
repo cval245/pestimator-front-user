@@ -10,4 +10,5 @@ export interface IOAEstTemp {
   fee_code: string;
   law_firm_template: any;
   isa_country_fee_only: boolean;
+  fee_category: any;
 }

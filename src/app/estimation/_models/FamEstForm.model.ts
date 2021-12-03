@@ -11,15 +11,21 @@ import {
 import {map} from "lodash";
 import {Language} from "../../characteristics/_models/Language.model";
 import {Application} from "../../application/_models/application.model";
-import {CustomApplOptions} from "./CustomApplOptions.model";
+import {
+  convertToCustomApplOptions,
+  convertToCustomApplOptionsSubmit,
+  CustomApplOptions,
+  CustomApplOptionsSubmit
+} from "./CustomApplOptions.model";
+import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 
-export interface multiCountry{
+export interface multiCountry {
   custom_appl_details: CustomApplDetails
   custom_appl_options: CustomApplOptions
   country: Country
 }
 
-export class FamEstForm{
+export class FamEstForm {
   public family_name: string = 'default family name'
   public family_no: string = 'default family no'
   public init_appl_filing_date: Date = new Date()
@@ -53,20 +59,34 @@ export class FamEstFormSubmit{
   public init_appl_options: CustomApplOptions= new CustomApplOptions()
   public pct_method: boolean = false
   // public pct_method_customization: CustomApplDetails = new CustomApplDetails()
-  public pct_method_customization: {'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptions } = {'custom_appl_details': new CustomApplDetailsSubmit(), 'custom_appl_options': new CustomApplOptions()}
+  public pct_method_customization: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit } = {
+    'custom_appl_details': new CustomApplDetailsSubmit(),
+    'custom_appl_options': new CustomApplOptionsSubmit()
+  }
   public pct_country: number | null = 0
   public isa_country: number | null = 0
-  public pct_countries: {'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptions, 'country': number}[] | null = [{'custom_appl_details': new CustomApplDetailsSubmit(), 'country': 0, 'custom_appl_options': new CustomApplOptions()}]
+  public pct_countries: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit, 'country': number }[] | null = [{
+    'custom_appl_details': new CustomApplDetailsSubmit(),
+    'country': 0,
+    'custom_appl_options': new CustomApplOptionsSubmit()
+  }]
   public ep_method: boolean = false
   // public ep_method_customization: CustomApplDetails = new CustomApplDetails()
-  public ep_method_customization: {'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptions } = {'custom_appl_details': new CustomApplDetailsSubmit(), 'custom_appl_options': new CustomApplOptions()}
+  public ep_method_customization: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit } = {
+    'custom_appl_details': new CustomApplDetailsSubmit(),
+    'custom_appl_options': new CustomApplOptionsSubmit()
+  }
   // public ep_countries: null | {'custom_appl_details': CustomApplDetails, 'country': number}[] = [{'custom_appl_details': new CustomApplDetails(), 'country': 0}]
-  public ep_countries: {'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptions, 'country': number}[] | []=  []
-  public paris_countries: {'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptions, 'country': number}[] | null = [{'custom_appl_details': new CustomApplDetailsSubmit(), 'country': 0, 'custom_appl_options': new CustomApplOptions()}]
+  public ep_countries: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit, 'country': number }[] | [] = []
+  public paris_countries: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit, 'country': number }[] | null = [{
+    'custom_appl_details': new CustomApplDetailsSubmit(),
+    'country': 0,
+    'custom_appl_options': new CustomApplOptionsSubmit()
+  }]
   public unique_display_no?: number = 0
   public id?: any = 0
 
-  constructor(init?:Partial<ApplDetail>){
+  constructor(init?: Partial<ApplDetail>) {
     Object.assign(this, init)
   }
 
@@ -78,7 +98,8 @@ export function convertToFamEstForm(famEstFormSubmit: FamEstFormSubmit,
                                     applTypes: ApplType[],
                                     entitySizes: EntitySize[],
                                     languages: Language[],
-                                    applications: Application[]){
+                                    applications: Application[],
+                                    doc_formats: IDocFormat[],) {
   let famEstForm = new FamEstForm()
   famEstForm.family_name = famEstFormSubmit.family_name
   famEstForm.family_no = famEstFormSubmit.family_no
@@ -95,38 +116,68 @@ export function convertToFamEstForm(famEstFormSubmit: FamEstFormSubmit,
   famEstForm.pct_method = famEstFormSubmit.pct_method
   famEstForm.ep_method = famEstFormSubmit.ep_method
   if (famEstFormSubmit.ep_method_customization !== null){
-    if (famEstFormSubmit.ep_method_customization.custom_appl_details !== null){
-      famEstForm.ep_method_customization = {'custom_appl_details':  convertToCustomApplDetails( famEstFormSubmit.ep_method_customization.custom_appl_details, languages, entitySizes, applications), 'custom_appl_options': famEstFormSubmit.ep_method_customization.custom_appl_options}
+    if (famEstFormSubmit.ep_method_customization.custom_appl_details !== null) {
+      famEstForm.ep_method_customization = {
+        'custom_appl_details': convertToCustomApplDetails(famEstFormSubmit.ep_method_customization.custom_appl_details, languages, entitySizes, applications),
+        'custom_appl_options': convertToCustomApplOptions(famEstFormSubmit.ep_method_customization.custom_appl_options, doc_formats)
+      }
     }
   }
   if(famEstFormSubmit.pct_method_customization !== null){
     if (famEstFormSubmit.pct_method_customization.custom_appl_details !== null) {
-      famEstForm.pct_method_customization = {'custom_appl_details':  convertToCustomApplDetails(famEstFormSubmit.pct_method_customization.custom_appl_details, languages, entitySizes, applications), 'custom_appl_options': famEstFormSubmit.pct_method_customization.custom_appl_options}
-        // famEstFormSubmit.pct_method_customization
+      famEstForm.pct_method_customization = {
+        'custom_appl_details': convertToCustomApplDetails(famEstFormSubmit.pct_method_customization.custom_appl_details, languages, entitySizes, applications),
+        'custom_appl_options': convertToCustomApplOptions(famEstFormSubmit.pct_method_customization.custom_appl_options, doc_formats)
+      }
+      // famEstFormSubmit.pct_method_customization
     }
   }
   famEstForm.ep_countries = map(famEstFormSubmit.ep_countries, x => {
     let country = countries.find(y => y.id == x.country)!
-    if (x.custom_appl_details == null){
-      return {'country': country, 'custom_appl_details': new CustomApplDetails(), 'custom_appl_options': new CustomApplOptions()}
+    if (x.custom_appl_details == null) {
+      return {
+        'country': country,
+        'custom_appl_details': new CustomApplDetails(),
+        'custom_appl_options': new CustomApplOptions()
+      }
     }
-    return {'country': country, 'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications), 'custom_appl_options': x.custom_appl_options}
+    return {
+      'country': country,
+      'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications),
+      'custom_appl_options': convertToCustomApplOptions(x.custom_appl_options, doc_formats)
+    }
   })
 
   famEstForm.paris_countries = map(famEstFormSubmit.paris_countries, x => {
     let country = countries.find(y => y.id == x.country)!
-    if (x.custom_appl_details == null){
-      return {'country': country, 'custom_appl_details': new CustomApplDetails(), 'custom_appl_options': new CustomApplOptions()}
+    if (x.custom_appl_details == null) {
+      return {
+        'country': country,
+        'custom_appl_details': new CustomApplDetails(),
+        'custom_appl_options': new CustomApplOptions()
+      }
     }
-    return {'country': country, 'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications), 'custom_appl_options': x.custom_appl_options}
+    return {
+      'country': country,
+      'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications),
+      'custom_appl_options': convertToCustomApplOptions(x.custom_appl_options, doc_formats)
+    }
   })
 
   famEstForm.pct_countries = map(famEstFormSubmit.pct_countries, x => {
     let country = countries.find(y => y.id == x.country)!
-    if (x.custom_appl_details == null){
-      return {'country': country, 'custom_appl_details': new CustomApplDetails(), 'custom_appl_options': new CustomApplOptions()}
+    if (x.custom_appl_details == null) {
+      return {
+        'country': country,
+        'custom_appl_details': new CustomApplDetails(),
+        'custom_appl_options': new CustomApplOptions()
+      }
     }
-    return {'country': country, 'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications), 'custom_appl_options': x.custom_appl_options}
+    return {
+      'country': country,
+      'custom_appl_details': convertToCustomApplDetails(x.custom_appl_details, languages, entitySizes, applications),
+      'custom_appl_options': convertToCustomApplOptions(x.custom_appl_options, doc_formats)
+    }
   })
   famEstForm.unique_display_no = famEstFormSubmit.unique_display_no
   famEstForm.id = famEstFormSubmit.id
@@ -151,25 +202,45 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm){
   famEstFormSubmit.isa_country = famEstForm.isa_country?.id || null
   famEstFormSubmit.pct_method = famEstForm.pct_method
   famEstFormSubmit.ep_method = famEstForm.ep_method
-  famEstFormSubmit.ep_method_customization = {'custom_appl_details': convertToCustomApplDetailsSubmit(famEstForm.ep_method_customization.custom_appl_details), 'custom_appl_options': famEstForm.ep_method_customization.custom_appl_options}
+  famEstFormSubmit.ep_method_customization = {
+    'custom_appl_details': convertToCustomApplDetailsSubmit(famEstForm.ep_method_customization.custom_appl_details),
+    'custom_appl_options': convertToCustomApplOptionsSubmit(famEstForm.ep_method_customization.custom_appl_options)
+  }
   // famEstFormSubmit.pct_method_customization = famEstForm.pct_method_customization
-  famEstFormSubmit.pct_method_customization = {'custom_appl_details': convertToCustomApplDetailsSubmit(famEstForm.pct_method_customization.custom_appl_details), 'custom_appl_options': famEstForm.pct_method_customization.custom_appl_options}
-    // famEstForm.pct_method_customization
+  famEstFormSubmit.pct_method_customization = {
+    'custom_appl_details': convertToCustomApplDetailsSubmit(famEstForm.pct_method_customization.custom_appl_details),
+    'custom_appl_options': convertToCustomApplOptionsSubmit(famEstForm.pct_method_customization.custom_appl_options)
+  }
+  // famEstForm.pct_method_customization
   // famEstFormSubmit.ep_countries = famEstForm.ep_countries
   famEstFormSubmit.ep_countries = map(famEstForm.ep_countries, x => {
-    if (x == null){
+    if (x == null) {
       return x
     }
-    return {'country': x.country.id, 'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details), 'custom_appl_options': new CustomApplOptions()}
+    return {
+      'country': x.country.id,
+      'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details),
+      'custom_appl_options': convertToCustomApplOptionsSubmit(x.custom_appl_options)
+    }
   })
   famEstFormSubmit.paris_countries = map(famEstForm.paris_countries, x => {
-    return  {'country': x.country.id, 'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details), 'custom_appl_options': new CustomApplOptions()}
+    return {
+      'country': x.country.id,
+      'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details),
+      'custom_appl_options': convertToCustomApplOptionsSubmit(x.custom_appl_options)
+    }
   })
+  console.log('famEstForm', famEstForm.paris_countries)
+  console.log('famEst', famEstFormSubmit.paris_countries)
   famEstFormSubmit.pct_countries = map(famEstForm.pct_countries, x => {
-    return {'country': x.country.id, 'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details), 'custom_appl_options': new CustomApplOptions()}
+    return {
+      'country': x.country.id,
+      'custom_appl_details': convertToCustomApplDetailsSubmit(x.custom_appl_details),
+      'custom_appl_options': convertToCustomApplOptionsSubmit(x.custom_appl_options)
+    }
   })
   famEstFormSubmit.unique_display_no = famEstForm.unique_display_no
   famEstFormSubmit.id = famEstForm.id
-
+  console.log('ffffff', famEstFormSubmit)
   return famEstFormSubmit
 }

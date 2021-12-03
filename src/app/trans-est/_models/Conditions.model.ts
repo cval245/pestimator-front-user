@@ -1,6 +1,7 @@
 import {IComplexConditions} from "./ComplexConditions.model";
 import {IComplexTimeConditions} from "./IComplexTimeConditions";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {Language} from "../../characteristics/_models/Language.model";
 
 export interface IConditions {
   id: number;
@@ -31,4 +32,5 @@ export interface IConditions {
   prev_appl_date_excl_intermediary_time?: boolean;
   prior_appl_exists?: boolean
   doc_format?: number | IDocFormat;
+  language?: number | Language;
 }

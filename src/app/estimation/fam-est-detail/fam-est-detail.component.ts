@@ -23,6 +23,8 @@ import {GetXLSService} from "../_services/get-xls.service";
 import {GetPDFService} from "../_services/get-pdf.service";
 import {LanguageService} from "../../characteristics/_services/language.service";
 import {Language} from "../../characteristics/_models/Language.model";
+import {DocFormatService} from "../../characteristics/_services/doc-format.service";
+import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 
 @Component({
   selector: 'app-fam-est-detail',
@@ -52,6 +54,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
 
   // private tableCombineSub: Subscription;
   private applTypes: ApplType[] = [new ApplType()];
+  private docFormats: IDocFormat[] = new Array<IDocFormat>();
   private entitySizes: EntitySize[] = [new EntitySize()];
   private languages: Language[] = new Array<Language>();
 
@@ -65,6 +68,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     private applDetSer: ApplDetailService,
     private famformSer: FamEstFormService,
     private entitySizeSer: EntitySizeService,
+    private docForSer: DocFormatService,
     private languageSer: LanguageService,
     private http: HttpClient,
     private getXlsSer: GetXLSService,
@@ -116,14 +120,15 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
           appl$,
           applDet$,
           famform$,
+          this.docForSer.getAllUnlessAlreadyLoaded(),
         ])
-      })).subscribe(([applications, applDetails, famform]) => {
+      })).subscribe(([applications, applDetails, famform, docFormats]) => {
       this.applications = applications.map(appl => {
         console.log('inner')
         let x = applDetails.find(det => det.application == appl.id)
         let y = this.countries.find(c => c.id == appl.country)
         let z = this.applTypes.find(a => a.id == appl.appl_type)
-        this.famform = convertToFamEstForm(famform[0], this.countries, this.applTypes, this.entitySizes, this.languages, this.applications)
+        this.famform = convertToFamEstForm(famform[0], this.countries, this.applTypes, this.entitySizes, this.languages, this.applications, this.docFormats)
         return {
           ...appl, 'appl_details': x, 'country': y,
           'application_type': z

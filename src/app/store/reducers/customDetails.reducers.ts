@@ -4,37 +4,44 @@ import {CustomApplDetails} from "../../estimation/_models/CustomApplDetails.mode
 import {createCustomApplDetails} from "../actions/customDetails.action"
 import {filter} from "lodash";
 import {CustomApplOptions} from "../../estimation/_models/CustomApplOptions.model";
+import {Country} from "../../characteristics/_models/Country.model";
+import {ApplType} from "../../characteristics/_models/applType.model";
 
-export interface CustomDetails{
+export interface CustomDetails {
   applVersion: APPL_VERSIONS;
-  country_id: number;
+  country: Country;
+  appl_type: ApplType;
   customDetails: CustomApplDetails;
   customOptions: CustomApplOptions;
 }
+
 export const CustomDetailsState: Array<CustomDetails> = [{
   applVersion: APPL_VERSIONS.PCT_APPL,
-  country_id: 0,
-  customDetails:new CustomApplDetails(),
+  country: new Country,
+  appl_type: new ApplType,
+  customDetails: new CustomApplDetails(),
   customOptions: new CustomApplOptions()
 }];
 
 
 export const initialCustomDetails: Array<CustomDetails>= [{
   applVersion: APPL_VERSIONS.PCT_APPL,
-  country_id: 0,
+  country: new Country,
+  appl_type: new ApplType,
   customDetails: new CustomApplDetails(),
   customOptions: new CustomApplOptions(),
 }];
 
 const customDetailsReducerInternal = createReducer(
   initialCustomDetails,
-  on(createCustomApplDetails, (state, {applVersion, country_id, customDetails, customOptions  }) => {
-      let filtered_state = filter(state, x => {
-        return !(country_id == x.country_id && applVersion == x.applVersion)
-      })
+  on(createCustomApplDetails, (state, {applVersion, country, appl_type, customDetails, customOptions}) => {
+    let filtered_state = filter(state, x => {
+      return !(country == x.country && applVersion == x.applVersion)
+    })
     return [...filtered_state, {
       applVersion: applVersion,
-      country_id: country_id,
+      country: country,
+      appl_type: appl_type,
       customDetails: customDetails,
       customOptions: customOptions,
     }];

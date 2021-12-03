@@ -159,9 +159,9 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button  *ngIf="item.enabled"
-                  mat-icon-button [matTooltip]="customApplToolTip"
-                  (click)="editParisCustApplDetails(item.value.country.id)">
+                <button *ngIf="item.enabled"
+                        mat-icon-button [matTooltip]="customApplToolTip"
+                        (click)="editParisCustApplDetails(item.value.country)">
                   <mat-icon>add_circle_outline</mat-icon>
                 </button>
                   </div>
@@ -185,10 +185,11 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button *ngIf="item.enabled"
-                  mat-icon-button [matTooltip]="customApplToolTip"  (click)="editParisCustApplDetails(item.value.country.id)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                </button>
+                    <button *ngIf="item.enabled"
+                            mat-icon-button [matTooltip]="customApplToolTip"
+                            (click)="editParisCustApplDetails(item.value.country)">
+                      <mat-icon>add_circle_outline</mat-icon>
+                    </button>
                 </div>
                 <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   <ng-container [ngTemplateOutlet]="customOptDesc"
@@ -212,10 +213,11 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button *ngIf="item.enabled"
-                  mat-icon-button [matTooltip]="customApplToolTip"  (click)="editParisCustApplDetails(item.value.country.id)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                </button>
+                    <button *ngIf="item.enabled"
+                            mat-icon-button [matTooltip]="customApplToolTip"
+                            (click)="editParisCustApplDetails(item.value.country)">
+                      <mat-icon>add_circle_outline</mat-icon>
+                    </button>
                   </div>
                 <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   <ng-container [ngTemplateOutlet]="customOptDesc"
@@ -301,15 +303,15 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button mat-icon-button [matTooltip]="customApplToolTip"
-                        (click)="editPCTNatCustApplDetails(item.value.country.id)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                </button>
+                    <button mat-icon-button [matTooltip]="customApplToolTip"
+                            (click)="editPCTNatCustApplDetails(item.value.country)">
+                      <mat-icon>add_circle_outline</mat-icon>
+                    </button>
                   </div>
                 <ng-container [ngTemplateOutlet]="customDetDesc"
                               [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   <ng-container [ngTemplateOutlet]="customOptDesc"
-                                [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.ep_method_customization.value.custom_appl_options}">
+                                [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.pct_method_customization.value.custom_appl_options}">
                   </ng-container>
                 </div>
               </ng-container>
@@ -325,9 +327,10 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editPCTNatCustApplDetails(item.value.country.id)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                </button>
+                    <button mat-icon-button [matTooltip]="customApplToolTip"
+                            (click)="editPCTNatCustApplDetails(item.value.country)">
+                      <mat-icon>add_circle_outline</mat-icon>
+                    </button>
                     </div>
                 <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   </div>
@@ -348,9 +351,10 @@
                 <mat-checkbox formControlName="selected">
                   {{item.value.country.long_name}}
                 </mat-checkbox>
-                <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editPCTNatCustApplDetails(item.value.country.id)">
-                  <mat-icon>add_circle_outline</mat-icon>
-                </button>
+                    <button mat-icon-button [matTooltip]="customApplToolTip"
+                            (click)="editPCTNatCustApplDetails(item.value.country)">
+                      <mat-icon>add_circle_outline</mat-icon>
+                    </button>
                   </div>
                 <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                 </div>
@@ -395,9 +399,10 @@
                   <mat-checkbox formControlName="selected">
                     {{item.value.country.long_name}}
                   </mat-checkbox>
-                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
-                    <mat-icon>add_circle_outline</mat-icon>
-                  </button>
+                      <button mat-icon-button [matTooltip]="customApplToolTip"
+                              (click)="editEPValidCustApplDetails(item.value.country)">
+                        <mat-icon>add_circle_outline</mat-icon>
+                      </button>
                     </div>
                     <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   </div>
@@ -414,9 +419,10 @@
                   <mat-checkbox formControlName="selected">
                     {{item.value.country.long_name}}
                   </mat-checkbox>
-                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
-                    <mat-icon>add_circle_outline</mat-icon>
-                  </button>
+                      <button mat-icon-button [matTooltip]="customApplToolTip"
+                              (click)="editEPValidCustApplDetails(item.value.country)">
+                        <mat-icon>add_circle_outline</mat-icon>
+                      </button>
                       </div>
                   <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                     </div>
@@ -437,9 +443,10 @@
                   <mat-checkbox formControlName="selected">
                     {{item.value.country.long_name}}
                   </mat-checkbox>
-                  <button mat-icon-button [matTooltip]="customApplToolTip"  (click)="editEPValidCustApplDetails(item.value.country.id)">
-                    <mat-icon>add_circle_outline</mat-icon>
-                  </button>
+                      <button mat-icon-button [matTooltip]="customApplToolTip"
+                              (click)="editEPValidCustApplDetails(item.value.country)">
+                        <mat-icon>add_circle_outline</mat-icon>
+                      </button>
                     </div>
                   <ng-container [ngTemplateOutlet]="customDetDesc" [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>
                   </div>

@@ -1,59 +1,83 @@
 <div class="customForm">
-<form [formGroup]="custDetailsForm">
+  <form [formGroup]="custDetailsForm">
 
-  <div fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutAlign="center center">
 
-    <div class="form-row">
-      <h3>Details of the Selected Application:</h3>
+      <div class="form-row">
+        <h3>Details of the Selected Application:</h3>
+      </div>
+      <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Claims:</mat-label>
+          <input matInput type="text" formControlName="num_claims">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Independent Claims:</mat-label>
+          <input matInput type="text" formControlName="num_indep_claims">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Claims Multiple Dependent:</mat-label>
+          <input matInput type="text" formControlName="num_claims_multiple_dependent">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No Drawings:</mat-label>
+          <input matInput type="text" formControlName="num_drawings">
+        </mat-form-field>
+      </div>
+      <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Pages - Specification:</mat-label>
+          <input matInput type="text" formControlName="num_pages_description">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Pages - Claims:</mat-label>
+          <input matInput type="text" formControlName="num_pages_claims">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>No. Pages - Drawings:</mat-label>
+          <input matInput type="text" formControlName="num_pages_drawings">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Language</mat-label>
+          <mat-select class="custom-select"
+                      formControlName="language"
+          >
+            <mat-option *ngFor="let t of filteredLanguages"
+                        [value]="t">
+              {{t.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
     </div>
-    <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" >
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Claims:</mat-label>
-        <input matInput type="text" formControlName="num_claims">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Independent Claims:</mat-label>
-        <input matInput type="text" formControlName="num_indep_claims">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Claims Multiple Dependent:</mat-label>
-        <input matInput type="text" formControlName="num_claims_multiple_dependent">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No Drawings:</mat-label>
-        <input matInput type="text" formControlName="num_drawings">
-      </mat-form-field>
-    </div>
-    <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Pages - Specification: </mat-label>
-        <input matInput type="text" formControlName="num_pages_description">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Pages - Claims:</mat-label>
-        <input matInput type="text" formControlName="num_pages_claims">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>No. Pages - Drawings:</mat-label>
-        <input matInput type="text" formControlName="num_pages_drawings">
-      </mat-form-field>
-    </div>
 
-
-
-  </div>
-
-</form>
+  </form>
   <mat-divider style="margin-bottom:15px;"></mat-divider>
   <h3>Prosecution Modifiers</h3>
   <form [formGroup]="custApplOptionsForm">
-    <mat-form-field appearance="outline" color="accent">
-      <mat-label>Request Examination Early</mat-label>
-      <mat-select formControlName="request_examination_early_bool">
-        <mat-option [value]=true>True</mat-option>
-        <mat-option [value]=false>False</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Request Examination Early</mat-label>
+        <mat-select formControlName="request_examination_early_bool">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field class="wide" appearance="outline" color="accent">
+        <mat-label>Document Format</mat-label>
+        <mat-select formControlName="doc_format">
+          <mat-option *ngFor="let doc of filteredDocFormats" [value]="doc">
+            {{doc.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </form>
   <div class="form-row">
     <button mat-button color="primary" (click)="cancel()">Cancel</button>

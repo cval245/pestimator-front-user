@@ -10,13 +10,26 @@ export class CountryAll{
   public long_name: string = 'default'
   public available_appl_types: [number] = [0]
   public isa_countries: [number] = [0]
-  public languages_set: [number] = [0]
-  public ep_validation_translation_required: number = 0
-  public entity_size_available: boolean = false
-  public available_entity_sizes: [number] = [0]
-  public available_doc_formats: [number] = [0]
+  public available_languages: {
+    country: number,
+    appl_type: number,
+    language: number,
+    default: boolean
+  }[] = new Array<{ country: 0, appl_type: 0, language: 0, default: false }>()
 
-  constructor(init?:Partial<CountryAll>){
+  public ep_validation_translation_required: number = 0
+  // public entity_size_available: boolean = false
+  public available_entity_sizes: [number] = [0]
+
+  // public available_doc_formats: [number] = [0]
+  public available_doc_formats: {
+    country: number,
+    appl_type: number,
+    doc_format: number,
+    default: boolean
+  }[] = new Array<{ country: 0, appl_type: 0, doc_format: 0, default: false }>()
+
+  constructor(init?: Partial<CountryAll>) {
     Object.assign(this, init)
   }
 }

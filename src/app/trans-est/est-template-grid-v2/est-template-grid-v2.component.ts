@@ -8,6 +8,7 @@ import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
 import {FirstDataRenderedEvent, ValueGetterParams, ValueSetterParams} from "ag-grid-community";
 import {ConditionRendererComponent} from "../condition-renderer/condition-renderer.component";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {IFeeCategory} from "../_models/FeeCategory.model";
 
 
 interface TableWise {
@@ -22,6 +23,7 @@ interface TableWise {
   description: string;
   fee_code: string;
   isa_country_fee_only: boolean;
+  fee_category: any;
 }
 
 @Component({
@@ -53,6 +55,7 @@ export class EstTemplateGridV2Component implements OnInit {
   @Input() complexConditions: IComplexConditions[] = [{'id': 0, 'name': ''}]
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Input() docFormats: IDocFormat[] = new Array<IDocFormat>()
+  @Input() feeCategories: IFeeCategory[] = new Array<IFeeCategory>();
   @Output() formData: EventEmitter<TableWise> = new EventEmitter()
   @Output() delEmit: EventEmitter<TableWise[]> = new EventEmitter()
   private gridColumnApi: any;
@@ -80,7 +83,6 @@ export class EstTemplateGridV2Component implements OnInit {
   }
 
   ngOnChanges(): void {
-    console.log('suriname, super say', this.rowData)
     this.columnDefs = [
       {
         field: 'date_diff', headerName: 'Date Diff', editable: true,
@@ -121,12 +123,23 @@ export class EstTemplateGridV2Component implements OnInit {
         field: 'appl_type', headerName: 'Appl Type', editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
         valueFormatter(row: ValueFormatterParams): string {
-          // console.log('applyType', row.value.application_type)
           return row.value.application_type
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.applTypes},
-        comparator: (valueA: ApplType, valueB: ApplType, nodeA: any, nodeB:any, isInverted: boolean) =>{
+        comparator: (valueA: ApplType, valueB: ApplType, nodeA: any, nodeB: any, isInverted: boolean) => {
+          return (valueA.id - valueB.id)
+        },
+      },
+      {
+        field: 'fee_category', headerName: 'Fee Category', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value.name
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: this.feeCategories},
+        comparator: (valueA: IFeeCategory, valueB: IFeeCategory, nodeA: any, nodeB: any, isInverted: boolean) => {
           return (valueA.id - valueB.id)
         },
       },
@@ -248,10 +261,11 @@ export class EstTemplateGridV2Component implements OnInit {
       country: this.country,
       appl_type: 0,
       official_cost: 0,
-      official_cost_currency:this.country.currency_name,
+      official_cost_currency: this.country.currency_name,
       fee_code: '',
       description: '',
       isa_country_fee_only: false,
+      fee_category: {} as IFeeCategory,
       law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},
       conditions: {id: 0, condition_annual_prosecution_fee: false},
     }
@@ -280,6 +294,7 @@ export class EstTemplateGridV2Component implements OnInit {
       if (this.isValid(params.data)) {
         params.data.appl_type = params.data.appl_type.id
         params.data.country = this.country.id
+        params.data.fee_category = params.data.fee_category.id
         if (params.data.conditions.condition_entity_size) {
           if (params.data.conditions.condition_entity_size.id ==0){
             params.data.conditions.condition_entity_size = null
@@ -287,6 +302,7 @@ export class EstTemplateGridV2Component implements OnInit {
             params.data.conditions.condition_entity_size = params.data.conditions.condition_entity_size.id
           }
         }
+
         if (params.data.conditions.doc_format) {
           if (params.data.conditions.doc_format.id ==0){
             params.data.conditions.doc_format = null

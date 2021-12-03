@@ -115,6 +115,16 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="megaInput" appearance="outline" color="accent">
+        <mat-label>Language</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="language">
+          <mat-option *ngFor="let t of languages"
+                      [value]="t">
+            {{t.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div class="formGroup">
     <mat-form-field class="superWide" appearance="outline" color="accent">

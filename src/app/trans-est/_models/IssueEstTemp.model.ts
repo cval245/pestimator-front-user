@@ -10,4 +10,5 @@ export interface IIssueEstTemp{
   description: string;
   fee_code: string;
   isa_country_fee_only: boolean;
+  fee_category: any;
 }

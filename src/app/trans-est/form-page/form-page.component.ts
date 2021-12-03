@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {cloneDeep, forEach, map, find} from 'lodash';
+import {cloneDeep, find, forEach, map} from 'lodash';
 import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
@@ -23,7 +23,9 @@ import {LanguageService} from "../../characteristics/_services/language.service"
 import {Language} from "../../characteristics/_models/Language.model";
 import {ITransComplexTime} from "../_models/TransComplexTime";
 import {TransComplexTimeService} from "../_services/trans-complex-time.service";
-import {EpValidationTranslationRequiredService} from "../../characteristics/_services/ep-validation-translation-required.service";
+import {
+  EpValidationTranslationRequiredService
+} from "../../characteristics/_services/ep-validation-translation-required.service";
 import {IEPValidationTranslationRequired} from "../../characteristics/_models/IEPValidationTranslationRequired.model";
 import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
 import {EntitySize} from "../../characteristics/_models/entitySize.model";
@@ -33,6 +35,8 @@ import {RequestExamTransService} from "../_services/request-exam-trans.service";
 import {IRequestExamTrans} from "../_models/RequestExamTrans.model";
 import {DocFormatService} from "../../characteristics/_services/doc-format.service";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {IDocFormatCountry} from "../../characteristics/_models/DocFormatCountry.model";
+import {DocFormatCountryService} from "../../characteristics/_services/doc-format-country.service";
 
 interface CountryWise {
   id: number,
@@ -62,6 +66,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
   public languages: Language[] = new Array<Language>();
   public entitySizes: EntitySize[] = [new EntitySize()]
   public docFormats: IDocFormat[] = new Array<IDocFormat>()
+  public docFormatCountries: IDocFormatCountry[] = new Array<IDocFormatCountry>()
   public countryRequirements = new Array<ITransFilReqFull>()
   public epValidationTranslate: IEPValidationTranslationRequired[] = new Array<IEPValidationTranslationRequired>();
   public reqs: ITransFilReqFull = {} as ITransFilReqFull;
@@ -81,6 +86,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private epValidatSer: EpValidationTranslationRequiredService,
     private entSer: EntitySizeService,
     private docFormatSer: DocFormatService,
+    private docFormatCountrySer: DocFormatCountryService,
     private tranFilReqSer: TransFilingRequirementsService,
   ) {
     combineLatest([
@@ -98,16 +104,20 @@ export class FormPageComponent implements OnInit, OnDestroy {
             let prev_appl_type = find(applTypes, x => x.id == z.prev_appl_type)!
             required_transforms.push({appl_type: appl_type, prev_appl_type: prev_appl_type})
           })
-          this.countryRequirements.push({... cTrans, required_transforms: required_transforms})
+          this.countryRequirements.push({...cTrans, required_transforms: required_transforms})
         })
-    })
+      })
 
     this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.docFormats = x
       })
+    this.docFormatCountrySer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.docFormatCountries = x
+      })
 
-      this.entSer.entities$.pipe(takeUntil(this.unsubscribe$))
+    this.entSer.entities$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.entitySizes = x
       })

@@ -38,19 +38,16 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
 
   agInit(params: ICellRendererParams): void{
     this.params = params;
-    // this.conditions=params.value
     this.createChips(this.params)
   }
 
   refresh(params: ICellRendererParams): boolean{
     this.params = params;
-    // this.conditions=params.value
     this.createChips(this.params)
     return true;
   }
 
   createChips(params:ICellRendererParams){
-    console.log('ti', this.params)
     this.conditions = params.data.conditions
     this.country = params.data.country
     this.adjustConditions = []
@@ -64,7 +61,9 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
             displayValue = value.name
           } else if (key === 'condition_time_complex'){
             displayValue = value.name
-          } else if (key === 'doc_format'){
+          } else if (key === 'doc_format') {
+            displayValue = value.name
+          } else if (key === 'language') {
             displayValue = value.name
           }
           this.adjustConditions.push([key,value, displayValue])
