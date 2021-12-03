@@ -85,8 +85,6 @@ export class CustomDetailsFormComponent implements OnInit {
       request_examination_early_bool: [false, Validators.required],
       doc_format: [this.defaultFormat, Validators.required],
     })
-    console.log('tttt', this.customApplOptions.doc_format)
-    console.log('eee', this.defaultFormat)
     if (this.customApplDetails !== undefined) {
       this.custDetailsForm.setValue({
         'num_indep_claims': this.customApplDetails.num_indep_claims || null,

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, Subject} from 'rxjs';
+import {combineLatest, Observable, of, Subject} from 'rxjs';
 import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {Country, CountryDetailsAdded} from 'src/app/characteristics/_models/Country.model';
 import {EntitySize} from 'src/app/characteristics/_models/entitySize.model';
@@ -75,19 +75,23 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.countrySer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
 
-      this.countries = map(orderBy(x, ['long_name'], ['asc']),
+    combineLatest([
+      this.countrySer.getAllUnlessAlreadyLoaded(),
+      this.entitySizeSer.getAllUnlessAlreadyLoaded()])
+      .pipe(takeUntil(this.destroyed)).subscribe(([countries, entitySizes]) => {
+      this.entitySizes = entitySizes
+      this.countries = map(orderBy(countries, ['long_name'], ['asc']),
         (y, i) => {
-          if (i <= x.length / 2) {
+          if (i <= countries.length / 2) {
             return {
               ...y, 'col': 1,
-              'available_entity_sizes': map(y.available_entity_sizes, z => this.entitySizes.find(w => w.id == z)!),
+              // 'available_entity_sizes': map(y.available_entity_sizes, z => this.entitySizes.find(w => w.id == z)!),
             }
           } else {
             return {
               ...y, 'col': 2,
-              'available_entity_sizes': map(y.available_entity_sizes, z => this.entitySizes.find(w => w.id == z)!),
+              // 'available_entity_sizes': map(y.available_entity_sizes, z => this.entitySizes.find(w => w.id == z)!),
 
             }
           }
@@ -110,7 +114,6 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     this.applTypeSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
       this.applTypes = x
     });
-    this.entitySizeSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => this.entitySizes = x);
     this.store.select('customDetails').subscribe(x => {
       this.allCustomDetails = x
     })
@@ -122,7 +125,6 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   }
 
   add(famEstForm: FamEstFormSubmit): Observable<FamEstFormSubmit> {
-    console.log('fmEstform', famEstForm)
     return this.famEstFormSer.add(famEstForm);
   }
 
@@ -204,7 +206,6 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
           custom_appl_options: CustomApplOptions
         }
     }) => {
-      console.log('result', result)
       if (result) {
         this.store.dispatch(createCustomApplDetails({
           applVersion: appl_version,

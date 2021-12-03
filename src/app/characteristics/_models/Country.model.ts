@@ -1,5 +1,3 @@
-import {EntitySize} from "./entitySize.model";
-
 export class Country{
   public id: number = 0
   public country: string = 'default'
@@ -20,7 +18,7 @@ export class Country{
   }[] = new Array<{ country: 0, appl_type: 0, language: 0, default: false }>()
   public ep_validation_translation_required: number = 0
   // public entity_size_available: boolean = false
-  public available_entity_sizes: [number] = [0]
+  // public available_entity_sizes: [number] = [0]
   // public available_doc_formats: [number] = [0]
   public available_doc_formats: {
     country: number,
@@ -54,8 +52,7 @@ export class CountryDetailsAdded{
   }[] = new Array<{ country: 0, appl_type: 0, language: 0, default: false }>()
   public ep_validation_translation_required: number = 0
   // public entity_size_available: boolean = false
-  public available_entity_sizes: EntitySize[] = [new EntitySize()]
-  // public available_doc_formats: IDocFormat[] = new Array<IDocFormat>()
+  // public available_entity_sizes: EntitySize[] = [new EntitySize()]
   public col?: number = 0
   public available_doc_formats: {
     country: number,

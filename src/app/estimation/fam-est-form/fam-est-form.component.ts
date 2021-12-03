@@ -19,6 +19,7 @@ import {CustomApplDetails} from "../_models/CustomApplDetails.model";
 import {filter, find, forEach, map, some} from "lodash";
 import {CustomApplOptions} from "../_models/CustomApplOptions.model";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {Language} from "../../characteristics/_models/Language.model";
 
 
 @Component({
@@ -30,6 +31,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   @Input() applTypes: ApplType[] = [new ApplType()];
   @Input() docFormats: IDocFormat[] = new Array<IDocFormat>()
   @Input() countries: CountryDetailsAdded[] = [new CountryDetailsAdded()];
+  @Input() languages: Language[] = new Array<Language>()
   @Input() pct_ro_countries: CountryDetailsAdded[] = [];
   @Input() pct_accept_countries: CountryDetailsAdded[] = [];
   @Input() ep_countries: CountryDetailsAdded[] = [];
@@ -51,10 +53,14 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   trackByIndex = (index: number, country_obj: any) => country_obj.value.country.id;
   public customApplToolTip: string = 'Customize Application Details';
   public customApplOptionsToolTip: string = 'Customize Application Options';
+  public filteredEntitySizes: EntitySize[] = [new EntitySize()];
+  public filteredLanguages: Language[] = new Array<Language>()
   public aggFormData: FamEstForm = new FamEstForm();
   public interOption: Boolean = true;
   public epOption: Boolean = true;
   public isEditable = true;
+  public defaultEntitySize: EntitySize = new EntitySize();
+  // public default_entity_size = {} as EntitySize
   public familyForm: FormGroup = this.fb.group({
     family_name: ['', Validators.required],
     family_no: ['', Validators.required],
@@ -77,6 +83,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       Validators.pattern('[0-9]+$')])],
     num_pages_drawings: ['', Validators.compose([Validators.required,
       Validators.pattern('[0-9]+$')])],
+    language: [null],
     entity_size: [null],
     pct_method: [false],
     ep_method: [false],
@@ -150,8 +157,9 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.blockOutEPCountries()
       this.createParisCountriesControls()
       this.rectifyCustomDetails()
-
+      this.filterLangs()
       this.addlStageInfoChecker()
+      // this.filterEntitySizes()
     })
     this.internationalStageForm.controls.pct_country.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(country => {
       if (country !== undefined && country !== null) {
@@ -205,13 +213,43 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     })
   }
 
+  filterLangs() {
+    let country = this.firstApplForm.controls.country.value
+    let applType = this.firstApplForm.controls.application_type.value
+    if (country && applType) {
+      this.filteredLanguages = filter(this.languages, x => {
+        return some(country.available_languages, y => {
+          return y.language == x.id && y.appl_type == applType.id
+        })
+      })
+      let default_language_id = find(country.available_languages, y => {
+        return y.appl_type == applType.id && y.default
+      }).language
+      let default_language = find(this.languages, y => y.id == default_language_id)!
+      this.firstApplForm.patchValue({language: default_language})
+    }
+  }
 
+  findDefaultEntitySize(country: Country) {
+    return find(this.entitySizes, x => {
+      return x.default_bool && x.country == country.id
+    })!
+  }
+
+  filterAllEntitySizes(country: Country) {
+    return filter(this.entitySizes, x => {
+      return x.country == country.id
+    })
+  }
 
   detFinalButtons() {
     let unique_country_list = this.getUniqueCountryList()
-    if (unique_country_list.length > 0){
-      let entity_required_list = filter(unique_country_list, x => x.available_entity_sizes.length > 0)
-      if (entity_required_list.length > 0){
+    if (unique_country_list.length > 0) {
+      let entity_required_list = filter(unique_country_list, x => {
+        return some(this.entitySizes, y => x.id == y.country)
+      })
+      // let entity_required_list = filter(unique_country_list, x => x.available_entity_sizes.length > 0)
+      if (entity_required_list.length > 0) {
         this.finalStep = this.FINAL_STEPS.ADDL_STAGE
       } else if (this.firstApplForm.controls.ep_method.value) {
         this.finalStep = this.FINAL_STEPS.EP_STAGE
@@ -373,6 +411,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.blockOutParisCountries()
       this.blockOutPCTCountries()
       this.blockOutEPCountries()
+      this.filterLangs()
           })
     }
 
@@ -536,9 +575,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         'num_claims': this.firstApplForm.controls.num_claims.value,
         'num_indep_claims': this.firstApplForm.controls.num_indep_claims.value,
         'num_claims_multiple_dependent': this.firstApplForm.controls.num_multiple_dependent_claims.value,
-        'language': 1,
+        'language': this.firstApplForm.controls.language.value,
         'entity_size': this.firstApplForm.controls.entity_size.value,
       }
+      console.log('ttt', this.aggFormData.init_appl_details)
       this.aggFormData.init_appl_options = this.firstApplForm.controls.init_appl_options.value
 
       this.aggFormData.pct_method = this.firstApplForm.controls.pct_method.value
@@ -571,7 +611,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       })
       // Emit
       // this.addCustomApplDetails()
-      console.log('sssuri', this.aggFormData.paris_countries)
       this.formData.emit(this.aggFormData)
     }
     }
@@ -795,14 +834,18 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
 
-  addEntitySizeFormControl(country: Country, entity_size?: number){
+  addEntitySizeFormControl(country: Country, entity_size: EntitySize
+  ) {
+    console.log('country', country)
+    console.log('entitySize', entity_size)
     const entityArray: FormArray = this.entitySizeFormArray
-    if (!some(entityArray.value, y => y.country == country)){
+    if (!some(entityArray.value, y => y.country == country)) {
       entityArray.push(this.patchValues(country, entity_size))
     }
+    console.log('sss', entityArray)
   }
 
-  patchValues(country: Country, entity_size?: number){
+  patchValues(country: Country, entity_size: EntitySize) {
     return this.fb.group({
       country: [country],
       entity_size: [entity_size || null],
@@ -849,19 +892,24 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     return unique_countries_list
   }
 
-  addlStageInfoChecker(){
+  addlStageInfoChecker() {
     let unique_country_list = this.getUniqueCountryList()
     // create list of unique countries
-    if (unique_country_list.length > 0){
-      let entity_required_list = filter(unique_country_list, x => x.available_entity_sizes.length > 0)
-
-      if(entity_required_list.length > 0){
-        forEach(entity_required_list, x => this.addEntitySizeFormControl(x))
+    if (unique_country_list.length > 0) {
+      let entity_required_list = filter(unique_country_list, x => {
+        return some(this.entitySizes, y => x.id == y.country)
+      })
+      // let entity_required_list = filter(unique_country_list, x => x.available_entity_sizes.length > 0)
+      console.log('x.available', entity_required_list)
+      if (entity_required_list.length > 0) {
+        forEach(entity_required_list, x => {
+          let default_entity_size = this.findDefaultEntitySize(x)
+          this.addEntitySizeFormControl(x, default_entity_size)
+        })
         // this.finalStep = this.FINAL_STEPS.ADDL_STAGE
       }
       this.detFinalButtons()
     }
-
   }
 
   insertEntitySizes(){
@@ -874,7 +922,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       let init_country = this.firstApplForm.get('country')
       if (init_country) {
         if (init_country.value.id == x.country.id) {
-          this.firstApplForm.patchValue({entity_size: x.entity_size.id})
+          this.firstApplForm.patchValue({entity_size: x.entity_size})
         }
       }
       let pct_country = this.internationalStageForm.get('pct_country')?.value

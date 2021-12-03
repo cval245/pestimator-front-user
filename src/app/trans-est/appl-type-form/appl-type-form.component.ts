@@ -27,6 +27,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
   public filteredApplTypes = [new ApplType()]
   public form: FormGroup;
   public formActive: boolean = false;
+  public filteredEntitySizes: EntitySize[] = [new EntitySize()];
 
   constructor(private fb: FormBuilder) {
 
@@ -43,7 +44,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       available_appl_types: this.fb.array([]),
       isa_countries: this.fb.array([false]),
       available_languages: this.fb.array([]),
-      available_entity_sizes: this.fb.array([false]),
+      // available_entity_sizes: this.fb.array([false]),
       ep_validation_translation_required: [0],
       available_doc_formats: this.fb.array([false]),
     })
@@ -61,7 +62,11 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.initForm()
-    // console.log('eee', this.entitySizes)
+    if (this.country.id != 0) {
+      this.filteredEntitySizes = filter(this.entitySizes, x => {
+        return x.country == this.country.id
+      })
+    }
   }
 
   initForm() {
@@ -76,7 +81,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       color: this.country.color,
       long_name: this.country.long_name,
       ep_validation_translation_required: this.country.ep_validation_translation_required,
-      available_entity_sizes: this.country.available_entity_sizes,
+      // available_entity_sizes: this.country.available_entity_sizes,
       available_doc_formats: this.country.available_doc_formats,
       available_languages: this.country.available_languages,
       // available_doc_formats: this.country? this.country.available_doc_formats: [],
@@ -128,19 +133,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       langCheckArray.push(aLangForm)
     }
     console.log('sss', this.form.get('available_languages')!.value)
-    // langCheckArray.reset()
-    // for (let lang of this.country.available_languages) {
-    //   if (lang > 0) {
-    //     langCheckArray.push(new FormControl(lang));
-    //   }
-    // }
-    const entCheckArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
-    entCheckArray.reset()
-    for (let ent of this.country.available_entity_sizes) {
-      if (ent > 0) {
-        entCheckArray.push(new FormControl(ent));
-      }
-    }
+
     const docFormatCheckArray: FormArray = this.form.get('available_doc_formats') as FormArray;
     docFormatCheckArray.clear()
     for (let aType of this.applTypes) {
@@ -211,10 +204,9 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       })
       // return {default: x.languages.default, appl_type: x.appl_type.id, language: x.languages.language.id, country: x.country.id}
     })
-    console.log('formValues', formValues.available_languages)
-    formValues.available_entity_sizes = formValues.available_entity_sizes.filter((item: number) => {
-      return item != null
-    })
+    // formValues.available_entity_sizes = formValues.available_entity_sizes.filter((item: number) => {
+    //   return item != null
+    // })
     let docFormats = formValues.available_doc_formats.filter((item: any) => {
       return item.selected == true
     })
@@ -263,80 +255,6 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
     }
   }
 
-  // onLangCheckboxChange(e: any, applType_id: number) {
-  //   const checkArray: FormArray = this.form.get('available_languages') as FormArray;
-  //
-  //   if (e.checked) {
-  //     checkArray.push(new FormControl(applType_id));
-  //   } else {
-  //     let i: number = 0;
-  //     checkArray.controls.forEach((item: AbstractControl) => {
-  //       if (item.value == false) {
-  //         checkArray.removeAt(i);
-  //         return;
-  //       }
-  //       i++;
-  //     });
-  //   }
-  // }
-  onEntCheckboxChange(e: any, ent_id: number) {
-    const checkArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
-
-    if (e.checked) {
-      checkArray.push(new FormControl(ent_id));
-    } else {
-      let i: number = 0;
-      checkArray.controls.forEach((item: AbstractControl) => {
-        if (item.value == false) {
-          checkArray.removeAt(i);
-          return;
-        }
-        i++;
-      });
-    }
-  }
-
-  // onDocFormatCheckboxChange(e: any, doc_id: number, appl_type_id: number,) {
-  //   const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
-  //
-  //   if (e.checked) {
-  //     checkArray.push(new FormControl({
-  //       country: this.country.id,
-  //       appl_type: appl_type_id,
-  //       doc_format: doc_id,
-  //       default: false}));
-  //   } else {
-  //     let i: number = 0;
-  //     checkArray.controls.forEach((item: AbstractControl) => {
-  //       if (item.value == false) {
-  //         checkArray.removeAt(i);
-  //         return;
-  //       }
-  //       i++;
-  //     });
-  //   }
-  // }
-  // onDocFormatDefaultCheckboxChange(e: any, doc_id: number, appl_type_id: number,) {
-  //   const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
-  //
-  //   if (e.checked) {
-  //     let check = checkArray.controls.find(x => x.value.country = this.country.id
-  //       && x.value.appl_type == appl_type_id
-  //       && x.value.doc_format == doc_id)
-  //     if (check){
-  //       check.patchValue({default: true})
-  //     } else {
-  //       e.checked = false
-  //     }
-  //   } else {
-  //     let i: number = 0;
-  //     let check = checkArray.controls.find(x => x.value.country = this.country.id
-  //       && x.value.appl_type == appl_type_id
-  //       && x.value.doc_format == doc_id)
-  //     check!.patchValue({default: false})
-  //   }
-  // }
-
 
   getCountriesFormCtrlName(country_id: number) {
     const checkArray: FormArray = this.form.get('isa_countries') as FormArray;
@@ -356,68 +274,15 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
     return ctrl
   }
 
-  // getLangFormCtrlName(lang_id: number) {
-  //   const checkArray: FormArray = this.form.get('available_languages') as FormArray;
-  //   let ctrl = checkArray.controls.find(x => x.value == lang_id) as FormControl
-  //   if (ctrl == undefined) {
-  //     return new FormControl()
-  //   }
-  //   return ctrl
-  // }
-
-  getEntFormCtrlName(ent_id: number) {
-    const checkArray: FormArray = this.form.get('available_entity_sizes') as FormArray;
-    let ctrl = checkArray.controls.find(x => x.value == ent_id) as FormControl
-    if (ctrl == undefined) {
-      return new FormControl()
-    }
-    return ctrl
-  }
-
-  // getDocFormatFormGroup(doc_id: number, appl_type_id: number){
-  //   const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
-  //   console.log('cccc', checkArray)
-  //   let ctrl = checkArray.controls.find(x => {
-  //     if (x.value !== null) {
-  //       return x.value.doc_format == doc_id && x.value.appl_type == appl_type_id
-  //     }
-  //     return false
-  //   })
-  //   return new FormGroup({})
-  // }
-
-
-  //  getDocFormatFormCtrlName(doc_id: number, appl_type_id: number,) {
-  //   const checkArray: FormArray = this.form.get('available_doc_formats') as FormArray;
-  //   // console.log('cccc', checkArray)
-  //
-  //   if (checkArray.controls.length>0) {
-  //     let ctrl = checkArray.controls.find(x => {
-  //       // console.log('x', x)
-  //       if (x.value !== null){
-  //         return x.value.doc_format == doc_id && x.value.appl_type == appl_type_id
-  //       }
-  //       return false
-  //     }) as FormControl
-  //     if (ctrl == undefined) {
-  //       return new FormControl()
-  //     }
-  //     return ctrl
-  //   }
-  //   return new FormControl()
-  // }
 
   toggleForm() {
     this.formActive = !this.formActive
-    // const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
     if (this.formActive) {
       this.initForm()
       this.form.enable()
-      // checkArray.enable()
     } else {
       this.initForm()
       this.form.disable()
-      // checkArray.disable()
     }
   }
 }

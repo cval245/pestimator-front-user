@@ -91,7 +91,7 @@
               <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>No. Pages - Specification: </mat-label>
-                    <input matInput type="text" formControlName="num_pages_desc">
+                  <input matInput type="text" formControlName="num_pages_desc">
                 </mat-form-field>
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>No. Pages - Claims:</mat-label>
@@ -100,6 +100,16 @@
                 <mat-form-field appearance="outline" color="accent">
                   <mat-label>No. Pages - Drawings:</mat-label>
                   <input matInput type="text" formControlName="num_pages_drawings">
+                </mat-form-field>
+                <mat-form-field class="megaInput" appearance="outline" color="accent">
+                  <mat-label>Language</mat-label>
+                  <mat-select class="custom-select"
+                              formControlName="language">
+                    <mat-option *ngFor="let t of filteredLanguages"
+                                [value]="t">
+                      {{t.name}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <mat-divider></mat-divider>
@@ -493,7 +503,7 @@
               <mat-label>Entity Size: {{c.value.country.long_name}}</mat-label>
               <mat-select class="custom-select"
                           formControlName="entity_size">
-                <mat-option *ngFor="let t of c.value.country.available_entity_sizes"
+                <mat-option *ngFor="let t of filterAllEntitySizes(c.value.country)"
                             [value]="t"
                             [matTooltip]=t.description
                             matTooltipPosition="right">

@@ -19,7 +19,7 @@ export class CountryAll{
 
   public ep_validation_translation_required: number = 0
   // public entity_size_available: boolean = false
-  public available_entity_sizes: [number] = [0]
+  // public available_entity_sizes: [number] = [0]
 
   // public available_doc_formats: [number] = [0]
   public available_doc_formats: {

@@ -34,20 +34,7 @@
 </app-est-template-grid-v2>
 </div>
 
-<!--<p>Filing Estimate Template</p>-->
-<!--<app-est-template-grid-->
-<!--  [applTypes]="applTypes"-->
-<!--  [currencies_list]="currencies_list"-->
-<!--  [country]="country"-->
-<!--  [countries]="countries"-->
-<!--  [rowData]="filEstTemp"-->
-<!--  [entitySizes]="entitySizes"-->
-<!--  [complexConditions]="complexConditions"-->
-<!--  [complexTimeConditions]="complexTimeConditions"-->
-<!--  (formData)="onSubmitFilEstTemp($event)"-->
-<!--  (delEmit)="delFileEstTemp($event)"-->
-<!--&gt;-->
-<!--</app-est-template-grid>-->
+
   <div class="over-grid">
 <h3>Publication Estimate Template</h3>
   <app-est-template-grid-v2
@@ -107,16 +94,21 @@
 </div>
 <div *ngIf="country_us === true" class="over-grid">
   <p>US OA Estimate Template</p>
-  <app-us-oa-est-form
-    [tableData]="usoaEstTemp"
-    [country]="country"
+  <app-est-template-grid-us-oa
+    [rowData]="usoaEstTemp"
     [applTypes]="applTypes"
+    [currencies_list]="currencies_list"
+    [country]="country"
+    [countries]="countries"
     [entitySizes]="entitySizes"
+    [docFormats]="docFormats"
     [complexConditions]="complexConditions"
+    [complexTimeConditions]="complexTimeConditions"
+    [feeCategories]="feeCategories"
     (formData)="onSubmitUSOAEstTemp($event)"
     (delEmit)="delUSOAEstTemp($event)"
   >
-  </app-us-oa-est-form>
+  </app-est-template-grid-us-oa>
 </div>
 
 <div class="over-grid">

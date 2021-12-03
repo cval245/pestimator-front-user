@@ -71,12 +71,12 @@
               <mat-divider></mat-divider>
               {{asFormGroup(aLang).controls.appl_type.value.application_type}}
               <div formArrayName="languages">
-                <div *ngFor="let lang of returnLangsCtrlArray(asFormGroup(aLang)).controls; let j=index">
+                <div *ngFor="let lang of returnLangsCtrlArray(asFormGroup(aLang)).controls; let j=index"
+                     fxLayout="column" fxLayoutAlign="start start">
                   <div [formGroupName]="j">
                     <mat-checkbox
                       [disabled]="!formActive"
-                      formControlName="selected"
-                    >
+                      formControlName="selected">
                       {{asFormGroup(lang).controls.language.value.name}}
                     </mat-checkbox>
                     <mat-checkbox style="margin-left: 5px;"
@@ -84,34 +84,13 @@
                                   formControlName="default">
                       default
                     </mat-checkbox>
-
                   </div>
                 </div>
               </div>
             </div>
-
-            <!--            <mat-checkbox-->
-            <!--              [disabled]="!formActive"-->
-            <!--              formControlName="selected">-->
-            <!--              <div *ngIf="asFormGroup(doc).controls">-->
-            <!--                <b>{{asFormGroup(doc).controls.doc.value.appl_type.application_type}}</b>,-->
-            <!--                {{asFormGroup(doc).controls.doc.value.doc_format.name}}-->
-            <!--              </div>-->
-            <!--            </mat-checkbox>-->
-
           </div>
         </div>
       </div>
-
-      <!--      <p>Languages</p>-->
-      <!--      <div *ngFor="let lang of languages; let i=index">-->
-      <!--        <mat-checkbox-->
-      <!--          [disabled]="!formActive"-->
-      <!--          [formControl]="getLangFormCtrlName(lang.id)"-->
-      <!--          (change)="onLangCheckboxChange($event, lang.id)">-->
-      <!--          {{lang.name}}-->
-      <!--        </mat-checkbox>-->
-      <!--      </div>-->
     </div>
     <div fxLayout="column" fxLayoutAlign="start start">
       <p>Application Types</p>
@@ -140,13 +119,11 @@
     <div class="form-row" fxLayout="row" fxLayoutAlign="center">
       <div fxLayout="column" fxLayoutAlign="start start">
         <p>Avail. Entity Sizes</p>
-        <div *ngFor="let ent of entitySizes; let i=index">
-          <mat-checkbox
-            [disabled]="!formActive"
-            [formControl]="getEntFormCtrlName(ent.id)"
-            (change)="onEntCheckboxChange($event, ent.id)">
-            {{ent.entity_size}}
-          </mat-checkbox>
+        <div *ngFor="let ent of filteredEntitySizes; let i=index">
+          {{ent.entity_size}}
+          <span *ngIf="ent.default_bool">
+            <b>default</b>
+          </span>
         </div>
       </div>
     </div>

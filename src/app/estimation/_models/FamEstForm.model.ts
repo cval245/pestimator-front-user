@@ -1,7 +1,12 @@
 import {EntitySize} from "../../characteristics/_models/entitySize.model";
 import {Country} from "../../characteristics/_models/Country.model";
 import {ApplType} from "../../characteristics/_models/applType.model";
-import {ApplDetail} from "../../application/_models/appl-detail.model";
+import {
+  ApplDetail,
+  ApplDetailSubmit,
+  convertToApplDetails,
+  convertToApplDetailsSubmit
+} from "../../application/_models/appl-detail.model";
 import {
   convertToCustomApplDetails,
   convertToCustomApplDetailsSubmit,
@@ -45,18 +50,19 @@ export class FamEstForm {
   public unique_display_no?: number = 0
   public id?: any = 0
 
-  constructor(init?:Partial<ApplDetail>){
+  constructor(init?: Partial<ApplDetail>) {
     Object.assign(this, init)
   }
 }
-export class FamEstFormSubmit{
+
+export class FamEstFormSubmit {
   public family_name: string = 'default family name'
   public family_no: string = 'default family no'
   public init_appl_filing_date: string = ''
   public init_appl_country: number = 0
   public init_appl_type: number = 0
-  public init_appl_details: ApplDetail = new ApplDetail()
-  public init_appl_options: CustomApplOptions= new CustomApplOptions()
+  public init_appl_details: ApplDetailSubmit = new ApplDetailSubmit()
+  public init_appl_options: CustomApplOptions = new CustomApplOptions()
   public pct_method: boolean = false
   // public pct_method_customization: CustomApplDetails = new CustomApplDetails()
   public pct_method_customization: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit } = {
@@ -110,12 +116,12 @@ export function convertToFamEstForm(famEstFormSubmit: FamEstFormSubmit,
   famEstForm.init_appl_filing_date = new Date(famEstFormSubmit.init_appl_filing_date)
   famEstForm.init_appl_country = countries.find(x => x.id == famEstFormSubmit.init_appl_country)!
   famEstForm.init_appl_type = applTypes.find(x => x.id == famEstFormSubmit.init_appl_type)!
-  famEstForm.init_appl_details = famEstFormSubmit.init_appl_details
-  famEstForm.pct_country = countries.find(x => x.id == famEstFormSubmit.pct_country)  || null
+  famEstForm.init_appl_details = convertToApplDetails(famEstFormSubmit.init_appl_details, languages, entitySizes, applications)
+  famEstForm.pct_country = countries.find(x => x.id == famEstFormSubmit.pct_country) || null
   famEstForm.isa_country = countries.find(x => x.id == famEstFormSubmit.isa_country)!
   famEstForm.pct_method = famEstFormSubmit.pct_method
   famEstForm.ep_method = famEstFormSubmit.ep_method
-  if (famEstFormSubmit.ep_method_customization !== null){
+  if (famEstFormSubmit.ep_method_customization !== null) {
     if (famEstFormSubmit.ep_method_customization.custom_appl_details !== null) {
       famEstForm.ep_method_customization = {
         'custom_appl_details': convertToCustomApplDetails(famEstFormSubmit.ep_method_customization.custom_appl_details, languages, entitySizes, applications),
@@ -197,7 +203,8 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm){
   famEstFormSubmit.init_appl_filing_date = dateSplit[1]
   famEstFormSubmit.init_appl_country = famEstForm.init_appl_country.id
   famEstFormSubmit.init_appl_type = famEstForm.init_appl_type.id
-  famEstFormSubmit.init_appl_details = famEstForm.init_appl_details
+  famEstFormSubmit.init_appl_details = convertToApplDetailsSubmit(famEstForm.init_appl_details)
+  console.log('famfmfmfmf', famEstFormSubmit.init_appl_details)
   famEstFormSubmit.pct_country = famEstForm.pct_country?.id || null
   famEstFormSubmit.isa_country = famEstForm.isa_country?.id || null
   famEstFormSubmit.pct_method = famEstForm.pct_method

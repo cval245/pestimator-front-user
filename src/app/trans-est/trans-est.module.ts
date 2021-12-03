@@ -12,7 +12,6 @@ import {GenTransComponent} from './gen-trans/gen-trans.component';
 import {OaNumFormComponent} from './oa-num-form/oa-num-form.component';
 import {EstMainFormComponent} from './est-main-form/est-main-form.component';
 import {MatButtonModule} from "@angular/material/button";
-import {UsOaEstFormComponent} from './us-oa-est-form/us-oa-est-form.component';
 import {MatSortModule} from "@angular/material/sort";
 import {TransEstRoutingModule} from "./trans-est-routing.module";
 import {ApplTypeFormComponent} from './appl-type-form/appl-type-form.component';
@@ -29,6 +28,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatDividerModule} from "@angular/material/divider";
 import {OverlayModule} from "@angular/cdk/overlay";
 import {PortalModule} from "@angular/cdk/portal";
+import {EstTemplateGridUSOAComponent} from "./est-template-grid-us-oa/est-template-grid-us-oa.component";
 
 
 @NgModule({
@@ -38,9 +38,9 @@ import {PortalModule} from "@angular/cdk/portal";
     GenTransComponent,
     OaNumFormComponent,
     EstMainFormComponent,
-    UsOaEstFormComponent,
     ApplTypeFormComponent,
     EstTemplateGridV2Component,
+    EstTemplateGridUSOAComponent,
     ConditionRendererComponent,
     ConditionsFormComponent,
   ],

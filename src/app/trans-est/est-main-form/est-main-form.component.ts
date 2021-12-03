@@ -247,7 +247,7 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.entitySizes = x
-        this.entitySizes.push({entity_size: 'N/A', id: 0, description: 'N/A'})
+        this.entitySizes.push({entity_size: 'N/A', id: 0, description: 'N/A', default_bool: false, country: 0})
       })
 
     this.applTypeSer.getAllUnlessAlreadyLoaded()
@@ -299,7 +299,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.filEstTemp = this.replaceFkWithObject(x)
-        console.log('eee', this.filEstTemp)
       })
     this.publEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -310,8 +309,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.reqEstTemp = this.replaceFkWithObject(x)
-        console.log('x', x)
-        console.log('ttt', this.reqEstTemp)
       })
     this.oaEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -321,11 +318,7 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     this.usoaEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        //this.usoaEstTemp = this.replaceFkWithObject(x)
-        this.usoaEstTemp = this.complexTimeConditionsSet(
-          this.complexConditionsSet(this.entitySizeSet(
-            this.lawFirmTempSet(this.conditionsSet(
-              this.applTypeSet(this.countrySet(x)))))))
+        this.usoaEstTemp = this.replaceFkWithObjectUSOA(x)
       })
     this.allowEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -392,6 +385,13 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   }
 
   replaceFkWithObject(data: GenericTemp[]) {
+    return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
+      this.lawFirmTempSet(this.conditionsSet(
+        this.applTypeSet(this.countrySet(this.feeCategorySet(
+          data))))))))))
+  }
+
+  replaceFkWithObjectUSOA(data: IUSOAEstTemp[]) {
     return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
       this.lawFirmTempSet(this.conditionsSet(
         this.applTypeSet(this.countrySet(this.feeCategorySet(
@@ -612,8 +612,10 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  delUSOAEstTemp(row: IUSOAEstTemp): void {
-    this.usoaEstSer.delete(row)
+  delUSOAEstTemp(delRows: IUSOAEstTemp[]): void {
+    for (let row of delRows) {
+      this.usoaEstSer.delete(row)
+    }
   }
 
 
