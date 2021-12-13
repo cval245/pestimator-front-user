@@ -2,7 +2,21 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {assign, defaults, each, groupBy, keyBy, keys, map, mapValues, reduce} from 'lodash';
+import {
+  assign,
+  defaults,
+  each,
+  forEach,
+  groupBy,
+  keyBy,
+  keys,
+  map,
+  mapValues,
+  reduce,
+  sortBy,
+  sum,
+  values
+} from 'lodash';
 import {FamEstDetail} from '../_models/FamEstDetail.model';
 import {FamEstDetailService} from '../_services/fam-est-detail.service';
 import {FamilyService} from 'src/app/portfolio/_services/family.service';
@@ -25,6 +39,23 @@ import {LanguageService} from "../../characteristics/_services/language.service"
 import {Language} from "../../characteristics/_models/Language.model";
 import {DocFormatService} from "../../characteristics/_services/doc-format.service";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {FamEstDetTotService} from "../_services/fam-est-det-tot.service";
+import {FamEstDetTot} from "../_models/FamEstDetTot.model";
+
+export interface CountryAggedWise {
+  country: Country;
+  row_data: {
+    [key: string]: number;
+  }
+}
+
+export interface RowCountryAggedWise {
+  row_name: string
+  row_data: {
+    [key: string]: number;
+  }
+}
+
 
 @Component({
   selector: 'app-fam-est-detail',
@@ -38,7 +69,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     header: 'Year',
     cell: ''
   }]
-  public countryAgged = [{}]
+  public countryAgged: CountryAggedWise[] = new Array<CountryAggedWise>()
+  public rowCountryAgged: RowCountryAggedWise[] = new Array<RowCountryAggedWise>()
   public family: Family
   public applications: Application[] = [new Application()];
   public columns = [{
@@ -49,7 +81,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   public famEstDetails: FamEstDetail[]
   private countries: Country[] = [new Country()]
   private combinedSub: Subscription;
-  public famform: FamEstForm= new FamEstForm()
+  public famform: FamEstForm = new FamEstForm()
   public famEstFormData: FamEstForm[] = [new FamEstForm()];
 
   // private tableCombineSub: Subscription;
@@ -57,10 +89,15 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   private docFormats: IDocFormat[] = new Array<IDocFormat>();
   private entitySizes: EntitySize[] = [new EntitySize()];
   private languages: Language[] = new Array<Language>();
+  public allCountryAgged: any;
+  public cAgg: any;
+  public cAggChart: any;
+  public famEstDetTot: FamEstDetTot = new FamEstDetTot();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private famEstDetSer: FamEstDetailService,
+    private famEstDetTotSer: FamEstDetTotService,
     private familySer: FamilyService,
     private countrySer: CountryAllService,
     private applSer: ApplicationService,
@@ -83,24 +120,19 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       }))
     let family$ = this.activatedRoute.params.pipe(
       switchMap(x => {
-        console.log('family$')
         return this.familySer.getWithQuery('FamEstFormDataUDN=' + x.udn)
       }))
 
-    // this.applTypeSer.entities$.pipe(filter(x => x.length>0)),
     this.combinedSub = combineLatest([
-      // this.countrySer.entities$.pipe(filter(x => x.length>0)),
       this.countrySer.getAllUnlessAlreadyLoaded(),
       famEstDetails$,
       family$,
       this.applTypeSer.getAllUnlessAlreadyLoaded(),
       this.entitySizeSer.getAllUnlessAlreadyLoaded(),
       this.languageSer.getAllUnlessAlreadyLoaded(),
-      // this.entitySizeSer.entities$.pipe(filter(x=> x.length>0)),
-      // this.languageSer.entities$.pipe(filter(x=>x.length>0))
     ]).pipe(
       switchMap(([countries, famEstDetails,
-                  family, applTypes, entitySizes, languages]) => {
+                   family, applTypes, entitySizes, languages]) => {
         this.famEstDetails = map(famEstDetails, x => {
           let country = countries.find(y => y.id == x.country)
           return {...x, 'country': country}
@@ -109,26 +141,33 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.countries = countries
         this.entitySizes = entitySizes
         this.languages = languages
-        console.log('why so much')
         this.countryAgged = this.calcTotalMatrix()
+        this.allCountryAgged = this.calcAllCountryMatrix()
+        this.rowCountryAgged = this.createRowCountryAgged(this.countryAgged)
+        this.cAgg = this.calcTotcAggCol(this.allCountryAgged[0])
+        this.cAggChart = this.allCountryAgged[0]
         this.displayedColumns = this.calcColumns(this.countryAgged)
         this.family = family[0]
         let appl$ = this.applSer.getWithQuery('familyUDN=' + this.family.unique_display_no)
         let applDet$ = this.applDetSer.getWithQuery('familyUDN=' + this.family.unique_display_no)
         let famform$ = this.famformSer.getWithQuery('UDN=' + this.family.unique_display_no)
+        let famDetTot$ = this.famEstDetTotSer.getWithQuery(('familyUDN=' + this.family.unique_display_no))
         return combineLatest([
           appl$,
           applDet$,
           famform$,
-          this.docForSer.getAllUnlessAlreadyLoaded(),
+          famDetTot$,
+          // this.docForSer.getAllUnlessAlreadyLoaded(),
         ])
-      })).subscribe(([applications, applDetails, famform, docFormats]) => {
+      })).subscribe(([applications, applDetails, famform, famDetTot]) => {
+      this.famEstDetTot = famDetTot[0]
+      this.famform = convertToFamEstForm(famform[0], this.countries, this.applTypes, this.entitySizes, this.languages, this.applications, this.docFormats)
+      this.famform.family_name = this.family.family_name
+      this.famform.family_no = this.family.family_no
       this.applications = applications.map(appl => {
-        console.log('inner')
         let x = applDetails.find(det => det.application == appl.id)
         let y = this.countries.find(c => c.id == appl.country)
         let z = this.applTypes.find(a => a.id == appl.appl_type)
-        this.famform = convertToFamEstForm(famform[0], this.countries, this.applTypes, this.entitySizes, this.languages, this.applications, this.docFormats)
         return {
           ...appl, 'appl_details': x, 'country': y,
           'application_type': z
@@ -138,16 +177,10 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.countrySer.getAll()
-    // this.applTypeSer.getAll()
-    // this.entitySizeSer.getAll()
-    // this.famformSer.getAll()
-    // this.languageSer.getAll()
   }
 
   ngOnDestroy(): void {
     this.combinedSub.unsubscribe()
-    // this.tableCombineSub.unsubscribe()
   }
 
   getFamEstDetailByFormUDN(udn: number): Observable<FamEstDetail[]> {
@@ -285,7 +318,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  calcColumns(countryAgged: any) {
+  calcColumns(countryAgged: CountryAggedWise[]) {
     let columns = [
       {
         columnDef: 'country',
@@ -308,7 +341,55 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     return columns
   }
 
-  calcTotalMatrix() {
+  calcAllCountryMatrix() {
+    let groupedCountryDets = groupBy(this.famEstDetails, 'country.id')
+    let groupedCountryAgged: any = []
+    forEach(groupedCountryDets, x => {
+      groupedCountryAgged.push(this.calcCountryMatrix(x))
+    })
+    return sortBy(groupedCountryAgged, 'country.long_name')
+  }
+
+  calcCountryMatrix(countryDets: FamEstDetail[]) {
+    let min_max = this.findMinMaxYearFromDets(this.famEstDetails)
+    // countryDets = cloneDeep(countryDets)
+    let years: any = {}
+    for (let year = min_max['min_year']; year <= min_max['max_year']; year++) {
+      years[year] = 0
+    }
+    let totAgged: any = {}
+    forEach(countryDets, x => {
+      if (x) {
+        totAgged[JSON.stringify(x.year)] = x.total_cost_sum
+      }
+    })
+    defaults(totAgged, years)
+
+    let transAgged: any = {}
+    forEach(countryDets, x => {
+      if (x) {
+        transAgged[JSON.stringify(x.year)] = x.translation_cost_sum
+      }
+    })
+    defaults(transAgged, years)
+
+    let officialAgged: any = {}
+    forEach(countryDets, x => {
+      if (x) {
+        officialAgged[JSON.stringify(x.year)] = x.official_cost_sum
+      }
+    })
+    defaults(officialAgged, years)
+    let countryAgged = {
+      tot_agged: {'country': countryDets[0].country, row_data: totAgged},
+      trans_agged: {'country': countryDets[0].country, row_data: transAgged},
+      official_agged: {'country': countryDets[0].country, row_data: officialAgged},
+    }
+
+    return {'country': countryDets[0].country, ...countryAgged}
+  }
+
+  calcTotalMatrix(): CountryAggedWise[] {
     let grouped_ests = groupBy(this.famEstDetails, 'country.id')
     let countryAgged = map(grouped_ests, x => {
       let sam = keyBy(x, function (o) {
@@ -320,7 +401,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
             return sum + r.total_cost_sum!
           }, 0)
       })
-      return assign({'country': x[0].country}, years)
+      return assign({'country': x[0].country}, {row_data: years})
     })
     let min_max_year = this.findMinMaxYear(countryAgged)
     //create list of year keys
@@ -332,30 +413,86 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     }
     // for every key that does not exist in object insert into new
     each(countryAgged, (obj) => {
-      defaults(obj, year_keys)
+      defaults(obj.row_data, year_keys)
     })
-    return countryAgged
+    return sortBy(countryAgged, x => x.country.long_name)
   }
 
+  createRowCountryAgged(countryAgged: CountryAggedWise[]): RowCountryAggedWise[] {
+    let totColCountryAgged = this.addTotColumn(countryAgged)
+    let rowCountryAgged = this.calcRowCountryAgged(totColCountryAgged)
+    return this.calcTotRowCountryAgged(rowCountryAgged)
+  }
+
+  addTotColumn(countryAgged: CountryAggedWise[]): CountryAggedWise[] {
+    return map(countryAgged, x => {
+      let totColVal = reduce(x.row_data, (result, value) => {
+        result = value + result
+        return result
+      }, 0)
+      return {country: x.country, row_data: {...x.row_data, 'total': totColVal}}
+    })
+  }
+
+  calcRowCountryAgged(countryAgged: CountryAggedWise[]): RowCountryAggedWise[] {
+    return map(countryAgged, x => {
+      return {row_name: x.country.long_name, row_data: x.row_data}
+    })
+  }
+
+  calcTotRowCountryAgged(rowCountryAgged: RowCountryAggedWise[]): RowCountryAggedWise[] {
+    let totRowCountryAgged = {'row_name': 'Total', 'row_data': {}} as RowCountryAggedWise
+    totRowCountryAgged = reduce(rowCountryAgged, (result, value) => {
+      forEach(value.row_data, (yValue, key) => {
+        if (result.row_data[key]) {
+          result.row_data[key] += yValue
+        } else {
+          result.row_data[key] = yValue
+        }
+      })
+      value.row_data
+      return result
+    }, totRowCountryAgged)
+    rowCountryAgged.push(totRowCountryAgged)
+    return rowCountryAgged
+  }
+
+  findMinMaxYearFromDets(famEstDetails: FamEstDetail[]) {
+    let min_year = reduce(famEstDetails, (min_year, x) => {
+      if (x.year < min_year) {
+        return x.year
+      } else {
+        return min_year
+      }
+    }, famEstDetails[0].year)
+    let max_year = reduce(famEstDetails, (max_year, x) => {
+      if (x.year > max_year) {
+        return x.year
+      } else {
+        return max_year
+      }
+    }, famEstDetails[0].year)
+    return {'min_year': min_year, 'max_year': max_year}
+  }
 
   // find minimum and maximum years
-  findMinMaxYear(countryAgged: any) {
+  findMinMaxYear(countryAgged: CountryAggedWise[]) {
     let min_year = 0
     let max_year = 0
     each(countryAgged, (x) => {
-      each(Object.keys(x), (y) => {
-        if (y != 'country') {
-          let y_parsed = parseInt(y)
-          if (min_year == 0) {
-            min_year = y_parsed
-            max_year = y_parsed
-          }
-          if (y_parsed < min_year) {
-            min_year = y_parsed
-          } else if (y_parsed > max_year) {
-            max_year = y_parsed
-          }
+      each(Object.keys(x.row_data), (y) => {
+        // if (y != 'country') {
+        let y_parsed = parseInt(y)
+        if (min_year == 0) {
+          min_year = y_parsed
+          max_year = y_parsed
         }
+        if (y_parsed < min_year) {
+          min_year = y_parsed
+        } else if (y_parsed > max_year) {
+          max_year = y_parsed
+        }
+        // }
       })
     })
     return {'min_year': min_year, 'max_year': max_year}
@@ -368,5 +505,27 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
 
   retrievePDF() {
     this.getPdfSer.getAndDownload(this.family)
+  }
+
+  getCountryAgged(i: number) {
+    return this.allCountryAgged[i];
+  }
+
+  openCountryAgged(cAgg: any) {
+    this.cAgg = this.calcTotcAggCol(cAgg)
+    this.cAggChart = cAgg
+  }
+
+  calcTotcAggCol(cAgg: any) {
+    let new_trans = {...cAgg.trans_agged.row_data, 'total': sum(values(cAgg.trans_agged.row_data))}
+    let official_trans = {...cAgg.official_agged.row_data, 'total': sum(values(cAgg.official_agged.row_data))}
+    let tot_trans = {...cAgg.tot_agged.row_data, 'total': sum(values(cAgg.tot_agged.row_data))}
+
+    return {
+      country: cAgg.country,
+      trans_agged: {country: cAgg.country, row_data: new_trans},
+      official_agged: {country: cAgg.country, row_data: official_trans},
+      tot_agged: {country: cAgg.country, row_data: tot_trans},
+    }
   }
 }

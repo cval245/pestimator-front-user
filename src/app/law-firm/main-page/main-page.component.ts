@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LawFirm } from '../_models/law-firm.model';
-import { LawFirmService } from '../_services/law-firm.service';
-import { AccountService } from '../../account/_services/account.service'
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {LawFirm} from '../_models/law-firm.model';
+import {LawFirmService} from '../_services/law-firm.service';
+import {AccountService} from '../../account/_services/account.service'
 
 @Component({
   selector: 'app-main-page',

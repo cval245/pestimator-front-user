@@ -23,7 +23,6 @@ export class ApplDetail {
 }
 
 export function convertToApplDetailsSubmit(applDetail: ApplDetail): ApplDetailSubmit {
-  console.log('super aaaa', applDetail.language)
   return {
     ...applDetail,
     'language': applDetail.language?.id, //|| applDetail.language,

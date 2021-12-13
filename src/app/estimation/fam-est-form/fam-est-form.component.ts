@@ -91,31 +91,32 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }, {validators: this.ApplTypeCountryValidator()});
   public internationalStageForm: FormGroup = this.fb.group({
     pct_country: [],
-    pct_method_customization: [{'custom_appl_details':new CustomApplDetails(),
-    'custom_appl_options': new CustomApplOptions()}],
+    pct_method_customization: [{
+      'custom_appl_details': new CustomApplDetails(),
+      'custom_appl_options': new CustomApplOptions()
+    }],
     isa_country: [],
-    pct_countries: this.fb.array([
-    ], [
-      this.PCTFormValidator(),
+    pct_countries: this.fb.array([], [
+        this.PCTFormValidator(),
       ]
     ),
   });
   public epStageForm: FormGroup = this.fb.group({
     ep_entryPoint: [],
-    ep_method_customization: [{'custom_appl_details':new CustomApplDetails(),
-      'custom_appl_options': new CustomApplOptions()}],
+    ep_method_customization: [{
+      'custom_appl_details': new CustomApplDetails(),
+      'custom_appl_options': new CustomApplOptions()
+    }],
     ep_countries:
-      this.fb.array([
-        ],
-      [
-        this.EPFormValidator(),
-        this.EPHasEntryValidator(),
-        this.EPHasOneEntryValidator(),
-      ]),
+      this.fb.array([],
+        [
+          this.EPFormValidator(),
+          this.EPHasEntryValidator(),
+          this.EPHasOneEntryValidator(),
+        ]),
   });
   public parisStageForm: FormGroup = this.fb.group({
-    paris_countries: this.fb.array([
-    ], ),
+    paris_countries: this.fb.array([],),
   });
   public singleUtilityForm: FormGroup = this.fb.group({
     double_countries: this.fb.array([])
@@ -139,8 +140,9 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   public addEntitySizeForm: FormGroup = this.fb.group({
     entity_size: this.fb.array([],)
   });
-  private country_array: {country?: Country, appl_versions: APPL_VERSIONS[]}[] = [];
+  private country_array: { country?: Country, appl_versions: APPL_VERSIONS[] }[] = [];
   public utilityChecker: boolean = false;
+  public initCustomApplDisabledBool: boolean = true;
 
 
   constructor(private fb: FormBuilder) {
@@ -149,8 +151,12 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.applTypesCorrect = this.applTypes.filter(applType => applType.country_set.some(countryId => countryId == country.id))
       if (country.id > 0) {
         this.firstApplForm.controls.application_type.enable()
+        // this.initCustomApplDisabledBool = false
+        // console.log('eeee', this.initCustomApplDisabledBool)
       } else {
         this.firstApplForm.controls.application_type.disable()
+        this.initCustomApplDisabledBool = true
+        // console.log('edddddeee', this.initCustomApplDisabledBool)
       }
       this.blockOutParisCountries()
       this.blockOutPCTCountries()
@@ -159,7 +165,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.rectifyCustomDetails()
       this.filterLangs()
       this.addlStageInfoChecker()
-      // this.filterEntitySizes()
     })
     this.internationalStageForm.controls.pct_country.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(country => {
       if (country !== undefined && country !== null) {
@@ -268,14 +273,14 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     if (this.firstApplForm.controls.ep_method.value
       && !this.firstApplForm.controls.pct_method.value) {
       let country_control = checkArray.controls.find(y => y.value.country == this.country_ep)
-      if (country_control){
+      if (country_control) {
         country_control.patchValue({'selected': true})
         country_control.disable()
       }
 
     } else {
       let ep_control = checkArray.controls.find(y => y.value.country == this.country_ep)
-      if (ep_control){
+      if (ep_control) {
         ep_control.enable()
         ep_control.patchValue({'selected': false})
       }
@@ -285,7 +290,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   filterParisCountries() {
     this.paris_countries = this.paris_basic_countries
     if (!this.firstApplForm.controls.ep_method.value
-      ) {
+    ) {
       this.paris_countries = this.paris_countries.filter((x: CountryDetailsAdded) => x != this.country_ep)
     }
   }
@@ -295,10 +300,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     let i: number = 0;
     checkArray.controls.forEach((item: AbstractControl) => {
       if (item.disabled) {
-        if(checkArray.at(i).disabled){
+        if (checkArray.at(i).disabled) {
           checkArray.at(i).enable();
           checkArray.at(i).patchValue({selected: false})
-        }else{
+        } else {
           checkArray.at(i).enable();
         }
         return;
@@ -312,22 +317,23 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
           && this.firstApplForm.controls.application_type.value.application_type == 'ep')
       ) {
         let country_control = checkArray.controls.find(y => y.value.country == this.firstApplForm.controls.country.value)
-        if (country_control){
+        if (country_control) {
           country_control.patchValue({'selected': false})
           country_control.disable()
         }
       }
     }
   }
+
   blockOutPCTCountries() {
     const checkArray: FormArray = this.pctCountriesFormArray
     let i: number = 0;
     checkArray.controls.forEach((item: AbstractControl) => {
       if (item.disabled) {
-        if(checkArray.at(i).disabled){
+        if (checkArray.at(i).disabled) {
           checkArray.at(i).enable();
           checkArray.at(i).patchValue({selected: false})
-        }else{
+        } else {
           checkArray.at(i).enable();
         }
         return;
@@ -337,22 +343,23 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     if (this.firstApplForm.controls.application_type.value !== undefined) {
       if (this.firstApplForm.controls.application_type.value.application_type == 'utility') {
         let country_control = checkArray.controls.find(y => y.value.country == this.firstApplForm.controls.country.value)
-        if (country_control){
+        if (country_control) {
           country_control.patchValue({'selected': false})
           country_control.disable()
         }
       }
     }
   }
+
   blockOutEPCountries() {
     const checkArray: FormArray = this.epCountriesFormArray
     let i: number = 0;
     checkArray.controls.forEach((item: AbstractControl) => {
       if (item.disabled) {
-        if(checkArray.at(i).disabled){
+        if (checkArray.at(i).disabled) {
           checkArray.at(i).enable();
           checkArray.at(i).patchValue({selected: false})
-        }else{
+        } else {
           checkArray.at(i).enable();
         }
         return;
@@ -362,7 +369,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     if (this.firstApplForm.controls.application_type.value !== undefined) {
       if (this.firstApplForm.controls.application_type.value.application_type == 'utility') {
         let country_control = checkArray.controls.find(y => y.value.country == this.firstApplForm.controls.country.value)
-        if (country_control){
+        if (country_control) {
           country_control.patchValue({'selected': false})
           country_control.disable()
         }
@@ -371,74 +378,65 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
 
-
-  get parisCountriesFormArray(){
+  get parisCountriesFormArray() {
     return this.parisStageForm.controls.paris_countries as FormArray
   }
-  get entitySizeFormArray(): FormArray{
+
+  get entitySizeFormArray(): FormArray {
     return this.addEntitySizeForm.get('entity_size') as FormArray
   }
-  get doubleUtilityFormArray(): FormArray{
+
+  get doubleUtilityFormArray(): FormArray {
     return this.singleUtilityForm.controls.double_countries as FormArray
   }
-  get pctCountriesFormArray(){
+
+  get pctCountriesFormArray() {
     return this.internationalStageForm.controls.pct_countries as FormArray
   }
-  get epCountriesFormArray(){
+
+  get epCountriesFormArray() {
     return this.epStageForm.controls.ep_countries as FormArray
   }
+
   ngOnInit(): void {
-    this.firstApplForm.controls.application_type.valueChanges.pipe(takeUntil(this.destroyed)).subscribe((applType) => {
-      this.setInternationalMethod()
-      this.firstApplForm.controls.ep_method.enable()
-      this.firstApplForm.controls.pct_method.enable()
-      this.internationalStageForm.controls.pct_country.enable()
-      this.firstApplForm.patchValue({ep_method: false})
-      this.firstApplForm.patchValue({pct_method: false})
-            this.internationalStageForm.controls.pct_country.reset()
-            if (applType == this.applTypes.find(x => x.application_type == 'ep')) {
-              this.firstApplForm.patchValue({ep_method: true})
-              this.firstApplForm.controls.ep_method.disable()
+    this.firstApplForm.controls.application_type.valueChanges.pipe(
+      takeUntil(this.destroyed)).subscribe((applType) => {
+      if (applType !== undefined) {
+        this.initCustomApplDisabledBool = false
+        this.setInternationalMethod()
+        this.firstApplForm.controls.ep_method.enable()
+        this.firstApplForm.controls.pct_method.enable()
+        this.internationalStageForm.controls.pct_country.enable()
+        this.firstApplForm.patchValue({ep_method: false})
+        this.firstApplForm.patchValue({pct_method: false})
+        this.internationalStageForm.controls.pct_country.reset()
+        if (applType == this.applTypes.find(x => x.application_type == 'ep')) {
+          this.firstApplForm.patchValue({ep_method: true})
+          this.firstApplForm.controls.ep_method.disable()
 
-            } else if (applType == this.applTypes.find(x => x.application_type == 'pct')) {
-              this.firstApplForm.patchValue({pct_method: true})
-              this.firstApplForm.controls.pct_method.disable()
-              this.internationalStageForm.patchValue({
-                pct_country: this.firstApplForm.controls.country.value
-              })
-              this.internationalStageForm.controls.pct_country.disable()
-            }
-      this.blockOutParisCountries()
-      this.blockOutPCTCountries()
-      this.blockOutEPCountries()
-      this.filterLangs()
+        } else if (applType == this.applTypes.find(x => x.application_type == 'pct')) {
+          this.firstApplForm.patchValue({pct_method: true})
+          this.firstApplForm.controls.pct_method.disable()
+          this.internationalStageForm.patchValue({
+            pct_country: this.firstApplForm.controls.country.value
           })
-    }
-
-    createParisCountriesControls(){
-      this.filterParisCountries()
-      const checkArray: FormArray = this.parisCountriesFormArray
-      forEach(this.paris_countries, x => {
-        if(!some(checkArray.controls, control => {
-          return control.value.country.id == x.id
-        })){
-
-          let new_control = this.fb.group({
-            selected: false,
-            country: x,
-            custom_appl_details: [new CustomApplDetails()],
-            custom_appl_options: [new CustomApplOptions()],
-          })
-          checkArray.push(new_control)
+          this.internationalStageForm.controls.pct_country.disable()
         }
-      })
-    }
-  createPctCountriesControls(){
-    const checkArray: FormArray = this.pctCountriesFormArray
-    forEach(this.pct_accept_countries, x => {
-      if(!some(checkArray.controls, control => {
+        this.blockOutParisCountries()
+        this.blockOutPCTCountries()
+        this.blockOutEPCountries()
+        this.filterLangs()
+      }
+    })
+  }
+
+  createParisCountriesControls() {
+    this.filterParisCountries()
+    const checkArray: FormArray = this.parisCountriesFormArray
+    forEach(this.paris_countries, x => {
+      if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
-      })){
+      })) {
 
         let new_control = this.fb.group({
           selected: false,
@@ -450,12 +448,31 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       }
     })
   }
-  createEpCountriesControls(){
+
+  createPctCountriesControls() {
+    const checkArray: FormArray = this.pctCountriesFormArray
+    forEach(this.pct_accept_countries, x => {
+      if (!some(checkArray.controls, control => {
+        return control.value.country.id == x.id
+      })) {
+
+        let new_control = this.fb.group({
+          selected: false,
+          country: x,
+          custom_appl_details: [new CustomApplDetails()],
+          custom_appl_options: [new CustomApplOptions()],
+        })
+        checkArray.push(new_control)
+      }
+    })
+  }
+
+  createEpCountriesControls() {
     const checkArray: FormArray = this.epCountriesFormArray
     forEach(this.ep_countries, x => {
-      if(!some(checkArray.controls, control => {
+      if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
-      })){
+      })) {
 
         let new_control = this.fb.group({
           selected: false,
@@ -469,18 +486,30 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(): void {
-    if (this.customOpt){
+    if (this.customOpt) {
       this.firstApplForm.patchValue({init_appl_options: this.customOpt})
     }
-    if (this.allCustomDetails.length>1){
+    if (this.allCustomDetails.length > 1) {
       forEach(this.allCustomDetails, x => {
-        switch(x.applVersion){
-          case APPL_VERSIONS.PCT_APPL:{
-            this.internationalStageForm.patchValue({pct_method_customization: {'custom_appl_details': x.customDetails, 'custom_appl_options': x.customOptions}})
-            break;}
-          case APPL_VERSIONS.EP_APPL:{
-            this.epStageForm.patchValue({ep_method_customization: {'custom_appl_details': x.customDetails,  'custom_appl_options': x.customOptions}})
-            break;}
+        switch (x.applVersion) {
+          case APPL_VERSIONS.PCT_APPL: {
+            this.internationalStageForm.patchValue({
+              pct_method_customization: {
+                'custom_appl_details': x.customDetails,
+                'custom_appl_options': x.customOptions
+              }
+            })
+            break;
+          }
+          case APPL_VERSIONS.EP_APPL: {
+            this.epStageForm.patchValue({
+              ep_method_customization: {
+                'custom_appl_details': x.customDetails,
+                'custom_appl_options': x.customOptions
+              }
+            })
+            break;
+          }
           case APPL_VERSIONS.PARIS_APPL: {
             let checkArray = this.parisCountriesFormArray
             let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
@@ -490,25 +519,27 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
             }
             break;
           }
-          case APPL_VERSIONS.PCT_NAT_APPL:{
+          case APPL_VERSIONS.PCT_NAT_APPL: {
             let checkArray = this.pctCountriesFormArray
             let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-            if (control){
+            if (control) {
               control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
             }
-            break;}
-          case APPL_VERSIONS.EP_VALID_APPL:{
+            break;
+          }
+          case APPL_VERSIONS.EP_VALID_APPL: {
             let checkArray = this.epCountriesFormArray
             let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-            if (control){
+            if (control) {
               control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
             }
-            break;}
+            break;
+          }
         }
       })
 
     }
-    if (this.countries.length>1) {
+    if (this.countries.length > 1) {
       this.country_ep = this.countries.find(x => x.country == 'EP')!
       this.createParisCountriesControls()
       this.createPctCountriesControls()
@@ -520,8 +551,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
 
-
-  rectifyCustomDetails(){
+  rectifyCustomDetails() {
     this.pctDisplayCustomCountries = this.createCustomCountryDetailsDisplay(this.aggFormData.pct_countries)
     this.parisDisplayCustomCountries = this.createCustomCountryDetailsDisplay(this.aggFormData.paris_countries)
     this.epDisplayCustomCountries = this.createCustomCountryDetailsDisplay(this.aggFormData.ep_countries)
@@ -548,71 +578,83 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     console.log('epStage', this.epStageForm.valid)
 
     let double_bool = this.verifyNoDoubleUtility()
-    if (double_bool){
+    if (double_bool) {
       this.utilityChecker = true
-    }else{
+    } else {
 
-    if (this.familyForm.valid && this.firstApplForm.valid
-      && this.internationalStageForm.valid
-      && this.epStageForm.valid
-      && this.parisStageForm.valid) {
-      this.aggFormData = new FamEstForm()
+      if (this.familyForm.valid && this.firstApplForm.valid
+        && this.internationalStageForm.valid
+        && this.epStageForm.valid
+        && this.parisStageForm.valid) {
+        this.aggFormData = new FamEstForm()
 
 
-      // Family Details
-      this.aggFormData.family_name = this.familyForm.controls.family_name.value
-      this.aggFormData.family_no = this.familyForm.controls.family_no.value
+        // Family Details
+        this.aggFormData.family_name = this.familyForm.controls.family_name.value
+        this.aggFormData.family_no = this.familyForm.controls.family_no.value
 
-      // Initial Application
-      this.aggFormData.init_appl_filing_date = this.firstApplForm.controls.date_filing.value
-      this.aggFormData.init_appl_country = this.firstApplForm.controls.country.value
-      this.aggFormData.init_appl_type = this.firstApplForm.controls.application_type.value
-      this.aggFormData.init_appl_details = {
-        'num_drawings': this.firstApplForm.controls.num_drawings.value,
-        'num_pages_description': this.firstApplForm.controls.num_pages_desc.value,
-        'num_pages_claims': this.firstApplForm.controls.num_pages_claims.value,
-        'num_pages_drawings': this.firstApplForm.controls.num_pages_drawings.value,
-        'num_claims': this.firstApplForm.controls.num_claims.value,
-        'num_indep_claims': this.firstApplForm.controls.num_indep_claims.value,
-        'num_claims_multiple_dependent': this.firstApplForm.controls.num_multiple_dependent_claims.value,
-        'language': this.firstApplForm.controls.language.value,
-        'entity_size': this.firstApplForm.controls.entity_size.value,
+        // Initial Application
+        this.aggFormData.init_appl_filing_date = this.firstApplForm.controls.date_filing.value
+        this.aggFormData.init_appl_country = this.firstApplForm.controls.country.value
+        this.aggFormData.init_appl_type = this.firstApplForm.controls.application_type.value
+        this.aggFormData.init_appl_details = {
+          'num_drawings': this.firstApplForm.controls.num_drawings.value,
+          'num_pages_description': this.firstApplForm.controls.num_pages_desc.value,
+          'num_pages_claims': this.firstApplForm.controls.num_pages_claims.value,
+          'num_pages_drawings': this.firstApplForm.controls.num_pages_drawings.value,
+          'num_claims': this.firstApplForm.controls.num_claims.value,
+          'num_indep_claims': this.firstApplForm.controls.num_indep_claims.value,
+          'num_claims_multiple_dependent': this.firstApplForm.controls.num_multiple_dependent_claims.value,
+          'language': this.firstApplForm.controls.language.value,
+          'entity_size': this.firstApplForm.controls.entity_size.value,
+        }
+        console.log('ttt', this.aggFormData.init_appl_details)
+        this.aggFormData.init_appl_options = this.firstApplForm.controls.init_appl_options.value
+
+        this.aggFormData.pct_method = this.firstApplForm.controls.pct_method.value
+        this.aggFormData.pct_method_customization = this.internationalStageForm.controls.pct_method_customization.value
+        this.aggFormData.ep_method = this.firstApplForm.controls.ep_method.value
+        this.aggFormData.ep_method_customization = this.epStageForm.controls.ep_method_customization.value
+
+        // International Stage Form
+        this.aggFormData.pct_country = this.internationalStageForm.controls.pct_country.value
+        this.aggFormData.isa_country = this.internationalStageForm.controls.isa_country.value
+        // this.aggFormData.pct_countries = this.internationalStageForm.controls.pct_countries.value
+        this.aggFormData.pct_countries = map(filter(this.internationalStageForm.controls.pct_countries.value, x => {
+          return x.selected == true
+        }), y => {
+          return {
+            'country': y.country,
+            'custom_appl_details': y.custom_appl_details,
+            'custom_appl_options': y.custom_appl_options
+          }
+        })
+        // EP Stage Form
+        // this.aggFormData.ep_countries = this.epStageForm.controls.ep_countries.value
+        this.aggFormData.ep_countries = map(filter(this.epStageForm.controls.ep_countries.value, x => {
+          return x.selected == true
+        }), y => {
+          return {
+            'country': y.country,
+            'custom_appl_details': y.custom_appl_details,
+            'custom_appl_options': y.custom_appl_options
+          }
+        })
+
+        // Paris Stage form
+        this.aggFormData.paris_countries = map(filter(this.parisStageForm.controls.paris_countries.value, x => {
+          return x.selected == true
+        }), y => {
+          return {
+            'country': y.country,
+            'custom_appl_details': y.custom_appl_details,
+            'custom_appl_options': y.custom_appl_options
+          }
+        })
+        // Emit
+        // this.addCustomApplDetails()
+        this.formData.emit(this.aggFormData)
       }
-      console.log('ttt', this.aggFormData.init_appl_details)
-      this.aggFormData.init_appl_options = this.firstApplForm.controls.init_appl_options.value
-
-      this.aggFormData.pct_method = this.firstApplForm.controls.pct_method.value
-      this.aggFormData.pct_method_customization = this.internationalStageForm.controls.pct_method_customization.value
-      this.aggFormData.ep_method = this.firstApplForm.controls.ep_method.value
-      this.aggFormData.ep_method_customization = this.epStageForm.controls.ep_method_customization.value
-
-      // International Stage Form
-      this.aggFormData.pct_country = this.internationalStageForm.controls.pct_country.value
-      this.aggFormData.isa_country = this.internationalStageForm.controls.isa_country.value
-      // this.aggFormData.pct_countries = this.internationalStageForm.controls.pct_countries.value
-      this.aggFormData.pct_countries = map(filter(this.internationalStageForm.controls.pct_countries.value, x => {
-        return x.selected == true
-      }), y => {
-        return {'country': y.country, 'custom_appl_details': y.custom_appl_details, 'custom_appl_options': y.custom_appl_options}
-      })
-      // EP Stage Form
-      // this.aggFormData.ep_countries = this.epStageForm.controls.ep_countries.value
-      this.aggFormData.ep_countries = map(filter(this.epStageForm.controls.ep_countries.value, x => {
-        return x.selected == true
-      }), y => {
-        return {'country': y.country, 'custom_appl_details': y.custom_appl_details, 'custom_appl_options': y.custom_appl_options}
-      })
-
-      // Paris Stage form
-      this.aggFormData.paris_countries = map(filter(this.parisStageForm.controls.paris_countries.value, x => {
-        return x.selected == true
-      }), y => {
-        return {'country': y.country, 'custom_appl_details': y.custom_appl_details, 'custom_appl_options': y.custom_appl_options}
-      })
-      // Emit
-      // this.addCustomApplDetails()
-      this.formData.emit(this.aggFormData)
-    }
     }
   }
 
@@ -666,7 +708,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
   EPFormValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value.length==0) {
+      if (control.value.length == 0) {
         return null;
       }
 
@@ -679,10 +721,11 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       return null
     }
   }
-  EPHasEntryValidator(): ValidatorFn{
+
+  EPHasEntryValidator(): ValidatorFn {
     // ensure that there is a entrypoint for the EP when ep method is selected
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value.length==0) {
+      if (control.value.length == 0) {
         return null;
       }
       let ep_method = this.firstApplForm.get('ep_method')!.value
@@ -690,7 +733,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         let pct_frmArray = this.pctCountriesFormArray
         let paris_frmArray = this.parisCountriesFormArray
         //entry point init appl
-        if (this.firstApplForm.controls.country.value){
+        if (this.firstApplForm.controls.country.value) {
           if (this.firstApplForm.controls.country.value == this.country_ep
             && this.firstApplForm.controls.application_type.value == this.applTypes.find(x => x.application_type == 'ep'))
             return null;
@@ -716,10 +759,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  EPHasOneEntryValidator(): ValidatorFn{
+  EPHasOneEntryValidator(): ValidatorFn {
     // ensure that there is a entrypoint for the EP when ep method is selected
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value.length==0) {
+      if (control.value.length == 0) {
         return null;
       }
       let ep_method = this.firstApplForm.get('ep_method')
@@ -757,10 +800,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.destroyed.next()
     this.destroyed.complete()
-}
+  }
 
   fixEPAncestor() {
     let formValue = this.epStageForm.controls.ep_entryPoint.value
@@ -852,15 +895,15 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     })
   }
 
-  getUniqueCountryList(){
+  getUniqueCountryList() {
     let unique_countries_list: Country[] = []
     let init_country = this.firstApplForm.get('country')?.value
-    if (init_country){
+    if (init_country) {
       unique_countries_list.push(init_country)
     }
     let pct_country = this.internationalStageForm.get('pct_country')?.value
-    if (pct_country){
-      if (!some(unique_countries_list, x => x == pct_country)){
+    if (pct_country) {
+      if (!some(unique_countries_list, x => x == pct_country)) {
         unique_countries_list.push(pct_country)
       }
     }
@@ -875,7 +918,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     }
     let ep_countries = this.epCountriesFormArray.value
     if (ep_countries.length > 0) {
-      for (let country_item of filter(ep_countries, y => y.selected == true) ){
+      for (let country_item of filter(ep_countries, y => y.selected == true)) {
         if (!some(unique_countries_list, x => x == country_item.country)) {
           unique_countries_list.push(country_item.country)
         }
@@ -912,7 +955,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  insertEntitySizes(){
+  insertEntitySizes() {
     // edit their custom appl details
     // add entity size
     // let entValues = this.addEntitySizeForm.value
@@ -926,28 +969,28 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         }
       }
       let pct_country = this.internationalStageForm.get('pct_country')?.value
-      if (pct_country){
-        if (pct_country.custom_appl_details == x.country){
+      if (pct_country) {
+        if (pct_country.custom_appl_details == x.country) {
           pct_country.custom_appl_details.entity_size = x.entity_size
         }
       }
 
       let paris_countries = this.parisCountriesFormArray.controls
-      let country = find(paris_countries, y => y.value.country == x.country )
+      let country = find(paris_countries, y => y.value.country == x.country)
       if (country) {
         let custApplDetails = country.value.custom_appl_details
         custApplDetails = {...custApplDetails, entity_size: x.entity_size}
         country.patchValue({'custom_appl_details': custApplDetails})
       }
       let pct_countries = this.pctCountriesFormArray.controls
-      country = find(pct_countries, y => y.value.country == x.country )
+      country = find(pct_countries, y => y.value.country == x.country)
       if (country) {
         let custApplDetails = country.value.custom_appl_details
         custApplDetails = {...custApplDetails, entity_size: x.entity_size}
         country.patchValue({'custom_appl_details': custApplDetails})
       }
       let ep_countries = this.epCountriesFormArray.controls
-      country = find(ep_countries, y => y.value.country == x.country )
+      country = find(ep_countries, y => y.value.country == x.country)
       if (country) {
         let custApplDetails = country.value.custom_appl_details
         custApplDetails = {...custApplDetails, entity_size: x.entity_size}
@@ -958,17 +1001,17 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
 
   pushToUtilityCountryArray(appl_version: APPL_VERSIONS, country: Country) {
-  if (some(this.country_array, z => z.country == country)) {
-    let c = find(this.country_array, z => z.country == country)!
-    if (!some(c.appl_versions, x => x == appl_version)){
-      c.appl_versions.push(appl_version)
+    if (some(this.country_array, z => z.country == country)) {
+      let c = find(this.country_array, z => z.country == country)!
+      if (!some(c.appl_versions, x => x == appl_version)) {
+        c.appl_versions.push(appl_version)
+      }
+    } else {
+      this.country_array.push({'country': country, appl_versions: [appl_version]})
     }
-  }else{
-    this.country_array.push({'country': country, appl_versions: [appl_version]})
-  }
   }
 
-  findDoubleUtilityCountries(){
+  findDoubleUtilityCountries() {
     this.country_array = []
     let init_country = this.firstApplForm.get('country')!.value
     let pct_frmArray = this.pctCountriesFormArray
@@ -981,11 +1024,11 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
     //@ts-ignore
     forEach(paris_array_selected, (x: AbstractControl) => {
-      if (some(pct_array_selected, (y: AbstractControl) => y.value.country == x.value.country)){
+      if (some(pct_array_selected, (y: AbstractControl) => y.value.country == x.value.country)) {
         this.pushToUtilityCountryArray(APPL_VERSIONS.PARIS_APPL, x.value.country)
         this.pushToUtilityCountryArray(APPL_VERSIONS.PCT_NAT_APPL, x.value.country)
       }
-      if (some(ep_array_selected, (y: AbstractControl) => y.value.country == x.value.country)){
+      if (some(ep_array_selected, (y: AbstractControl) => y.value.country == x.value.country)) {
         this.pushToUtilityCountryArray(APPL_VERSIONS.PARIS_APPL, x.value.country)
         this.pushToUtilityCountryArray(APPL_VERSIONS.EP_VALID_APPL, x.value.country)
       }
@@ -993,55 +1036,62 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
     //@ts-ignore
     forEach(pct_array_selected, (x: AbstractControl) => {
-      if (some(ep_array_selected, (y: AbstractControl) => y.value.country == x.value.country)){
+      if (some(ep_array_selected, (y: AbstractControl) => y.value.country == x.value.country)) {
         this.pushToUtilityCountryArray(APPL_VERSIONS.EP_VALID_APPL, x.value.country)
         this.pushToUtilityCountryArray(APPL_VERSIONS.PCT_NAT_APPL, x.value.country)
       }
     })
     console.log('country_array', this.country_array)
   }
-  countryArrayFinder(c: Country){
+
+  countryArrayFinder(c: Country) {
     console.log('ccc', c)
     return this.country_array.find(x => x.country == c)!.appl_versions
   }
-  verifyNoDoubleUtility(){
+
+  verifyNoDoubleUtility() {
     this.findDoubleUtilityCountries()
     let dbl_arr = this.doubleUtilityFormArray
-    let double_bool=false
+    let double_bool = false
     forEach(this.country_array, x => {
       let new_control = this.fb.group({
         country: [x],
         appl_version: [null, Validators.required]
       })
       dbl_arr.push(new_control)
-      double_bool=true
+      double_bool = true
     })
     return double_bool
   }
-  getUtilityRadioButtonParis(country: Country){
+
+  getUtilityRadioButtonParis(country: Country) {
     // console.log('tedddhfhffheeeee', this.doubleUtilityFormArray.controls)
     // console.log('gggg', this.getUtilityRadioButton(country, APPL_VERSIONS.PARIS_APPL))
     return this.getUtilityRadioButton(country, APPL_VERSIONS.PARIS_APPL)
   }
-  getUtilityRadioButtonPCTNAT(country: Country){
+
+  getUtilityRadioButtonPCTNAT(country: Country) {
     return this.getUtilityRadioButton(country, APPL_VERSIONS.PCT_NAT_APPL)
   }
-  getUtilityRadioButtonEPVALID(country: Country){
+
+  getUtilityRadioButtonEPVALID(country: Country) {
     return this.getUtilityRadioButton(country, APPL_VERSIONS.EP_VALID_APPL)
   }
-  getUtilityRadioButton(country: Country, appl_version: APPL_VERSIONS){
-    return some(find(this.country_array,y => {
+
+  getUtilityRadioButton(country: Country, appl_version: APPL_VERSIONS) {
+    return some(find(this.country_array, y => {
       return y.country == country && some(y.appl_versions, z => z == appl_version)
-    } ))
+    }))
   }
 
   submitUtilityCorrections() {
-  forEach(this.doubleUtilityFormArray.controls, y => {
+    forEach(this.doubleUtilityFormArray.controls, y => {
       this.fixUtilityCorrections(y.value.country.country, y.value.appl_version)
     })
-   this.utilityChecker = false
+    this.utilityChecker = false
   }
-  fixUtilityCorrections(country: Country, appl_version: APPL_VERSIONS){
+
+  fixUtilityCorrections(country: Country, appl_version: APPL_VERSIONS) {
     let paris_frmArray = this.parisCountriesFormArray
     let pct_frmArray = this.pctCountriesFormArray
     let ep_frmArray = this.epCountriesFormArray
@@ -1050,7 +1100,8 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     this.removeCountryFromForm(pct_frmArray, country, appl_version, APPL_VERSIONS.PCT_NAT_APPL)
     this.removeCountryFromForm(ep_frmArray, country, appl_version, APPL_VERSIONS.EP_VALID_APPL)
   }
-  removeCountryFromForm(frmArray: FormArray, country: Country, appl_version: APPL_VERSIONS, stage_appl_version: APPL_VERSIONS){
+
+  removeCountryFromForm(frmArray: FormArray, country: Country, appl_version: APPL_VERSIONS, stage_appl_version: APPL_VERSIONS) {
     if (frmArray) {
       let ctr = find(frmArray.controls, y => {
         return y.value.country == country

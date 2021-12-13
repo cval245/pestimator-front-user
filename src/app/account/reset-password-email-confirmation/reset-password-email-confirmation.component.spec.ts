@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ResetPasswordEmailConfirmationComponent } from './reset-password-email-confirmation.component';
+import {ResetPasswordEmailConfirmationComponent} from './reset-password-email-confirmation.component';
 
 describe('ResetPasswordEmailConfirmationComponent', () => {
   let component: ResetPasswordEmailConfirmationComponent;

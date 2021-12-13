@@ -6,7 +6,6 @@ import {ApplType} from 'src/app/characteristics/_models/applType.model';
 import {concat, dropRight} from 'lodash';
 import {ITransComplexTime} from "../_models/TransComplexTime";
 import {ITransFilReqFull} from "../_models/TransFilReq.model";
-import {CountryAll} from "../../characteristics/_models/CountryAll.model";
 
 
 @Component({

@@ -1,1 +1,10 @@
 
+#myGrid {
+  flex: 1 1 0px;
+  width: 100%;
+  font-size: 22px;
+}
+
+.ag-theme-material #myGrid {
+  font-size: 22px !important;
+}

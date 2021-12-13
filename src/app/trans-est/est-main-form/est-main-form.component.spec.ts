@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EstMainFormComponent } from './est-main-form.component';
+import {EstMainFormComponent} from './est-main-form.component';
 
 describe('EstMainFormComponent', () => {
   let component: EstMainFormComponent;

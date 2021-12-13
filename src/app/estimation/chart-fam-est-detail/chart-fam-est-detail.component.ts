@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, ViewChild} from '@angular/core';
 import {ChartConfiguration, ChartType} from 'chart.js';
 import {BaseChartDirective} from 'ng2-charts';
-import {keys, map, omit, values} from 'lodash'
+import {keys, map, reverse, values} from 'lodash'
+import {CountryAggedWise} from "../fam-est-detail/fam-est-detail.component";
 
 @Component({
   selector: 'app-chart-fam-est-detail',
@@ -9,7 +10,7 @@ import {keys, map, omit, values} from 'lodash'
   styleUrls: ['./chart-fam-est-detail.component.scss']
 })
 export class ChartFamEstDetailComponent implements OnChanges {
-  @Input() countryAggeds: any
+  @Input() countryAggeds: CountryAggedWise[] = new Array<CountryAggedWise>()
   public lineChartType: ChartType = 'bar'
 
   public divStyle: number = 100;
@@ -39,6 +40,9 @@ export class ChartFamEstDetailComponent implements OnChanges {
 
   public lineChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    animation:{
+      duration: 0
+    },
     elements: {
       line: {
         tension: 0
@@ -63,7 +67,23 @@ export class ChartFamEstDetailComponent implements OnChanges {
     },
     plugins: {
       legend: {
-        position: 'right'
+        position: 'right',
+        reverse: true,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || '';
+
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(context.parsed.y);
+            }
+            return label;
+          }
+        }
       }
     }
   };
@@ -71,26 +91,23 @@ export class ChartFamEstDetailComponent implements OnChanges {
     constructor() { }
 
     ngOnChanges(): void {
-      console.log('this.cou', this.countryAggeds)
         if (this.countryAggeds[0] != undefined){
-            if (this.countryAggeds[0].country != undefined){
-                this.chartData.datasets = map(this.countryAggeds, (obj) => {
-                  let data = values(omit(obj, 'country'))
-                  data = map(data, x => x.toFixed(2))
-                  return {
-                    'label': obj.country.country, 'data': data,
-                    backgroundColor: obj.country.color,
-                    borderColor: obj.country.color,
-                    pointBackgroundColor: obj.country.color,
-                    pointBorderColor: obj.country.color,
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-                    fill: 'origin',
-                    'stack': 'a'
-                  }
-                })
-              this.chartData.labels = keys(omit(this.countryAggeds[0],
-                'country'))
+            if (this.countryAggeds[0].country != undefined) {
+              this.chartData.datasets = map(reverse(this.countryAggeds), (obj) => {
+                let data = values(obj.row_data)
+                return {
+                  'label': obj.country.long_name, 'data': data,
+                  backgroundColor: obj.country.color,
+                  borderColor: obj.country.color,
+                  pointBackgroundColor: obj.country.color,
+                  pointBorderColor: obj.country.color,
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+                  fill: 'origin',
+                  'stack': 'a'
+                }
+              })
+              this.chartData.labels = keys(this.countryAggeds[0].row_data)
               this.chart?.update();
             }
         }

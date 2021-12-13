@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
-import {
-  EntityCollectionServiceBase,
-  EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
 import {IRequestExamEstTemp} from "../_models/RequestExamEstTemp.model";
+
 @Injectable({
   providedIn: 'root'
 })

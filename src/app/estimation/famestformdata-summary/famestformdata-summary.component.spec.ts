@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamestformdataSummaryComponent } from './famestformdata-summary.component';
+import {FamestformdataSummaryComponent} from './famestformdata-summary.component';
 
 describe('FamestformdataSummaryComponent', () => {
   let component: FamestformdataSummaryComponent;

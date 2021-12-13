@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PasswordResetEmailSentComponent } from './password-reset-email-sent.component';
+import {PasswordResetEmailSentComponent} from './password-reset-email-sent.component';
 
 describe('PasswordResetEmailSentComponent', () => {
   let component: PasswordResetEmailSentComponent;

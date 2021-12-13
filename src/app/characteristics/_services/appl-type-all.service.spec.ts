@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ApplTypeAllService } from './appl-type-all.service';
+import {ApplTypeAllService} from './appl-type-all.service';
 
 describe('ApplTypeAllService', () => {
   let service: ApplTypeAllService;

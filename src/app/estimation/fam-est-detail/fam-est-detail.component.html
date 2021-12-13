@@ -1,34 +1,61 @@
-<div style="max-width: 1030px">
-  <h1>Family Name: {{family.family_name}}</h1>
-  <app-chart-fam-est-detail
-    [countryAggeds]="countryAgged"></app-chart-fam-est-detail>
-  <div *ngIf="countryAgged.length>0 && displayedColumns.length>1">
-    <app-fam-est-detail-table [displayedColumns]="displayedColumns"
-                              [countryAggeds]="countryAgged"
-    >
-    </app-fam-est-detail-table>
-  </div>
-  <div class="light-accent-background spacer">
+<div style="max-width: 1030px" fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>Family Name: {{family.family_name}}</h1>
+    <button mat-flat-button color="accent" [matMenuTriggerFor]="menu">Export</button>
   </div>
 
-  <div class="overContainer" fxLayout="row" fxLayoutAlign="space-between start"
-       fxLayout.lt-md="column"
-  >
-    <app-famestformdata-summary [formData]="famform">
-    </app-famestformdata-summary>
-<!--    <app-parameter-details [formData]="famform"></app-parameter-details>-->
-    <div>
-      <app-fam-det-table [applications]="applications"></app-fam-det-table>
-    </div>
-    <div class="light-accent-background buttonContainer"
-         fxLayout="column" fxLayoutAlign="start center" fxFlex>
-      <div class="buttonContainerTitle">
-        <h3>Export</h3>
+
+  <mat-tab-group animationDuration="750ms">
+    <mat-tab label="Totals">
+      <app-chart-fam-est-detail [countryAggeds]="countryAgged">
+      </app-chart-fam-est-detail>
+      <app-grid-agged-fam-est [countryAggeds]="rowCountryAgged">
+
+      </app-grid-agged-fam-est>
+    </mat-tab>
+    <mat-tab label="Details">
+      <div class="overContainer" fxLayout="row" fxLayoutAlign="space-between start"
+           fxLayout.lt-md="column"
+      >
+        <app-famestformdata-summary [formData]="famform">
+        </app-famestformdata-summary>
+        <app-table-fam-est-sum
+          [detSum]="famEstDetTot"
+        >
+        </app-table-fam-est-sum>
+        <div>
+          <app-fam-det-table [applications]="applications"></app-fam-det-table>
+        </div>
+
       </div>
-      <button mat-flat-button color="accent" (click)="retrieveXLSX()">Excel</button>
-      <button mat-flat-button color="accent" (click)="retrievePDF()">PDF</button>
-    </div>
+      <p>FamForm UDN = {{famform.unique_display_no}}</p>
+    </mat-tab>
+    <mat-tab label="Countries">
+      <div *ngIf="allCountryAgged">
+        <div style="margin-top: 20px;">
+          <button mat-stroked-button color="primary"
+                  *ngFor="let cAgg of allCountryAgged"
+                  (click)="openCountryAgged(cAgg)"
+          >
+            {{cAgg.country.long_name}}
+          </button>
+        </div>
+        <app-chart-country-est-detail
+          [countryAggeds]="cAggChart"
+        ></app-chart-country-est-detail>
+        <app-grid-country-est-detail
+          [countryAggeds]="cAgg"
+        ></app-grid-country-est-detail>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="light-accent-background spacer">
   </div>
 
 
 </div>
+
+<mat-menu #menu='matMenu'>
+  <button mat-menu-item (click)="retrieveXLSX()">Excel</button>
+  <button mat-menu-item color="accent" (click)="retrievePDF()">PDF</button>
+</mat-menu>

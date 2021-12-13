@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ActivateEmailSentComponent } from './activate-email-sent.component';
+import {ActivateEmailSentComponent} from './activate-email-sent.component';
 
 describe('ActivateEmailSentComponent', () => {
   let component: ActivateEmailSentComponent;

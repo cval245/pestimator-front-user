@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TransFilingRequirementsService } from './trans-filing-requirements.service';
+import {TransFilingRequirementsService} from './trans-filing-requirements.service';
 
 describe('TransFilingRequirementsService', () => {
   let service: TransFilingRequirementsService;

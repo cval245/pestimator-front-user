@@ -22,8 +22,6 @@ import {CustomApplOptions} from "../_models/CustomApplOptions.model";
 import {CustomOptionsFormComponent} from "../custom-options-form/custom-options-form.component";
 import {DocFormatService} from "../../characteristics/_services/doc-format.service";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
-import {DocFormatCountryService} from "../../characteristics/_services/doc-format-country.service";
-import {IDocFormatCountry} from "../../characteristics/_models/DocFormatCountry.model";
 import {Language} from "../../characteristics/_models/Language.model";
 import {LanguageService} from "../../characteristics/_services/language.service";
 
@@ -58,7 +56,7 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   }];
   public customOpt: CustomApplOptions = new CustomApplOptions();
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
-  public docFormatCountries: IDocFormatCountry[] = new Array<IDocFormatCountry>()
+  // public docFormatCountries: IDocFormatCountry[] = new Array<IDocFormatCountry>()
 
   constructor(
     private famEstFormSer: FamEstFormService,
@@ -66,7 +64,7 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     private applTypeSer: ApplTypeService,
     private entitySizeSer: EntitySizeService,
     private docFormatSer: DocFormatService,
-    private docFormatCountrySer: DocFormatCountryService,
+    // private docFormatCountrySer: DocFormatCountryService,
     private langSer: LanguageService,
     private router: Router,
     public dialog: MatDialog,
@@ -105,9 +103,9 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
       this.docFormats = x
     })
-    this.docFormatCountrySer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
-      this.docFormatCountries = x
-    })
+    // this.docFormatCountrySer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
+    //   this.docFormatCountries = x
+    // })
     this.langSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroyed)).subscribe(x => {
       this.languages = x
     })

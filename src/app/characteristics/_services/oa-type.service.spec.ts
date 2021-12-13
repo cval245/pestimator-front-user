@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { OaTypeService } from './oa-type.service';
+import {OaTypeService} from './oa-type.service';
 
 describe('OaTypeService', () => {
   let service: OaTypeService;

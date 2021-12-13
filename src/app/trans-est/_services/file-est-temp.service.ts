@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
-import { IFileEstTemp } from '../_models/FileEstTemp.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
+import {IFileEstTemp} from '../_models/FileEstTemp.model';
 
 @Injectable({
   providedIn: 'root'

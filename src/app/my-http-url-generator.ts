@@ -1,14 +1,7 @@
-import { kebabCase } from 'lodash';
-import { Injectable } from '@angular/core';
+import {kebabCase} from 'lodash';
+import {Injectable} from '@angular/core';
 
-import {
-    DefaultHttpUrlGenerator,
-    HttpUrlGenerator,
-    EntityHttpResourceUrls,
-    HttpResourceUrls,
-    normalizeRoot,
-    Pluralizer
-} from '@ngrx/data';
+import {DefaultHttpUrlGenerator, HttpResourceUrls, normalizeRoot, Pluralizer} from '@ngrx/data';
 
 
 @Injectable()

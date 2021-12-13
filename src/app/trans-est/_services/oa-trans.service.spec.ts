@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { OaTransService } from './oa-trans.service';
+import {OaTransService} from './oa-trans.service';
 
 describe('OaTransService', () => {
   let service: OaTransService;

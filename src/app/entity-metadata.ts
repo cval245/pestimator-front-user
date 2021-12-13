@@ -16,9 +16,12 @@ import {IRequestExamTrans} from "./trans-est/_models/RequestExamTrans.model";
 
 const entityMetadata: EntityMetadataMap = {
   UserDetail: {},
+  UserAll: {},
   LawFirm: {},
   FamEst: {},
+  FamEstUser: {},
   FamEstDetail: {},
+  FamEstDetTot:{},
   FamEstForm: {},
   Country: {},
   Currency: {},
@@ -33,9 +36,11 @@ const entityMetadata: EntityMetadataMap = {
   OAType: {},
   FeeCategory: {},
   Family: {},
+  FamilyAll: {},
   Application: {},
   ApplDetail: {},
   UserProfile: {},
+  UserProfileAll: {},
   TransComplexTime: {},
   CustomFilTrans: {
     filterFn: (entities: ICustomFilTrans[], country_id: any) => {

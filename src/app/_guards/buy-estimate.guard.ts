@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {UserProfileService} from "./_services/user-profile.service";
-import {UserProfile} from "./_models/userProfile.model";
-
+import {UserProfileService} from "../account/_services/user-profile.service";
+import {UserProfile} from "../account/_models/userProfile.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HomeProfileGuard implements CanActivate {
+export class BuyEstimateGuard implements CanActivate {
   userProfile: UserProfile = new UserProfile()
   return_bool = false
   constructor(public router: Router, private userProfileSer: UserProfileService){}
@@ -23,7 +22,7 @@ export class HomeProfileGuard implements CanActivate {
       }
       else{
         this.return_bool = true
-        this.router.navigateByUrl('/home/home')
+        this.router.navigateByUrl('/account/buy-new-estimate')
       }
     })
 

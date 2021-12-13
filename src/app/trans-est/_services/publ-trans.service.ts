@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
-import { IPublTrans } from '../_models/PublTrans.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
+import {IPublTrans} from '../_models/PublTrans.model';
 
 @Injectable({
   providedIn: 'root'

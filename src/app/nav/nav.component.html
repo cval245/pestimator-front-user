@@ -19,5 +19,20 @@
          routerLink="/account/buy-new-estimate"
            (click)="closeMenu()">
           <p class="mat-h3">Buy More Estimates</p></a>
+      <a *ngIf="isStaff"
+         mat-button
+         routerLink="/admin/main"
+         (click)="closeMenu()">
+        <p class="mat-h3">Admin-Main</p></a>
+      <a *ngIf="isStaff"
+         mat-button
+         routerLink="/trans-est/trans-form"
+         (click)="closeMenu()">
+        <p class="mat-h3">Trans Form</p></a>
+      <a *ngIf="isStaff"
+         mat-button
+         routerLink="/trans-est/est-form"
+         (click)="closeMenu()">
+        <p class="mat-h3">Est Form</p></a>
     </div>
 </div>

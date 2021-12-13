@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Country} from "../../characteristics/_models/Country.model";
 import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
 import {ApplType} from "../../characteristics/_models/applType.model";
-import {map} from "lodash";
+import {filter, find, some} from "lodash";
 
 @Component({
   selector: 'app-custom-options-form',
@@ -33,22 +33,31 @@ export class CustomOptionsFormComponent implements OnInit {
     this.country = data.country
     this.applType = data.appl_type
     this.docFormats = data.doc_formats
-    this.filteredDocFormats = map(this.country.available_doc_formats, x => {
-      return this.docFormats.find(y => y.id == x.doc_format)!
+    this.filteredDocFormats= filter(this.docFormats, x => {
+      return some(this.country.available_doc_formats,y => {
+        return y.doc_format == x.id && y.appl_type == this.applType.id
+      })
     })
-    let default_format = this.country.available_doc_formats.find(x => {
+    let defaultFormat_id = find(this.country.available_doc_formats, x => {
       return x.default && x.appl_type == this.applType.id
-    })
+    })!.doc_format
+    this.defaultFormat = find(this.docFormats, x => x.id == defaultFormat_id)!
     this.custApplOptionsForm = this.fb.group({
       request_examination_early_bool: [false, Validators.required],
-      doc_format: [default_format, Validators.required]
+      doc_format: [this.defaultFormat, Validators.required]
     })
   }
   ngOnInit(): void {
     if (this.customApplOptions !== undefined){
+      let actual_doc_format: IDocFormat
+      if (this.customApplOptions.doc_format === null || undefined){
+        actual_doc_format = this.defaultFormat
+      } else{
+        actual_doc_format = this.customApplOptions.doc_format
+      }
       this.custApplOptionsForm.setValue({
         'request_examination_early_bool': this.customApplOptions.request_examination_early_bool,
-        'doc_format': this.customApplOptions.doc_format ? this.customApplOptions.doc_format : this.defaultFormat,
+        'doc_format': actual_doc_format
       })
     }
   }

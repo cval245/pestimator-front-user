@@ -1,49 +1,70 @@
-
 @use '@angular/material' as mat;
 
 @import './theme.scss';
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
-@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "~ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+//@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-html, body { height: 100%; width:100% }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss";
+//@import "../node_modules/ag-grid-community/dist/styles/ag-theme-material.css";
 
-
-.blurb-container{
-    padding: 30px;
-    background: map-get($theme-primary, 'lighter');
-}
-
-.blurb-container-2{
-    padding: 30px;
-    background: map-get($theme-primary, 'main');
-    color: $light-text
-}
-
-.blurb{
-    max-width:500px;
-}
-
-app-root {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    bottom:0;
-    left: 0;
-    right: 0;
-}
-
-* {
-    box-sizing: border-box;
+html, body {
+  height: 100%;
+  width: 100%
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    font-family: sans-serif;
-    background-color: $light-background;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.ag-theme-alpine-default{
+  @include ag-theme-alpine((
+  ));
+}
+.ag-theme-alpine-custom {
+  @include ag-theme-alpine((
+  ));
+
+  .ag-row-last {
+    background-color: $light-bg-darker-10;
+  }
+}
+
+.blurb-container {
+  padding: 30px;
+  background: map-get($theme-primary, 'lighter');
+}
+
+.blurb-container-2 {
+  padding: 30px;
+  background: map-get($theme-primary, 'main');
+  color: $light-text
+}
+
+.blurb {
+  max-width: 500px;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: sans-serif;
+  background-color: $light-background;
 }
 
 .container {
@@ -55,6 +76,7 @@ body {
   min-height: 100%;
   flex-direction: column;
 }
+
 .over-main {
   //flex: 1 1 auto;
   //background-color: $light-background;
@@ -69,17 +91,18 @@ app-footer {
   padding: 20px;
   margin: 0px;
 }
-app-header{
+
+app-header {
   position: fixed;
   z-index: 10;
-  width:100%;
+  width: 100%;
 }
 
 app-nav {
-    margin-top: 50px;
-    flex: 0 2 150px;
-    background: map-get($theme-primary, 'lighter');
-    color: map-get($theme-accent, 'darker');
+  margin-top: 50px;
+  flex: 0 2 150px;
+  background: map-get($theme-primary, 'lighter');
+  color: map-get($theme-accent, 'darker');
 }
 
 app-main {
@@ -89,11 +112,12 @@ app-main {
   background-color: $light-background;
 }
 
-.logged-in-over-main{
+.logged-in-over-main {
   margin-top: 60px;
   //padding-top: 200px;
   padding: 20px;
 }
+
 .fullSize {
   padding-top: 60px;
   //flex: 1 1 300px;
@@ -112,7 +136,6 @@ app-footer {
   background: map-get($theme-primary, 'darker');
   color: $light-accent-text;
 }
-
 
 
 .mat-header-cell {
@@ -135,13 +158,149 @@ app-footer {
   background-color: $light-background;
 }
 
-.light-accent-background-two{
+.light-accent-background-two {
   color: $dark-accent-text;
 }
 
-.light-primary-background{
+.light-primary-background {
   background-color: map-get($theme-primary, 'lighter')
 }
+
+.input-container {
+  text-align: left;
+  padding: 10px;
+  width: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  .ng-star-inserted {
+    color: $dark-accent-text;
+  }
+
+  p {
+    margin-bottom: 3px;
+    color: $dark-primary-text;
+    font-size: 16px;
+  }
+
+  mat-form-field {
+    padding-left: 0px;
+
+    width: 200px;
+
+    .mat-form-field-infix {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+
+  input {
+    font-size: 16px;
+    padding-left: 0px;
+    color: $dark-text;
+  }
+}
+
+.select-container {
+  text-align: left;
+  padding: 10px;
+  width: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  .ng-star-inserted {
+    color: $dark-accent-text;
+  }
+
+  p {
+    margin-bottom: 3px;
+    color: $dark-primary-text;
+    font-size: 16px;
+  }
+
+  mat-form-field {
+    padding-left: 0px;
+    width: 200px;
+
+    .mat-form-field-infix {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+}
+
+.date-picker-container {
+  text-align: left;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  p {
+    margin-bottom: 3px;
+    color: $dark-primary-text;
+    font-size: 16px;
+  }
+
+  mat-form-field {
+    padding-left: 0px;
+    width: 150px;
+    color: $dark-text;
+
+    .mat-form-field-infix {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+  .ng-star-inserted {
+    color: $dark-accent-text;
+  }
+  input {
+    font-size: 16px;
+    padding-left: 0px;
+    color: $dark-text;
+  }
+}
+
+.form-row {
+  color: $dark-accent-text;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.input-container-small {
+  text-align: left;
+  padding: 10px;
+  width: 150px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  p {
+    margin-bottom: 3px;
+    color: $dark-primary-text;
+    font-size: 16px;
+  }
+
+  mat-form-field {
+    padding-left: 0px;
+    width: 150px;
+
+    .mat-form-field-infix {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+
+  .ng-star-inserted {
+    color: $dark-accent-text;
+  }
+
+  input {
+    font-size: 16px;
+    padding-left: 0px;
+    color: $dark-text;
+  }
+}
+
 
 .formContainer {
   background-color: map-get($theme-primary, 'darker');
@@ -151,8 +310,9 @@ app-footer {
   h2 {
     margin-bottom: 0px;
   }
-  .header-spacer{
-    height:30px;
+
+  .header-spacer {
+    height: 30px;
   }
 
 
@@ -161,11 +321,16 @@ app-footer {
       background-color: map-get($theme-primary, 'lighter');
     }
 
+    .mat-step {
+      background-color: $light-background;
+    }
+
     .form-row {
       color: $dark-accent-text;
       margin-top: 10px;
       margin-bottom: 10px;
     }
+
 
     .mat-step-icon {
       color: $light-text;
@@ -183,46 +348,49 @@ app-footer {
       }
 
 
-      mat-form-field {
-        padding-left: 10px;
-        padding-right: 10px;
-
-        .ng-star-inserted {
-          color: $dark-accent-text;
-        }
-
-        input {
-          color: $dark-text;
-        }
-      }
+      //mat-form-field {
+      //  padding-left: 10px;
+      //  padding-right: 10px;
+      //
+      //  .ng-star-inserted {
+      //    color: $dark-accent-text;
+      //  }
+      //
+      //  input {
+      //    color: $dark-text;
+      //  }
+      //}
     }
   }
 }
-.customForm {
-  form {
-    .custom-details-list {
-      color: red;
-    }
 
+//.customForm {
+//  form {
+//    .custom-details-list {
+//      color: red;
+//    }
+//
+//
+//    mat-form-field {
+//      padding-left: 10px;
+//      padding-right: 10px;
+//
+//      .ng-star-inserted {
+//        color: $dark-accent-text;
+//      }
+//
+//      input {
+//        color: $dark-text;
+//      }
+//    }
+//  }
+//}
 
-    mat-form-field {
-      padding-left: 10px;
-      padding-right: 10px;
-
-      .ng-star-inserted {
-        color: $dark-accent-text;
-      }
-
-      input {
-        color: $dark-text;
-      }
-    }
-  }
-}
-.mat-list-base .mat-list-item{
+.mat-list-base .mat-list-item {
   font-size: 14px;
 }
-.mat-list-base .mat-subheader{
+
+.mat-list-base .mat-subheader {
   font-size: 16px;
   padding-top: 10px;
   padding-bottom: 2px;
@@ -239,40 +407,54 @@ app-footer {
 .icon-background {
   background-color: map-get($theme-primary, 'main');
 }
-.desc-box-offcolor{
+
+.desc-box-offcolor {
   background-color: map-get($theme-primary, 'lighter');
 }
-.desc-box{
-  h1{
-    color:$dark-primary-text;
+
+.desc-box {
+  h1 {
+    color: $dark-primary-text;
   }
-  p{
+
+  p {
     padding-left: 20px;
     padding-right: 20px;
     text-align: justify;
   }
 }
+
 tr.element-row:not(.expanded-row):hover {
   //background: #777;
   background-color: map-get($theme-primary, 'lighter');
 }
-.button-overcontainer{
-  background-color: map-get($theme-primary, 'lighter');
-}
-.button-super-over{
-  background-color: map-get($theme-primary, 'lighter');
-}
-.pricing-card{
+
+.button-overcontainer {
   background-color: map-get($theme-primary, 'lighter');
 }
 
+.button-super-over {
+  background-color: map-get($theme-primary, 'lighter');
+}
+
+.pricing-card {
+  background-color: map-get($theme-primary, 'lighter');
+}
 
 
 @keyframes loader {
-  0%   { transform: scale(0.0); }
-  40%  { transform: scale(1.0); }
-  80%  { transform: scale(1.0); }
-  100% { transform: scale(0.0); }
+  0% {
+    transform: scale(0.0);
+  }
+  40% {
+    transform: scale(1.0);
+  }
+  80% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(0.0);
+  }
 }
 
 
@@ -355,6 +537,7 @@ tr.element-row:not(.expanded-row):hover {
     transform: translate(0, -1em) rotate(-225deg);
   }
 }
+
 .loading-background {
   left: 0 !important;
   top: 0 !important;
@@ -372,16 +555,16 @@ tr.element-row:not(.expanded-row):hover {
 }
 
 
-.super-over{
+.super-over {
   display: flex;
   flex-direction: row;
   align-content: center;
   justify-content: center;
 
-  .over-policy{
+  .over-policy {
     padding-top: 40px;
     margin-left: 10px;
-    margin-right:10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     max-width: 500px;
     text-align: justify;

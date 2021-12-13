@@ -36,6 +36,13 @@ import {MatIconModule} from "@angular/material/icon";
 import {CustomCountryDetailsPipe} from './custom-country-details.pipe';
 import {FamestformdataSummaryComponent} from './famestformdata-summary/famestformdata-summary.component';
 import {CustomOptionsFormComponent} from './custom-options-form/custom-options-form.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {GridAggedFamEstComponent} from './grid-agged-fam-est/grid-agged-fam-est.component';
+import {AgGridModule} from "ag-grid-angular";
+import {ChartCountryEstDetailComponent} from './chart-country-est-detail/chart-country-est-detail.component';
+import {GridCountryEstDetailComponent} from './grid-country-est-detail/grid-country-est-detail.component';
+import {MatMenuModule} from "@angular/material/menu";
+import {TableFamEstSumComponent} from './table-fam-est-sum/table-fam-est-sum.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +61,10 @@ import {CustomOptionsFormComponent} from './custom-options-form/custom-options-f
     CustomCountryDetailsPipe,
     FamestformdataSummaryComponent,
     CustomOptionsFormComponent,
+    GridAggedFamEstComponent,
+    ChartCountryEstDetailComponent,
+    GridCountryEstDetailComponent,
+    TableFamEstSumComponent,
   ],
     imports: [
         CommonModule,
@@ -69,21 +80,25 @@ import {CustomOptionsFormComponent} from './custom-options-form/custom-options-f
         MatNativeDateModule,
         MatStepperModule,
         MatTableModule,
-        MatDividerModule,
-        MatPaginatorModule,
-        MatDialogModule,
-        FlexLayoutModule,
-        ReactiveFormsModule,
-        MatListModule,
-        MatTooltipModule,
-        NgChartsModule,
-        MatRadioModule,
-        MatIconModule,
+      MatDividerModule,
+      MatPaginatorModule,
+      MatDialogModule,
+      FlexLayoutModule,
+      ReactiveFormsModule,
+      MatListModule,
+      MatTooltipModule,
+      NgChartsModule,
+      MatRadioModule,
+      MatIconModule,
+      MatTabsModule,
+      AgGridModule,
+      MatMenuModule,
     ],
-  exports: [
-    FamEstFormComponent,
-    FamEstDetailTableComponent,
-    FamilyEstimateTableComponent
-  ]
+    exports: [
+        FamEstFormComponent,
+        FamEstDetailTableComponent,
+        FamilyEstimateTableComponent,
+        FamestformdataSummaryComponent
+    ]
 })
 export class EstimationModule { }

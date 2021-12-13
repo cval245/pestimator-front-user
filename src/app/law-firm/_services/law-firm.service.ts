@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory
-} from '@ngrx/data';
-import { LawFirm } from '../_models/law-firm.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory} from '@ngrx/data';
+import {LawFirm} from '../_models/law-firm.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountDetailsFormComponent } from './account-details-form.component';
+import {AccountDetailsFormComponent} from './account-details-form.component';
 
 describe('AccountDetailsFormComponent', () => {
   let component: AccountDetailsFormComponent;

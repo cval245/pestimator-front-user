@@ -1,5 +1,5 @@
 import {Action, ActionReducer, MetaReducer} from '@ngrx/store';
-import {merge, pick} from 'lodash';
+import {cloneDeep, merge, pick} from 'lodash';
 import {logout} from "./actions/auth.action";
 
 function setSavedState(state: any, localStorageKey: string) {
@@ -10,7 +10,9 @@ function getSavedState(localStorageKey: string): any {
 }
 
 // the keys from state which we'd like to save.
-const stateKeys = ['authCred.profile', 'authCred.isLoggedIn', 'authCred.refreshTimer'];
+const stateKeys = ['authCred.profile', 'authCred.isLoggedIn', 'authCred.refreshTimer',
+  'userProfile.userProfile', 'userProfile.userDetail'
+];
 // the key for the local storage.
 const localStorageKey = '__app_storage__';
 
@@ -23,7 +25,7 @@ export function storageMetaReducer<S, A extends Action = Action> (reducer: Actio
     if (onInit) {
       onInit           = false;
       const savedState = getSavedState(localStorageKey);
-      return merge(nextState, savedState);
+      return merge(cloneDeep(nextState), savedState);
     }
     // save the next state to the application storage.
     const stateToSave = pick(nextState, stateKeys);

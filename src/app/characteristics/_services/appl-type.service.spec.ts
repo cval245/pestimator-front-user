@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ApplTypeService } from './appl-type.service';
+import {ApplTypeService} from './appl-type.service';
 
 describe('ApplTypeService', () => {
   let service: ApplTypeService;

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ResendActivationEmailService } from './resend-activation-email.service';
+import {ResendActivationEmailService} from './resend-activation-email.service';
 
 describe('ResendActivationEmailService', () => {
   let service: ResendActivationEmailService;

@@ -1,0 +1,18 @@
+<div>
+  <div class="desc-box">
+    <p>company_name: {{userProAll.company_name}}</p>
+    <p>address: {{userProAll.address}}</p>
+    <p>city: {{userProAll.city}}</p>
+    <p>state: {{userProAll.state}}</p>
+    <p>zip code: {{userProAll.zip_code}}</p>
+    <p>estimates remaining: {{userProAll.estimates_remaining}}</p>
+  </div>
+</div>
+<p>add more estimates</p>
+<button (click)="editEsts()">Edit</button>
+<input [formControl]="estNumFormControl" type="number">
+<button (click)="onSubmit()">Submit</button>
+
+<app-grid-fam-est-user
+  [famEstUsers]="famEstUsers"
+></app-grid-fam-est-user>

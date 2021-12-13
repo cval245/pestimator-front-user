@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
 import {ITransComplexTime} from "../_models/TransComplexTime";
 import {switchMap} from "rxjs/operators";

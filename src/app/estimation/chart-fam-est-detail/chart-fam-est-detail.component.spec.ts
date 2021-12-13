@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChartFamEstDetailComponent } from './chart-fam-est-detail.component';
+import {ChartFamEstDetailComponent} from './chart-fam-est-detail.component';
 
 describe('ChartFamEstDetailComponent', () => {
   let component: ChartFamEstDetailComponent;

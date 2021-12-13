@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { GetXLSService } from './get-xls.service';
+import {GetXLSService} from './get-xls.service';
 
 describe('GetXLSService', () => {
   let service: GetXLSService;

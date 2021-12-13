@@ -4,6 +4,10 @@ import {environment} from "../../environments/environment";
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.API_URL,
   entityHttpResourceUrls: {
+    UserAll: {
+      entityResourceUrl: environment.API_URL + 'user-all/',
+      collectionResourceUrl: environment.API_URL + 'user-all/'
+    },
     UserDetail: {
       entityResourceUrl: environment.API_URL + 'user-detail/',
       collectionResourceUrl: environment.API_URL + 'user-detail/'
@@ -15,6 +19,14 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     FamEst: {
       entityResourceUrl: environment.API_URL + 'fam-est/',
       collectionResourceUrl: environment.API_URL + 'fam-est/',
+    },
+    FamEstUser: {
+      entityResourceUrl: environment.API_URL + 'fam-est-specific-user/',
+      collectionResourceUrl: environment.API_URL + 'fam-est-specific-user/',
+    },
+    FamEstDetTot: {
+      entityResourceUrl: environment.API_URL + 'fam-est-det-tot/',
+      collectionResourceUrl: environment.API_URL + 'fam-est-det-tot/',
     },
     Country: {
       entityResourceUrl: environment.API_URL + 'countries/',
@@ -48,9 +60,17 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'families/',
       collectionResourceUrl: environment.API_URL + 'families/',
     },
+    FamilyAll: {
+      entityResourceUrl: environment.API_URL + 'families-all/',
+      collectionResourceUrl: environment.API_URL + 'families-all/',
+    },
     UserProfile: {
       entityResourceUrl: environment.API_URL + 'account/',
       collectionResourceUrl: environment.API_URL + 'account/',
+    },
+    UserProfileAll: {
+      entityResourceUrl: environment.API_URL + 'account-admin/',
+      collectionResourceUrl: environment.API_URL + 'account-admin/',
     },
     Application: {
       entityResourceUrl: environment.API_URL + 'applications/',

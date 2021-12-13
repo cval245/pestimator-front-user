@@ -31,13 +31,13 @@ export class FamilyEstimateTableComponent implements AfterViewInit {
   }
 
   ngOnChanges() {
-    this.displayedColumns = ['family_no', 'family_name', 'total_cost']
+    this.displayedColumns = ['family_no', 'family_name', 'total_cost', 'date_created']
         this.dataSource = new MatTableDataSource(this.famEsts)
         this.dataSource.paginator = this.paginator
     }
 
   ngOnInit(): void {
-    this.displayedColumns = ['family_no', 'family_name', 'total_cost']
+    this.displayedColumns = ['family_no', 'family_name', 'total_cost', 'date_created']
   }
 
   ngAfterViewInit() {

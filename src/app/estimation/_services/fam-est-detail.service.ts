@@ -1,15 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {
-    HttpUrlGenerator,
-    Logger,
-    DefaultDataService,
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
-import { FamEstDetail } from '../_models/FamEstDetail.model';
-import { FamEst } from '../_models/FamEst.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
+import {FamEstDetail} from '../_models/FamEstDetail.model';
 
 @Injectable({
   providedIn: 'root'

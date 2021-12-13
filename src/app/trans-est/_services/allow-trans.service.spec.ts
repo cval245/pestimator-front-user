@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { AllowTransService } from './allow-trans.service';
+import {AllowTransService} from './allow-trans.service';
 
 describe('AllowTransService', () => {
   let service: AllowTransService;

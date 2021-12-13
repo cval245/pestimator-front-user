@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
-import { UserProfile } from '../_models/userProfile.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
+import {UserProfile} from '../_models/userProfile.model';
 
 @Injectable({
   providedIn: 'root'

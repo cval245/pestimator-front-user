@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { OaEstTempService } from './oa-est-temp.service';
+import {OaEstTempService} from './oa-est-temp.service';
 
 describe('OaEstTempService', () => {
   let service: OaEstTempService;

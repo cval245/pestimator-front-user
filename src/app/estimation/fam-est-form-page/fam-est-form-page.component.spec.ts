@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamEstFormPageComponent } from './fam-est-form-page.component';
+import {FamEstFormPageComponent} from './fam-est-form-page.component';
 
 describe('FamEstFormPageComponent', () => {
   let component: FamEstFormPageComponent;

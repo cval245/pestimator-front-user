@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SubmitFamEstFormComponent } from './submit-fam-est-form.component';
+import {SubmitFamEstFormComponent} from './submit-fam-est-form.component';
 
 describe('SubmitFamEstFormComponent', () => {
   let component: SubmitFamEstFormComponent;

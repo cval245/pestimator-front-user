@@ -7,20 +7,20 @@
   </div>
   <!--  <div>-->
   <div class="over-main" fxLayout="row" fxLayoutAlign="space-between">
-    <mat-sidenav-container fxFlex class="example-sidenav-container">
+    <mat-sidenav-container class="example-sidenav-container" fxFill>
       <mat-sidenav *ngIf="!mobile_bool && isLoggedIn" mode="side" fixedTopGap="56" opened
                    fxShow FxHide.xs="true">
         <app-nav *ngIf="isLoggedIn" fxFlex>
         </app-nav>
       </mat-sidenav>
-        <mat-sidenav *ngIf="mobile_bool" [(opened)]="showMenuBool">
-          <app-nav *ngIf="isLoggedIn" fxFlex>
-          </app-nav>
-        </mat-sidenav>
+      <mat-sidenav *ngIf="mobile_bool" [(opened)]="showMenuBool">
+        <app-nav *ngIf="isLoggedIn" fxFlex>
+        </app-nav>
+      </mat-sidenav>
       <mat-sidenav-content [ngClass]="contentClass">
         <ng-container *ngTemplateOutlet="mainApp"></ng-container>
-        <app-aside *ngIf="isLoggedIn" fxShow fxHide.lt-md="true">
-        </app-aside>
+        <!--        <app-aside *ngIf="isLoggedIn" fxShow fxHide.lt-md="true">-->
+        <!--        </app-aside>-->
       </mat-sidenav-content>
       <ng-template #mainApp>
         <app-main></app-main>

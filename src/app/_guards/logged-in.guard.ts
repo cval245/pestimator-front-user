@@ -13,24 +13,24 @@ export class LoggedInGuard implements CanActivate {
   private destroyed = new Subject<void>();
 
   constructor(
-                private store: Store<{authCred: any}>,
-                private router: Router
-            ){
-              this.store.select('authCred').pipe(takeUntil(this.destroyed)).subscribe(x =>
-                this.isLoggedIn=x.isLoggedIn)
-
+    private store: Store<{ authCred: any }>,
+    private router: Router
+  ) {
+    this.store.select('authCred').pipe(takeUntil(this.destroyed)).subscribe(x =>
+      this.isLoggedIn = x.isLoggedIn)
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.isLoggedIn){
-        return true;
-      } else{
-        return this.router.parseUrl('/account/login')
-      }
+    if (this.isLoggedIn) {
+      return true;
+    } else {
+      return this.router.parseUrl('/account/login')
+    }
   }
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.destroyed.next()
     this.destroyed.complete()
   }

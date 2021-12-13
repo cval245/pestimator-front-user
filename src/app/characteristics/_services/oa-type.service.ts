@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-    EntityCollectionServiceBase,
-    EntityCollectionServiceElementsFactory
-} from '@ngrx/data';
-import { OAType } from '../_models/oaType.model';
+import {Injectable} from '@angular/core';
+import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory} from '@ngrx/data';
+import {OAType} from '../_models/oaType.model';
 import {switchMap} from "rxjs/operators";
 
 @Injectable({

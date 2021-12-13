@@ -1,16 +1,17 @@
 <div class="over-container" *ngIf="displayedColumns.length>=1" #tableOverContainer>
     <table mat-table [dataSource]="countryAggeds">
-        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column.columnDef">
-          <th class="header-cell" mat-header-cell *matHeaderCellDef  #matTableCell >
-            <h3>{{column.header}}</h3>
-          </th>
-          <div *ngIf="column.header !== 'Country'; else country">
-            <td mat-cell *matCellDef="let row">
-              {{row[column.cell] | currency }}
-            </td>
-          </div>
-          <ng-template #country>
-            <td mat-cell *matCellDef="let row">
+      <ng-container *ngFor="let column of displayedColumns"
+                    [matColumnDef]="column.columnDef">
+        <th class="header-cell" mat-header-cell *matHeaderCellDef #matTableCell>
+          <h3>{{column.header}}</h3>
+        </th>
+        <div *ngIf="column.header !== 'Country'; else country">
+          <td mat-cell *matCellDef="let row">
+            {{row.row_data[column.cell] | currency }}
+          </td>
+        </div>
+        <ng-template #country>
+          <td mat-cell *matCellDef="let row">
               <div *ngIf="row.country">
                 {{row.country.country}}
               </div>

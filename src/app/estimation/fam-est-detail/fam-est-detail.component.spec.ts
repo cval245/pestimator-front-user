@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamEstDetailComponent } from './fam-est-detail.component';
+import {FamEstDetailComponent} from './fam-est-detail.component';
 
 describe('FamEstDetailComponent', () => {
   let component: FamEstDetailComponent;

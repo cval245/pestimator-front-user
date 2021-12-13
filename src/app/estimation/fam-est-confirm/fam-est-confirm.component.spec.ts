@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamEstConfirmComponent } from './fam-est-confirm.component';
+import {FamEstConfirmComponent} from './fam-est-confirm.component';
 
 describe('FamEstConfirmComponent', () => {
   let component: FamEstConfirmComponent;

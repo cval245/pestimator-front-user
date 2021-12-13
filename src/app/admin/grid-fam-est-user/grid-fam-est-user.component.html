@@ -1,0 +1,14 @@
+<div class="mat-elevation-z8" style="margin-top: 30px;">
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine-default"
+    domLayout="autoHeight"
+    [rowData]="famEstUsers"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs"
+    [frameworkComponents]="frameworkComponents"
+  >
+  </ag-grid-angular>
+</div>

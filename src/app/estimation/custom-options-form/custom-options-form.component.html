@@ -1,30 +1,35 @@
-<div class="customForm">
+<mat-dialog-content>
   <form [formGroup]="custApplOptionsForm">
     <div class="form-row">
       <h3>Prosecution Modifiers</h3>
     </div>
     <div class="form-row">
-      <mat-form-field class="wide" appearance="outline" color="accent">
-        <mat-label>Request Examination with Filing</mat-label>
-        <mat-select formControlName="request_examination_early_bool">
-          <mat-option [value]=true>True</mat-option>
-          <mat-option [value]=false>False</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="select-container">
+        <p>Request Examination with Filing:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <mat-select formControlName="request_examination_early_bool">
+            <mat-option [value]=true>True</mat-option>
+            <mat-option [value]=false>False</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
     <div class="form-row">
-      <mat-form-field class="wide" appearance="outline" color="accent">
-        <mat-label>Document Format</mat-label>
-        <mat-select formControlName="doc_format">
-          <mat-option *ngFor="let doc of filteredDocFormats" [value]="doc">
-            {{doc.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="select-container">
+        <p>Document Format:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <mat-select formControlName="doc_format">
+            <mat-option *ngFor="let doc of filteredDocFormats" [value]="doc">
+              {{doc.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
   </form>
-  <div class="form-row">
-    <button mat-button color="primary" (click)="cancel()">Cancel</button>
-    <button mat-flat-button color="accent" (click)="submit()">Submit</button>
-  </div>
-</div>
+
+</mat-dialog-content>
+<mat-dialog-actions class="form-row">
+  <button mat-button color="primary" (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="accent" (click)="submit()">Submit</button>
+</mat-dialog-actions>

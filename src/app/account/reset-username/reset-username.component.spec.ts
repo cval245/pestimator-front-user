@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ResetUsernameComponent } from './reset-username.component';
+import {ResetUsernameComponent} from './reset-username.component';
 
 describe('ResetUsernameComponent', () => {
   let component: ResetUsernameComponent;

@@ -1,93 +1,93 @@
-    <mat-list style="text-align: left;">
-      <mat-divider></mat-divider>
-      <div matSubheader>Family Details</div>
-      <mat-list-item class="mat-body-2">
-        <div matLine>
-          Family Name:  {{formData.family_name}}
-        </div>
-        <div matLine>Family Reference No:  {{formData.family_no}}</div>
-        <!--      <div matLine>Entity Size:  {{formData.entity_size.entity_size}}</div>-->
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div mat-subheader>Details on First Application</div>
-      <mat-list-item>
-        <p matLine>
-          Filing Date:  {{formData.init_appl_filing_date | date:"longDate"}}
-        </p>
-        <p matLine>
-          Country:  {{formData.init_appl_country.long_name}}
-        </p>
-        <p matLine>
-          Application Type:  {{formData.init_appl_type.application_type}}
-        </p>
-        <p matLine>
-          Claims:  {{formData.init_appl_details.num_claims}}
-        </p>
-        <p matLine>
-          Independent Claims:  {{formData.init_appl_details.num_indep_claims}}
-        </p>
-        <p matLine>
-          Drawings:  {{formData.init_appl_details.num_drawings}}
-        </p>
-        <p matLine>
-          Pages for Specification:  {{formData.init_appl_details.num_pages_description}}
-        </p>
-        <p matLine>
-          Pages for Claims:  {{formData.init_appl_details.num_pages_claims}}
-        </p>
-        <p matLine>
-          Pages for Drawings:  {{formData.init_appl_details.num_pages_drawings}}
-        </p>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div mat-subheader>International Filing Methods</div>
-      <mat-list-item>
-        <p matLine>Using PCT Method:  {{formData.pct_method}} </p>
-        <div matLine *ngIf="formData.pct_country">PCT Country:  {{formData.pct_country.long_name}}
-          <ng-container matLine [ngTemplateOutlet]="customDetDesc"
-                        [ngTemplateOutletContext]="{customApplDetails:formData.pct_method_customization.custom_appl_details}"></ng-container>
-        </div>
+<mat-list style="text-align: left;">
+  <mat-divider></mat-divider>
+  <div matSubheader>Family Details</div>
+  <mat-list-item class="mat-body-2">
+    <div matLine>
+      Family Name:  {{formData.family_name}}
+    </div>
+    <div matLine>Family Reference No:  {{formData.family_no}}</div>
+    <!--      <div matLine>Entity Size:  {{formData.entity_size.entity_size}}</div>-->
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Details on First Application</div>
+  <mat-list-item>
+    <p matLine>
+      Filing Date:  {{formData.init_appl_filing_date | date:"longDate"}}
+    </p>
+    <p matLine>
+      Country:  {{formData.init_appl_country.long_name}}
+    </p>
+    <p matLine>
+      Application Type:  {{formData.init_appl_type.application_type}}
+    </p>
+    <p matLine>
+      Claims:  {{formData.init_appl_details.num_claims}}
+    </p>
+    <p matLine>
+      Independent Claims:  {{formData.init_appl_details.num_indep_claims}}
+    </p>
+    <p matLine>
+      Drawings:  {{formData.init_appl_details.num_drawings}}
+    </p>
+    <p matLine>
+      Pages for Specification:  {{formData.init_appl_details.num_pages_description}}
+    </p>
+    <p matLine>
+      Pages for Claims:  {{formData.init_appl_details.num_pages_claims}}
+    </p>
+    <p matLine>
+      Pages for Drawings:  {{formData.init_appl_details.num_pages_drawings}}
+    </p>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>International Filing Methods</div>
+  <mat-list-item>
+    <p matLine>Using PCT Method:  {{formData.pct_method}} </p>
+    <div matLine *ngIf="formData.pct_country">PCT Country:  {{formData.pct_country.long_name}}
+      <ng-container matLine [ngTemplateOutlet]="customDetDesc"
+                    [ngTemplateOutletContext]="{customApplDetails:formData.pct_method_customization.custom_appl_details}"></ng-container>
+    </div>
 
-        <div  matLine>Using EPO Method:  {{formData.ep_method}}
-          <ng-container matLine [ngTemplateOutlet]="customDetDesc"
-                        [ngTemplateOutletContext]="{customApplDetails:formData.ep_method_customization.custom_appl_details}"></ng-container>
-        </div>
+    <div matLine>Using EPO Method:  {{formData.ep_method}}
+      <ng-container matLine [ngTemplateOutlet]="customDetDesc"
+                    [ngTemplateOutletContext]="{customApplDetails:formData.ep_method_customization.custom_appl_details}"></ng-container>
+    </div>
 
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div mat-subheader>Direct File Countries</div>
-      <mat-list-item *ngIf="formData.paris_countries">
-        <div matLine *ngIf="formData.paris_countries.length > 0">
-          <div matLine *ngFor="let c of formData.paris_countries">
-            {{c.country.long_name}}
-            <ng-container matLine [ngTemplateOutlet]="customDetDesc"
-                          [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
-          </div>
-        </div>
-      </mat-list-item>
-      <mat-divider *ngIf="formData.pct_method"></mat-divider>
-      <div *ngIf="formData.pct_method" mat-subheader>PCT National Phase Countries</div>
-      <mat-list-item *ngIf="formData.pct_countries">
-        <div matLine *ngIf="formData.pct_countries.length > 0">
-          <div matLine *ngFor="let c of formData.pct_countries">
-            {{c.country.long_name}}
-            <ng-container matLine [ngTemplateOutlet]="customDetDesc"
-                          [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
-          </div>
-        </div>
-      </mat-list-item>
-      <mat-divider *ngIf="formData.ep_method"></mat-divider>
-      <div *ngIf="formData.ep_method" mat-subheader>EP Validation Phase Countries</div>
-      <mat-list-item *ngIf="formData.ep_countries">
-        <div matLine *ngIf="formData.ep_countries.length > 0">
-          <div matLine *ngFor="let c of formData.ep_countries">
-            {{c.country.long_name}}
-            <ng-container matLine [ngTemplateOutlet]="customDetDesc"
-                          [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
-          </div>
-        </div>
-      </mat-list-item>
-    </mat-list>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Direct File Countries</div>
+  <mat-list-item *ngIf="formData.paris_countries">
+    <div matLine *ngIf="formData.paris_countries.length > 0">
+      <div matLine *ngFor="let c of formData.paris_countries">
+        {{c.country.long_name}}
+        <ng-container matLine [ngTemplateOutlet]="customDetDesc"
+                      [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
+      </div>
+    </div>
+  </mat-list-item>
+  <mat-divider *ngIf="formData.pct_method"></mat-divider>
+  <div *ngIf="formData.pct_method" mat-subheader>PCT National Phase Countries</div>
+  <mat-list-item *ngIf="formData.pct_countries">
+    <div matLine *ngIf="formData.pct_countries.length > 0">
+      <div matLine *ngFor="let c of formData.pct_countries">
+        {{c.country.long_name}}
+        <ng-container matLine [ngTemplateOutlet]="customDetDesc"
+                      [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
+      </div>
+    </div>
+  </mat-list-item>
+  <mat-divider *ngIf="formData.ep_method"></mat-divider>
+  <div *ngIf="formData.ep_method" mat-subheader>EP Validation Phase Countries</div>
+  <mat-list-item *ngIf="formData.ep_countries">
+    <div matLine *ngIf="formData.ep_countries.length > 0">
+      <div matLine *ngFor="let c of formData.ep_countries">
+        {{c.country.long_name}}
+        <ng-container matLine [ngTemplateOutlet]="customDetDesc"
+                      [ngTemplateOutletContext]="{customApplDetails:c.custom_appl_details}"></ng-container>
+      </div>
+    </div>
+  </mat-list-item>
+</mat-list>
 <ng-template #customDetDesc let-customApplDetails="customApplDetails">
   <div style="align-items: end; text-align: right;">
     <div class="mat-small" *ngIf="customApplDetails.num_claims">Number of Claims

@@ -65,7 +65,6 @@ export class EstTemplateGridV2Component implements OnInit {
 
   constructor() {
     this.defaultColDef = {
-      // flex: 1,
       resizable: true,
     };
     this.rowSelection = 'multiple';

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GenTransComponent } from './gen-trans.component';
+import {GenTransComponent} from './gen-trans.component';
 
 describe('GenTransComponent', () => {
   let component: GenTransComponent;

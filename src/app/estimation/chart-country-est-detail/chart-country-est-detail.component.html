@@ -1,0 +1,11 @@
+<div class="chartOverContainer" style="padding-top: 20px;">
+  <div style="display: block; " [ngStyle.lt-sm]="{'width.%': divStyle}">
+    <h1>Total Costs for {{this.country.long_name}}</h1>
+    <canvas baseChart height="1" width="2"
+            [data]="chartData"
+            [options]="lineChartOptions"
+            [type]="lineChartType"
+            (chartClick)="canvasClicked()"
+    ></canvas>
+  </div>
+</div>

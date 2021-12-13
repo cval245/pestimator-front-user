@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { AllowEstTempService } from './allow-est-temp.service';
+import {AllowEstTempService} from './allow-est-temp.service';
 
 describe('AllowEstTempService', () => {
   let service: AllowEstTempService;

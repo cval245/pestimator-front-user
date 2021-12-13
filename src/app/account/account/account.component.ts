@@ -16,7 +16,7 @@ export class AccountComponent implements OnInit {
     isDisabled = false;
     public userProfile: UserProfile;
     public userProfArr: any
-    public userDetail: UserDetail = new UserDetail(0,'','')
+    public userDetail: UserDetail = new UserDetail()
     public displayedColumns: string[] = ['key', 'value']
 
     constructor(

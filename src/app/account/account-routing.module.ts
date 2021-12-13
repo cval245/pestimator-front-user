@@ -8,7 +8,9 @@ import {ResetPasswordComponent} from './reset-password/reset-password.component'
 import {ResetUsernameComponent} from './reset-username/reset-username.component';
 import {ActivateComponent} from './activate/activate.component';
 import {ResetPasswordEmailComponent} from './reset-password-email/reset-password-email.component';
-import {ResetPasswordEmailConfirmationComponent} from './reset-password-email-confirmation/reset-password-email-confirmation.component';
+import {
+  ResetPasswordEmailConfirmationComponent
+} from './reset-password-email-confirmation/reset-password-email-confirmation.component';
 import {PasswordResetSuccessComponent} from './password-reset-success/password-reset-success.component';
 import {PasswordResetEmailSentComponent} from './password-reset-email-sent/password-reset-email-sent.component';
 import {ActivateEmailSentComponent} from './activate-email-sent/activate-email-sent.component';
@@ -18,7 +20,7 @@ import {BuyNewEstimateComponent} from "./buy-new-estimate/buy-new-estimate.compo
 import {CheckoutSuccessComponent} from "./checkout-success/checkout-success.component";
 import {CheckoutCancelComponent} from "./checkout-cancel/checkout-cancel.component";
 import {UserProfileComponent} from "./user-profile/user-profile.component";
-import {BuyEstimateGuard} from "./buy-estimate.guard";
+import {BuyEstimateGuard} from "../_guards/buy-estimate.guard";
 import {PrivacyPolicyComponent} from "./privacy-policy/privacy-policy.component";
 import {TermsOfUseComponent} from "./terms-of-use/terms-of-use.component";
 

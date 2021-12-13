@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { GetPDFService } from './get-pdf.service';
+import {GetPDFService} from './get-pdf.service';
 
 describe('GetPDFService', () => {
   let service: GetPDFService;

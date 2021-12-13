@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {menuOpen} from "../store/actions/menu.action";
+import {delay, takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-nav',
@@ -9,10 +11,23 @@ import {menuOpen} from "../store/actions/menu.action";
 })
 export class NavComponent {
 
-  constructor(private store: Store<{menuOpen: boolean}> ) { }
+  public isStaff: boolean = false;
+  private destroyed = new Subject<void>();
+
+  constructor(private store: Store<{menuOpen: boolean, userProfile: any}> ) {
+    this.store.select('userProfile').pipe(takeUntil(this.destroyed), delay(0)).subscribe(x => {
+      this.isStaff = x.userDetail.is_staff
+    })
+
+  }
 
 
   closeMenu() {
     this.store.dispatch(menuOpen({menuOpen: false}))
+  }
+
+  ngOnDestroy(): void{
+    this.destroyed.next()
+    this.destroyed.complete()
   }
 }

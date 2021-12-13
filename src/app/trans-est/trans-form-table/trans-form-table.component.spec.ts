@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TransFormTableComponent } from './trans-form-table.component';
+import {TransFormTableComponent} from './trans-form-table.component';
 
 describe('TransFormTableComponent', () => {
   let component: TransFormTableComponent;

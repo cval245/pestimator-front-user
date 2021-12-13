@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamDetTableComponent } from './fam-det-table.component';
+import {FamDetTableComponent} from './fam-det-table.component';
 
 describe('FamDetTableComponent', () => {
   let component: FamDetTableComponent;

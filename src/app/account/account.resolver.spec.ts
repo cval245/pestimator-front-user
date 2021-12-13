@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { AccountResolver } from './account.resolver';
+import {AccountResolver} from './account.resolver';
 
 describe('AccountResolver', () => {
   let resolver: AccountResolver;

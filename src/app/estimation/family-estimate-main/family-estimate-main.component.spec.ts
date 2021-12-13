@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamilyEstimateMainComponent } from './family-estimate-main.component';
+import {FamilyEstimateMainComponent} from './family-estimate-main.component';
 
 describe('FamilyEstimateMainComponent', () => {
   let component: FamilyEstimateMainComponent;

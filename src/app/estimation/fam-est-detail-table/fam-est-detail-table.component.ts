@@ -1,5 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, ViewChild} from '@angular/core';
 import {cloneDeep} from 'lodash';
+import {CountryAggedWise} from "../fam-est-detail/fam-est-detail.component";
 
 
 @Component({
@@ -8,7 +9,7 @@ import {cloneDeep} from 'lodash';
   styleUrls: ['./fam-est-detail-table.component.scss']
 })
 export class FamEstDetailTableComponent implements OnChanges, AfterViewInit {
-  @Input() countryAggeds: any = [{'country': ''}]
+  @Input() countryAggeds: CountryAggedWise[] = new Array<CountryAggedWise>()
   public displayColumns: string[] = ['country']
   public remainColumns = [{
     columnDef: 'year',

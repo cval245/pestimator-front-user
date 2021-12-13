@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CustomFilTransService } from './custom-fil-trans.service';
+import {CustomFilTransService} from './custom-fil-trans.service';
 
 describe('CustomFilTransService', () => {
   let service: CustomFilTransService;

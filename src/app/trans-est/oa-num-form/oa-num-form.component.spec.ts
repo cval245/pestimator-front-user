@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OaNumFormComponent } from './oa-num-form.component';
+import {OaNumFormComponent} from './oa-num-form.component';
 
 describe('OaNumFormComponent', () => {
   let component: OaNumFormComponent;

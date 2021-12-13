@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TransComplexTimeService } from './trans-complex-time.service';
+import {TransComplexTimeService} from './trans-complex-time.service';
 
 describe('TransComplexTimeService', () => {
   let service: TransComplexTimeService;

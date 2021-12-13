@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   constructor(
     breakpointObserver: BreakpointObserver,
     private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    private store: Store<{ authCred: any, loading: boolean, menuOpen: boolean}>,
+    private store: Store<{ authCred: any, loading: boolean, menuOpen: boolean, }>,
   ) {
     breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.store.select('authCred').pipe(takeUntil(this.destroyed), delay(0)
     ).subscribe(x => {
       this.isLoggedIn = x.isLoggedIn

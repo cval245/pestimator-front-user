@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CountryOanumService } from './country-oanum.service';
+import {CountryOanumService} from './country-oanum.service';
 
 describe('CountryOanumService', () => {
   let service: CountryOanumService;

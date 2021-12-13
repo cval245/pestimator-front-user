@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FamEstDetailTableComponent } from './fam-est-detail-table.component';
+import {FamEstDetailTableComponent} from './fam-est-detail-table.component';
 
 describe('FamEstDetailTableComponent', () => {
   let component: FamEstDetailTableComponent;

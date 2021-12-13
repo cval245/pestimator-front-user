@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { FileEstTempService } from './file-est-temp.service';
+import {FileEstTempService} from './file-est-temp.service';
 
 describe('FileEstTempService', () => {
   let service: FileEstTempService;

@@ -41,6 +41,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {menuOpenReducer} from "./store/reducers/menu.reducers";
 import {defaultDataServiceConfig} from "./store/dataserviceconfig";
 import {customDetailsReducer} from "./store/reducers/customDetails.reducers";
+import {userProfileReducer} from "./store/reducers/userProfile.reducers";
+import {UserProfileEffect} from "./store/effects/userProfile.effect";
 
 
 @NgModule({
@@ -67,13 +69,14 @@ import {customDetailsReducer} from "./store/reducers/customDetails.reducers";
         'authCred': authReducer,
         'menuOpen': menuOpenReducer,
         'customDetails': customDetailsReducer,
+        'userProfile': userProfileReducer,
       },
       {metaReducers}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([AuthEffectsNew]),
+    EffectsModule.forRoot([AuthEffectsNew, UserProfileEffect]),
     EntityDataModule.forRoot(entityConfig),
     LandingRoutingModule,
     ContentFreeRoutingModule,

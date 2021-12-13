@@ -1,4 +1,4 @@
-import { Action, createAction, props } from '@ngrx/store';
+import {Action, createAction, props} from '@ngrx/store';
 
 export enum AuthActionTypes {
     LOGIN = '[Auth] Login',

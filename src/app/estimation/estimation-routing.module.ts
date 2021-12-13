@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {FamilyEstimateMainComponent} from './family-estimate-main/family-estimate-main.component';
-import {LoggedInGuard} from '../_guards/logged-in.guard';
 import {FamEstDetailComponent} from './fam-est-detail/fam-est-detail.component';
 import {FamEstFormPageComponent} from './fam-est-form-page/fam-est-form-page.component';
 // import { SubmitFamEstFormComponent } from './submit-fam-est-form/submit-fam-est-form.component';
@@ -9,15 +8,15 @@ import {FamEstFormPageComponent} from './fam-est-form-page/fam-est-form-page.com
 const routes: Routes = [
   {
     path: 'estimations', component: FamilyEstimateMainComponent,
-    canActivate: [LoggedInGuard]
+    // canActivate: [LoggedInGuard]
   },
   {
     path: 'estimations/:udn', component: FamEstDetailComponent,
-    canActivate: [LoggedInGuard]
+    // canActivate: [LoggedInGuard]
   },
   {
     path: 'fam-est-form', component: FamEstFormPageComponent,
-    canActivate: [LoggedInGuard]
+    // canActivate: [LoggedInGuard]
   },
   // {path: 'submit-form', component: SubmitFamEstFormComponent,
   //  canActivate: [LoggedInGuard]},
