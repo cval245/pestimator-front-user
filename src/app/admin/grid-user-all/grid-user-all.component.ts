@@ -1,7 +1,9 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {UserAll} from "../_models/UserAll.model";
+import {UserAll} from "../../_models/UserAll.model";
 import {BtnCellRendererComponent} from "../btn-cell-renderer/btn-cell-renderer.component";
-import {ValueFormatterParams} from "@ag-grid-community/core";
+// import {ValueFormatterParams} from "@ag-grid-community/core";
+import {Module, ValueFormatterParams} from "@ag-grid-community/core";
+import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
 
 @Component({
   selector: 'app-grid-user-all',
@@ -13,6 +15,7 @@ export class GridUserAllComponent implements OnInit, OnChanges{
   public defaultColDef: any = {suppressMovable: true}
   public columnDefs: any;
   public frameworkComponents: BtnCellRendererComponent = {} as BtnCellRendererComponent;
+  public modules: Module[] = [ClientSideRowModelModule];
   constructor() {
   }
 

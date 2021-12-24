@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserAllService} from "../_services/user-all.service";
-import {UserAll} from "../_models/UserAll.model";
+import {UserAllService} from "../../_services/user-all.service";
+import {UserAll} from "../../_models/UserAll.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {map} from "lodash";

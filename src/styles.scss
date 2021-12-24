@@ -1,12 +1,9 @@
 @use '@angular/material' as mat;
 
 @import './theme.scss';
-@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
-//@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "~@ag-grid-community/core/dist/styles/ag-grid.scss";
+@import "~@ag-grid-community/core/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
 
-@import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss";
-//@import "../node_modules/ag-grid-community/dist/styles/ag-theme-material.css";
 
 html, body {
   height: 100%;
@@ -68,22 +65,13 @@ body {
 }
 
 .container {
-  //min-height: 100%;
-  //display: flex;
-  //flex-direction: column;
-  //flex: 0 auto;
+
   display: flex;
   min-height: 100%;
   flex-direction: column;
 }
 
 .over-main {
-  //flex: 1 1 auto;
-  //background-color: $light-background;
-
-  //display: flex;
-  //min-height: 100vh;
-  //flex-direction: column;
   flex: 1;
 }
 
@@ -227,6 +215,10 @@ app-footer {
       padding-bottom: 5px;
     }
   }
+}
+
+.mat-card{
+  background-color: $light-background;
 }
 
 .date-picker-container {

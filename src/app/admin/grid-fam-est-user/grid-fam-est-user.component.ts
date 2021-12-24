@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {FamEstUser} from "../_models/FamEstUser.model";
-import {ValueFormatterParams} from "@ag-grid-community/core";
+import {FamEstUser} from "../../_models/FamEstUser.model";
 import {BtnFamEstCellRendererComponent} from "../btn-fam-est-cell-renderer/btn-fam-est-cell-renderer.component";
+import {Module, ValueFormatterParams} from "@ag-grid-community/core";
+import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
 
 @Component({
   selector: 'app-grid-fam-est-user',
@@ -17,6 +18,7 @@ export class GridFamEstUserComponent implements OnChanges{
   public columnDefs: any;
   public frameworkComponents: BtnFamEstCellRendererComponent =  {} as BtnFamEstCellRendererComponent;
   public paginationPageSize: number = 10;
+  public modules: Module[] = [ClientSideRowModelModule];
   constructor() { }
 
   ngOnChanges() {

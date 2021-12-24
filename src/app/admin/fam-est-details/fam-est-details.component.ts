@@ -1,27 +1,27 @@
 import {Component, OnDestroy} from '@angular/core';
-import {FamilyAllService} from "../_services/family-all.service";
+import {FamilyAllService} from "../../_services/family-all.service";
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest, Subject, Subscription} from "rxjs";
-import {FamilyAll} from "../_models/FamilyAll.model";
+import {FamilyAll} from "../../_models/FamilyAll.model";
 import {switchMap} from "rxjs/operators";
-import {FamEstFormService} from "../../estimation/_services/fam-est-form.service";
-import {convertToFamEstForm, FamEstForm} from "../../estimation/_models/FamEstForm.model";
-import {Country} from "../../characteristics/_models/Country.model";
-import {ApplType} from "../../characteristics/_models/applType.model";
-import {EntitySize} from "../../characteristics/_models/entitySize.model";
-import {Language} from "../../characteristics/_models/Language.model";
-import {Application} from "../../application/_models/application.model";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
-import {FamilyService} from "../../portfolio/_services/family.service";
-import {CountryAllService} from "../../characteristics/_services/country-all.service";
-import {ApplicationService} from "../../application/_services/application.service";
-import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
-import {ApplDetailService} from "../../application/_services/appl-detail.service";
-import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
-import {DocFormatService} from "../../characteristics/_services/doc-format.service";
-import {LanguageService} from "../../characteristics/_services/language.service";
-import {FamEstDetTotService} from "../../estimation/_services/fam-est-det-tot.service";
-import {FamEstDetTot} from "../../estimation/_models/FamEstDetTot.model";
+import {FamEstFormService} from "../../_services/fam-est-form.service";
+import {convertToFamEstForm, FamEstForm} from "../../_models/FamEstForm.model";
+import {Country} from "../../_models/Country.model";
+import {ApplType} from "../../_models/applType.model";
+import {EntitySize} from "../../_models/entitySize.model";
+import {Language} from "../../_models/Language.model";
+import {Application} from "../../_models/application.model";
+import {IDocFormat} from "../../_models/DocFormat.model";
+import {FamilyService} from "../../_services/family.service";
+import {CountryAllService} from "../../_services/country-all.service";
+import {ApplicationService} from "../../_services/application.service";
+import {ApplTypeAllService} from "../../_services/appl-type-all.service";
+import {ApplDetailService} from "../../_services/appl-detail.service";
+import {EntitySizeService} from "../../_services/entity-size.service";
+import {DocFormatService} from "../../_services/doc-format.service";
+import {LanguageService} from "../../_services/language.service";
+import {FamEstDetTotService} from "../../_services/fam-est-det-tot.service";
+import {FamEstDetTot} from "../../_models/FamEstDetTot.model";
 
 @Component({
   selector: 'app-fam-est-details',

@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Activate} from '../activate.model'
 import {ActivateService} from '../activate.service';
-import {AccountService} from '../_services/account.service';
-import {User} from '../_models/user.model';
+import {AccountService} from '../../_services/account.service';
+import {User} from '../../_models/user.model';
 
 
 @Component({

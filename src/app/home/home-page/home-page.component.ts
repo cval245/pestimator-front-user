@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {FamEst} from "../../estimation/_models/FamEst.model";
+import {FamEst} from "../../_models/FamEst.model";
 import {combineLatest, Observable, Subscription} from "rxjs";
 import {map} from "lodash";
-import {FamEstService} from "../../estimation/_services/fam-est.service";
-import {FamilyService} from "../../portfolio/_services/family.service";
-import {Family} from "../../portfolio/_models/family.model";
+import {FamEstService} from "../../_services/fam-est.service";
+import {FamilyService} from "../../_services/family.service";
+import {Family} from "../../_models/family.model";
 import {filter} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {CountryService} from "../../characteristics/_services/country.service";
-import {ApplTypeService} from "../../characteristics/_services/appl-type.service";
-import {Country} from "../../characteristics/_models/Country.model";
-import {ApplType} from "../../characteristics/_models/applType.model";
+import {CountryService} from "../../_services/country.service";
+import {ApplTypeService} from "../../_services/appl-type.service";
+import {Country} from "../../_models/Country.model";
+import {ApplType} from "../../_models/applType.model";
 
 
 @Component({
@@ -65,7 +65,7 @@ export class HomePageComponent implements OnInit {
     let family = this.families.find(x => x.famestformdata == famestformdata_id)
     if (family){
       let udn = family.fam_est_form_data_udn
-      this.router.navigate(['/estimation/estimations/' + udn])
+      this.router.navigate(['/estimations/' + udn])
     }else{
       this.router.navigate(['/not-found'])
     }

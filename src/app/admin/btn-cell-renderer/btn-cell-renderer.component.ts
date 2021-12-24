@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
-import {ICellRendererAngularComp} from "ag-grid-angular";
-import {ICellRendererParams} from "ag-grid-community";
+import {ICellRendererAngularComp} from "@ag-grid-community/angular";
+import {ICellRendererParams} from "@ag-grid-community/core";
 import {Router} from "@angular/router";
+
+// import {ICellRendererParams} from "ag-grid-community";
 
 @Component({
   selector: 'app-btn-cell-renderer',

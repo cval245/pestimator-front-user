@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserProfile} from '../_models/userProfile.model';
+import {UserProfile} from '../../_models/userProfile.model';
 
 @Component({
   selector: 'app-user-profile-form',

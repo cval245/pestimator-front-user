@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
-import {AccountService} from '../_services/account.service';
+import {AccountService} from '../../_services/account.service';
 import {first} from 'rxjs/operators';
 
 

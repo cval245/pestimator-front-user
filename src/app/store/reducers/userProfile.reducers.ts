@@ -1,7 +1,7 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import * as userProfileActions from '../actions/userProfile.action';
-import {UserProfile} from "../../account/_models/userProfile.model";
-import {UserDetail} from "../../account/_models/userDetail.model";
+import {UserProfile} from "../../_models/userProfile.model";
+import {UserDetail} from "../../_models/userDetail.model";
 
 export const authFeatureName = 'auth';
 

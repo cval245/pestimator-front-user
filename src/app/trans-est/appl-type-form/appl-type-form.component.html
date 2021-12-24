@@ -4,15 +4,15 @@
 </button>
 
 <form [formGroup]="form">
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>Country:</mat-label>
     <input matInput type="text" formControlName="country">
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>Long Name:</mat-label>
     <input matInput type="text" formControlName="long_name">
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>ep bool:</mat-label>
     <mat-select class="custom-select"
                 formControlName="ep_bool">
@@ -20,7 +20,7 @@
       <mat-option [value]=false>False</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>PCT RO Bool:</mat-label>
     <mat-select class="custom-select"
                 formControlName="pct_ro_bool">
@@ -28,7 +28,7 @@
       <mat-option [value]=false>False</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>PCT Accept Bool:</mat-label>
     <mat-select class="custom-select"
                 formControlName="pct_accept_bool">
@@ -36,7 +36,7 @@
       <mat-option [value]=false>False</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>active bool:</mat-label>
     <mat-select class="custom-select"
                 formControlName="active_bool">
@@ -44,18 +44,18 @@
       <mat-option [value]=false>False</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>EP Validation Translation Required bool:</mat-label>
     <mat-select class="custom-select"
                 formControlName="ep_validation_translation_required">
       <mat-option *ngFor="let t of epValidationTranslate" [value]="t.id">{{t.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>Color:</mat-label>
     <input matInput type="text" formControlName="color">
   </mat-form-field>
-  <mat-form-field color="accent" appearance="outline">
+  <mat-form-field color="primary" appearance="outline">
     <mat-label>Currency Name:</mat-label>
     <input matInput type="text" formControlName="currency_name">
   </mat-form-field>

@@ -1,14 +1,26 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GridApi, GridOptions, ValueFormatterParams,} from "@ag-grid-community/core";
-import {Country} from "../../characteristics/_models/Country.model";
-import {ApplType} from "../../characteristics/_models/applType.model";
-import {EntitySize} from "../../characteristics/_models/entitySize.model";
+// import {
+//   // GridApi,
+//   // GridOptions,
+//   // ValueFormatterParams,
+// } from "@ag-grid-community/core";
+import {Country} from "../../_models/Country.model";
+import {ApplType} from "../../_models/applType.model";
+import {EntitySize} from "../../_models/entitySize.model";
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
-import {FirstDataRenderedEvent, ValueGetterParams, ValueSetterParams} from "ag-grid-community";
+import {
+  GridApi,
+  GridOptions,
+  Module,
+  ValueFormatterParams,
+  ValueGetterParams,
+  ValueSetterParams
+} from "@ag-grid-community/core";
 import {ConditionRendererComponent} from "../condition-renderer/condition-renderer.component";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {IDocFormat} from "../../_models/DocFormat.model";
 import {IFeeCategory} from "../_models/FeeCategory.model";
+import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
 
 
 interface USOATableWise {
@@ -46,6 +58,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
   public params: any
   public headerHeight: number = 200;
   public getRowNodeId: any;
+  public modules: Module[] = [ClientSideRowModelModule];
   @Input() rowData: USOATableWise[] = new Array<USOATableWise>();
   // @Input() currencies: Currency[] = new Array<Currency>()
   @Input() currencies_list: string[] = new Array<string>()
@@ -385,7 +398,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
     this.gridApi.setFilterModel(null);
   }
 
-  onFirstDataRendered(params: FirstDataRenderedEvent) {
+  onFirstDataRendered(params: any) {
     // params.api.sizeColumnsToFit()
   }
 

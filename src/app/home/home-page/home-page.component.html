@@ -6,7 +6,7 @@
 <div fxShow.sm fxShow.gt-sm fxHide gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;"
 >
-  <mat-card>
+  <mat-card class="mat-elevation-z4">
     <mat-card-header>
       <mat-card-title>New Estimate</mat-card-title>
     </mat-card-header>
@@ -14,19 +14,19 @@
       <p>
         Create another estimate here
       </p>
-      <img src="assets/images/Peregrine-falcon.webp" style="width: 100%">
+      <img alt="bird image" src="assets/images/Peregrine-falcon.webp" style="width: 100%">
     </mat-card-content>
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimation/fam-est-form">
+                routerLink="/fam-est-form">
           Create Estimate
         </button>
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="mat-elevation-z4">
     <mat-card-header>
       <mat-card-title>Coming Soon...</mat-card-title>
     </mat-card-header>
@@ -42,7 +42,7 @@
     <mat-card-footer>
     </mat-card-footer>
   </mat-card>
-  <mat-card gdcolumn="auto / span 2" style="grid-column: auto / span 2;">
+  <mat-card class="mat-elevation-z4" gdcolumn="auto / span 2" style="grid-column: auto / span 2;">
     <mat-card-header>
       <mat-card-title>View Estimates</mat-card-title>
     </mat-card-header>
@@ -56,7 +56,7 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimation/estimations">
+                routerLink="/estimations">
           View All
         </button>
       </mat-card-actions>
@@ -76,7 +76,7 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimation/fam-est-form">
+                routerLink="/fam-est-form">
           Create Estimate
         </button>
       </mat-card-actions>
@@ -109,7 +109,7 @@
     <mat-card-footer>
       <mat-card-actions align="end">
         <button mat-flat-button color="accent" style="right: 15px"
-                routerLink="/estimation/estimations">
+                routerLink="/estimations">
           View All
         </button>
       </mat-card-actions>

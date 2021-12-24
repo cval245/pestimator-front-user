@@ -3,8 +3,8 @@ import {FormControl} from '@angular/forms';
 import {cloneDeep, find, forEach, map} from 'lodash';
 import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {ApplType} from 'src/app/characteristics/_models/applType.model';
-import {CountryAllService} from 'src/app/characteristics/_services/country-all.service';
+import {ApplType} from 'src/app/_models/applType.model';
+import {CountryAllService} from 'src/app/_services/country-all.service';
 import {IAllowTrans} from '../_models/AllowTrans.model';
 import {ICountryOANum} from '../_models/CountryOANum.model';
 import {ICustomFilTrans} from '../_models/CustomFilTrans.model';
@@ -17,26 +17,24 @@ import {CustomFilTransService} from '../_services/custom-fil-trans.service';
 import {IssueTransService} from '../_services/issue-trans.service';
 import {OaTransService} from '../_services/oa-trans.service';
 import {PublTransService} from '../_services/publ-trans.service';
-import {ApplTypeAllService} from "../../characteristics/_services/appl-type-all.service";
-import {CountryAll} from "../../characteristics/_models/CountryAll.model";
-import {LanguageService} from "../../characteristics/_services/language.service";
-import {Language} from "../../characteristics/_models/Language.model";
+import {ApplTypeAllService} from "../../_services/appl-type-all.service";
+import {CountryAll} from "../../_models/CountryAll.model";
+import {LanguageService} from "../../_services/language.service";
+import {Language} from "../../_models/Language.model";
 import {ITransComplexTime} from "../_models/TransComplexTime";
 import {TransComplexTimeService} from "../_services/trans-complex-time.service";
-import {
-  EpValidationTranslationRequiredService
-} from "../../characteristics/_services/ep-validation-translation-required.service";
-import {IEPValidationTranslationRequired} from "../../characteristics/_models/IEPValidationTranslationRequired.model";
-import {EntitySizeService} from "../../characteristics/_services/entity-size.service";
-import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {EpValidationTranslationRequiredService} from "../../_services/ep-validation-translation-required.service";
+import {IEPValidationTranslationRequired} from "../../_models/IEPValidationTranslationRequired.model";
+import {EntitySizeService} from "../../_services/entity-size.service";
+import {EntitySize} from "../../_models/entitySize.model";
 import {TransFilingRequirementsService} from "../_services/trans-filing-requirements.service";
 import {ITransFilReq, ITransFilReqFull} from "../_models/TransFilReq.model";
 import {RequestExamTransService} from "../_services/request-exam-trans.service";
 import {IRequestExamTrans} from "../_models/RequestExamTrans.model";
-import {DocFormatService} from "../../characteristics/_services/doc-format.service";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
-import {IDocFormatCountry} from "../../characteristics/_models/DocFormatCountry.model";
-import {DocFormatCountryService} from "../../characteristics/_services/doc-format-country.service";
+import {DocFormatService} from "../../_services/doc-format.service";
+import {IDocFormat} from "../../_models/DocFormat.model";
+import {IDocFormatCountry} from "../../_models/DocFormatCountry.model";
+import {DocFormatCountryService} from "../../_services/doc-format-country.service";
 
 interface CountryWise {
   id: number,

@@ -4,9 +4,9 @@ import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
 import {Observable, Subject, throwError} from 'rxjs';
 import {catchError, takeUntil} from 'rxjs/operators';
-import {User} from '../_models/user.model';
+import {User} from '../../_models/user.model';
 import {Store} from '@ngrx/store';
-import {AccountService} from '../_services/account.service';
+import {AccountService} from '../../_services/account.service';
 import {Router} from '@angular/router';
 
 @Injectable()

@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {ApplType} from "../../characteristics/_models/applType.model";
+import {ApplType} from "../../_models/applType.model";
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {CountryAll} from "../../characteristics/_models/CountryAll.model";
-import {Language} from "../../characteristics/_models/Language.model";
-import {IEPValidationTranslationRequired} from "../../characteristics/_models/IEPValidationTranslationRequired.model";
-import {EntitySize} from "../../characteristics/_models/entitySize.model";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
+import {CountryAll} from "../../_models/CountryAll.model";
+import {Language} from "../../_models/Language.model";
+import {IEPValidationTranslationRequired} from "../../_models/IEPValidationTranslationRequired.model";
+import {EntitySize} from "../../_models/entitySize.model";
+import {IDocFormat} from "../../_models/DocFormat.model";
 import {cloneDeep, filter, flatMap, map} from "lodash";
 
 

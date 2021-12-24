@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AccountService} from '../account/_services/account.service';
+import {AccountService} from '../_services/account.service';
 import {menuOpen} from "../store/actions/menu.action";
 import {delay} from "rxjs/operators";
 

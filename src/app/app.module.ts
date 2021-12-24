@@ -101,8 +101,10 @@ import {UserProfileEffect} from "./store/effects/userProfile.effect";
     },
     {provide: HttpUrlGenerator, useClass: MyHttpUrlGenerator},
     {provide: DEFAULT_CURRENCY_CODE, useValue: 'USD'},
-    {provide: RECAPTCHA_SETTINGS,
-    useValue: {siteKey: environment.RECAPTCHA_SITE_KEY} as RecaptchaSettings}
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {siteKey: environment.RECAPTCHA_SITE_KEY} as RecaptchaSettings
+    }
   ],
   bootstrap: [AppComponent]
 })

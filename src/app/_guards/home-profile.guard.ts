@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {UserProfileService} from "../account/_services/user-profile.service";
-import {UserProfile} from "../account/_models/userProfile.model";
+import {UserProfileService} from "../_services/user-profile.service";
+import {UserProfile} from "../_models/userProfile.model";
 
 
 @Injectable({
@@ -23,7 +23,7 @@ export class HomeProfileGuard implements CanActivate {
       }
       else{
         this.return_bool = true
-        this.router.navigateByUrl('/home/home')
+        this.router.navigateByUrl('/home')
       }
     })
 

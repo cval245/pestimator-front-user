@@ -4,7 +4,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {filter, takeUntil} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {login} from '../../store/actions/auth.action';
-import {Credentials} from '../_models/credentials.model';
+import {Credentials} from '../../_models/credentials.model';
 import {Subject} from "rxjs";
 
 @Component({

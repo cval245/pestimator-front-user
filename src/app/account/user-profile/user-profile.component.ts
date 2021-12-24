@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {UserProfile} from '../_models/userProfile.model';
-import {UserProfileService} from '../_services/user-profile.service';
+import {UserProfile} from '../../_models/userProfile.model';
+import {UserProfileService} from '../../_services/user-profile.service';
 import {toPairs} from 'lodash';
 import {Router} from "@angular/router";
 

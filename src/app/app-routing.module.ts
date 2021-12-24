@@ -12,8 +12,18 @@ const routes: Routes = [
     canActivate:  [IsStaffLoggedInGuard]
   },
   {
-    path: 'estimation', //resolve: {isLoggedIn: IsLoggedInResolver},
-    loadChildren: () => import('./estimation/estimation.module').then(m => m.EstimationModule),
+    path: 'fam-est-form', //resolve: {isLoggedIn: IsLoggedInResolver},
+    loadChildren: () => import('./fam-est-form-page/fam-est-form-page.module').then(m => m.FamEstFormPageModule),
+    canActivate:  [LoggedInGuard]
+  },
+  {
+    path: 'estimations/:udn', //resolve: {isLoggedIn: IsLoggedInResolver},
+    loadChildren: () => import('./estimations-detail-page/estimations-detail-page.module').then(m => m.EstimationsDetailPageModule),
+    canActivate:  [LoggedInGuard]
+  },
+  {
+    path: 'estimations', //resolve: {isLoggedIn: IsLoggedInResolver},
+    loadChildren: () => import('./estimations-page/estimations-page.module').then(m => m.EstimationsPageModule),
     canActivate:  [LoggedInGuard]
   },
   {

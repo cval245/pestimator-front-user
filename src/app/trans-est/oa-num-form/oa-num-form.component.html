@@ -4,13 +4,13 @@
         <td mat-cell class="mat-cell" *matCellDef="let element">
         {{element.id}}</td>
     </ng-container>
-    
+
     <ng-container matColumnDef="date_diff">
         <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
         <td mat-cell *matCellDef="let element">
         <div *ngIf="editingRow==element.id; else datediff">
         <div [formGroup]="form">
-        <mat-form-field appearance="outline" color="accent">
+        <mat-form-field appearance="outline" color="primary">
             <mat-label>Date Diff</mat-label>
             <input matInput type="text"
                     formControlName="date_diff">
@@ -26,13 +26,13 @@
                 </ng-template>
         </td>
     </ng-container>
-    
+
     <ng-container matColumnDef="oa_total">
         <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>OANum</h3></th>
         <td mat-cell *matCellDef="let element">
         <div *ngIf="editingRow==element.id; else oanum">
         <div [formGroup]="form">
-        <mat-form-field appearance="outline" color="accent">
+        <mat-form-field appearance="outline" color="primary">
             <mat-label>OANum</mat-label>
             <input matInput type="text"
                     formControlName="oa_total">
@@ -49,7 +49,7 @@
         </td>
     </ng-container>
 
-        
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row (dblclick)="editRow(row)"
     *matRowDef="let row; columns: displayedColumns;">

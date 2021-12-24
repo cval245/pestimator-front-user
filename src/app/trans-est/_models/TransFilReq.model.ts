@@ -1,5 +1,5 @@
-import {CountryAll} from "../../characteristics/_models/CountryAll.model";
-import {ApplType} from "../../characteristics/_models/applType.model";
+import {CountryAll} from "../../_models/CountryAll.model";
+import {ApplType} from "../../_models/applType.model";
 
 export interface ITransFilReq{
   country: number

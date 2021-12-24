@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ICustomFilTrans} from '../_models/CustomFilTrans.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Country} from 'src/app/characteristics/_models/Country.model';
-import {ApplType} from 'src/app/characteristics/_models/applType.model';
+import {Country} from 'src/app/_models/Country.model';
+import {ApplType} from 'src/app/_models/applType.model';
 import {concat, dropRight} from 'lodash';
 import {ITransComplexTime} from "../_models/TransComplexTime";
 import {ITransFilReqFull} from "../_models/TransFilReq.model";

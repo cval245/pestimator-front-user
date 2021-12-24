@@ -4,7 +4,7 @@ import {HomePageComponent} from './home-page/home-page.component';
 import {HomeProfileGuard} from "../_guards/home-profile.guard";
 
 const routes: Routes = [
-    {path: 'home', component: HomePageComponent,
+    {path: '', component: HomePageComponent,
      canActivate: [ HomeProfileGuard ]},
 ];
 

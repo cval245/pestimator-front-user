@@ -7,8 +7,8 @@ import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as userProfileActions from '../actions/userProfile.action'
 import {Store} from '@ngrx/store';
 import {combineLatest, EMPTY} from "rxjs";
-import {UserProfileService} from "../../account/_services/user-profile.service";
-import {UserDetailService} from "../../account/_services/user-detail.service";
+import {UserProfileService} from "../../_services/user-profile.service";
+import {UserDetailService} from "../../_services/user-detail.service";
 import {loginComplete} from "../actions/auth.action";
 
 @Injectable()
@@ -45,7 +45,7 @@ export class UserProfileEffect{
         //           refreshTimer: this.getExpTimeAccess(profile.access)
         //         })
         //       })
-        //       , tap(() => this.router.navigate(['/home/home']))
+        //       , tap(() => this.router.navigate(['/home']))
         //       , catchError(error => {
         //         return of(loginFailure({error}))
         //       })

@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, ViewChild} from '@angular/core';
 import {cloneDeep} from 'lodash';
-import {CountryAggedWise} from "../fam-est-detail/fam-est-detail.component";
+import {CountryAggedWise} from "../../estimations-detail-page/fam-est-detail/fam-est-detail.component";
 
 
 @Component({

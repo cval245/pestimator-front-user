@@ -16,7 +16,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {TransEstRoutingModule} from "./trans-est-routing.module";
 import {ApplTypeFormComponent} from './appl-type-form/appl-type-form.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {AgGridModule} from "ag-grid-angular";
+import {AgGridModule} from "@ag-grid-community/angular";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatFormFieldModule} from "@angular/material/form-field";

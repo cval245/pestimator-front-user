@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FamEstForm} from "../_models/FamEstForm.model";
+import {FamEstForm} from "../../_models/FamEstForm.model";
 
 @Component({
   selector: 'app-parameter-details',

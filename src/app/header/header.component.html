@@ -14,13 +14,13 @@
       </div>
     </mat-toolbar>
   <mat-toolbar *ngIf="isLoggedIn" color="primary" fxHide fxShow.gt-sm>
-    <a routerLink="/home/home">
+    <a routerLink="/home">
       <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
         <img style="width: 100%; height: 100%; object-fit: cover"
              src="assets/images/estpat-logo-trans.svg" alt="">
       </div>
     </a>
-    <a mat-button routerLink="/home/home"><p class="mat-display-1" style="margin-bottom: 0px">EstPat</p></a>
+    <a mat-button routerLink="/home"><p class="mat-display-1" style="margin-bottom: 0px">EstPat</p></a>
     <div fxFlex fxLayout="row" fxLayoutAlign="end center">
       <a mat-flat-button color="accent" routerLink="/account"><p class="mat-h3">Account</p></a>
       <a mat-button (click)="logout()"><p class="mat-h3">Logout</p></a>
@@ -59,7 +59,7 @@
     </button>
 
     <span class="example-spacer"></span>
-    <a routerLink="/home/home" aria-label="home page button 1">
+    <a routerLink="/home" aria-label="home page button 1">
       <div style="width: 50px; height: 50px; text-align: center; padding: 0px;">
         <img style="width: 100%; height: 100%; object-fit: cover"
              src="assets/images/estpat-logo-trans.svg" alt="">

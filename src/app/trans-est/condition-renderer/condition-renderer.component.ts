@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {ICellRendererAngularComp} from "ag-grid-angular";
-import {ICellRendererParams} from "ag-grid-community";
+import {ICellRendererAngularComp} from "@ag-grid-community/angular";
 import {forIn} from "lodash";
 import {MatDialog} from "@angular/material/dialog";
 import {ConditionsFormComponent} from "../conditions-form/conditions-form.component";
-import {Country} from "../../characteristics/_models/Country.model";
+import {Country} from "../../_models/Country.model";
+// import {ICellRendererParams} from "ag-grid-community";
+import {ICellRendererParams} from "@ag-grid-community/core";
 
 
 // export interface IDialogData{
@@ -36,11 +37,13 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   }
 
 
+  // @ts-ignore
   agInit(params: ICellRendererParams): void{
     this.params = params;
     this.createChips(this.params)
   }
 
+  // @ts-ignore
   refresh(params: ICellRendererParams): boolean{
     this.params = params;
     this.createChips(this.params)

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
-import {UserProfile} from '../_models/userProfile.model';
-import {UserProfileService} from '../_services/user-profile.service';
+import {UserProfile} from '../../_models/userProfile.model';
+import {UserProfileService} from '../../_services/user-profile.service';
 import {toPairs} from 'lodash';
-import {UserDetailService} from "../_services/user-detail.service";
-import {UserDetail} from "../_models/userDetail.model";
+import {UserDetailService} from "../../_services/user-detail.service";
+import {UserDetail} from "../../_models/userDetail.model";
 
 @Component({
   selector: 'app-account',

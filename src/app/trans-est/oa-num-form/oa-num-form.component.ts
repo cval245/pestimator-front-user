@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {concat, dropRight} from 'lodash';
-import {Country} from 'src/app/characteristics/_models/Country.model';
+import {Country} from 'src/app/_models/Country.model';
 import {ICountryOANum} from '../_models/CountryOANum.model';
 
 @Component({

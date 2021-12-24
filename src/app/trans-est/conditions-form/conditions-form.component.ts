@@ -2,21 +2,21 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {IConditions} from "../_models/Conditions.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {EntitySizeService} from 'src/app/characteristics/_services/entity-size.service';
-import {EntitySize} from "../../characteristics/_models/entitySize.model";
+import {EntitySizeService} from 'src/app/_services/entity-size.service';
+import {EntitySize} from "../../_models/entitySize.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {ComplexConditionsService} from "../_services/complex-conditions.service";
-import {ComplexTimeConditionsService} from "../../estimation/_services/complex-time-conditions.service";
+import {ComplexTimeConditionsService} from "../../_services/complex-time-conditions.service";
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
 import {ConditionsService} from "../_services/conditions.service";
 import {forIn} from "lodash";
-import {DocFormatService} from "../../characteristics/_services/doc-format.service";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
-import {Country} from "../../characteristics/_models/Country.model";
-import {LanguageService} from "../../characteristics/_services/language.service";
-import {Language} from "../../characteristics/_models/Language.model";
+import {DocFormatService} from "../../_services/doc-format.service";
+import {IDocFormat} from "../../_models/DocFormat.model";
+import {Country} from "../../_models/Country.model";
+import {LanguageService} from "../../_services/language.service";
+import {Language} from "../../_models/Language.model";
 
 @Component({
   selector: 'app-conditions-form',

@@ -1,6 +1,6 @@
 import {Action, createAction, props} from '@ngrx/store';
-import {UserProfile} from "../../account/_models/userProfile.model";
-import {UserDetail} from "../../account/_models/userDetail.model";
+import {UserProfile} from "../../_models/userProfile.model";
+import {UserDetail} from "../../_models/userDetail.model";
 
 export enum AuthActionTypes {
   GET = '[userProfile] GET',

@@ -30,7 +30,8 @@
     "@stripe/stripe-js": "^1.18.0",
     "@types/flat": "^5.0.1",
     "@types/lodash": "^4.14.170",
-    "ag-grid-community": "^26.1.0",
+    "@ag-grid-community/client-side-row-model": "^26.2.0",
+    "@ag-grid-community/angular": "^26.2.0",
     "file-saver": "^2.0.5",
     "flat": "^5.0.2",
     "lodash": "^4.17.21",
@@ -39,9 +40,12 @@
     "rxjs": "^6.6.7",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
+
   },
   "devDependencies": {
-    "@ag-grid-community/core": "^26.1.0",
+    "@ag-grid-community/client-side-row-model": "^26.2.0",
+    "@ag-grid-community/angular": "^26.2.0",
+    "tslib": "^2.1.0",
     "@angular-devkit/build-angular": "~13.0.4",
     "@angular-eslint/builder": "13.0.1",
     "@angular-eslint/eslint-plugin": "13.0.1",
@@ -56,7 +60,6 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
-    "ag-grid-angular": "^26.1.0",
     "chart.js": "^3.3.2",
     "eslint": "^7.32.0",
     "jasmine-core": "~3.10.1",

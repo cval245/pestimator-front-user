@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from '@ngrx/effects';
 import {catchError, exhaustMap, map, switchMap, tap} from 'rxjs/operators';
-import {User} from '../../account/_models/user.model';
-import {AccountService} from '../../account/_services/account.service';
+import {User} from '../../_models/user.model';
+import {AccountService} from '../../_services/account.service';
 
 
 import {
@@ -41,7 +41,7 @@ export class AuthEffectsNew {
                           refreshTimer: this.getExpTimeAccess(profile.access)
                         })
                       })
-                      , tap(() => this.router.navigate(['/home/home']))
+                      , tap(() => this.router.navigate(['/home']))
                       , catchError(error => {
                         return of(loginFailure({error}))
                       })

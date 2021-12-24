@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserProfileService} from "../_services/user-profile.service";
-import {UserProfile} from "../_models/userProfile.model";
+import {UserProfileService} from "../../_services/user-profile.service";
+import {UserProfile} from "../../_models/userProfile.model";
 
 @Component({
   selector: 'app-buy-new-estimate',

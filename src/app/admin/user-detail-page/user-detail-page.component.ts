@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {UserAllService} from "../_services/user-all.service";
+import {UserAllService} from "../../_services/user-all.service";
 import {takeUntil} from "rxjs/operators";
 import {clone, map} from "lodash";
-import {UserAll} from "../_models/UserAll.model";
+import {UserAll} from "../../_models/UserAll.model";
 import {Subject} from "rxjs";
-import {FamEstUserService} from "../_services/fam-est-user.service";
-import {FamEstUser} from "../_models/FamEstUser.model";
-import {UserProfileAllService} from "../_services/user-profile-all.service";
-import {UserProfileAll} from "../_models/UserProfileAll.model";
+import {FamEstUserService} from "../../_services/fam-est-user.service";
+import {FamEstUser} from "../../_models/FamEstUser.model";
+import {UserProfileAllService} from "../../_services/user-profile-all.service";
+import {UserProfileAll} from "../../_models/UserProfileAll.model";
 import {FormControl} from "@angular/forms";
 
 @Component({

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Application} from 'src/app/application/_models/application.model';
+import {Application} from 'src/app/_models/application.model';
 
 @Component({
   selector: 'app-fam-det-table',

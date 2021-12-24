@@ -1,7 +1,7 @@
 import {createAction, props} from '@ngrx/store';
-import {Credentials} from 'src/app/account/_models/credentials.model';
-import {RefreshModel} from 'src/app/account/_models/TimerRefresh.model';
-import {User} from 'src/app/account/_models/user.model';
+import {Credentials} from 'src/app/_models/credentials.model';
+import {RefreshModel} from 'src/app/_models/TimerRefresh.model';
+import {User} from 'src/app/_models/user.model';
 
 export const checkAuth = createAction('[Auth] checkAuth');
 export const checkAuthComplete = createAction(

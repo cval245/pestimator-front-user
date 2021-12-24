@@ -1,7 +1,7 @@
 import {IComplexConditions} from "./ComplexConditions.model";
 import {IComplexTimeConditions} from "./IComplexTimeConditions";
-import {IDocFormat} from "../../characteristics/_models/DocFormat.model";
-import {Language} from "../../characteristics/_models/Language.model";
+import {IDocFormat} from "../../_models/DocFormat.model";
+import {Language} from "../../_models/Language.model";
 
 export interface IConditions {
   id: number;
