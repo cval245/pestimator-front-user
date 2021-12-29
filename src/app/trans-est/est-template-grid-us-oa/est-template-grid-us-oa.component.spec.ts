@@ -21,5 +21,5 @@ describe('EstTemplateGridV2Component', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  })
 });

@@ -173,7 +173,9 @@ export class FormPageComponent implements OnInit, OnDestroy {
         this.oaNumSer.setFilter({
           country_id: x
         })
-        this.reqs = find(this.countryRequirements, y => y.country.id == x)!
+        if (this.countryRequirements.length > 0) {
+          this.reqs = find(this.countryRequirements, y => y.country.id == x)!
+        }
       })
       this.cstmFilSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
