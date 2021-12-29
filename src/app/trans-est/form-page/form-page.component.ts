@@ -88,8 +88,8 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private tranFilReqSer: TransFilingRequirementsService,
   ) {
     combineLatest([
-      this.applTypeSer.entities$,
-      this.countrySer.entities$,
+      this.applTypeSer.getAllUnlessAlreadyLoaded(),
+      this.countrySer.getAllUnlessAlreadyLoaded(),
       this.tranFilReqSer.getData(),
     ])
       .pipe(takeUntil(this.unsubscribe$))
@@ -173,6 +173,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
         this.oaNumSer.setFilter({
           country_id: x
         })
+        console.log('ttttgggg', this.countryRequirements)
         if (this.countryRequirements.length > 0) {
           this.reqs = find(this.countryRequirements, y => y.country.id == x)!
         }
