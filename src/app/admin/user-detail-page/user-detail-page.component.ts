@@ -36,8 +36,8 @@ export class UserDetailPageComponent implements OnInit, OnDestroy {
     this.userProfAllSer.getWithQuery('user_id='+user_id).pipe(takeUntil(this.destroy)).subscribe(x => {
       console.log('x', x)
       this.userProAll = x[0]
-      this.estNumFormControl.patchValue(this.userProAll.estimates_remaining)
-      this.estNumFormControl.disable()
+      // this.estNumFormControl.patchValue(this.userProAll.estimates_remaining)
+      // this.estNumFormControl.disable()
     })
     this.userAllSer.getByKey(user_id).pipe(takeUntil(this.destroy)).subscribe(x =>{
       this.userAll = x
@@ -67,7 +67,7 @@ export class UserDetailPageComponent implements OnInit, OnDestroy {
 
   onSubmit(){
     let userAllProf = clone(this.userProAll)
-    userAllProf.estimates_remaining = this.estNumFormControl.value
+    // userAllProf.estimates_remaining = this.estNumFormControl.value
 
     this.userProfAllSer.update(userAllProf).subscribe(x =>{
       this.userProAll = x

@@ -21,7 +21,7 @@ export class UserProfileFormComponent {
       city: ['', Validators.required],
       state: ['', Validators.required],
       zip_code: ['', Validators.required],
-      estimates_remaining: ['']
+      // estimates_remaining: ['']
     })
   }
 

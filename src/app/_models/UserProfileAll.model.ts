@@ -6,7 +6,7 @@ export class UserProfileAll {
   public city: string = ''
   public state: string = ''
   public zip_code: string = ''
-  public estimates_remaining: number = 1
+  // public estimates_remaining: number = 1
 
   constructor(init?: Partial<UserProfileAll>) {
     Object.assign(this, init)

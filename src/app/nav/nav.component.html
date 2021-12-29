@@ -15,10 +15,7 @@
            (click)="closeMenu()">
           <p class="mat-h3">New Estimation</p>
             </a>
-        <a mat-button
-         routerLink="/account/buy-new-estimate"
-           (click)="closeMenu()">
-          <p class="mat-h3">Buy More Estimates</p></a>
+
       <a *ngIf="isStaff"
          mat-button
          routerLink="/admin/main"

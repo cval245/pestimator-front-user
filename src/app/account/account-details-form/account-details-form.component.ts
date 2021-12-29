@@ -23,7 +23,7 @@ export class AccountDetailsFormComponent implements OnInit {
           city: ['', Validators.required],
           state: ['', Validators.required],
           zip_code: ['', Validators.required],
-          estimates_remaining: ['']
+          // estimates_remaining: ['']
         })
     }
 
