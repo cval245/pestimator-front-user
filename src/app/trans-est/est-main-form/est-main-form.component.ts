@@ -262,7 +262,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
         // this.conditions = x.slice(0)
         this.conditions = x
         this.conditions = clone(this.conditions)
-        console.log('this.cond, why no update')
         this.setFilters(this.country.id)
       })
 
@@ -440,7 +439,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   docFormatSet<TDocFormatWise extends OverDocFormatWise>(arg: TDocFormatWise[]): TDocFormatWise[] {
     return map<TDocFormatWise, TDocFormatWise>(arg, (x: TDocFormatWise) => {
       let d = this.docFormats.find(y => y.id == x.conditions.doc_format);
-      console.log('ddd', d)
       let conditions = {...x.conditions, 'doc_format': d}
       return {...x, conditions}
     })

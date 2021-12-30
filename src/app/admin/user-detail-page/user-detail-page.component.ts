@@ -31,10 +31,8 @@ export class UserDetailPageComponent implements OnInit, OnDestroy {
     private userProfAllSer: UserProfileAllService,
     private famEstUserSer: FamEstUserService,
   ) {
-    console.log('this.route.snapshot.params', this.route.snapshot.params)
     let user_id = this.route.snapshot.params.id
     this.userProfAllSer.getWithQuery('user_id='+user_id).pipe(takeUntil(this.destroy)).subscribe(x => {
-      console.log('x', x)
       this.userProAll = x[0]
       // this.estNumFormControl.patchValue(this.userProAll.estimates_remaining)
       // this.estNumFormControl.disable()

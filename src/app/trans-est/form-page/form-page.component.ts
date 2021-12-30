@@ -41,6 +41,16 @@ interface CountryWise {
   country: any;
 }
 
+interface ApplTypeWise {
+  id: number,
+  appl_type: any;
+}
+
+interface ComplexTimeWise {
+  id: number,
+  trans_complex_time_condition: any;
+}
+
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
@@ -173,7 +183,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
         this.oaNumSer.setFilter({
           country_id: x
         })
-        console.log('ttttgggg', this.countryRequirements)
         if (this.countryRequirements.length > 0) {
           this.reqs = find(this.countryRequirements, y => y.country.id == x)!
         }
@@ -186,32 +195,32 @@ export class FormPageComponent implements OnInit, OnDestroy {
       this.publTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.publTrans = this.countrySet(x)
+        this.publTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.reqTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.reqTrans = this.countrySet(x)
+        this.reqTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.oaTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.oaTrans = this.countrySet(x)
+        this.oaTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.allowTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.allowTrans = this.countrySet(x)
+        this.allowTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.issueTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.issueTrans = this.countrySet(x)
+        this.issueTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.oaNumSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.oaNum = this.countrySet(x)
+        this.oaNum = this.applTypeSet(this.countrySet(x))
       })
   }
 
@@ -241,12 +250,12 @@ export class FormPageComponent implements OnInit, OnDestroy {
     let d = this.countries.find(y => y.id == x.country);
     let applType = this.applTypes.find(z => z.id == x.appl_type)
     let prevApplType = this.applTypes.find(a => a.id == x.prev_appl_type)
-    let timeComplexConditions = this.transComplexTimes.find(b => b.id == x.complex_time_conditions)
+    let timeComplexConditions = this.transComplexTimes.find(b => b.id == x.trans_complex_time_condition)
     return {
       ...x, 'country': d,
       'appl_type': applType,
       'prev_appl_type': prevApplType,
-      'complex_time_conditions': timeComplexConditions,
+      'trans_complex_time_condition': timeComplexConditions,
     }
   })
   }
@@ -258,6 +267,19 @@ export class FormPageComponent implements OnInit, OnDestroy {
     })
   }
 
+  applTypeSet<TApplTypeWise extends ApplTypeWise>(arg: TApplTypeWise[]): TApplTypeWise[] {
+    return map<TApplTypeWise, TApplTypeWise>(arg, (x: TApplTypeWise) => {
+      let d = this.applTypes.find(y => y.id == x.appl_type);
+      return {...x, 'appl_type': d}
+    })
+  }
+
+  complexTimeConditionsSet<TcomplexTimeWide extends ComplexTimeWise>(arg: TcomplexTimeWide[]): TcomplexTimeWide[] {
+    return map<TcomplexTimeWide, TcomplexTimeWide>(arg, (x: TcomplexTimeWide) => {
+      let d = this.transComplexTimes.find(y => y.id == x.trans_complex_time_condition);
+      return {...x, 'trans_complex_time_condition': d}
+    })
+  }
 
   onSubmitPublTrans(formData: IPublTrans): void {
     if (formData.id == undefined) {
@@ -266,7 +288,8 @@ export class FormPageComponent implements OnInit, OnDestroy {
       this.publTranSer.update(formData)
     }
   }
-  delPublTrans(row: IPublTrans): void{
+
+  delPublTrans(row: IPublTrans): void {
     this.publTranSer.delete(row)
   }
 
@@ -280,7 +303,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   delReqTrans(row: IRequestExamTrans): void{
     this.reqTranSer.delete(row)
   }
-
 
   onSubmitOATrans(formData: IOATrans): void {
     if (formData.id == undefined){

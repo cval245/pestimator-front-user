@@ -47,7 +47,6 @@ export class CustomDetailsFormComponent implements OnInit {
     this.languages = data.languages
     this.country = data.country
     this.applType = data.appl_type
-    console.log('this.c', data)
     this.filteredDocFormats = filter(this.docFormats, x => {
       return some(this.country.available_doc_formats, y => {
         return (y.doc_format == x.id && y.appl_type == this.applType.id)

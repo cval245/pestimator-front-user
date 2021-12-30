@@ -86,7 +86,6 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
       data: {conditions: this.conditions, country: this.country}
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log('suriname', result)
     })
   }
 }

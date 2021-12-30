@@ -53,7 +53,6 @@ export class AccountService {
 
     public refreshToken_two(refresh: string){
         let refresh_two = {'refresh': refresh}
-        //console.log('refresh_tow', refresh_two)
         const bob= this.http.post<{'access': string}>(
             this.baseUrl+'jwt/refresh/',
             refresh_two,

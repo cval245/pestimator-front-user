@@ -22,7 +22,7 @@ export class TransFormTableComponent {
   @Output() delEmit = new EventEmitter
   editingRow: number = 0;
   displayedColumns: string[] = ['id', 'prev_appl_type',
-    'appl_type', 'date_diff', 'complex_time_conditions']
+    'appl_type', 'date_diff', 'trans_complex_time_condition']
   public form: FormGroup;
   public applTypesCorrect: ApplType[] = [new ApplType()]
   // @ts-ignore
@@ -35,7 +35,7 @@ export class TransFormTableComponent {
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
       prev_appl_type: [''],
-      complex_time_conditions: [null]
+      trans_complex_time_condition: [null]
   })
   }
 
@@ -43,16 +43,13 @@ export class TransFormTableComponent {
     this.applTypesCorrect = this.applTypes.filter(applType => {
       return applType.country_set.some(countryId => countryId == this.country.id)
     })
-    // this.form.controls.country.valueChanges.subscribe(country_id => {
-    //   this.applTypesCorrect = this.applTypes.filter(applType => applType.country_set.some(countryId => countryId == country_id))
-    // })
   }
 
   newRow() {
     this.cstmFilTrans = concat(this.cstmFilTrans, {
       id: 0,
       country: '', date_diff: '', appl_type: '', prev_appl_type: '',
-      complex_time_conditions:0
+      trans_complex_time_condition: 0
     })
   }
 
@@ -61,8 +58,8 @@ export class TransFormTableComponent {
     if (row.prev_appl_type == undefined) {
       row.prev_appl_type = ''
     }
-    if (row.complex_time_conditions == undefined){
-      row.complex_time_conditions = 0
+    if (row.trans_complex_time_condition == undefined) {
+      row.trans_complex_time_condition = 0
     }
 
     this.form.setValue({
@@ -71,24 +68,22 @@ export class TransFormTableComponent {
       date_diff: row.date_diff,
       appl_type: row.appl_type.id,
       prev_appl_type: row.prev_appl_type.id,
-      complex_time_conditions: row.complex_time_conditions,
+      trans_complex_time_condition: row.trans_complex_time_condition,
     })
-    console.log('fff', this.form)
   }
 
   submit() {
-    console.log('feeeff', this.form.value)
-    if (this.form.controls.complex_time_conditions.value ==0){
-      this.form.patchValue({complex_time_conditions: null})
+    if (this.form.controls.trans_complex_time_condition.value == 0) {
+      this.form.patchValue({trans_complex_time_condition: null})
     }
-    if (this.form.controls.id.value ==0){
-      this.form.patchValue({id:undefined})
+    if (this.form.controls.id.value == 0) {
+      this.form.patchValue({id: undefined})
     }
-    this.form.patchValue({country: this.country.id,
-                                // appl_type: this.form.get('appl_type')!.value.id,
-                                // prev_appl_type: this.form.get('prev_appl_type')!.value.id
+    this.form.patchValue({
+      country: this.country.id,
+      // appl_type: this.form.get('appl_type')!.value.id,
+      // prev_appl_type: this.form.get('prev_appl_type')!.value.id
     })
-    console.log('feeeff', this.form.value)
     this.formData.emit(this.form.value)
     this.editingRow = 0
   }

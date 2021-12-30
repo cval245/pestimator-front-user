@@ -64,30 +64,30 @@
         <h3>PrevApplType</h3></th>
         <td mat-cell *matCellDef="let element">
 
-          <div *ngIf="editingRow==element.id; else prevApplType">
-        <div [formGroup]="form">
-            <mat-form-field appearance="outline" color="primary">
-            <mat-label>PrevApplType</mat-label>
-            <mat-select class="custom-select"
-                        formControlName="prev_appl_type">
-                <mat-option *ngFor="let t of applTypes"
-                            [value]="t.id">
+          <div *ngIf="editingRow===element.id; else prevApplType">
+            <div [formGroup]="form">
+              <mat-form-field appearance="outline" color="primary">
+                <mat-label>PrevApplType</mat-label>
+                <mat-select class="custom-select"
+                            formControlName="prev_appl_type">
+                  <mat-option *ngFor="let t of applTypes"
+                              [value]="t.id">
                     {{t.application_type}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        </div>
-        </div>
-        <ng-template #prevApplType>
-          <div *ngIf="element.prev_appl_type != undefined">
-            {{element.prev_appl_type.application_type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
-        </ng-template>
+          <ng-template #prevApplType>
+            <div *ngIf="element.prev_appl_type !== undefined">
+              {{element.prev_appl_type.application_type}}
+            </div>
+          </ng-template>
         </td>
     </ng-container>
 
-  <ng-container matColumnDef="complex_time_conditions">
-    <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+  <ng-container matColumnDef="trans_complex_time_condition">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
       <h3>Complex Time Conditions</h3></th>
     <td mat-cell *matCellDef="let element">
 
@@ -96,7 +96,7 @@
           <mat-form-field appearance="outline" color="primary">
             <mat-label>Complex Time Conditions</mat-label>
             <mat-select class="custom-select"
-                        formControlName="complex_time_conditions">
+                        formControlName="trans_complex_time_condition">
               <mat-option *ngFor="let t of transComplexTimes"
                           [value]="t.id">
                 {{t.name}}
@@ -106,8 +106,9 @@
         </div>
       </div>
       <ng-template #transCompTimes>
-        <div *ngIf="element.complex_time_conditions !== undefined && element.complex_time_conditions !== null">
-          {{element.complex_time_conditions.name}}
+        <div
+          *ngIf="element.trans_complex_time_condition !== undefined && element.trans_complex_time_condition !== null">
+          {{element.trans_complex_time_condition.name}}
         </div>
       </ng-template>
     </td>

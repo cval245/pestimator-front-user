@@ -96,8 +96,6 @@ export class FamEstDetailsComponent implements OnDestroy{
         ])
       })).subscribe(([applications, applDetails, famform, famDetTot]) => {
       this.famEstDetTot = famDetTot[0]
-      console.log('famform', famform)
-      console.log('this.famform', this.famform)
       this.famform = convertToFamEstForm(famform[0], this.countries, this.applTypes, this.entitySizes, this.languages, this.applications, this.docFormats)
       this.famform.family_name = this.familyAll.family_name
       this.famform.family_no = this.familyAll.family_no

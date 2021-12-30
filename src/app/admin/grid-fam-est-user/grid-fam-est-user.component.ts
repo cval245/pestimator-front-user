@@ -22,7 +22,6 @@ export class GridFamEstUserComponent implements OnChanges{
   constructor() { }
 
   ngOnChanges() {
-    console.log('ths', this.famEstUsers )
     this.columnDefs = [
       {
         field: 'button',

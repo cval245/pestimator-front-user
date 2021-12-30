@@ -21,7 +21,6 @@ export class ActivateEmailSentComponent implements OnInit {
         let email = this.route.snapshot.params.email
         let context = {'email': email}
         this.emailSer.postActivateEmail(context).subscribe(complete =>{
-            console.log('submitted')
         })
   }
 }

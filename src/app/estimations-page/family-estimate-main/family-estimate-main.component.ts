@@ -36,7 +36,6 @@ export class FamilyEstimateMainComponent implements OnInit {
     private languageSer: LanguageService,
     private router: Router,
   ) {
-console.log('trying')
     this.famEstSub = combineLatest([this.famEst$, this.family$ ]).subscribe(
       ([famEsts, families ]) => {
       this.families = families

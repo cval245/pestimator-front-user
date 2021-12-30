@@ -12,9 +12,5 @@ export class ParameterDetailsComponent {
   constructor() {
   }
 
-    ngOnChanges(){
-      console.log('sss', this.formData)
-    }
-
 
 }

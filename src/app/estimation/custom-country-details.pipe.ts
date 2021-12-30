@@ -9,11 +9,9 @@ export class CustomCountryDetailsPipe implements PipeTransform {
     let keys = [];
     for (let key in value){
       if (value[key] !== null && value[key] !== undefined) {
-        console.log('key', key, 'value[key]', value[key])
         keys.push({key: key, value: value[key]});
       }
     }
-    console.log('keys', keys)
     return keys;
   }
 

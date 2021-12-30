@@ -37,12 +37,13 @@
 <div fxLayout="column" fxLayoutAlign="start start">
 <h2>Publication Transforms</h2>
 <app-gen-trans
-    [tableData]="publTrans"
-    [country]="country"
-    [transComplexTimes]="transComplexTimes"
-    (formData)="onSubmitPublTrans($event)"
-    (delEmit)="delPublTrans($event)"
-    >
+  [tableData]="publTrans"
+  [country]="country"
+  [applTypes]="applTypes"
+  [transComplexTimes]="transComplexTimes"
+  (formData)="onSubmitPublTrans($event)"
+  (delEmit)="delPublTrans($event)"
+>
 </app-gen-trans>
 </div>
 <div fxLayout="column" fxLayoutAlign="start start">
@@ -50,6 +51,7 @@
   <app-gen-trans
     [tableData]="reqTrans"
     [country]="country"
+    [applTypes]="applTypes"
     [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitReqTrans($event)"
     (delEmit)="delReqTrans($event)"
@@ -58,47 +60,51 @@
 </div>
 <div fxLayout="column" fxLayoutAlign="start start" style="margin-right:5px;">
 <h2>Office Action Transforms</h2>
-<app-gen-trans
+  <app-gen-trans
     [tableData]="oaTrans"
     [country]="country"
+    [applTypes]="applTypes"
     [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitOATrans($event)"
     (delEmit)="delOATrans($event)"
-    >
-</app-gen-trans>
+  >
+  </app-gen-trans>
 </div>
 <div fxLayout="column" fxLayoutAlign="start start">
 <h2>OA Num</h2>
-<app-oa-num-form
+  <app-oa-num-form
     [oanum]="oaNum"
     [country]="country"
+    [applTypes]="applTypes"
     (formData)="onSubmitOanum($event)"
     (delEmit)="delOanum($event)"
-    >
-</app-oa-num-form>
+  >
+  </app-oa-num-form>
 </div>
 
 <div fxLayout="column" fxLayoutAlign="start start">
 <h2>Allow Transforms</h2>
-<app-gen-trans
+  <app-gen-trans
     [tableData]="allowTrans"
     [country]="country"
+    [applTypes]="applTypes"
     [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitAllowTrans($event)"
     (delEmit)="delAllowTrans($event)"
-    >
-</app-gen-trans>
+  >
+  </app-gen-trans>
 </div>
 
 <div fxLayout="column" fxLayoutAlign="start start">
 <h2>Issue Transforms</h2>
-<app-gen-trans
+  <app-gen-trans
     [tableData]="issueTrans"
     [country]="country"
+    [applTypes]="applTypes"
     [transComplexTimes]="transComplexTimes"
     (formData)="onSubmitIssueTrans($event)"
     (delEmit)="delIssueTrans($event)"
-    >
-</app-gen-trans>
+  >
+  </app-gen-trans>
 </div>
 

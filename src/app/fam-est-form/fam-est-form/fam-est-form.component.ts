@@ -152,11 +152,9 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       if (country.id > 0) {
         this.firstApplForm.controls.application_type.enable()
         // this.initCustomApplDisabledBool = false
-        // console.log('eeee', this.initCustomApplDisabledBool)
       } else {
         this.firstApplForm.controls.application_type.disable()
         this.initCustomApplDisabledBool = true
-        // console.log('edddddeee', this.initCustomApplDisabledBool)
       }
       this.blockOutParisCountries()
       this.blockOutPCTCountries()
@@ -513,7 +511,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
           case APPL_VERSIONS.PARIS_APPL: {
             let checkArray = this.parisCountriesFormArray
             let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-            console.log('x', x)
             if (control) {
               control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
             }
@@ -571,11 +568,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       // this etc
       this.parisCountriesFormArray
     }
-    console.log('fam', this.familyForm.valid)
-    console.log('first', this.firstApplForm.valid)
-    console.log('inter', this.internationalStageForm.valid)
-    console.log('paris', this.parisStageForm.valid)
-    console.log('epStage', this.epStageForm.valid)
 
     let double_bool = this.verifyNoDoubleUtility()
     if (double_bool) {
@@ -608,7 +600,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
           'language': this.firstApplForm.controls.language.value,
           'entity_size': this.firstApplForm.controls.entity_size.value,
         }
-        console.log('ttt', this.aggFormData.init_appl_details)
         this.aggFormData.init_appl_options = this.firstApplForm.controls.init_appl_options.value
 
         this.aggFormData.pct_method = this.firstApplForm.controls.pct_method.value
@@ -740,8 +731,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         }
 
         // entry point paris
-        console.log(paris_frmArray.value)
-        console.log(paris_frmArray.controls)
         if (paris_frmArray.controls.some((x: any) => {
           return (x.value.country == this.country_ep && x.value.selected)
         })) {
@@ -879,13 +868,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
   addEntitySizeFormControl(country: Country, entity_size: EntitySize
   ) {
-    console.log('country', country)
-    console.log('entitySize', entity_size)
     const entityArray: FormArray = this.entitySizeFormArray
     if (!some(entityArray.value, y => y.country == country)) {
       entityArray.push(this.patchValues(country, entity_size))
     }
-    console.log('sss', entityArray)
   }
 
   patchValues(country: Country, entity_size: EntitySize) {
@@ -943,7 +929,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         return some(this.entitySizes, y => x.id == y.country)
       })
       // let entity_required_list = filter(unique_country_list, x => x.available_entity_sizes.length > 0)
-      console.log('x.available', entity_required_list)
       if (entity_required_list.length > 0) {
         forEach(entity_required_list, x => {
           let default_entity_size = this.findDefaultEntitySize(x)
@@ -1041,11 +1026,9 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         this.pushToUtilityCountryArray(APPL_VERSIONS.PCT_NAT_APPL, x.value.country)
       }
     })
-    console.log('country_array', this.country_array)
   }
 
   countryArrayFinder(c: Country) {
-    console.log('ccc', c)
     return this.country_array.find(x => x.country == c)!.appl_versions
   }
 
@@ -1065,8 +1048,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
   getUtilityRadioButtonParis(country: Country) {
-    // console.log('tedddhfhffheeeee', this.doubleUtilityFormArray.controls)
-    // console.log('gggg', this.getUtilityRadioButton(country, APPL_VERSIONS.PARIS_APPL))
     return this.getUtilityRadioButton(country, APPL_VERSIONS.PARIS_APPL)
   }
 
@@ -1107,8 +1088,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         return y.value.country == country
       })
       if (ctr) {
-        console.log('ap', appl_version)
-        console.log('ctr', ctr)
         if (appl_version == stage_appl_version) {
           ctr.patchValue({selected: true})
         } else {

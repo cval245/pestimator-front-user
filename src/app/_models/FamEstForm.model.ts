@@ -199,7 +199,6 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm){
   famEstFormSubmit.init_appl_country = famEstForm.init_appl_country.id
   famEstFormSubmit.init_appl_type = famEstForm.init_appl_type.id
   famEstFormSubmit.init_appl_details = convertToApplDetailsSubmit(famEstForm.init_appl_details)
-  console.log('famfmfmfmf', famEstFormSubmit.init_appl_details)
   famEstFormSubmit.pct_country = famEstForm.pct_country?.id || null
   famEstFormSubmit.isa_country = famEstForm.isa_country?.id || null
   famEstFormSubmit.pct_method = famEstForm.pct_method
@@ -232,8 +231,6 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm){
       'custom_appl_options': convertToCustomApplOptionsSubmit(x.custom_appl_options)
     }
   })
-  console.log('famEstForm', famEstForm.paris_countries)
-  console.log('famEst', famEstFormSubmit.paris_countries)
   famEstFormSubmit.pct_countries = map(famEstForm.pct_countries, x => {
     return {
       'country': x.country.id,
@@ -243,6 +240,5 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm){
   })
   famEstFormSubmit.unique_display_no = famEstForm.unique_display_no
   famEstFormSubmit.id = famEstForm.id
-  console.log('ffffff', famEstFormSubmit)
   return famEstFormSubmit
 }

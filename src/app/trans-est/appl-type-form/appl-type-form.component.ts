@@ -86,7 +86,6 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       available_languages: this.country.available_languages,
       // available_doc_formats: this.country? this.country.available_doc_formats: [],
     })
-    // console.log('this.country', this.country)
     const checkArray: FormArray = this.form.get('available_appl_types') as FormArray;
     checkArray.clear()
     for (let applType_id of this.country.available_appl_types) {
@@ -132,7 +131,6 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       }
       langCheckArray.push(aLangForm)
     }
-    console.log('sss', this.form.get('available_languages')!.value)
 
     const docFormatCheckArray: FormArray = this.form.get('available_doc_formats') as FormArray;
     docFormatCheckArray.clear()

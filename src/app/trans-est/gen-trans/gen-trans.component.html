@@ -1,10 +1,32 @@
 <table mat-table [dataSource]="tableData">
-    <ng-container matColumnDef="id">
-        <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
-        <td mat-cell class="mat-cell" *matCellDef="let element">
-        {{element.id}}</td>
-    </ng-container>
+  <ng-container matColumnDef="id">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ID</h3></th>
+    <td mat-cell class="mat-cell" *matCellDef="let element">
+      {{element.id}}</td>
+  </ng-container>
+  <ng-container matColumnDef="appl_type">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef><h3>ApplType</h3></th>
+    <td mat-cell *matCellDef="let element">
 
+      <div *ngIf="editingRow===element.id; else applType">
+        <div [formGroup]="form">
+          <mat-form-field appearance="outline" color="primary">
+            <mat-label>ApplType</mat-label>
+            <mat-select class="custom-select"
+                        formControlName="appl_type">
+              <mat-option *ngFor="let t of applTypesCorrect"
+                          [value]="t.id">
+                {{t.application_type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-template #applType>
+        {{element.appl_type.application_type}}
+      </ng-template>
+    </td>
+  </ng-container>
     <ng-container matColumnDef="date_diff">
         <th mat-header-cell  class="header-cell" *matHeaderCellDef><h3>Date Diff</h3></th>
         <td mat-cell *matCellDef="let element">
@@ -15,26 +37,18 @@
                 <input matInput type="text"
                        formControlName="date_diff">
               </mat-form-field>
-              <button mat-button (click)="submit()">
-                <mat-icon>done</mat-icon>
-              </button>
-              <button mat-button (click)="cancel()">
-                <mat-icon>close</mat-icon>
-              </button>
-              <button mat-button (click)="delete(element)">
-                <mat-icon>delete_outline</mat-icon>
-              </button>
+
 
             </div>
-        </div>
-        <ng-template #datediff>
-        {{element.date_diff}}
-                </ng-template>
+          </div>
+          <ng-template #datediff>
+            {{element.date_diff}}
+          </ng-template>
         </td>
     </ng-container>
 
-  <ng-container matColumnDef="complex_time_conditions">
-    <th mat-header-cell  class="header-cell" *matHeaderCellDef>
+  <ng-container matColumnDef="trans_complex_time_condition">
+    <th mat-header-cell class="header-cell" *matHeaderCellDef>
       <h3>Complex Time Conditions</h3></th>
     <td mat-cell *matCellDef="let element">
 
@@ -43,7 +57,7 @@
           <mat-form-field appearance="outline" color="primary">
             <mat-label>Complex Time Conditions</mat-label>
             <mat-select class="custom-select"
-                        formControlName="complex_time_conditions">
+                        formControlName="trans_complex_time_condition">
               <mat-option *ngFor="let t of transComplexTimes"
                           [value]="t.id+''">
                 {{t.name}}
@@ -53,11 +67,22 @@
         </div>
       </div>
       <ng-template #transCompTimes>
-        <div *ngIf="element.complex_time_conditions !== undefined && element.complex_time_conditions !== null">
-          {{element.complex_time_conditions.name}}
+        <div
+          *ngIf="element.trans_complex_time_condition !== undefined && element.trans_complex_time_condition !== null">
+          {{element.trans_complex_time_condition.name}}
         </div>
       </ng-template>
+      <button mat-button (click)="submit()">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-button (click)="cancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-button (click)="delete(element)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
     </td>
+
   </ng-container>
 
 

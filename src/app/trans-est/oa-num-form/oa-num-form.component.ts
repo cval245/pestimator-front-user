@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {concat, dropRight} from 'lodash';
 import {Country} from 'src/app/_models/Country.model';
 import {ICountryOANum} from '../_models/CountryOANum.model';
+import {ApplType} from "../../_models/applType.model";
 
 @Component({
   selector: 'app-oa-num-form',
@@ -12,11 +13,12 @@ import {ICountryOANum} from '../_models/CountryOANum.model';
 export class OaNumFormComponent {
   @Input() country: Country = new Country()
   @Input() oanum = new Array<ICountryOANum>()
+  @Input() applTypes = new Array<ApplType>()
   @Output() formData = new EventEmitter
   @Output() delEmit = new EventEmitter
-
+  public applTypesCorrect: ApplType[] = [new ApplType()]
   editingRow: number = 0;
-  displayedColumns: string[] = ['id', //'date_diff',
+  displayedColumns: string[] = ['id', 'appl_type',
     'oa_total']
 
   public form: FormGroup;
@@ -25,17 +27,23 @@ export class OaNumFormComponent {
     this.form = this.fb.group({
       id: [undefined],
       country: [0, Validators.required],
-      //date_diff: ['', Validators.required],
       oa_total: [0, Validators.required],
+      appl_type: ['', Validators.required],
     })
   }
 
+  ngOnChanges() {
+    this.applTypesCorrect = this.applTypes.filter(applType => {
+      return applType.country_set.some(countryId => countryId == this.country.id)
+    })
+  }
 
   newRow() {
     this.oanum = concat(this.oanum, {
       id: 0,
-      country: this.country,//date_diff:'',
-      oa_total: 0
+      country: this.country,
+      appl_type: 0,
+      oa_total: 0,
     })
   }
 
@@ -45,7 +53,7 @@ export class OaNumFormComponent {
     this.form.setValue({
       id: row.id,
       country: row.country,
-      //date_diff: row.date_diff,
+      appl_type: row.appl_type.id,
       oa_total: row.oa_total,
     })
   }
@@ -56,6 +64,7 @@ export class OaNumFormComponent {
       this.form.patchValue({id: undefined})
     }
     this.formData.emit(this.form.value)
+    this.editingRow = 0
   }
   cancel(){
     if (this.form.controls.id.value == undefined){

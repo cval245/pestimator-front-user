@@ -239,7 +239,6 @@ export class EstTemplateGridV2Component implements OnInit {
           return false
         },
         valueFormatter(row: ValueFormatterParams): string {
-          // console.log('law_firm data_diff', row.data.law_firm_template.date_diff)
           return row.value
         },
         cellEditor: 'agTextCellEditor',
@@ -367,8 +366,6 @@ export class EstTemplateGridV2Component implements OnInit {
   }
 
   // isEmpty(rowData: TableWise[]) {
-  //   // console.log('isMep', rowData)
-  //   // console.log('sdfs', isEmpty(rowData))
   //   return isEmpty(rowData)
   //
   // }

@@ -25,7 +25,6 @@ export class BtnFamEstCellRendererComponent implements ICellRendererAngularComp{
   }
 
   btnClickedHandler(){
-    console.log('thi', this.params.data)
     this.router.navigate(['admin/family-detail', this.params.data.id])
   }
 }

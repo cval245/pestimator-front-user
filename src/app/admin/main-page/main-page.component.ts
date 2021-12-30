@@ -19,12 +19,10 @@ export class MainPageComponent implements OnInit {
     private userAllSer: UserAllService,
   ) {
     this.userAllSer.getAll().pipe(takeUntil(this.destroy)).subscribe(x =>{
-      console.log('this.userAlls = ', this.userAlls)
       this.userAlls = map(x, y => {
         return {...y, date_joined: new Date(y.date_joined)}
       })
 
-      console.log('this.userAlls = ', this.userAlls)
     })
 
   }
