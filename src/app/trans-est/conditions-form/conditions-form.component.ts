@@ -91,6 +91,7 @@ export class ConditionsFormComponent implements OnInit {
       prior_pct_same_country: [data.conditions.prior_pct_same_country],
       prev_appl_date_excl_intermediary_time: [data.conditions.prev_appl_date_excl_intermediary_time],
       prior_appl_exists: [data.conditions.prior_appl_exists],
+      isa_country_fee_only: [data.conditions.isa_country_fee_only],
       doc_format: [data.conditions.doc_format],
       language: [data.conditions.language],
     })

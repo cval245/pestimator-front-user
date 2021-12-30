@@ -149,15 +149,23 @@
       </mat-form-field>
     </div>
     <div class="formGroup">
-    <mat-form-field appearance="outline">
-      <mat-label>Annual Prosecution Fee</mat-label>
-      <mat-select class="custom-select"
-                  formControlName="condition_annual_prosecution_fee">
-        <mat-option [value]=true>True</mat-option>
-        <mat-option [value]=false>False</mat-option>
-      </mat-select>
-    </mat-form-field>
-      <mat-form-field  class="wide"  appearance="outline">
+      <mat-form-field appearance="outline">
+        <mat-label>ISA Country Fee Only</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="isa_country_fee_only">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Annual Prosecution Fee</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_annual_prosecution_fee">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="wide" appearance="outline">
         <mat-label>Annual Prosecution Fee Until Grant</mat-label>
         <mat-select class="custom-select"
                     formControlName="condition_annual_prosecution_fee_until_grant">

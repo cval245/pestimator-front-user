@@ -30,7 +30,8 @@ export interface IConditions {
   prior_pct?: boolean;
   prior_pct_same_country?: boolean;
   prev_appl_date_excl_intermediary_time?: boolean;
-  prior_appl_exists?: boolean
+  prior_appl_exists?: boolean;
+  isa_country_fee_only?: boolean;
   doc_format?: number | IDocFormat;
   language?: number | Language;
 }
