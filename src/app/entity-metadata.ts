@@ -54,11 +54,13 @@ const entityMetadata: EntityMetadataMap = {
   },
   RequestExamTrans: {
     filterFn: (entities: IRequestExamTrans[], country_id: any) => {
+      console.log('ent', entities, country_id)
       return entities.filter(entity => entity.country == country_id.country_id)
     }
   },
   OATrans: {
     filterFn: (entities: IOATrans[], country_id: any) => {
+      console.log('eyyyy', entities, country_id)
       return entities.filter(entity => entity.country == country_id.country_id)
     }
   },

@@ -65,6 +65,15 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <button mat-button (click)="submit()">
+          <mat-icon>done</mat-icon>
+        </button>
+        <button mat-button (click)="cancel()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button (click)="delete(element)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
       </div>
       <ng-template #transCompTimes>
         <div
@@ -72,15 +81,7 @@
           {{element.trans_complex_time_condition.name}}
         </div>
       </ng-template>
-      <button mat-button (click)="submit()">
-        <mat-icon>done</mat-icon>
-      </button>
-      <button mat-button (click)="cancel()">
-        <mat-icon>close</mat-icon>
-      </button>
-      <button mat-button (click)="delete(element)">
-        <mat-icon>delete_outline</mat-icon>
-      </button>
+
     </td>
 
   </ng-container>
