@@ -38,38 +38,45 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
 
 
   // @ts-ignore
-  agInit(params: ICellRendererParams): void{
+  agInit(params: ICellRendererParams): void {
     this.params = params;
     this.createChips(this.params)
   }
 
   // @ts-ignore
-  refresh(params: ICellRendererParams): boolean{
+  refresh(params: ICellRendererParams): boolean {
     this.params = params;
     this.createChips(this.params)
     return true;
   }
 
-  createChips(params:ICellRendererParams){
+  createChips(params: ICellRendererParams) {
     this.conditions = params.data.conditions
     this.country = params.data.country
     this.adjustConditions = []
     forIn(this.conditions, (value, key) => {
-      if(value){
-        if (key !== 'id'){
-          let displayValue = value
-          if (key === 'condition_entity_size'){
-            displayValue = value.entity_size
-          } else if (key === 'condition_complex'){
-            displayValue = value.name
-          } else if (key === 'condition_time_complex'){
-            displayValue = value.name
-          } else if (key === 'doc_format') {
-            displayValue = value.name
-          } else if (key === 'language') {
-            displayValue = value.name
+      if (value !== undefined && value !== null) {
+        if (value
+          || (
+            key == 'prior_pct'
+            || key == 'prior_pct_same_country'
+            || key == 'prior_appl_exists')
+        ) {
+          if (key !== 'id') {
+            let displayValue = value
+            if (key === 'condition_entity_size') {
+              displayValue = value.entity_size
+            } else if (key === 'condition_complex') {
+              displayValue = value.name
+            } else if (key === 'condition_time_complex') {
+              displayValue = value.name
+            } else if (key === 'doc_format') {
+              displayValue = value.name
+            } else if (key === 'language') {
+              displayValue = value.name
+            }
+            this.adjustConditions.push([key, value, displayValue])
           }
-          this.adjustConditions.push([key,value, displayValue])
         }
       }
     })
@@ -80,7 +87,7 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   }
 
   editConditions() {
-    const dialogRef = this.dialog.open(ConditionsFormComponent,{
+    const dialogRef = this.dialog.open(ConditionsFormComponent, {
       width: '1200px',
       // 'height': '800px',
       data: {conditions: this.conditions, country: this.country}
