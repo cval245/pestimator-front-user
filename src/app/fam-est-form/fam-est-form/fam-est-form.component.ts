@@ -124,6 +124,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   public applTypesCorrect: ApplType[] = [new ApplType()];
   public isa_countries: CountryDetailsAdded[] = [];
   public paris_countries: CountryDetailsAdded[] = [];
+  public pct_countries: CountryDetailsAdded[] = [];
   public FINAL_STEPS = {
     PARIS_STAGE: "parisstage",
     EP_STAGE: "epstage",
@@ -149,9 +150,14 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
 
     this.firstApplForm.controls.country.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(country => {
       this.applTypesCorrect = this.applTypes.filter(applType => applType.country_set.some(countryId => countryId == country.id))
+      if (this.firstApplForm.controls.application_type.value) {
+        if (!some(this.firstApplForm.controls.country.value.available_appl_types,
+          this.firstApplForm.controls.application_type.value.id)) {
+          this.firstApplForm.patchValue({application_type: undefined})
+        }
+      }
       if (country.id > 0) {
         this.firstApplForm.controls.application_type.enable()
-        // this.initCustomApplDisabledBool = false
       } else {
         this.firstApplForm.controls.application_type.disable()
         this.initCustomApplDisabledBool = true
@@ -160,6 +166,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.blockOutPCTCountries()
       this.blockOutEPCountries()
       this.createParisCountriesControls()
+      this.createPctCountriesControls()
       this.rectifyCustomDetails()
       this.filterLangs()
       this.addlStageInfoChecker()
@@ -181,7 +188,6 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.addlStageInfoChecker()
     })
     this.firstApplForm.controls.ep_method.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(x => {
-      this.createParisCountriesControls()
       this.autoSelectEP()
       this.detFinalButtons()
       if (x) {
@@ -192,6 +198,12 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
         this.epStageForm.controls.ep_countries.updateValueAndValidity()
       }
       this.rectifyCustomDetails()
+      console.log('feeeffl', this.parisCountriesFormArray.length)
+      this.createParisCountriesControls()
+      console.log('fffl', this.parisCountriesFormArray.length)
+      this.createPctCountriesControls()
+      // this.filterPCTCountries()
+      // this.filterParisCountries()
     })
     this.firstApplForm.controls.pct_method.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(x => {
       this.createParisCountriesControls()
@@ -219,7 +231,8 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   filterLangs() {
     let country = this.firstApplForm.controls.country.value
     let applType = this.firstApplForm.controls.application_type.value
-    if (country && applType) {
+    this.firstApplForm.patchValue({language: null})
+    if (country && applType !== undefined) {
       this.filteredLanguages = filter(this.languages, x => {
         return some(country.available_languages, y => {
           return y.language == x.id && y.appl_type == applType.id
@@ -291,6 +304,15 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
     ) {
       this.paris_countries = this.paris_countries.filter((x: CountryDetailsAdded) => x != this.country_ep)
     }
+  }
+
+  filterPCTCountries() {
+    this.pct_countries = this.pct_accept_countries
+    if (!this.firstApplForm.controls.ep_method.value
+    ) {
+      this.pct_countries = this.pct_countries.filter((x: CountryDetailsAdded) => x != this.country_ep)
+    }
+    console.log('ttt', this.pct_countries)
   }
 
   blockOutParisCountries() {
@@ -429,13 +451,26 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
   createParisCountriesControls() {
+    console.log('puber', this.paris_countries.length)
     this.filterParisCountries()
+    console.log('uber', this.paris_countries.length)
     const checkArray: FormArray = this.parisCountriesFormArray
+
+    forEach(checkArray.controls, (control, key) => {
+      if (control) {
+        console.log('control', control.value.country.country)
+        if (!some(this.paris_countries, country => {
+          return control.value.country.id == country
+        })) {
+          checkArray.removeAt(key)
+        }
+      }
+    })
+
     forEach(this.paris_countries, x => {
       if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
       })) {
-
         let new_control = this.fb.group({
           selected: false,
           country: x,
@@ -448,7 +483,18 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
   createPctCountriesControls() {
+    this.filterPCTCountries()
     const checkArray: FormArray = this.pctCountriesFormArray
+    forEach(checkArray.controls, (control, key) => {
+      if (control) {
+        if (!some(this.pct_accept_countries, country => {
+          return control.value.country.id == country
+        })) {
+          checkArray.removeAt(key)
+        }
+      }
+    })
+
     forEach(this.pct_accept_countries, x => {
       if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
@@ -542,8 +588,8 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
       this.createPctCountriesControls()
       this.createEpCountriesControls()
     }
-    this.paris_countries = this.paris_basic_countries
     this.filterParisCountries()
+    this.filterPCTCountries()
     this.rectifyCustomDetails()
   }
 
@@ -842,7 +888,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy {
   }
 
   editPCTNatCustApplDetails(country: Country) {
-    let appl_type = this.applTypes.find(x => x.application_type == 'pctnationalphase')!
+    let appl_type = this.applTypes.find(x => x.application_type == 'utility')!
     this.editApplCustomApplDetails(country, APPL_VERSIONS.PCT_NAT_APPL, appl_type)
   }
 
