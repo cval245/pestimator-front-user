@@ -1,0 +1,145 @@
+<form [formGroup]="firstApplForm">
+  <ng-template matStepLabel>First Application</ng-template>
+
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row">
+      <h2>First Application:</h2>
+    </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+      <div class="select-container">
+        <p>Country:</p>
+        <mat-form-field appearance="outline">
+          <mat-select class="custom-select"
+                      formControlName="country">
+            <mat-option *ngFor="let t of countries"
+                        [value]="t">
+              {{t.long_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="date-picker-container">
+        <p>Filing Date:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput [matDatepicker]="datepicker"
+                 formControlName="date_filing">
+          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="select-container">
+        <p>Application Type:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <mat-select class="custom-select"
+                      formControlName="application_type"
+          >
+            <mat-option *ngFor="let t of applTypesCorrect"
+                        [value]="t">
+              {{t.long_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="form-row">
+      <h3>Details of the First Application:</h3>
+    </div>
+    <!--            fxLayout.gt-sm="row" fxLayout.lt-sm="column"-->
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutAlign.gt-sm="space-evenly end"
+         fxLayoutAlign.lt-sm="space-evenly start">
+      <div class="input-container-small">
+        <p>No. Claims -- Total:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_claims">
+        </mat-form-field>
+      </div>
+      <div class="input-container-small">
+        <p>No. Claims -- Independent:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_indep_claims">
+        </mat-form-field>
+      </div>
+      <div class="input-container-small">
+        <p>No. Claims -- Multiple Dependent:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_multiple_dependent_claims">
+        </mat-form-field>
+      </div>
+      <div class="input-container-small">
+        <p>No. Drawings:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_drawings">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-row" fxLayout.gt-sm="row"
+         fxLayout.lt-sm="column"
+         fxLayoutAlign.gt-sm="space-evenly end"
+         fxLayoutAlign.lt-sm="space-evenly start">
+      <div class="input-container-small">
+        <p>No. Pages -- Specification:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_pages_desc">
+        </mat-form-field>
+      </div>
+      <div class="input-container-small">
+        <p>No. Pages -- Claims:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_pages_claims">
+        </mat-form-field>
+      </div>
+      <div class="input-container-small">
+        <p>No. Pages -- Drawings:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_pages_drawings">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="select-container">
+        <p>Language</p>
+        <mat-form-field class="megaInput" appearance="outline" color="primary">
+          <mat-select class="custom-select"
+                      formControlName="language">
+            <mat-option *ngFor="let t of filteredLanguages"
+                        [value]="t">
+              {{t.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="form-row">
+      <h3>Prosecution Options:</h3>
+    </div>
+
+    <button mat-flat-button color="accent"
+            [disabled]="initCustomApplDisabledBool"
+            [matTooltip]="customApplOptionsToolTip"
+            (click)="editInitApplOptions()">
+      Additional Prosecution Options
+    </button>
+    <mat-divider style="margin-top: 25px;"></mat-divider>
+    <div class="form-row">
+      <h3>International Filing Methods:</h3>
+    </div>
+    <div fxLayout="row">
+      <div class="form-row">
+        <mat-checkbox (click)="userSelectedEPMethodTrue()"
+                      formControlName="ep_method">
+          File through EP
+        </mat-checkbox>
+      </div>
+      <div class="form-row">
+        <mat-checkbox (click)="userSelectedPCTMethodTrue()"
+                      formControlName="pct_method">
+          File through PCT
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</form>

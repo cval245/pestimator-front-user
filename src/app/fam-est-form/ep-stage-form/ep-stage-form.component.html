@@ -1,0 +1,84 @@
+<form [formGroup]="epStageForm" fxLayout="column" fxLayoutAlign="center center">
+  <ng-template matStepLabel>EP Stage</ng-template>
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row">
+      <h2>EPO Stage</h2>
+    </div>
+    <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary"
+            (click)="editEPCustApplDetails()">
+      <mat-icon>add_circle_outline</mat-icon>
+      Custom Application Details
+    </button>
+    <div class="form-row">
+      <p>add here</p>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div class="form-row">
+        <h2>Select EP Validation Jurisdictions</h2>
+      </div>
+      <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <ng-container [ngTemplateOutlet]="epValidPhaseCountries"></ng-container>
+        </div>
+      </div>
+
+
+      <div class="form-row">
+        <!--          <ng-template-->
+        <!--            *ngIf="finalStep === FINAL_STEPS.EP_STAGE; then finalButtons; else normalButtons"></ng-template>-->
+        <!--          <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsEntryPoint">-->
+        <!--            <p style="color:red;">EPO patent application needs an entrypoint for filing (none were provided)</p>-->
+        <!--            <mat-radio-group formControlName="ep_entryPoint" fxLayout="column">-->
+        <!--              <mat-radio-button value="paris">File directly from first application</mat-radio-button>-->
+        <!--              <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>-->
+        <!--            </mat-radio-group>-->
+        <!--            <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>-->
+        <!--          </div>-->
+        <!--          <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsOnlyOneEntryPoint">-->
+        <!--            <p style="color:red;">EPO patent application needs exactly one entrypoint for filing (two were-->
+        <!--              provided)</p>-->
+        <!--            <mat-radio-group formControlName="ep_entryPoint" fxLayout="column">-->
+        <!--              <mat-radio-button value="paris">File directly from first application</mat-radio-button>-->
+        <!--              <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>-->
+        <!--            </mat-radio-group>-->
+        <!--            <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>-->
+        <!--          </div>-->
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<ng-template #epValidPhaseCountries>
+  <div [formGroup]="epStageForm"
+       *ngFor="let item of epCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+
+    <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+      <ng-container [formGroupName]="i">
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <div>
+            <mat-checkbox formControlName="selected">
+              {{item.value.country.long_name}}
+            </mat-checkbox>
+            <button mat-icon-button [matTooltip]="customApplToolTip"
+                    (click)="editEPValidCustApplDetails(item.value.country)">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <app-custom-appl-details
+            [customApplDetails]="item.value.custom_appl_details">
+          </app-custom-appl-details>
+          <app-custom-appl-options
+            [customApplOption]="item.value.custom_appl_options"
+            [country]="item.value.country"
+            [appl_type]="appl_type_utility"
+          >
+          </app-custom-appl-options>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+

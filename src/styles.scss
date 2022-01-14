@@ -14,10 +14,7 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-.ag-theme-alpine-default{
-  @include ag-theme-alpine((
-  ));
-}
+
 .ag-theme-alpine-custom {
   @include ag-theme-alpine((
   ));
@@ -102,15 +99,11 @@ app-main {
 
 .logged-in-over-main {
   margin-top: 60px;
-  //padding-top: 200px;
   padding: 20px;
 }
 
 .fullSize {
   padding-top: 60px;
-  //flex: 1 1 300px;
-  //max-width: 100%;
-
   flex: 1;
 }
 
@@ -130,7 +123,6 @@ app-footer {
   background: map-get($theme-accent, 'lighter');
 
   h3 {
-    //font-weight: bold;
     padding-top: 10px;
     text-align: center;
     color: $dark-primary-text;
@@ -154,7 +146,7 @@ app-footer {
   background-color: map-get($theme-primary, 'lighter')
 }
 
-.input-container {
+.input-container, .select-container, .date-picker-container, .input-container-small{
   text-align: left;
   padding: 10px;
   width: 200px;
@@ -186,71 +178,16 @@ app-footer {
     font-size: 16px;
     padding-left: 0px;
     color: $dark-text;
-  }
-}
-
-.select-container {
-  text-align: left;
-  padding: 10px;
-  width: 200px;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  .ng-star-inserted {
-    color: $dark-accent-text;
-  }
-
-  p {
-    margin-bottom: 3px;
-    color: $dark-primary-text;
-    font-size: 16px;
-  }
-
-  mat-form-field {
-    padding-left: 0px;
-    width: 200px;
-
-    .mat-form-field-infix {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
   }
 }
 
 .mat-card{
   background-color: $light-background;
 }
-
-.date-picker-container {
-  text-align: left;
-  padding: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  p {
-    margin-bottom: 3px;
-    color: $dark-primary-text;
-    font-size: 16px;
-  }
-
-  mat-form-field {
-    padding-left: 0px;
-    width: 150px;
-    color: $dark-text;
-
-    .mat-form-field-infix {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-  }
-  .ng-star-inserted {
-    color: $dark-accent-text;
-  }
-  input {
-    font-size: 16px;
-    padding-left: 0px;
-    color: $dark-text;
-  }
+.form-row-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .form-row {
@@ -259,45 +196,10 @@ app-footer {
   margin-bottom: 10px;
 }
 
-.input-container-small {
-  text-align: left;
-  padding: 10px;
-  width: 150px;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  p {
-    margin-bottom: 3px;
-    color: $dark-primary-text;
-    font-size: 16px;
-  }
-
-  mat-form-field {
-    padding-left: 0px;
-    width: 150px;
-
-    .mat-form-field-infix {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-  }
-
-  .ng-star-inserted {
-    color: $dark-accent-text;
-  }
-
-  input {
-    font-size: 16px;
-    padding-left: 0px;
-    color: $dark-text;
-  }
-}
-
 
 .formContainer {
   background-color: map-get($theme-primary, 'darker');
   color: $light-accent-text;
-  //max-width: 1000px;
 
   h2 {
     margin-bottom: 0px;
@@ -338,45 +240,9 @@ app-footer {
       .custom-details-list {
         color: red;
       }
-
-
-      //mat-form-field {
-      //  padding-left: 10px;
-      //  padding-right: 10px;
-      //
-      //  .ng-star-inserted {
-      //    color: $dark-accent-text;
-      //  }
-      //
-      //  input {
-      //    color: $dark-text;
-      //  }
-      //}
     }
   }
 }
-
-//.customForm {
-//  form {
-//    .custom-details-list {
-//      color: red;
-//    }
-//
-//
-//    mat-form-field {
-//      padding-left: 10px;
-//      padding-right: 10px;
-//
-//      .ng-star-inserted {
-//        color: $dark-accent-text;
-//      }
-//
-//      input {
-//        color: $dark-text;
-//      }
-//    }
-//  }
-//}
 
 .mat-list-base .mat-list-item {
   font-size: 14px;
@@ -588,10 +454,6 @@ tr.element-row:not(.expanded-row):hover {
     -ms-writing-mode: tb-lr;
     line-height: 2em;
     margin-top: 60px;
-    //transform: rotate(90deg);
-    //margin-top: 50px;
-    /* Since we are rotating a span */
-    //display: inline-block;
   }
 
   .ag-floating-filter-body input {

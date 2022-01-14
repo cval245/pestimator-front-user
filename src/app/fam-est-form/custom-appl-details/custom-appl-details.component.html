@@ -1,0 +1,16 @@
+<div style="align-items: end; text-align: right;" *ngIf="customApplDetails">
+  <div class="mat-small" *ngIf="customApplDetails.num_claims">Number of Claims
+    = {{customApplDetails.num_claims}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_indep_claims">Number of Indep Claims
+    = {{customApplDetails.num_indep_claims}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_claims_multiple_dependent">Number of Multiple Dep Claims
+    = {{customApplDetails.num_claims_multiple_dependent}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_drawings">Number of Drawings
+    = {{customApplDetails.num_drawings}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_pages_description">Number of Pages
+    -Description = {{customApplDetails.num_pages_description}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_pages_claims">Number of Pages -Claims
+    = {{customApplDetails.num_pages_claims}}</div>
+  <div class="mat-small" *ngIf="customApplDetails.num_pages_drawings">Number of Pages - Drawings
+    = {{customApplDetails.num_pages_drawings}}</div>
+</div>
