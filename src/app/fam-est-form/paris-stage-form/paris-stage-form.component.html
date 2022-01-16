@@ -9,7 +9,7 @@
   </div>
 </form>
 <ng-template #parisPhaseCountries>
-  <div [formGroup]="parisStageForm" >
+  <div [formGroup]="parisStageForm">
     <div formArrayName="paris_countries"
          *ngFor="let item of parisCountriesFormArray.controls;
               let i=index; trackBy: trackByIndex"
@@ -26,15 +26,16 @@
               <mat-icon>add_circle_outline</mat-icon>
             </button>
           </div>
-          <app-custom-appl-details
-            [customApplDetails]="item.value.custom_appl_details">
-          </app-custom-appl-details>
-          <app-custom-appl-options
-            [customApplOption]="item.value.custom_appl_options"
-            [country]="item.value.country"
-            [appl_type]="appl_type_utility"
-          >
-          </app-custom-appl-options>
+          <div class="form-row">
+            <app-custom-appl-details
+              [customApplDetails]="item.value.custom_appl_details">
+            </app-custom-appl-details>
+            <app-custom-appl-options
+              [customApplOption]="item.value.custom_appl_options"
+              [country]="item.value.country"
+              [appl_type]="appl_type_utility">
+            </app-custom-appl-options>
+          </div>
         </div>
       </ng-container>
     </div>

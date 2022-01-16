@@ -5,7 +5,7 @@ import {APPL_VERSIONS} from "../../estimation/enums";
 import {ApplType} from "../../_models/applType.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
-import {find, forEach, some, sortBy} from "lodash";
+import {find, forEach, isEqual, some, sortBy} from "lodash";
 import {CustomApplDetails} from "../../_models/CustomApplDetails.model";
 import {CustomApplOption} from "../../_models/CustomApplOptions.model";
 import {ICustomDetail, IParisForm} from "../fam-est-form/fam-est-form.component";
@@ -20,6 +20,9 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() blockedParisCountries: Country[] = new Array<Country>()
   @Input() applTypes: ApplType[] = [new ApplType()];
   @Input() customApplDetails: ICustomDetail[] = new Array<ICustomDetail>()
+  @Input() paris_country_remove: Country = new Country()
+  @Input() paris_country_add: Country = new Country()
+  @Input() paris_country_add_and_disable: Country = new Country()
   @Output() customAppl = new EventEmitter;
   @Output() parisStage: EventEmitter<IParisForm> = new EventEmitter();
   private destroyed = new Subject<void>()
@@ -54,20 +57,50 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges() {
     this.createParisCountriesControls()
     this.blockOutCountries()
-    if (this.appl_type_utility.id == 0){
-      if (some(this.applTypes, x => x.application_type=='utility')){
-        this.appl_type_utility = this.applTypes.find(x => x.application_type=='utility')!
+    if (this.appl_type_utility.id == 0) {
+      if (some(this.applTypes, x => x.application_type == 'utility')) {
+        this.appl_type_utility = this.applTypes.find(x => x.application_type == 'utility')!
       }
     }
+    if (this.paris_country_remove.id != 0) {
+      let ctrl = find(this.parisCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.paris_country_remove)
+      })
+      if (ctrl) {
+        ctrl.enable()
+        ctrl.patchValue({selected: false})
+        this.paris_country_remove = new Country()
+      }
+    }
+    if (this.paris_country_add.id != 0) {
+      let ctrl = find(this.parisCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.paris_country_add)
+      })
+      if (ctrl) {
+        ctrl.patchValue({selected: true})
+        this.paris_country_add = new Country()
+      }
+    }
+    if (this.paris_country_add_and_disable.id != 0) {
+      let ctrl = find(this.parisCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.paris_country_add_and_disable)
+      })
+      if (ctrl) {
+        ctrl.patchValue({selected: true})
+        ctrl.disable()
+        this.paris_country_add_and_disable = new Country()
+      }
+    }
+
     forEach(this.customApplDetails, x => {
-        let checkArray = this.parisCountriesFormArray
-        let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-        if (control) {
-          let custom_details = control.value.custom_appl_details
-          let custom_options = control.value.custom_appl_options
-          if (x.customDetails != custom_details || x.customOptions != custom_options){
-            control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
-          }
+      let checkArray = this.parisCountriesFormArray
+      let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
+      if (control) {
+        let custom_details = control.value.custom_appl_details
+        let custom_options = control.value.custom_appl_options
+        if (x.customDetails != custom_details || x.customOptions != custom_options) {
+          control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
+        }
         }
       }
     )

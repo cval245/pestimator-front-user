@@ -7,7 +7,7 @@ import {APPL_VERSIONS} from "../../estimation/enums";
 import {ApplType} from "../../_models/applType.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
-import {find, forEach, some} from "lodash";
+import {find, forEach, isEqual, some} from "lodash";
 import {ICustomDetail} from "../fam-est-form/fam-est-form.component";
 
 @Component({
@@ -22,8 +22,11 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() ep_countries: CountryDetailsAdded[] = [new CountryDetailsAdded()];
   @Input() blockedEPValidCountries: Country[] = new Array<Country>()
   @Input() customApplDetails: ICustomDetail[] = new Array<ICustomDetail>()
+  @Input() epCustom: ICustomDetail = {} as ICustomDetail
+  @Input() ep_country_remove: Country = new Country()
   @Output() customAppl = new EventEmitter;
   @Output() epStage = new EventEmitter;
+  public appl_type_ep: ApplType = new ApplType();
   public appl_type_utility: ApplType = new ApplType();
   public country_ep: CountryDetailsAdded = new CountryDetailsAdded()
   trackByIndex = (index: number, country_obj: any) => country_obj.value.country.id;
@@ -66,21 +69,53 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.country_ep.id == 0){
+    if (this.ep_country_remove.id != 0) {
+      let ctrl = find(this.epCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.ep_country_remove)
+      })
+      if (ctrl) {
+        ctrl.patchValue({selected: false})
+        this.ep_country_remove = new Country()
+      }
+    }
+
+    if (this.country_ep.id == 0) {
       this.country_ep = this.countries.find(x => x.country == 'EP')!
+    }
+    if (this.appl_type_ep.id == 0) {
+      this.appl_type_ep = this.applTypes.find(x => x.application_type == 'ep')!
     }
     this.createEpCountriesControls()
     this.blockOutCountries()
+    if (this.epCustom) {
+      if (this.epCustom.customDetails && this.epCustom.customOptions) {
+        let ep_meth = this.epStageForm.get('ep_method_customization')
+        if (ep_meth) {
+          let custom_details = ep_meth.value.custom_appl_details
+          let custom_options = ep_meth.value.custom_appl_options
+          if (this.epCustom.customDetails != custom_details
+            || this.epCustom.customOptions != custom_options) {
+            this.epStageForm.patchValue({
+              ep_method_customization:
+                {
+                  custom_appl_details: this.epCustom.customDetails,
+                  custom_appl_options: this.epCustom.customOptions
+                }
+            })
+          }
+        }
+      }
+    }
     if (this.appl_type_utility.id == 0) {
       if (some(this.applTypes, x => x.application_type == 'utility')) {
         this.appl_type_utility = this.applTypes.find(x => x.application_type == 'utility')!
       }
     }
     forEach(this.customApplDetails, x => {
-        let checkArray = this.epCountriesFormArray
-        let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-        if (control) {
-          let custom_details = control.value.custom_appl_details
+      let checkArray = this.epCountriesFormArray
+      let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
+      if (control) {
+        let custom_details = control.value.custom_appl_details
           let custom_options = control.value.custom_appl_options
           if (x.customDetails != custom_details || x.customOptions != custom_options) {
             control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
@@ -96,7 +131,6 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
 
   editEPCustApplDetails() {
     let country = this.country_ep as unknown as Country
-    // let country = this.countries.find(y => y == this.country_ep)!
     let appl_type = this.applTypes.find(x => x.application_type == 'ep')!
     this.editApplCustomApplDetails(country, APPL_VERSIONS.EP_APPL, appl_type)
   }
@@ -136,6 +170,7 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
       }
     })
   }
+
   // EPFormValidator(): ValidatorFn {
   //   return (control: AbstractControl): ValidationErrors | null => {
   //     if (control.value.length == 0) {
@@ -211,11 +246,11 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
   //   }
   // }
 
-  blockOutCountries(){
-    if (this.blockedEPValidCountries.length > 0){
+  blockOutCountries() {
+    if (this.blockedEPValidCountries.length > 0) {
       let checkArray = this.epCountriesFormArray
       forEach(checkArray.controls, (control: AbstractControl) => {
-        if (some(this.blockedEPValidCountries, x => x == control.value.country)){
+        if (some(this.blockedEPValidCountries, x => x == control.value.country)) {
           if (control.enabled) {
             control.disable()
             if (control.value.selected) {

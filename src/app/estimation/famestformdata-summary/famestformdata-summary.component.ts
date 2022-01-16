@@ -8,9 +8,15 @@ import {FamEstForm} from "../../_models/FamEstForm.model";
 })
 export class FamestformdataSummaryComponent implements OnInit {
   @Input() formData: FamEstForm = new FamEstForm()
-  constructor() { }
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(): void {
+    console.log('tt', this.formData)
   }
 
 }

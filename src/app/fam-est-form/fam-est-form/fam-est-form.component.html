@@ -20,12 +20,6 @@
           (init_appl_form)="setInitApplForm($event)"
         ></app-first-appl-form>
         <ng-template *ngTemplateOutlet="normalButtons; "></ng-template>
-        <!--        <div class="form-row">-->
-        <!--          <div *ngIf="firstApplForm.errors?.InvalidApplType-->
-        <!--              && (firstApplForm.touched || firstApplForm.dirty)">-->
-        <!--            <p style="color:red;">Application Type is invalid for Country</p>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </mat-step>
       <mat-step [completed]="parisStageFormComplete">
         <ng-template matStepLabel>Direct File Stage</ng-template>
@@ -34,6 +28,9 @@
           [parisCountries]="paris_countries"
           [blockedParisCountries]="blockedParisCountries"
           [customApplDetails]="parisCustomAppl"
+          [paris_country_remove]="paris_country_remove"
+          [paris_country_add]="paris_country_add"
+          [paris_country_add_and_disable]="paris_country_add_and_disable"
           (parisStage)="setParisStageForm($event)"
           (customAppl)="editApplCustomApplDetails($event)"
         ></app-paris-stage-form>
@@ -53,11 +50,13 @@
           [blockedPCTCountry]="blockedPCTCountry"
           [countries]="countries"
           [customApplDetails]="pctCustomAppl"
+          [pct_country_remove]="pct_country_remove"
+          [pct_country_add]="pct_country_add"
           [pctMethodCustomDetails]="pctMethodCustomAppl"
           (intlStageForm)="setInternationalStageForm($event)"
           (customAppl)="editApplCustomApplDetails($event)"
-          (formValid)="setIntlStageFormComplete($event)"
-        ></app-international-stage-form>
+          (formValid)="setIntlStageFormComplete($event)">
+        </app-international-stage-form>
         <div *ngIf="finalStep === FINAL_STEPS.PCT_STAGE; else normalButtons">
           <ng-template *ngTemplateOutlet="finalButtons"></ng-template>
         </div>
@@ -72,9 +71,11 @@
           [countries]="countries"
           [blockedEPValidCountries]="blockedEPValidCountries"
           [customApplDetails]="epCustomAppl"
+          [epCustom]="epMethodCustomAppl"
+          [ep_country_remove]="ep_country_remove"
           (epStage)="setEPStageForm($event)"
-          (customAppl)="editApplCustomApplDetails($event)"
-        ></app-ep-stage-form>
+          (customAppl)="editApplCustomApplDetails($event)">
+        </app-ep-stage-form>
         <div *ngIf="finalStep === FINAL_STEPS.EP_STAGE; else normalButtons">
           <ng-template *ngTemplateOutlet="finalButtons"></ng-template>
         </div>
@@ -86,8 +87,7 @@
         <app-addl-info-form
           [entitySizes]="entitySizes"
           [addlCountries]="addlCountries"
-          (addlStage)="setAddlStageForm($event)"
-        >
+          (addlStage)="setAddlStageForm($event)">
         </app-addl-info-form>
         <div *ngIf="finalStep === FINAL_STEPS.ADDL_STAGE; else normalButtons">
           <ng-template *ngTemplateOutlet="finalButtons"></ng-template>
@@ -111,672 +111,53 @@
   </div>
 </ng-template>
 <ng-template #finalButtons>
-  <!--  <button mat-flat-button color="warn" style="margin: 5px;"-->
-  <!--          (click)="stepper.reset()"-->
-  <!--          (click)="formReset()">Reset-->
-  <!--  </button>-->
   <button mat-flat-button color="primary" style="margin: 5px;"
+          [disabled]="buttonDisabled"
           (click)="stepper.previous()">Back
   </button>
   <button mat-flat-button color="accent" type="submit"
           style="margin: 5px;"
+          [disabled]="buttonDisabled"
           (click)="onSubmit()">
     Submit
   </button>
-  <!--  <div *ngIf="utilityChecker">-->
-  <!--    <ng-container [ngTemplateOutlet]="duplicateEntry"></ng-container>-->
-  <!--  </div>-->
+  <div *ngIf="utilityChecker" class="form-row-btn">
+    <ng-container [ngTemplateOutlet]="duplicateEntry"></ng-container>
+  </div>
+  <div *ngIf="epSingleEntryForm" class="form-row-btn">
+    <ng-container [ngTemplateOutlet]="epSingleEntry"></ng-container>
+  </div>
 </ng-template>
 
-<!--<div fxLayout="column" fxLayoutAlign="start center">-->
-<!--  <p class="mat-display-1" style="margin-bottom: 20px;margin-top: 20px;">New Estimation</p>-->
-<!--  <div class="formContainer">-->
-<!--    &lt;!&ndash;<h2>Estimation Form</h2>&ndash;&gt;-->
-<!--    <div class="header-spacer"></div>-->
-<!--    <mat-vertical-stepper class="mat-elevation-z8" #stepper linear (selectionChange)="reValidateForms($event)">-->
-<!--      <mat-step [stepControl]="familyForm" [editable]="isEditable">-->
-<!--        <form [formGroup]="familyForm" fxLayout="column">-->
-<!--          <ng-template matStepLabel>Family Details</ng-template>-->
-<!--          <div fxLayout="column" fxLayoutAlign="center center">-->
-<!--            <div class="form-row">-->
-<!--              <h2>Details on Patent Family:</h2>-->
-<!--            </div>-->
-<!--            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">-->
-<!--              <div class="input-container">-->
-<!--                <p>Family Name:</p>-->
-<!--                <mat-form-field color="primary" appearance="outline">-->
-<!--                  <input matInput type="text" formControlName="family_name">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container">-->
-<!--                <p>Family Number:</p>-->
-<!--                <mat-form-field color="primary" appearance="outline">-->
-<!--                  <input matInput type="text" formControlName="family_no">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--              <button mat-flat-button color="accent" matStepperNext>Next</button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </mat-step>-->
-<!--      <mat-step [stepControl]="firstApplForm" [editable]="isEditable">-->
-<!--        <form [formGroup]="firstApplForm">-->
-<!--          <ng-template matStepLabel>First Application</ng-template>-->
+<ng-template #duplicateEntry>
+  <form [formGroup]="singleUtilityForm" *ngIf="utilityChecker">
+    <div formArrayName="double_countries">
+      <div *ngFor="let control of doubleUtilityFormArray.controls; let i=index">
+        <div [formGroupName]="i" class="form-row" style="align-content: center; justify-content: center">
+          {{control.value.country.country.long_name}}
+          <mat-radio-group formControlName="appl_version" fxLayout="column">
+            <mat-radio-button *ngFor="let appl_version of control.value.country.appl_versions"
+                              [value]="appl_version">
+              {{appl_version}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <button mat-flat-button color="primary" (click)="submitUtilityCorrections()">
+        Correct Double Utility Patents
+      </button>
+    </div>
+  </form>
+</ng-template>
 
-<!--          <div fxLayout="column" fxLayoutAlign="center center">-->
-<!--            <div class="form-row">-->
-<!--              <h2>First Application:</h2>-->
-<!--            </div>-->
-<!--            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">-->
-<!--              <div class="select-container">-->
-<!--                <p>Country:</p>-->
-<!--                <mat-form-field appearance="outline">-->
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="country">-->
-<!--                    <mat-option *ngFor="let t of countries"-->
-<!--                                [value]="t">-->
-<!--                      {{t.long_name}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="date-picker-container">-->
-<!--                <p>Filing Date:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput [matDatepicker]="datepicker"-->
-<!--                         formControlName="date_filing">-->
-<!--                  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>-->
-<!--                  <mat-datepicker #datepicker></mat-datepicker>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-
-<!--              <div class="select-container">-->
-<!--                <p>Application Type:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="application_type"-->
-<!--                  >-->
-<!--                    <mat-option *ngFor="let t of applTypesCorrect"-->
-<!--                                [value]="t">-->
-<!--                      {{t.long_name}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <mat-divider></mat-divider>-->
-<!--            <div class="form-row">-->
-<!--              <h3>Details of the First Application:</h3>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;            fxLayout.gt-sm="row" fxLayout.lt-sm="column"&ndash;&gt;-->
-<!--            <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutAlign.gt-sm="space-evenly end"-->
-<!--                 fxLayoutAlign.lt-sm="space-evenly start">-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Claims &#45;&#45; Total:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_claims">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Claims &#45;&#45; Independent:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_indep_claims">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Claims &#45;&#45; Multiple Dependent:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_multiple_dependent_claims">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Drawings:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_drawings">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="form-row" fxLayout.gt-sm="row"-->
-<!--                 fxLayout.lt-sm="column"-->
-<!--                 fxLayoutAlign.gt-sm="space-evenly end"-->
-<!--                 fxLayoutAlign.lt-sm="space-evenly start">-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Pages &#45;&#45; Specification:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_pages_desc">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Pages &#45;&#45; Claims:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_pages_claims">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <div class="input-container-small">-->
-<!--                <p>No. Pages &#45;&#45; Drawings:</p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <input matInput type="text" formControlName="num_pages_drawings">-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-
-<!--            </div>-->
-<!--            <div class="form-row">-->
-<!--              <div class="select-container">-->
-<!--                <p>Language</p>-->
-<!--                <mat-form-field class="megaInput" appearance="outline" color="primary">-->
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="language">-->
-<!--                    <mat-option *ngFor="let t of filteredLanguages"-->
-<!--                                [value]="t">-->
-<!--                      {{t.name}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <mat-divider></mat-divider>-->
-<!--            <div class="form-row">-->
-<!--              <h3>Prosecution Options:</h3>-->
-<!--            </div>-->
-
-<!--            <button mat-flat-button color="accent"-->
-<!--                    [disabled]="initCustomApplDisabledBool"-->
-<!--                    [matTooltip]="customApplOptionsToolTip"-->
-<!--                    (click)="editInitApplOptions()">-->
-<!--              Additional Prosecution Options-->
-<!--            </button>-->
-<!--            <mat-divider style="margin-top: 25px;"></mat-divider>-->
-<!--            <div class="form-row">-->
-<!--              <h3>International Filing Methods:</h3>-->
-<!--            </div>-->
-<!--            <div fxLayout="row">-->
-<!--              <div class="form-row">-->
-<!--                <mat-checkbox formControlName="ep_method">-->
-<!--                  File through EP-->
-<!--                </mat-checkbox>-->
-<!--              </div>-->
-<!--              <div class="form-row">-->
-<!--                <mat-checkbox formControlName="pct_method">-->
-<!--                  File through PCT-->
-<!--                </mat-checkbox>-->
-<!--              </div>-->
-<!--            </div>-->
-
-
-<!--            <div class="form-row">-->
-<!--              <ng-template *ngTemplateOutlet="normalButtons"></ng-template>-->
-<!--              <div *ngIf="firstApplForm.errors?.InvalidApplType-->
-<!--              && (firstApplForm.touched || firstApplForm.dirty)">-->
-<!--                <p style="color:red;">Application Type is invalid for Country</p>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--        </form>-->
-<!--      </mat-step>-->
-
-<!--      <mat-step [formGroup]="parisStageForm" [stepControl]="parisStageForm">-->
-<!--        <form [formGroup]="parisStageForm">-->
-<!--          <ng-template matStepLabel>Direct Filing Phase</ng-template>-->
-<!--          <div fxLayout="column" fxLayoutAlign="center center">-->
-<!--            <div class="form-row">-->
-<!--              <h2>Select Jurisdictions to File Directly from First Application</h2>-->
-<!--            </div>-->
-<!--            <div formArrayName="paris_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow-->
-<!--                 fxHide.lt-sm>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of parisCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i" *ngIf="item.value.country.col===1">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button *ngIf="item.enabled"-->
-<!--                                mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editParisCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}">-->
-<!--                      </ng-container>-->
-<!--                      <ng-container [ngTemplateOutlet]="customOptDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">-->
-<!--                      </ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of parisCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button *ngIf="item.enabled"-->
-<!--                                mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editParisCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      <ng-container [ngTemplateOutlet]="customOptDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">-->
-<!--                      </ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div formArrayName="paris_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide-->
-<!--                 fxShow.lt-sm>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of parisCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button *ngIf="item.enabled"-->
-<!--                                mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editParisCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      <ng-container [ngTemplateOutlet]="customOptDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplOptions:item.value.custom_appl_options}">-->
-<!--                      </ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
-
-<!--            <div class="form-row">-->
-<!--              <ng-template-->
-<!--                *ngIf="finalStep === FINAL_STEPS.PARIS_STAGE; then finalButtons; else normalButtons"></ng-template>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </mat-step>-->
-
-
-<!--      <mat-step *ngIf="firstApplForm.controls.pct_method.value"-->
-<!--                [formGroup]="internationalStageForm"-->
-<!--                [stepControl]="internationalStageForm">-->
-<!--        <form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">-->
-<!--          <ng-template matStepLabel>PCT Stage</ng-template>-->
-<!--          <div fxLayout="column" fxLayoutAlign="center center">-->
-<!--            <div class="form-row">-->
-<!--              <h2>File Through PCT:</h2>-->
-<!--            </div>-->
-
-<!--            <div fxLayout="column" fxLayoutAlign="center center" class="form-row">-->
-<!--              <h3>PCT Examining Country</h3>-->
-<!--              <div class="select-container">-->
-<!--                <p> PCT Receiving Office </p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="pct_country">-->
-<!--                    <mat-option *ngFor="let t of pct_ro_countries"-->
-<!--                                [value]="t">-->
-<!--                      {{t.long_name}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-
-<!--                </mat-form-field>-->
-<!--              </div>-->
-
-<!--              <div class="select-container">-->
-<!--                <p> PCT International Search Authority (ISA) </p>-->
-<!--                <mat-form-field appearance="outline" color="primary">-->
-
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="isa_country">-->
-<!--                    <mat-option *ngFor="let t of isa_countries"-->
-<!--                                [value]="t">-->
-<!--                      {{t.long_name}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--              <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary"-->
-<!--                      (click)="editPCTCustApplDetails()">-->
-<!--                <mat-icon>add_circle_outline</mat-icon>-->
-<!--                Custom Application Details-->
-<!--              </button>-->
-<!--            </div>-->
-<!--            <div class="form-row">-->
-<!--              <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                            [ngTemplateOutletContext]="{customApplDetails:internationalStageForm.controls.pct_method_customization.value.custom_appl_details}"></ng-container>-->
-<!--              <ng-container [ngTemplateOutlet]="customOptDesc"-->
-<!--                            [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.pct_method_customization.value.custom_appl_options}">-->
-<!--              </ng-container>-->
-<!--            </div>-->
-<!--            <mat-divider style="margin-top: 20px;"></mat-divider>-->
-<!--            <h3 class="form-row">National Phase Countries</h3>-->
-<!--            <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow-->
-<!--                 fxHide.lt-sm>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of pctCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i" *ngIf="item.value.country.col===1">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editPCTNatCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      <ng-container [ngTemplateOutlet]="customOptDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplOptions:internationalStageForm.controls.pct_method_customization.value.custom_appl_options}">-->
-<!--                      </ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of pctCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editPCTNatCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide-->
-<!--                 fxShow.lt-sm>-->
-<!--              <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                <div-->
-<!--                  *ngFor="let item of pctCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                  <ng-container [formGroupName]="i">-->
-<!--                    <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                      <div>-->
-<!--                        <mat-checkbox formControlName="selected">-->
-<!--                          {{item.value.country.long_name}}-->
-<!--                        </mat-checkbox>-->
-<!--                        <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                (click)="editPCTNatCustApplDetails(item.value.country)">-->
-<!--                          <mat-icon>add_circle_outline</mat-icon>-->
-<!--                        </button>-->
-<!--                      </div>-->
-<!--                      <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                    [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="form-row">-->
-<!--              <ng-template-->
-<!--                *ngIf="finalStep === FINAL_STEPS.PCT_STAGE; then finalButtons; else normalButtons"></ng-template>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </mat-step>-->
-
-<!--      <mat-step *ngIf="firstApplForm.controls.ep_method.value"-->
-<!--                [formGroup]="epStageForm" [stepControl]="epStageForm">-->
-<!--        <form [formGroup]="epStageForm" fxLayout="column" fxLayoutAlign="center center">-->
-<!--          <ng-template matStepLabel>EP Stage</ng-template>-->
-<!--          <div fxLayout="column" fxLayoutAlign="center center">-->
-
-<!--            <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary"-->
-<!--                    (click)="editEPCustApplDetails()">-->
-<!--              <mat-icon>add_circle_outline</mat-icon>-->
-<!--              Custom Application Details-->
-<!--            </button>-->
-<!--            <div class="form-row">-->
-<!--              <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                            [ngTemplateOutletContext]="{customApplDetails:epStageForm.controls.ep_method_customization.value.custom_appl_details}"></ng-container>-->
-<!--            </div>-->
-<!--            <ng-template matStepLabel>EPO Validation Phase</ng-template>-->
-<!--            <div fxLayout="column" fxLayoutAlign="center center">-->
-<!--              <div class="form-row">-->
-<!--                <h2>Select EP Validation Jurisdictions</h2>-->
-<!--              </div>-->
-<!--              <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxShow-->
-<!--                   fxHide.lt-sm>-->
-<!--                <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                  <div-->
-<!--                    *ngFor="let item of epCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                    <ng-container [formGroupName]="i" *ngIf="item.value.country.col===1">-->
-<!--                      <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                        <div>-->
-<!--                          <mat-checkbox formControlName="selected">-->
-<!--                            {{item.value.country.long_name}}-->
-<!--                          </mat-checkbox>-->
-<!--                          <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                  (click)="editEPValidCustApplDetails(item.value.country)">-->
-<!--                            <mat-icon>add_circle_outline</mat-icon>-->
-<!--                          </button>-->
-<!--                        </div>-->
-<!--                        <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                      [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      </div>-->
-<!--                    </ng-container>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                  <div-->
-<!--                    *ngFor="let item of epCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                    <ng-container [formGroupName]="i" *ngIf="item.value.country.col===2">-->
-<!--                      <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                        <div>-->
-<!--                          <mat-checkbox formControlName="selected">-->
-<!--                            {{item.value.country.long_name}}-->
-<!--                          </mat-checkbox>-->
-<!--                          <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                  (click)="editEPValidCustApplDetails(item.value.country)">-->
-<!--                            <mat-icon>add_circle_outline</mat-icon>-->
-<!--                          </button>-->
-<!--                        </div>-->
-<!--                        <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                      [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      </div>-->
-<!--                    </ng-container>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div formArrayName="ep_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between" fxHide-->
-<!--                   fxShow.lt-sm>-->
-<!--                <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                  <div-->
-<!--                    *ngFor="let item of epCountriesFormArray.controls;-->
-<!--              let i=index; trackBy: trackByIndex">-->
-<!--                    <ng-container [formGroupName]="i">-->
-<!--                      <div fxLayout="column" fxLayoutAlign="start start">-->
-<!--                        <div>-->
-<!--                          <mat-checkbox formControlName="selected">-->
-<!--                            {{item.value.country.long_name}}-->
-<!--                          </mat-checkbox>-->
-<!--                          <button mat-icon-button [matTooltip]="customApplToolTip"-->
-<!--                                  (click)="editEPValidCustApplDetails(item.value.country)">-->
-<!--                            <mat-icon>add_circle_outline</mat-icon>-->
-<!--                          </button>-->
-<!--                        </div>-->
-<!--                        <ng-container [ngTemplateOutlet]="customDetDesc"-->
-<!--                                      [ngTemplateOutletContext]="{customApplDetails:item.value.custom_appl_details}"></ng-container>-->
-<!--                      </div>-->
-<!--                    </ng-container>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-
-<!--              <div class="form-row">-->
-<!--                <ng-template-->
-<!--                  *ngIf="finalStep === FINAL_STEPS.EP_STAGE; then finalButtons; else normalButtons"></ng-template>-->
-<!--                <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsEntryPoint">-->
-<!--                  <p style="color:red;">EPO patent application needs an entrypoint for filing (none were provided)</p>-->
-<!--                  <mat-radio-group formControlName="ep_entryPoint" fxLayout="column">-->
-<!--                    <mat-radio-button value="paris">File directly from first application</mat-radio-button>-->
-<!--                    <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>-->
-<!--                  </mat-radio-group>-->
-<!--                  <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>-->
-<!--                </div>-->
-<!--                <div *ngIf="epStageForm.controls.ep_countries.errors?.EPNeedsOnlyOneEntryPoint">-->
-<!--                  <p style="color:red;">EPO patent application needs exactly one entrypoint for filing (two were-->
-<!--                    provided)</p>-->
-<!--                  <mat-radio-group formControlName="ep_entryPoint" fxLayout="column">-->
-<!--                    <mat-radio-button value="paris">File directly from first application</mat-radio-button>-->
-<!--                    <mat-radio-button value="pct">File through pct application national phase</mat-radio-button>-->
-<!--                  </mat-radio-group>-->
-<!--                  <button mat-flat-button color="primary" (click)="fixEPAncestor()">Confirm Selection</button>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </mat-step>-->
-<!--      <mat-step *ngIf="finalStep === FINAL_STEPS.ADDL_STAGE"-->
-<!--                [formGroup]="addEntitySizeForm" [stepControl]="addEntitySizeForm">-->
-<!--        <form [formGroup]="addEntitySizeForm" fxLayout="column" fxLayoutAlign="center center">-->
-<!--          <ng-template matStepLabel>Additional Info Stage</ng-template>-->
-<!--          <div formArrayName="entity_size">-->
-<!--            <div *ngFor="let c of entitySizeFormArray.controls; let i=index;">-->
-<!--              <div [formGroupName]="i">-->
-<!--                <mat-form-field-->
-<!--                  color="primary" appearance="outline">-->
-<!--                  <mat-label>Entity Size: {{c.value.country.long_name}}</mat-label>-->
-<!--                  <mat-select class="custom-select"-->
-<!--                              formControlName="entity_size">-->
-<!--                    <mat-option *ngFor="let t of filterAllEntitySizes(c.value.country)"-->
-<!--                                [value]="t"-->
-<!--                                [matTooltip]=t.description-->
-<!--                                matTooltipPosition="right">-->
-<!--                      {{t.entity_size}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-row">-->
-<!--            <ng-template-->
-<!--              *ngIf="finalStep === FINAL_STEPS.ADDL_STAGE; then finalButtons; else normalButtons"></ng-template>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </mat-step>-->
-
-<!--    </mat-vertical-stepper>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<ng-template #finalButtons>-->
-<!--  <button mat-flat-button color="warn" style="margin: 5px;"-->
-<!--          (click)="stepper.reset()"-->
-<!--          (click)="formReset()">Reset-->
-<!--  </button>-->
-<!--  <button mat-flat-button color="primary" style="margin: 5px;"-->
-<!--          (click)="stepper.previous()">Back-->
-<!--  </button>-->
-<!--  <button mat-flat-button color="accent" type="submit"-->
-<!--          style="margin: 5px;"-->
-<!--          (click)="onSubmit()"-->
-<!--  >-->
-<!--    Submit-->
-<!--  </button>-->
-<!--  <div *ngIf="utilityChecker">-->
-<!--    <ng-container [ngTemplateOutlet]="duplicateEntry"></ng-container>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-<!--<ng-template #normalButtons>-->
-<!--  <div class="form-row">-->
-<!--    <div>-->
-<!--      <button mat-flat-button color="primary" style="margin: 5px;"-->
-<!--              (click)="stepper.previous()"-->
-<!--      >Back-->
-<!--      </button>-->
-<!--      <button mat-flat-button color="accent" style="margin: 5px;"-->
-<!--              (click)="stepper.next()"-->
-<!--      >Next-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-<!--<ng-template #customDetDesc let-customApplDetails="customApplDetails">-->
-<!--  <div style="align-items: end; text-align: right;">-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_claims">Number of Claims-->
-<!--      = {{customApplDetails.num_claims}}</div>-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_indep_claims">Number of Indep Claims-->
-<!--      = {{customApplDetails.num_indep_claims}}</div>-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_drawings">Number of Drawings-->
-<!--      = {{customApplDetails.num_drawings}}</div>-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_pages_description">Number of Pages-->
-<!--      -Description = {{customApplDetails.num_pages_description}}</div>-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_pages_claims">Number of Pages -Claims-->
-<!--      = {{customApplDetails.num_pages_claims}}</div>-->
-<!--    <div class="mat-small" *ngIf="customApplDetails.num_pages_drawings">Number of Pages - Drawings-->
-<!--      = {{customApplDetails.num_pages_drawings}}</div>-->
-<!--  </div>-->
-<!--</ng-template>-->
-<!--<ng-template #customOptDesc let-customApplOpts="customApplOptions">-->
-<!--  <div style="align-items: end; text-align: right;">-->
-<!--    <div class="mat-small" *ngIf="customApplOpts.num_claims">Number of Claims-->
-<!--      = {{customApplOpts.num_claims}}</div>-->
-
-<!--  </div>-->
-<!--</ng-template>-->
-
-
-<!--<ng-template #duplicateEntry>-->
-<!--  <form [formGroup]="singleUtilityForm" *ngIf="utilityChecker">-->
-<!--    <div formArrayName="double_countries">-->
-<!--      <div *ngFor="let c of doubleUtilityFormArray.controls; let i=index">-->
-<!--        <div [formGroupName]="i">-->
-<!--          <mat-radio-group formControlName="appl_version" fxLayout="column">-->
-<!--            <mat-radio-button *ngFor="let d of c.value.country.appl_versions" [value]="d">-->
-<!--              {{d}}-->
-<!--            </mat-radio-button>-->
-<!--          </mat-radio-group>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <button mat-flat-button color="primary" (click)="submitUtilityCorrections()">Correct Double Utility Patents-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </form>-->
-<!--</ng-template>-->
+<ng-template #epSingleEntry>
+  <div>
+    <mat-radio-group [formControl]="ep_prior_selection" fxLayout="column">
+      <mat-radio-button class="form-row" value="paris">File directly from First Application</mat-radio-button>
+      <mat-radio-button class="form-row" value="pct">File in PCT</mat-radio-button>
+    </mat-radio-group>
+    <button mat-flat-button color="primary" (click)="submitEPSelection()">
+      Select EP EntryPoint
+    </button>
+  </div>
+</ng-template>

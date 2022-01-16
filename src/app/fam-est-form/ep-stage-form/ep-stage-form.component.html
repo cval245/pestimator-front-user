@@ -10,7 +10,16 @@
       Custom Application Details
     </button>
     <div class="form-row">
-      <p>add here</p>
+      <app-custom-appl-details
+        [customApplDetails]="epStageForm.controls.ep_method_customization.value.custom_appl_details"
+        [appl_type]="appl_type_ep"
+        [country]="country_ep">
+      </app-custom-appl-details>
+      <app-custom-appl-options
+        [customApplOption]="epStageForm.controls.ep_method_customization.value.custom_appl_options"
+        [country]="country_ep"
+        [appl_type]="appl_type_ep">
+      </app-custom-appl-options>
     </div>
     <div fxLayout="column" fxLayoutAlign="center center">
       <div class="form-row">

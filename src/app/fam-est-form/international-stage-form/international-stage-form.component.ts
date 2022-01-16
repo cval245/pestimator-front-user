@@ -7,7 +7,7 @@ import {Country, CountryDetailsAdded} from "../../_models/Country.model";
 import {ApplType} from "../../_models/applType.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
-import {filter, find, forEach, some} from "lodash";
+import {filter, find, forEach, isEqual, some} from "lodash";
 import {ICustomDetail} from "../fam-est-form/fam-est-form.component";
 
 @Component({
@@ -25,6 +25,8 @@ export class InternationalStageFormComponent implements OnInit, OnChanges, OnDes
   @Input() countries: CountryDetailsAdded[] = [new CountryDetailsAdded()];
   @Input() customApplDetails: ICustomDetail[] = new Array<ICustomDetail>()
   @Input() pctMethodCustomDetails: ICustomDetail = {} as ICustomDetail
+  @Input() pct_country_remove: Country = new Country()
+  @Input() pct_country_add: Country = new Country();
   @Output() customAppl = new EventEmitter;
   @Output() intlStageForm = new EventEmitter;
   @Output() formValid = new EventEmitter;
@@ -87,35 +89,57 @@ export class InternationalStageFormComponent implements OnInit, OnChanges, OnDes
     }
     if (this.appl_type_pct.id == 0) {
       if (some(this.applTypes, x => x.application_type == 'pct')) {
-        this.appl_type_pct= this.applTypes.find(x => x.application_type == 'pct')!
+        this.appl_type_pct = this.applTypes.find(x => x.application_type == 'pct')!
       }
     }
+    if (this.pct_country_remove.id != 0) {
+      let ctrl = find(this.pctCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.pct_country_remove)
+      })
+      if (ctrl) {
+        ctrl.patchValue({selected: false})
+        this.pct_country_remove = new Country()
+      }
+    }
+    if (this.pct_country_add.id != 0) {
+      let ctrl = find(this.pctCountriesFormArray.controls, control => {
+        return isEqual(control.value.country, this.pct_country_add)
+      })
+      if (ctrl) {
+        ctrl.patchValue({selected: true})
+        this.pct_country_add = new Country()
+      }
+    }
+
     let customApplDetailsNatPhase = filter(this.customApplDetails, x => x.appl_version == APPL_VERSIONS.PCT_NAT_APPL)
     forEach(customApplDetailsNatPhase, x => {
-        let checkArray = this.pctCountriesFormArray
-        let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-        if (control) {
-          let custom_details = control.value.custom_appl_details
-          let custom_options = control.value.custom_appl_options
-          if (x.customDetails != custom_details || x.customOptions != custom_options) {
-            control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
+      let checkArray = this.pctCountriesFormArray
+      let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
+      if (control) {
+        let custom_details = control.value.custom_appl_details
+        let custom_options = control.value.custom_appl_options
+        if (x.customDetails != custom_details || x.customOptions != custom_options) {
+          control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
           }
         }
       }
     )
     if (this.pctMethodCustomDetails) {
-      if (this.internationalStageForm.get('pct_method_customization')) {
-        let custom_details = this.internationalStageForm.get('pct_method_customization')!.value.custom_appl_details
-        let custom_options = this.internationalStageForm.get('pct_method_customization')!.value.custom_appl_options
-        if (this.pctMethodCustomDetails.customDetails != custom_details
-          || this.pctMethodCustomDetails.customOptions != custom_options) {
-          this.internationalStageForm.patchValue({
-            pct_method_customization:
-              {
-                custom_appl_details: this.pctMethodCustomDetails.customDetails,
-                custom_appl_options: this.pctMethodCustomDetails.customOptions
-              }
-          })
+      if (this.pctMethodCustomDetails.customDetails && this.pctMethodCustomDetails.customOptions) {
+        let pct_meth = this.internationalStageForm.get('pct_method_customization')
+        if (pct_meth) {
+          let custom_details = pct_meth.value.custom_appl_details
+          let custom_options = pct_meth.value.custom_appl_options
+          if (this.pctMethodCustomDetails.customDetails != custom_details
+            || this.pctMethodCustomDetails.customOptions != custom_options) {
+            this.internationalStageForm.patchValue({
+              pct_method_customization:
+                {
+                  custom_appl_details: this.pctMethodCustomDetails.customDetails,
+                  custom_appl_options: this.pctMethodCustomDetails.customOptions
+                }
+            })
+          }
         }
       }
     }

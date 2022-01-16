@@ -13,4 +13,6 @@
     = {{customApplDetails.num_pages_claims}}</div>
   <div class="mat-small" *ngIf="customApplDetails.num_pages_drawings">Number of Pages - Drawings
     = {{customApplDetails.num_pages_drawings}}</div>
+  <div *ngIf=language_format_display class="mat-small">Language
+    = {{customApplDetails.language!.name}}</div>
 </div>
