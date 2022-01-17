@@ -23,6 +23,7 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() paris_country_remove: Country = new Country()
   @Input() paris_country_add: Country = new Country()
   @Input() paris_country_add_and_disable: Country = new Country()
+  @Input() country_ep: Country = new Country();
   @Output() customAppl = new EventEmitter;
   @Output() parisStage: EventEmitter<IParisForm> = new EventEmitter();
   private destroyed = new Subject<void>()

@@ -38,33 +38,16 @@ export class FamEstForm {
     'custom_appl_details': new CustomApplDetails(),
     'custom_appl_options': new CustomApplOption()
   }
-  // public pct_country: Country | null = new Country()
   public pct_country: Country | null = null
-  // public isa_country: Country | null = new Country()
   public isa_country: Country | null = null
-  // public pct_countries: multiCountry[] | [] = [{
-  //   'country': new Country(),
-  //   'custom_appl_details': new CustomApplDetails(),
-  //   'custom_appl_options': new CustomApplOption()
-  // }]
-  public pct_countries: multiCountry[] | [] = [
-    // {
-    // 'country': new Country(),
-    // 'custom_appl_details': new CustomApplDetails(),
-    // 'custom_appl_options': new CustomApplOption()
-  // }
-  ]
+  public pct_countries: Array<multiCountry> = new Array<multiCountry>()
   public ep_method: boolean = false
   public ep_method_customization: { 'custom_appl_details': CustomApplDetails, 'custom_appl_options': CustomApplOption } = {
     'custom_appl_details': new CustomApplDetails(),
     'custom_appl_options': new CustomApplOption()
   }
-  public ep_countries: multiCountry[] | [] = []
-  public paris_countries: multiCountry[] | [] = [{
-    'country': new Country(),
-    'custom_appl_details': new CustomApplDetails(),
-    'custom_appl_options': new CustomApplOption()
-  }]
+  public ep_countries: Array<multiCountry> = new Array<multiCountry>()
+  public paris_countries: Array<multiCountry> = new Array<multiCountry>()
   public unique_display_no?: number = 0
   public id?: any = 0
 

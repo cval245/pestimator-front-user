@@ -27,6 +27,8 @@ export class InternationalStageFormComponent implements OnInit, OnChanges, OnDes
   @Input() pctMethodCustomDetails: ICustomDetail = {} as ICustomDetail
   @Input() pct_country_remove: Country = new Country()
   @Input() pct_country_add: Country = new Country();
+  @Input() pct_initial_appl_type: boolean = false;
+  @Input() country_ep: Country = new Country();
   @Output() customAppl = new EventEmitter;
   @Output() intlStageForm = new EventEmitter;
   @Output() formValid = new EventEmitter;

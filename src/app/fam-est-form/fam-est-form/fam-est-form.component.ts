@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators,} from '@angular/forms';
-import {FamEstForm} from '../../_models/FamEstForm.model';
+import {FamEstForm, multiCountry} from '../../_models/FamEstForm.model';
 import {ApplType} from '../../_models/applType.model';
 import {Country, CountryDetailsAdded} from '../../_models/Country.model';
 import {EntitySize} from '../../_models/entitySize.model';
 import {Subject} from "rxjs";
 import {APPL_VERSIONS} from "../../estimation/enums";
 import {CustomApplDetails} from "../../_models/CustomApplDetails.model";
-import {filter, find, forEach, isEqual, map, remove, some} from "lodash";
+import {cloneDeep, filter, find, forEach, isEqual, map, remove, some} from "lodash";
 import {CustomApplOption} from "../../_models/CustomApplOptions.model";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {Language} from "../../_models/Language.model";
@@ -38,7 +38,7 @@ export interface IParisForm extends FormGroup {
   templateUrl: './fam-est-form.component.html',
   styleUrls: ['./fam-est-form.component.scss']
 })
-export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
+export class FamEstFormComponent implements OnDestroy, OnChanges {
 
   public familyFormComplete: boolean = false
   public firstApplFormComplete: boolean = false
@@ -112,6 +112,10 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
   public epSingleEntryForm: boolean = false;
   public buttonDisabled: boolean = false;
   private ep_auto_selected: boolean = false;
+  private applType_ep: ApplType = new ApplType();
+  private applType_pct: ApplType = new ApplType();
+  public pct_initial_appl_type: boolean = false
+  public ep_initial_appl_type: boolean = false
 
   get doubleUtilityFormArray(): FormArray {
     return this.singleUtilityForm.controls.double_countries as FormArray
@@ -135,12 +139,22 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  ngOnInit(): void {
 
-  }
 
 
   ngOnChanges(): void {
+    if (this.applType_ep.id == 0) {
+      let applType_ep = find(this.applTypes, applType => applType.application_type == 'ep')
+      if (applType_ep) {
+        this.applType_ep = applType_ep
+      }
+    }
+    if (this.applType_pct.id == 0) {
+      let applType_pct = find(this.applTypes, applType => applType.application_type == 'pct')
+      if (applType_pct) {
+        this.applType_pct = applType_pct
+      }
+    }
     this.parisCustomAppl = filter(this.allCustomDetails, x => x.appl_version == APPL_VERSIONS.PARIS_APPL)
     if (some(this.allCustomDetails, x => x.appl_version == APPL_VERSIONS.PCT_APPL)) {
       this.pctMethodCustomAppl = find(this.allCustomDetails, x => x.appl_version == APPL_VERSIONS.PCT_APPL)!
@@ -310,7 +324,9 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
     this.aggFormData.init_appl_options = firstApplForm.controls.init_appl_options.value
     this.aggFormData.pct_method = firstApplForm.controls.pct_method.value
     this.aggFormData.ep_method = firstApplForm.controls.ep_method.value
-    this.autoSelectEP()
+
+    this.ep_initial_appl_type = this.aggFormData.init_appl_type == this.applType_ep;
+    this.pct_initial_appl_type = this.aggFormData.init_appl_type == this.applType_pct;
   }
 
   setParisStageForm(parisStageForm: IParisForm) {
@@ -412,15 +428,23 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
     this.filterEPCountries()
     this.detFinalButtons()
     this.blockOutCountries()
+    this.autoSelectEP()
   }
 
   autoSelectEP() {
-    if (this.aggFormData.ep_method) {
+    if (this.aggFormData.ep_method && this.aggFormData.init_appl_type != this.applType_ep) {
       if (!this.aggFormData.pct_method) {
-        this.paris_country_add_and_disable = this.country_ep
+        if (!some(this.aggFormData.paris_countries, y => y.country.id == this.country_ep.id)) {
+          this.paris_country_add_and_disable = cloneDeep(this.country_ep)
+          let ep_multi_country: multiCountry = {} as multiCountry
+          ep_multi_country.country = this.country_ep
+          ep_multi_country.custom_appl_details = new CustomApplDetails()
+          ep_multi_country.custom_appl_options = new CustomApplOption()
+          this.aggFormData.paris_countries.push(ep_multi_country)
+          this.ep_auto_selected = true
+        }
       } else {
-        this.paris_country_remove = this.country_ep
-        this.ep_auto_selected = true
+        this.deSelectEP()
       }
     } else {
       this.deSelectEP()
@@ -431,6 +455,8 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
     if (this.ep_auto_selected) {
       this.paris_country_remove = this.country_ep
       this.ep_auto_selected = false
+      let bob = remove(this.aggFormData.paris_countries, country => country.country.id == this.country_ep.id)
+      console.log('bob', bob)
     }
   }
 
@@ -467,11 +493,7 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
     let entity_required_list = filter(unique_country_list, x => {
       return some(this.entitySizes, y => x.id == y.country)
     })
-    if (entity_required_list.length > 0) {
-      this.addlInfoFormRequired = true
-    } else {
-      this.addlInfoFormRequired = false
-    }
+    this.addlInfoFormRequired = entity_required_list.length > 0;
     this.addlCountries = entity_required_list
   }
 
@@ -543,10 +565,8 @@ export class FamEstFormComponent implements OnInit, OnDestroy, OnChanges {
 
   private verifyEpPresent() {
     let unique_country_list = this.getUniqueCountryList()
-    if (some(unique_country_list, y => isEqual(y, this.country_ep))) {
-      return true
-    }
-    return false
+    return some(unique_country_list, y => isEqual(y, this.country_ep));
+
   }
 
   submitEPSelection() {

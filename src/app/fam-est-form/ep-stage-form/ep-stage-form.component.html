@@ -4,7 +4,10 @@
     <div class="form-row">
       <h2>EPO Stage</h2>
     </div>
-    <button mat-stroked-button [matTooltip]="customApplToolTip" color="primary"
+    <button mat-stroked-button
+            *ngIf="!ep_initial_appl_type"
+            [matTooltip]="customApplToolTip"
+            color="primary"
             (click)="editEPCustApplDetails()">
       <mat-icon>add_circle_outline</mat-icon>
       Custom Application Details

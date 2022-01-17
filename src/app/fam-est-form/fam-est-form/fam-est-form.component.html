@@ -28,6 +28,7 @@
           [parisCountries]="paris_countries"
           [blockedParisCountries]="blockedParisCountries"
           [customApplDetails]="parisCustomAppl"
+          [country_ep]="country_ep"
           [paris_country_remove]="paris_country_remove"
           [paris_country_add]="paris_country_add"
           [paris_country_add_and_disable]="paris_country_add_and_disable"
@@ -49,10 +50,12 @@
           [blockedPCTCountries]="blockedPCTAcceptCountries"
           [blockedPCTCountry]="blockedPCTCountry"
           [countries]="countries"
+          [country_ep]="country_ep"
           [customApplDetails]="pctCustomAppl"
           [pct_country_remove]="pct_country_remove"
           [pct_country_add]="pct_country_add"
           [pctMethodCustomDetails]="pctMethodCustomAppl"
+          [pct_initial_appl_type]="pct_initial_appl_type"
           (intlStageForm)="setInternationalStageForm($event)"
           (customAppl)="editApplCustomApplDetails($event)"
           (formValid)="setIntlStageFormComplete($event)">
@@ -73,6 +76,7 @@
           [customApplDetails]="epCustomAppl"
           [epCustom]="epMethodCustomAppl"
           [ep_country_remove]="ep_country_remove"
+          [ep_initial_appl_type]="ep_initial_appl_type"
           (epStage)="setEPStageForm($event)"
           (customAppl)="editApplCustomApplDetails($event)">
         </app-ep-stage-form>

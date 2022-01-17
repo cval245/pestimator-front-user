@@ -34,6 +34,7 @@
         </mat-form-field>
       </div>
       <button mat-stroked-button
+              *ngIf="!pct_initial_appl_type"
               [matTooltip]="customApplToolTip"
               color="primary"
               (click)="editPCTCustApplDetails()">
@@ -73,7 +74,10 @@
             <mat-checkbox formControlName="selected">
               {{item.value.country.long_name}}
             </mat-checkbox>
-            <button mat-icon-button [matTooltip]="customApplToolTip"
+            <button mat-icon-button
+                    *ngIf="item.value.country.id !== country_ep.id"
+                    [matTooltip]="customApplToolTip"
+                    [disabled]="item.disabled"
                     (click)="editPCTNatCustApplDetails(item.value.country)">
               <mat-icon>add_circle_outline</mat-icon>
             </button>

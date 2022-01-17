@@ -20,8 +20,10 @@
             <mat-checkbox formControlName="selected">
               {{item.value.country.long_name}}
             </mat-checkbox>
-            <button *ngIf="item.enabled"
-                    mat-icon-button [matTooltip]="customApplToolTip"
+            <button *ngIf="item.value.country.id !== country_ep.id"
+                    mat-icon-button
+                    [matTooltip]="customApplToolTip"
+                    [disabled]="item.disabled"
                     (click)="editParisCustApplDetails(item.value.country)">
               <mat-icon>add_circle_outline</mat-icon>
             </button>

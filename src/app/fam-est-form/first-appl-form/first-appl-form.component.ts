@@ -60,7 +60,7 @@ export class FirstApplFormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.firstApplForm.valueChanges
       .pipe(takeUntil(this.destroyed))
-      .subscribe(first_appl_form => {
+      .subscribe(() => {
         this.init_appl_form.emit(this.firstApplForm)
       })
 
@@ -69,17 +69,25 @@ export class FirstApplFormComponent implements OnInit, OnDestroy, OnChanges {
       this.filterLangs()
       if (appl_type) {
         this.initCustomApplDisabledBool = false
-        if(!this.userSelectedEPMethod){
+        if (!this.userSelectedEPMethod) {
+          if (this.firstApplForm.controls.ep_method.disabled) {
+            this.firstApplForm.controls.ep_method.enable()
+          }
           this.firstApplForm.patchValue({ep_method: false})
         }
-        if(!this.userSelectedPCTMethod){
+        if (!this.userSelectedPCTMethod) {
+          if (this.firstApplForm.controls.pct_method.disabled) {
+            this.firstApplForm.controls.pct_method.enable()
+          }
           this.firstApplForm.patchValue({pct_method: false})
         }
-        if (appl_type.application_type == 'pct'){
+        if (appl_type.application_type == 'pct') {
           this.firstApplForm.patchValue({pct_method: true})
+          this.firstApplForm.controls.pct_method.disable()
           this.userSelectedPCTMethod = false
-        } else if (appl_type.application_type == 'ep'){
+        } else if (appl_type.application_type == 'ep') {
           this.firstApplForm.patchValue({ep_method: true})
+          this.firstApplForm.controls.ep_method.disable()
           this.userSelectedEPMethod = false
         }
       }

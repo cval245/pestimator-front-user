@@ -24,6 +24,7 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() customApplDetails: ICustomDetail[] = new Array<ICustomDetail>()
   @Input() epCustom: ICustomDetail = {} as ICustomDetail
   @Input() ep_country_remove: Country = new Country()
+  @Input() ep_initial_appl_type: boolean = false;
   @Output() customAppl = new EventEmitter;
   @Output() epStage = new EventEmitter;
   public appl_type_ep: ApplType = new ApplType();
