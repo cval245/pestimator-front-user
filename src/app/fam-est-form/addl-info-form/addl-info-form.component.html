@@ -1,0 +1,26 @@
+<form [formGroup]="addEntitySizeForm" fxLayout="column" fxLayoutAlign="center center">
+  <div class="form-row">
+    <h2>Additional Info Required</h2>
+  </div>
+  <div formArrayName="infos">
+    <div *ngFor="let c of entitySizeFormArray.controls; let i=index; trackBy: trackByIndex">
+      <ng-container [formGroupName]="i">
+        <div class="select-container">
+          <p>Entity Size: {{c.value.country.long_name}}</p>
+          <mat-form-field
+            color="primary" appearance="outline">
+            <mat-select class="custom-select"
+                        formControlName="entity_size">
+              <mat-option *ngFor="let t of filterAllEntitySizes(c.value.country)"
+                          [value]="t"
+                          [matTooltip]=t.description
+                          matTooltipPosition="right">
+                {{t.entity_size}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</form>

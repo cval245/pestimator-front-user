@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CustomApplOptions} from "../../_models/CustomApplOptions.model";
+import {CustomApplOption} from "../../_models/CustomApplOptions.model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Country} from "../../_models/Country.model";
 import {IDocFormat} from "../../_models/DocFormat.model";
@@ -20,12 +20,12 @@ export class CustomOptionsFormComponent implements OnInit {
   public filteredDocFormats: IDocFormat[] = new Array<IDocFormat>()
   public docFormats: IDocFormat[] = new Array<IDocFormat>()
   public defaultFormat: IDocFormat = {} as IDocFormat
-  customApplOptions: CustomApplOptions = new CustomApplOptions()
+  customApplOptions: CustomApplOption = new CustomApplOption()
 
   constructor(private fb: FormBuilder,
               public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: {
-                customOptions: CustomApplOptions,
+                customOptions: CustomApplOption,
                 country: Country, appl_type: ApplType, doc_formats: IDocFormat[]
               }
   ) {
@@ -47,6 +47,7 @@ export class CustomOptionsFormComponent implements OnInit {
       doc_format: [this.defaultFormat, Validators.required]
     })
   }
+
   ngOnInit(): void {
     if (this.customApplOptions !== undefined){
       let actual_doc_format: IDocFormat
@@ -61,6 +62,7 @@ export class CustomOptionsFormComponent implements OnInit {
       })
     }
   }
+
   submit() {
     let submitData =  this.custApplOptionsForm.value
     this.dialogRef.close({data: submitData})

@@ -1,0 +1,22 @@
+<form [formGroup]="familyForm" fxLayout="column">
+  <ng-template matStepLabel>Family Details</ng-template>
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row">
+      <h2>Details on Patent Family:</h2>
+    </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+      <div class="input-container">
+        <p>Family Name:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="family_name">
+        </mat-form-field>
+      </div>
+      <div class="input-container">
+        <p>Family Number:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="family_no">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>

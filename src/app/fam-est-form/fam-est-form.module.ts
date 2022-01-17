@@ -19,6 +19,17 @@ import {CustomOptionsFormComponent} from "./custom-options-form/custom-options-f
 import {MatDialogModule} from "@angular/material/dialog";
 import {FamEstConfirmComponent} from "./fam-est-confirm/fam-est-confirm.component";
 import {EstimationModule} from "../estimation/estimation.module";
+import {FamilyFormComponent} from './family-form/family-form.component';
+import {FirstApplFormComponent} from './first-appl-form/first-appl-form.component';
+import {InternationalStageFormComponent} from './international-stage-form/international-stage-form.component';
+import {EpStageFormComponent} from './ep-stage-form/ep-stage-form.component';
+import {ParisStageFormComponent} from './paris-stage-form/paris-stage-form.component';
+import {SingleUtilityFormComponent} from './single-utility-form/single-utility-form.component';
+import {StepperButtonsNextComponent} from './stepper-buttons-next/stepper-buttons-next.component';
+import {StepperButtonsFinalComponent} from './stepper-buttons-final/stepper-buttons-final.component';
+import {CustomApplDetailsComponent} from './custom-appl-details/custom-appl-details.component';
+import {CustomApplOptionsComponent} from './custom-appl-options/custom-appl-options.component';
+import {AddlInfoFormComponent} from './addl-info-form/addl-info-form.component';
 
 
 @NgModule({
@@ -26,7 +37,18 @@ import {EstimationModule} from "../estimation/estimation.module";
     FamEstFormComponent,
     CustomDetailsFormComponent,
     CustomOptionsFormComponent,
-    FamEstConfirmComponent
+    FamEstConfirmComponent,
+    FamilyFormComponent,
+    FirstApplFormComponent,
+    InternationalStageFormComponent,
+    EpStageFormComponent,
+    ParisStageFormComponent,
+    SingleUtilityFormComponent,
+    StepperButtonsNextComponent,
+    StepperButtonsFinalComponent,
+    CustomApplDetailsComponent,
+    CustomApplOptionsComponent,
+    AddlInfoFormComponent
   ],
   imports: [
     CommonModule,

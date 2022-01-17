@@ -203,14 +203,12 @@ export class FormPageComponent implements OnInit, OnDestroy {
       this.reqTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        console.log('xxx', x)
         this.reqTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.oaTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
 
-        console.log('xyx', x)
         this.oaTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
       })
       this.allowTranSer.filteredEntities$
@@ -300,7 +298,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitReqTrans(formData: IRequestExamTrans): void {
-    console.log('for', formData)
     if (formData.id == undefined) {
       this.reqTranSer.add(formData)
     } else {

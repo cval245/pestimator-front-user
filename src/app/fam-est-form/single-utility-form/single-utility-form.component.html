@@ -1,0 +1,17 @@
+<ng-template #duplicateEntry>
+  <form [formGroup]="singleUtilityForm" *ngIf="utilityChecker">
+    <div formArrayName="double_countries">
+      <div *ngFor="let c of doubleUtilityFormArray.controls; let i=index">
+        <div [formGroupName]="i">
+          <mat-radio-group formControlName="appl_version" fxLayout="column">
+            <mat-radio-button *ngFor="let d of c.value.country.appl_versions" [value]="d">
+              {{d}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <button mat-flat-button color="primary" (click)="submitUtilityCorrections()">Correct Double Utility Patents
+      </button>
+    </div>
+  </form>
+</ng-template>

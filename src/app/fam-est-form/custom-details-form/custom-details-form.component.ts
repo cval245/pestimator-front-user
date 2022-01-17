@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EntitySize} from "../../_models/entitySize.model";
 import {CustomApplDetails} from "../../_models/CustomApplDetails.model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CustomApplOptions} from "../../_models/CustomApplOptions.model";
-import {filter, some} from "lodash";
+import {CustomApplOption} from "../../_models/CustomApplOptions.model";
+import {filter, find, isEqual, some} from "lodash";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {ApplType} from "../../_models/applType.model";
 import {Country} from "../../_models/Country.model";
@@ -29,13 +29,13 @@ export class CustomDetailsFormComponent implements OnInit {
   public defaultLanguage: Language = {} as Language
   entitySizes: EntitySize[] = [new EntitySize()];
   customApplDetails: CustomApplDetails = new CustomApplDetails()
-  customApplOptions: CustomApplOptions = new CustomApplOptions()
+  customApplOptions: CustomApplOption = new CustomApplOption()
 
   constructor(private fb: FormBuilder,
               public dialogRef: MatDialogRef<any>,
               @Inject(MAT_DIALOG_DATA) public data: {
                 customDetails: CustomApplDetails,
-                entitySizes: EntitySize[], customOptions: CustomApplOptions,
+                entitySizes: EntitySize[], customOptions: CustomApplOption,
                 country: Country, appl_type: ApplType, doc_formats: IDocFormat[],
                 languages: Language[],
               }
@@ -57,18 +57,13 @@ export class CustomDetailsFormComponent implements OnInit {
         return (y.language == x.id && y.appl_type == this.applType.id)
       })
     })
-    let default_format_id = this.country.available_doc_formats.find(x => {
-      return x.default && x.appl_type == this.applType.id
-    })!.doc_format
-    this.defaultFormat = this.docFormats.find(x => {
-      return x.id == default_format_id
-    })!
-    let defaultLanguage_id = this.country.available_languages.find(x => {
-      return x.default && x.appl_type == this.applType.id
-    })!.language
-    this.defaultLanguage = this.languages.find(x => {
-      return x.id == defaultLanguage_id
-    })!
+    let language = find(this.filteredLanguages, z => {
+      return isEqual(z, this.customApplDetails.language)
+    })
+    let docFormat = find(this.filteredDocFormats, z => {
+      return isEqual(z, this.customApplOptions.doc_format)
+    })
+
     this.custDetailsForm = this.fb.group({
       num_indep_claims: [null, Validators.pattern('[0-9]+$')],
       num_claims_multiple_dependent: [null, Validators.pattern('[0-9]+$')],
@@ -78,7 +73,7 @@ export class CustomDetailsFormComponent implements OnInit {
       num_pages_claims: [null, Validators.pattern('[0-9]+$')],
       num_pages_drawings: [null, Validators.pattern('[0-9]+$')],
       entity_size: [null],
-      language: [this.defaultLanguage],
+      language: [{} as Language],
     })
     this.custApplOptionsForm = this.fb.group({
       request_examination_early_bool: [false, Validators.required],
@@ -94,19 +89,18 @@ export class CustomDetailsFormComponent implements OnInit {
         'num_pages_claims': this.customApplDetails.num_pages_claims || null,
         'num_pages_drawings': this.customApplDetails.num_pages_drawings || null,
         'entity_size': this.customApplDetails.entity_size || null,
-        'language': this.customApplDetails.language ? this.customApplDetails.language : this.defaultLanguage,
+        'language': language
       })
     }
     if (this.customApplOptions !== undefined) {
       this.custApplOptionsForm.setValue({
         'request_examination_early_bool': this.customApplOptions.request_examination_early_bool,
-        'doc_format': this.customApplOptions.doc_format ? this.customApplOptions.doc_format : this.defaultFormat,
+        'doc_format': docFormat
       })
     }
   }
 
   ngOnInit(): void {
-
 
   }
 

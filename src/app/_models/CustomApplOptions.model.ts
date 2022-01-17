@@ -1,11 +1,11 @@
 import {IDocFormat} from "./DocFormat.model";
 import {find} from "lodash";
 
-export class CustomApplOptions {
+export class CustomApplOption {
   public request_examination_early_bool: boolean = false
   public doc_format: IDocFormat | null = null
 
-  constructor(init?: Partial<CustomApplOptions>) {
+  constructor(init?: Partial<CustomApplOption>) {
     Object.assign(this, init)
   }
 }
@@ -14,12 +14,12 @@ export class CustomApplOptionsSubmit {
   public request_examination_early_bool: boolean = false
   public doc_format: number | null = null
 
-  constructor(init?: Partial<CustomApplOptions>) {
+  constructor(init?: Partial<CustomApplOption>) {
     Object.assign(this, init)
   }
 }
 
-export function convertToCustomApplOptionsSubmit(cApplOptions: CustomApplOptions): CustomApplOptionsSubmit {
+export function convertToCustomApplOptionsSubmit(cApplOptions: CustomApplOption): CustomApplOptionsSubmit {
   let cApplOptionsSubmit = new CustomApplOptionsSubmit()
   cApplOptionsSubmit = {
     ...cApplOptions,
@@ -30,8 +30,8 @@ export function convertToCustomApplOptionsSubmit(cApplOptions: CustomApplOptions
 
 export function convertToCustomApplOptions(cApplOptionsSubmit: CustomApplOptionsSubmit,
                                            doc_formats: IDocFormat[],
-): CustomApplOptions {
-  let cApplOptions = new CustomApplOptions()
+): CustomApplOption {
+  let cApplOptions = new CustomApplOption()
   cApplOptions = {
     ...cApplOptionsSubmit,
     'doc_format': find(doc_formats, x => x.id == cApplOptionsSubmit.doc_format) || null,

@@ -1,0 +1,97 @@
+<form [formGroup]="internationalStageForm" fxLayout="column" fxLayoutAlign="center center">
+  <ng-template matStepLabel>PCT Stage</ng-template>
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row">
+      <h2>File Through PCT:</h2>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center center" class="form-row">
+      <h3>PCT Examining Country</h3>
+      <div class="select-container">
+        <p> PCT Receiving Office </p>
+        <mat-form-field appearance="outline" color="primary">
+          <mat-select class="custom-select"
+                      formControlName="pct_country">
+            <mat-option *ngFor="let t of pct_ro_countries"
+                        [value]="t">
+              {{t.long_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="select-container">
+        <p> PCT International Search Authority (ISA) </p>
+        <mat-form-field appearance="outline" color="primary">
+
+          <mat-select class="custom-select"
+                      formControlName="isa_country">
+            <mat-option *ngFor="let t of isa_countries"
+                        [value]="t">
+              {{t.long_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button mat-stroked-button
+              *ngIf="!pct_initial_appl_type"
+              [matTooltip]="customApplToolTip"
+              color="primary"
+              (click)="editPCTCustApplDetails()">
+        <mat-icon>add_circle_outline</mat-icon>
+        Custom Application Details
+      </button>
+    </div>
+    <div class="form-row">
+      <app-custom-appl-details
+        [customApplDetails]="internationalStageForm.controls.pct_method_customization.value.custom_appl_details">
+      </app-custom-appl-details>
+      <app-custom-appl-options
+        [country]="internationalStageForm.controls.pct_country.value"
+        [appl_type]="appl_type_pct"
+        [customApplOption]="internationalStageForm.controls.pct_method_customization.value.custom_appl_options">
+      </app-custom-appl-options>
+    </div>
+    <mat-divider style="margin-top: 20px;"></mat-divider>
+    <h3 class="form-row">National Phase Countries</h3>
+    <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <ng-container [ngTemplateOutlet]="natPhaseCountries"></ng-container>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #natPhaseCountries>
+  <div [formGroup]="internationalStageForm"
+       *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex">
+
+    <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between">
+      <ng-container [formGroupName]="i">
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <div>
+            <mat-checkbox formControlName="selected">
+              {{item.value.country.long_name}}
+            </mat-checkbox>
+            <button mat-icon-button
+                    *ngIf="item.value.country.id !== country_ep.id"
+                    [matTooltip]="customApplToolTip"
+                    [disabled]="item.disabled"
+                    (click)="editPCTNatCustApplDetails(item.value.country)">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <app-custom-appl-details
+            [customApplDetails]="item.value.custom_appl_details">
+          </app-custom-appl-details>
+          <app-custom-appl-options
+            [customApplOption]="item.value.custom_appl_options"
+            [country]="item.value.country"
+            [appl_type]="appl_type_utility">
+          </app-custom-appl-options>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

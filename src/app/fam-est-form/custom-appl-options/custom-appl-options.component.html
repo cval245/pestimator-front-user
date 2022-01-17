@@ -1,0 +1,6 @@
+<div style="align-items: end; text-align: right;" *ngIf="customApplOption">
+  <div *ngIf=doc_format_display class="mat-small">Doc Format
+    = {{customApplOption.doc_format!.name}}</div>
+  <div class="mat-small" *ngIf="customApplOption.request_examination_early_bool">Request Examination Early
+    = {{customApplOption.request_examination_early_bool}}</div>
+</div>
