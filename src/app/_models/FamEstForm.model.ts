@@ -40,6 +40,7 @@ export class FamEstForm {
   }
   public pct_country: Country | null = null
   public isa_country: Country | null = null
+  public isa_entity_size: EntitySize | null = null
   public pct_countries: Array<multiCountry> = new Array<multiCountry>()
   public ep_method: boolean = false
   public ep_method_customization: { 'custom_appl_details': CustomApplDetails, 'custom_appl_options': CustomApplOption } = {
@@ -72,6 +73,7 @@ export class FamEstFormSubmit {
   }
   public pct_country: number | null = 0
   public isa_country: number | null = 0
+  public isa_entity_size: number | null = 0
   public pct_countries: { 'custom_appl_details': CustomApplDetailsSubmit, 'custom_appl_options': CustomApplOptionsSubmit, 'country': number }[] | null = [{
     'custom_appl_details': new CustomApplDetailsSubmit(),
     'country': 0,
@@ -118,6 +120,7 @@ export function convertToFamEstForm(famEstFormSubmit: FamEstFormSubmit,
   famEstForm.init_appl_details = convertToApplDetails(famEstFormSubmit.init_appl_details, languages, entitySizes, applications)
   famEstForm.pct_country = countries.find(x => x.id == famEstFormSubmit.pct_country) || null
   famEstForm.isa_country = countries.find(x => x.id == famEstFormSubmit.isa_country)!
+  famEstForm.isa_entity_size = entitySizes.find(x => x.id == famEstFormSubmit.isa_entity_size)!
   famEstForm.pct_method = famEstFormSubmit.pct_method
   famEstForm.ep_method = famEstFormSubmit.ep_method
   if (famEstFormSubmit.ep_method_customization !== null) {
@@ -205,6 +208,7 @@ export function convertToFamEstFormSubmit(famEstForm: FamEstForm) {
   famEstFormSubmit.init_appl_details = convertToApplDetailsSubmit(famEstForm.init_appl_details)
   famEstFormSubmit.pct_country = famEstForm.pct_country?.id || null
   famEstFormSubmit.isa_country = famEstForm.isa_country?.id || null
+  famEstFormSubmit.isa_entity_size = famEstForm.isa_entity_size?.id || null
   famEstFormSubmit.pct_method = famEstForm.pct_method
   famEstFormSubmit.ep_method = famEstForm.ep_method
   famEstFormSubmit.ep_method_customization = {

@@ -22,6 +22,12 @@ export interface ICustomDetail {
 
 }
 
+export interface IInfos {
+  country: Country,
+  entity_size: EntitySize
+}
+
+
 export interface IParisForm extends FormGroup {
   value: {
     paris_countries: {
@@ -97,7 +103,12 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
   public blockedEPValidCountries: Country[] = new Array<Country>();
   public blockedPCTAcceptCountries: Country[] = new Array<Country>();
   public blockedPCTCountry: Country = new Country();
-  private addlStageForm: any;
+  private addlStageForm: FormGroup = this.fb.group({
+    infos: this.fb.array([{
+      country: [],
+      entity_size: [],
+    }])
+  })
   public utilityChecker: boolean = false
   public singleUtilityForm: FormGroup = this.fb.group({
     double_countries: this.fb.array([])
@@ -377,12 +388,12 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
     this.updateData()
   }
 
-  addEntitySize(countries: any, x: any) {
-    let pct_nat_country = find(countries, c => {
-      return c.country == x.country
+  addEntitySize(countries: Array<multiCountry>, addlInfo: IInfos) {
+    let country = find(countries, c => {
+      return c.country == addlInfo.country
     })
-    if (pct_nat_country) {
-      pct_nat_country.custom_appl_details.entity_size = x.entity_size
+    if (country) {
+      country.custom_appl_details.entity_size = addlInfo.entity_size
     }
   }
 
@@ -392,20 +403,24 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
 
 
   addAddlStageForm() {
-    forEach(this.addlStageForm.value.infos, x => {
-      if (this.aggFormData.init_appl_country == x.country) {
-        this.aggFormData.init_appl_details = {...this.aggFormData.init_appl_details, entity_size: x.entity_size}
+    forEach(this.addlStageForm.value.infos, (addlInfo: IInfos) => {
+      if (this.aggFormData.init_appl_country == addlInfo.country) {
+        this.aggFormData.init_appl_details = {...this.aggFormData.init_appl_details, entity_size: addlInfo.entity_size}
       }
-      if (this.aggFormData.pct_country == x.country) {
+      if (this.aggFormData.pct_country == addlInfo.country) {
         this.aggFormData.pct_method_customization.custom_appl_details =
           {
             ...this.aggFormData.pct_method_customization.custom_appl_details,
-            entity_size: x.entity_size
+            entity_size: addlInfo.entity_size
           }
       }
-      this.addEntitySize(this.aggFormData.pct_countries, x)
-      this.addEntitySize(this.aggFormData.ep_countries, x)
-      this.addEntitySize(this.aggFormData.paris_countries, x)
+      this.addEntitySize(this.aggFormData.pct_countries, addlInfo)
+      this.addEntitySize(this.aggFormData.ep_countries, addlInfo)
+      this.addEntitySize(this.aggFormData.paris_countries, addlInfo)
+      if (addlInfo.country == this.aggFormData.isa_country) {
+        this.aggFormData.isa_entity_size = addlInfo.entity_size
+      }
+
     })
   }
 
@@ -509,6 +524,13 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
         unique_countries_list.push(pct_country)
       }
     }
+    let isa_country = this.aggFormData.isa_country
+    if (isa_country) {
+      if (!some(unique_countries_list, x => x == isa_country)) {
+        unique_countries_list.push(isa_country)
+      }
+    }
+    console.log('ff')
     let paris_countries = this.aggFormData.paris_countries
     forEach(paris_countries, country_item => {
       if (!some(unique_countries_list, x => x == country_item.country)) {
@@ -565,7 +587,11 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
 
   private verifyEpPresent() {
     let unique_country_list = this.getUniqueCountryList()
-    return some(unique_country_list, y => isEqual(y, this.country_ep));
+    if (this.aggFormData.ep_method) {
+      return some(unique_country_list, y => isEqual(y, this.country_ep));
+    } else {
+      return true
+    }
 
   }
 
