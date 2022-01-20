@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {concat, dropRight} from 'lodash';
 import {Country} from 'src/app/_models/Country.model';
@@ -10,7 +10,7 @@ import {ApplType} from "../../_models/applType.model";
   templateUrl: './oa-num-form.component.html',
   styleUrls: ['./oa-num-form.component.scss']
 })
-export class OaNumFormComponent {
+export class OaNumFormComponent implements OnChanges {
   @Input() country: Country = new Country()
   @Input() oanum = new Array<ICountryOANum>()
   @Input() applTypes = new Array<ApplType>()
@@ -18,7 +18,7 @@ export class OaNumFormComponent {
   @Output() delEmit = new EventEmitter
   public applTypesCorrect: ApplType[] = [new ApplType()]
   editingRow: number = 0;
-  displayedColumns: string[] = ['id', 'appl_type',
+  displayedColumns: string[] = ['id', 'appl_type', 'prev_appl_type',
     'oa_total']
 
   public form: FormGroup;
@@ -29,6 +29,7 @@ export class OaNumFormComponent {
       country: [0, Validators.required],
       oa_total: [0, Validators.required],
       appl_type: ['', Validators.required],
+      prev_appl_type: ['', Validators.required],
     })
   }
 
@@ -43,6 +44,7 @@ export class OaNumFormComponent {
       id: 0,
       country: this.country,
       appl_type: 0,
+      prev_appl_type: null,
       oa_total: 0,
     })
   }
@@ -54,6 +56,7 @@ export class OaNumFormComponent {
       id: row.id,
       country: row.country,
       appl_type: row.appl_type.id,
+      prev_appl_type: row.prev_appl_type ? row.prev_appl_type.id : null,
       oa_total: row.oa_total,
     })
   }

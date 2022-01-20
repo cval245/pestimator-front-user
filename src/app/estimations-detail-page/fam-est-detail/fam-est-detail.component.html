@@ -15,8 +15,7 @@
     </mat-tab>
     <mat-tab label="Details">
       <div class="overContainer" fxLayout="row" fxLayoutAlign="space-between start"
-           fxLayout.lt-md="column"
-      >
+           fxLayout.lt-md="column">
         <app-famestformdata-summary [formData]="famform">
         </app-famestformdata-summary>
         <app-table-fam-est-sum
@@ -26,9 +25,7 @@
         <div>
           <app-fam-det-table [applications]="applications"></app-fam-det-table>
         </div>
-
       </div>
-      <p>FamForm UDN = {{famform.unique_display_no}}</p>
     </mat-tab>
     <mat-tab label="Countries">
       <div *ngIf="allCountryAgged">

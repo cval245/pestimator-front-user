@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {concat, dropRight} from 'lodash';
 import {Country} from 'src/app/_models/Country.model';
@@ -10,7 +10,7 @@ import {ApplType} from "../../_models/applType.model";
   templateUrl: './gen-trans.component.html',
   styleUrls: ['./gen-trans.component.scss']
 })
-export class GenTransComponent {
+export class GenTransComponent implements OnChanges {
 
   @Input() tableData: any
   @Input() transComplexTimes = new Array<ITransComplexTime>()
@@ -20,7 +20,8 @@ export class GenTransComponent {
   @Output() delEmit = new EventEmitter
   public applTypesCorrect: ApplType[] = [new ApplType()]
   editingRow: number = 0;
-  public displayedColumns: string[] = ['id', 'date_diff', 'appl_type', 'trans_complex_time_condition']
+  public displayedColumns: string[] = ['id', 'date_diff', 'appl_type',
+    'prev_appl_type', 'trans_complex_time_condition']
   public form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -29,6 +30,7 @@ export class GenTransComponent {
       country: ['', Validators.required],
       date_diff: ['', Validators.required],
       appl_type: ['', Validators.required],
+      prev_appl_type: ['', Validators.required],
       trans_complex_time_condition: [null]
     })
   }
@@ -45,6 +47,7 @@ export class GenTransComponent {
       country: '',
       date_diff: '',
       appl_type: 0,
+      prev_appl_type: null,
       trans_complex_time_condition: null
     })
   }
@@ -55,6 +58,7 @@ export class GenTransComponent {
       id: row.id,
       country: this.country.id,
       appl_type: row.appl_type.id,
+      prev_appl_type: row.prev_appl_type ? row.prev_appl_type.id : null,
       date_diff: row.date_diff,
       trans_complex_time_condition: [row.trans_complex_time_condition]
     })

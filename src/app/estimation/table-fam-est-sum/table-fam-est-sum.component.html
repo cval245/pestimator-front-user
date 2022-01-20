@@ -1,4 +1,18 @@
-<h3>Costs</h3>
-<p>Official Cost: {{detSum.official_cost_sum | currency}}</p>
-<p>Translation Cost: {{detSum.translation_cost_sum | currency}}</p>
-<p>Total Cost: {{detSum.total_cost_sum | currency}}</p>
+<table>
+  <tr>
+    <th>Cost Type</th>
+    <th>Cost (USD)</th>
+  </tr>
+  <tr>
+    <td>Official Cost</td>
+    <td>{{detSum.official_cost_sum | currency}}</td>
+  </tr>
+  <tr>
+    <td>Translation Cost</td>
+    <td>{{detSum.translation_cost_sum | currency}}</td>
+  </tr>
+  <tr>
+    <td>Total Cost</td>
+    <td>{{detSum.total_cost_sum | currency}}</td>
+  </tr>
+</table>
