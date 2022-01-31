@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FamEst} from "../../_models/FamEst.model";
 import {combineLatest, Observable, Subscription} from "rxjs";
 import {map} from "lodash";
@@ -18,7 +18,7 @@ import {ApplType} from "../../_models/applType.model";
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnDestroy {
 
   famEsts: FamEst[] = [new FamEst('')];
 
@@ -27,8 +27,8 @@ export class HomePageComponent implements OnInit {
   pageSize = 5;
   countries: Country[] = [new Country]
   applTypes: ApplType[] = [new ApplType]
-  private famEst$: Observable<FamEst[]> = this.famEstSer.entities$.pipe(filter(x => x.length > 0));
-  private family$: Observable<Family[]> = this.familySer.entities$.pipe(filter(x => x.length > 0));
+  private famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadLoaded().pipe(filter(x => x.length > 0));
+  private family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadLoaded().pipe(filter(x => x.length > 0));
 
 
   constructor(
@@ -38,7 +38,7 @@ export class HomePageComponent implements OnInit {
     private applTypeSer: ApplTypeService,
     private router: Router,
   ) {
-    this.cmbSub = combineLatest([this.famEst$, this.family$ ]).subscribe(([famEsts, families ])=>{
+    this.cmbSub = combineLatest([this.famEst$, this.family$]).subscribe(([famEsts, families]) => {
       this.families = families
       this.famEsts = map(famEsts, (x: FamEst) => {
         let d = families.find(y => y.id == x.id)
@@ -53,13 +53,10 @@ export class HomePageComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-    this.famEstSer.getAll()
-    this.familySer.getAll()
-  }
   ngOnDestroy(){
     this.cmbSub.unsubscribe()
   }
+
   seeDetails(famestformdata_id: number) {
     // find udn for id
     let family = this.families.find(x => x.famestformdata == famestformdata_id)

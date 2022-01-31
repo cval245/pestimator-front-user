@@ -19,8 +19,8 @@ import {LanguageService} from "../../_services/language.service";
 })
 export class FamilyEstimateMainComponent implements OnInit {
 
-  famEst$: Observable<FamEst[]> = this.famEstSer.entities$;
-  family$: Observable<Family[]> = this.familySer.entities$;
+  famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadLoaded();
+  family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadLoaded();
   famEsts: FamEst[] = [new FamEst('')];
   families: Family[] = [new Family()];
   famEstSub: Subscription;
@@ -52,9 +52,6 @@ export class FamilyEstimateMainComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.famEstSer.getAll();
-    this.familySer.getAll();
-    // this.famEstFormDataSer.getAll();
   }
 
   ngOnDestroy() {

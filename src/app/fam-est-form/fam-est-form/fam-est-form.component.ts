@@ -471,7 +471,6 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
       this.paris_country_remove = this.country_ep
       this.ep_auto_selected = false
       let bob = remove(this.aggFormData.paris_countries, country => country.country.id == this.country_ep.id)
-      console.log('bob', bob)
     }
   }
 
@@ -530,7 +529,6 @@ export class FamEstFormComponent implements OnDestroy, OnChanges {
         unique_countries_list.push(isa_country)
       }
     }
-    console.log('ff')
     let paris_countries = this.aggFormData.paris_countries
     forEach(paris_countries, country_item => {
       if (!some(unique_countries_list, x => x == country_item.country)) {

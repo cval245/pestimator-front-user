@@ -23,6 +23,8 @@ import {CustomOptionsFormComponent} from "../../fam-est-form/custom-options-form
 import {CustomDetailsFormComponent} from "../../fam-est-form/custom-details-form/custom-details-form.component";
 import {ApplTypeAllService} from "../../_services/appl-type-all.service";
 import {ICustomDetail} from "../../fam-est-form/fam-est-form/fam-est-form.component";
+import {FamilyService} from "../../_services/family.service";
+import {FamEstService} from "../../_services/fam-est.service";
 
 @Component({
   selector: 'app-fam-est-form-page',
@@ -48,6 +50,8 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
 
   constructor(
+    private familySer: FamilyService,
+    private famEstSer: FamEstService,
     private famEstFormSer: FamEstFormService,
     private countrySer: CountryService,
     private applTypeSer: ApplTypeAllService,
@@ -127,6 +131,8 @@ export class FamEstFormPageComponent implements OnInit, OnDestroy {
     })).subscribe(x => {
       if (x.id != 0) {
         this.error_display_bool = false
+        this.familySer.setLoaded(false)
+        this.famEstSer.setLoaded(false)
         this.router.navigate(['/estimations/' + x.unique_display_no])
       }
     })

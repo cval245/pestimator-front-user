@@ -32,11 +32,16 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit(formData: UserProfile){
-    if(formData.id == undefined){
-      this.userProfSer.add(formData).subscribe(x => this.router.navigateByUrl('/account/buy-new-estimate'))
-    } else{
-      this.userProfSer.update(formData).subscribe(x => this.router.navigateByUrl('/account/buy-new-estimate'))
+    if (formData.id == undefined) {
+      this.userProfSer.add(formData).subscribe(x => this.router.navigateByUrl('/home'))
+    } else {
+      this.userProfSer.update(formData).subscribe(x => this.router.navigateByUrl('/home'))
     }
+    // if(formData.id == undefined){
+    //   this.userProfSer.add(formData).subscribe(x => this.router.navigateByUrl('/account/buy-new-estimate'))
+    // } else{
+    //   this.userProfSer.update(formData).subscribe(x => this.router.navigateByUrl('/account/buy-new-estimate'))
+    // }
   }
 }
 
