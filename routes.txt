@@ -1,0 +1,4 @@
+/
+/pricing
+/features
+/example-report

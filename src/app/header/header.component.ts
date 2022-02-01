@@ -12,22 +12,31 @@ import {delay} from "rxjs/operators";
 export class HeaderComponent implements OnInit {
 
   public showMenuBool: boolean = false;
-    isLoggedIn = false;
-    constructor(
-        private store: Store<{authCred: any, menuOpen: boolean}>,
-        private accSer: AccountService,
-    ) { }
+  public isLoggedIn = false;
 
-    ngOnInit(): void {
-        this.store.select('authCred').pipe(delay(0)).subscribe(x =>
-            { this.isLoggedIn = x.isLoggedIn})
-      this.store.select('menuOpen').pipe(delay(0)).subscribe((x:any) =>
-      this.showMenuBool=x.menuOpen)
-    }
+  constructor(
+    private store: Store<{ authCred: any, menuOpen: boolean }>,
+    private accSer: AccountService,
+  ) {
+  }
 
-    logout(){
-        this.accSer.logout()
-    }
+  ngOnInit(): void {
+    this.isLoggedIn = false
+    this.store.select('authCred').pipe(delay(0)).subscribe(x => {
+      if (x !== undefined) {
+        this.isLoggedIn = x.isLoggedIn
+      }
+    })
+    this.store.select('menuOpen').pipe(delay(0)).subscribe((x: any) => {
+      if (x !== undefined) {
+        this.showMenuBool = x.menuOpen
+      }
+    })
+  }
+
+  logout() {
+    this.accSer.logout()
+  }
 
   showMenu() {
     this.showMenuBool = !this.showMenuBool

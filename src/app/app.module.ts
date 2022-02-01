@@ -58,7 +58,7 @@ import {UserProfileEffect} from "./store/effects/userProfile.effect";
   ],
   imports: [
     HttpClientModule,
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'serverApp'}),
     LandingModule,
     ContentFreeModule,
     FlexLayoutModule,
@@ -80,13 +80,12 @@ import {UserProfileEffect} from "./store/effects/userProfile.effect";
     EntityDataModule.forRoot(entityConfig),
     LandingRoutingModule,
     ContentFreeRoutingModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatSidenavModule,
-
+    AppRoutingModule,
   ],
 
   providers: [

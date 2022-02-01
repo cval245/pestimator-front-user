@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {debounceTime, delay, takeUntil} from "rxjs/operators";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {BreakpointObserver, Breakpoints, MediaMatcher} from "@angular/cdk/layout";
 
 @Component({
@@ -10,12 +10,11 @@ import {BreakpointObserver, Breakpoints, MediaMatcher} from "@angular/cdk/layout
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  mobileQuery: MediaQueryList
+  // mobileQuery: MediaQueryList
   title = 'front-admin';
   isLoggedIn = false;
   public loading: boolean = false
-  private loadingSub: Subscription = new Subscription
-  private _mobileQueryListener: () => void;
+  // private _mobileQueryListener: () => void;
   public showMenuBool: boolean = false;
   mobile_bool: boolean = false;
 
@@ -46,45 +45,48 @@ export class AppComponent implements OnInit {
       for (const query of Object.keys(result.breakpoints)) {
         if (result.breakpoints[query]) {
           this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
-          if (this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall'){
-            this.mobile_bool=true
-          } else{
-            this.mobile_bool=false
+          if (this.currentScreenSize == 'Small' || this.currentScreenSize == 'XSmall') {
+            this.mobile_bool = true
+          } else {
+            this.mobile_bool = false
           }
 
         }
       }
     })
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+    // this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    // this.mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 
   ngOnInit(): void {
 
     this.store.select('authCred').pipe(takeUntil(this.destroyed), delay(0)
     ).subscribe(x => {
-      this.isLoggedIn = x.isLoggedIn
-      if (this.isLoggedIn) {
-        this.contentClass = 'logged-in-over-main'
-      } else {
-        this.contentClass = 'fullSize'
+      if (x !== undefined) {
+        this.isLoggedIn = x.isLoggedIn
+        if (this.isLoggedIn) {
+          this.contentClass = 'logged-in-over-main'
+        } else {
+          this.contentClass = 'fullSize'
+        }
       }
-      // this.changeDetectorRef.detectChanges()
-
     })
     this.store.select('loading').pipe(takeUntil(this.destroyed), delay(0), debounceTime(500))
       .subscribe((value: any) => {
-        this.loading = value.loading
+        if (value !== undefined) {
+          this.loading = value.loading
+        }
       })
     this.store.select('menuOpen').pipe(takeUntil(this.destroyed), delay(0)).subscribe((x: any) => {
-      this.showMenuBool = x.menuOpen
+      if (x !== undefined) {
+        this.showMenuBool = x.menuOpen
+      }
     })
   }
 
   ngOnDestroy(): void{
-    this.loadingSub.unsubscribe()
-    this.mobileQuery.removeEventListener('change', this._mobileQueryListener)
+    // this.mobileQuery.removeEventListener('change', this._mobileQueryListener)
     this.destroyed.next()
     this.destroyed.complete()
   }
