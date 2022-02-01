@@ -13,4 +13,4 @@ pm2 start ./path/main.js
 also can use pm2 stop all
 
 when rendering use the command:
-    ng run front-user:prerender --routes-file routes.txt --no-guess-routes
+    `ng run front-user:prerender --routes-file routes.txt --no-guess-routes`
