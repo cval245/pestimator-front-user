@@ -1,14 +1,13 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
+import {Store} from "@ngrx/store";
 import {takeUntil} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoggedInGuard implements CanActivate, OnDestroy {
-
+export class HomeGuard implements CanActivate, OnDestroy {
   private isLoggedIn: Boolean = false
   private destroyed = new Subject<void>();
 
@@ -20,13 +19,14 @@ export class LoggedInGuard implements CanActivate, OnDestroy {
       this.isLoggedIn = x.isLoggedIn)
   }
 
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.isLoggedIn) {
-      return true;
+      return this.router.parseUrl('/home')
     } else {
-      return this.router.parseUrl('/account/login')
+      return true;
     }
   }
 

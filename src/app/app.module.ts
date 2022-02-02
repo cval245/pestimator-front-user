@@ -29,7 +29,6 @@ import {MainComponent} from './main/main.component';
 import {AsideComponent} from './aside/aside.component';
 import {FooterComponent} from './footer/footer.component';
 import {NotFoundComponent} from './not-found/not-found.component';
-import {ContentFreeRoutingModule} from "./content-free/content-free-routing.module";
 import {ContentFreeModule} from "./content-free/content-free.module";
 import {loadingReducer} from "./store/reducers/loading.reducers";
 import {LoadingScreenInterceptor} from "./account/_helpers/loading-screen.interceptor";
@@ -43,6 +42,7 @@ import {defaultDataServiceConfig} from "./store/dataserviceconfig";
 import {customDetailsReducer} from "./store/reducers/customDetails.reducers";
 import {userProfileReducer} from "./store/reducers/userProfile.reducers";
 import {UserProfileEffect} from "./store/effects/userProfile.effect";
+import {landingReducer} from "./store/reducers/landing.reducers";
 
 
 @NgModule({
@@ -66,6 +66,7 @@ import {UserProfileEffect} from "./store/effects/userProfile.effect";
     MatDividerModule,
     StoreModule.forRoot({
         'loading': loadingReducer,
+        'landing': landingReducer,
         'authCred': authReducer,
         'menuOpen': menuOpenReducer,
         'customDetails': customDetailsReducer,
@@ -79,7 +80,6 @@ import {UserProfileEffect} from "./store/effects/userProfile.effect";
     EffectsModule.forRoot([AuthEffectsNew, UserProfileEffect]),
     EntityDataModule.forRoot(entityConfig),
     LandingRoutingModule,
-    ContentFreeRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,

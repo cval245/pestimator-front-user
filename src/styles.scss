@@ -6,6 +6,7 @@
 
 
 html, body {
+  scroll-behavior: smooth;
   height: 100%;
   width: 100%
 }
@@ -62,7 +63,6 @@ body {
 }
 
 .container {
-
   display: flex;
   min-height: 100%;
   flex-direction: column;
@@ -74,7 +74,7 @@ body {
 
 app-footer {
   padding: 20px;
-  margin: 0px;
+  margin: 0;
 }
 
 app-header {
@@ -106,6 +106,11 @@ app-main {
   padding-top: 60px;
   flex: 1;
 }
+
+.fullSizeLanding {
+  flex: 1;
+}
+
 
 app-aside {
   flex: 0 2 150px;
@@ -164,7 +169,7 @@ app-footer {
   }
 
   mat-form-field {
-    padding-left: 0px;
+    padding-left: 0;
 
     width: 200px;
 
@@ -176,7 +181,7 @@ app-footer {
 
   input {
     font-size: 16px;
-    padding-left: 0px;
+    padding-left: 0;
     color: $dark-text;
   }
 }
@@ -202,7 +207,7 @@ app-footer {
   color: $light-accent-text;
 
   h2 {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .header-spacer {
@@ -283,7 +288,6 @@ app-footer {
 }
 
 tr.element-row:not(.expanded-row):hover {
-  //background: #777;
   background-color: map-get($theme-primary, 'lighter');
 }
 
@@ -296,6 +300,7 @@ tr.element-row:not(.expanded-row):hover {
 }
 
 .pricing-card {
+  color: map-get($theme-primary, 'main');
   background-color: map-get($theme-primary, 'lighter');
 }
 

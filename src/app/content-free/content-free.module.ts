@@ -8,7 +8,6 @@ import {PricingComponent} from './pricing/pricing.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {ExampleReportComponent} from './example-report/example-report.component';
 import {FlexModule} from "@angular/flex-layout";
-import {AdvertisingOneComponent} from './advertising-one/advertising-one.component';
 
 
 @NgModule({
@@ -16,7 +15,11 @@ import {AdvertisingOneComponent} from './advertising-one/advertising-one.compone
     FeaturesDemonstrationComponent,
     PricingComponent,
     ExampleReportComponent,
-    AdvertisingOneComponent
+  ],
+  exports: [
+    FeaturesDemonstrationComponent,
+    ExampleReportComponent,
+    PricingComponent
   ],
   imports: [
     CommonModule,
