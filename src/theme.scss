@@ -321,19 +321,20 @@ app-footer {
 }
 
 .mat-header-cell{
-    background: map-get($theme-primary, 'darker');
+  background: map-get($theme-primary, 'darker');
 
-    h3 {
-        //font-weight: bold;
-        padding-top: 10px;
-        text-align: center;
-        color: $light-accent-text;
-    }
+  h3 {
+    //font-weight: bold;
+    padding-top: 10px;
+    text-align: center;
+    color: $light-accent-text;
+  }
 
 
 }
-.mat-first-col{
-    background: map-get($theme-primary, 'lighter');
+
+.container-light {
+  background: map-get($theme-primary, 'lighter');
 }
 
 //.formContainer{

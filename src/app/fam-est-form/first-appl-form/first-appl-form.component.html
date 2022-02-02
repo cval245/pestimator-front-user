@@ -47,7 +47,6 @@
     <div class="form-row">
       <h3>Details of the First Application:</h3>
     </div>
-    <!--            fxLayout.gt-sm="row" fxLayout.lt-sm="column"-->
     <div class="form-row" fxLayout.gt-sm="row" fxLayout.lt-sm="column" fxLayoutAlign.gt-sm="space-evenly end"
          fxLayoutAlign.lt-sm="space-evenly start">
       <div class="input-container-small">
@@ -68,12 +67,7 @@
           <input matInput type="text" formControlName="num_multiple_dependent_claims">
         </mat-form-field>
       </div>
-      <div class="input-container-small">
-        <p>No. Drawings:</p>
-        <mat-form-field appearance="outline" color="primary">
-          <input matInput type="text" formControlName="num_drawings">
-        </mat-form-field>
-      </div>
+
     </div>
     <div class="form-row" fxLayout.gt-sm="row"
          fxLayout.lt-sm="column"
@@ -98,7 +92,16 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="form-row">
+    <div class="form-row" fxLayout.gt-sm="row"
+         fxLayout.lt-sm="column"
+         fxLayoutAlign.gt-sm="space-evenly end"
+         fxLayoutAlign.lt-sm="space-evenly start">
+      <div class="input-container-small">
+        <p>No. Drawings:</p>
+        <mat-form-field appearance="outline" color="primary">
+          <input matInput type="text" formControlName="num_drawings">
+        </mat-form-field>
+      </div>
       <div class="select-container">
         <p>Language</p>
         <mat-form-field class="megaInput" appearance="outline" color="primary">
@@ -111,6 +114,7 @@
           </mat-select>
         </mat-form-field>
       </div>
+
     </div>
     <mat-divider></mat-divider>
     <div class="form-row">

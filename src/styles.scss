@@ -17,8 +17,7 @@ body {
 }
 
 .ag-theme-alpine-custom {
-  @include ag-theme-alpine((
-  ));
+  //@include ag-theme-alpine();
 
   .ag-row-last {
     background-color: $light-bg-darker-10;
@@ -134,24 +133,15 @@ app-footer {
   }
 }
 
-
-.mat-first-col {
-  background: map-get($theme-primary, 'lighter');
-}
-
 .light-accent-background {
   background-color: $light-background;
 }
 
-.light-accent-background-two {
+.dark-accent-text {
   color: $dark-accent-text;
 }
 
-.light-primary-background {
-  background-color: map-get($theme-primary, 'lighter')
-}
-
-.input-container, .select-container, .date-picker-container, .input-container-small{
+.input-container, .select-container, .date-picker-container, .input-container-small {
   text-align: left;
   padding: 10px;
   width: 200px;
@@ -186,9 +176,6 @@ app-footer {
   }
 }
 
-.mat-card{
-  background-color: $light-background;
-}
 .form-row-btn {
   display: flex;
   flex-direction: row;
@@ -205,6 +192,7 @@ app-footer {
 .formContainer {
   background-color: map-get($theme-primary, 'darker');
   color: $light-accent-text;
+  max-width: 735px;
 
   h2 {
     margin-bottom: 0;
@@ -271,9 +259,6 @@ app-footer {
   background-color: map-get($theme-primary, 'main');
 }
 
-.desc-box-offcolor {
-  background-color: map-get($theme-primary, 'lighter');
-}
 
 .desc-box {
   h1 {
@@ -291,13 +276,6 @@ tr.element-row:not(.expanded-row):hover {
   background-color: map-get($theme-primary, 'lighter');
 }
 
-.button-overcontainer {
-  background-color: map-get($theme-primary, 'lighter');
-}
-
-.button-super-over {
-  background-color: map-get($theme-primary, 'lighter');
-}
 
 .pricing-card {
   color: map-get($theme-primary, 'main');
