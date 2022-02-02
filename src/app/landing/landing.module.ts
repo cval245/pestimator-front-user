@@ -5,17 +5,28 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {LandingRoutingModule} from './landing-routing.module';
 import {LandingPageComponent} from './landing-page/landing-page.component';
+import {ContentFreeModule} from "../content-free/content-free.module";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 @NgModule({
   declarations: [
     LandingPageComponent
   ],
+  exports: [
+    LandingPageComponent
+  ],
   imports: [
-      CommonModule,
-      FlexLayoutModule,
-      MatButtonModule,
-      LandingRoutingModule,
+    CommonModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    LandingRoutingModule,
+    ContentFreeModule,
+    MatMenuModule,
+    MatIconModule,
+    MatToolbarModule,
   ]
 })
 export class LandingModule { }

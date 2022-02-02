@@ -1,9 +1,13 @@
-.pricing-card{
-  padding-top: 30px;
-  padding-bottom: 30px;
+.over-landing {
+  offset-before: 200px;
+}
+
+.pricing-card {
+  padding: 30px;
   width: 300px;
 }
-.pricing-cards-over{
+
+.pricing-cards-over {
   margin-top: 40px;
   margin-bottom: 80px;
   display: flex;
@@ -12,12 +16,10 @@
   align-items: center;
 }
 
-.signupbutton{
+.signupbutton {
   margin-top: 20px;
 }
-//.strikethrough{
-//  text-decoration: line-through;
-//}
+
 s, strike{text-decoration:none;position:relative;}
 s::before, strike::before {
   top: 45%; /*tweak this to adjust the vertical position if it's off a bit due to your font family */

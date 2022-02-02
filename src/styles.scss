@@ -6,6 +6,7 @@
 
 
 html, body {
+  scroll-behavior: smooth;
   height: 100%;
   width: 100%
 }
@@ -16,8 +17,7 @@ body {
 }
 
 .ag-theme-alpine-custom {
-  @include ag-theme-alpine((
-  ));
+  //@include ag-theme-alpine();
 
   .ag-row-last {
     background-color: $light-bg-darker-10;
@@ -62,7 +62,6 @@ body {
 }
 
 .container {
-
   display: flex;
   min-height: 100%;
   flex-direction: column;
@@ -74,7 +73,7 @@ body {
 
 app-footer {
   padding: 20px;
-  margin: 0px;
+  margin: 0;
 }
 
 app-header {
@@ -107,6 +106,11 @@ app-main {
   flex: 1;
 }
 
+.fullSizeLanding {
+  flex: 1;
+}
+
+
 app-aside {
   flex: 0 2 150px;
   background-color: $light-background;
@@ -129,24 +133,15 @@ app-footer {
   }
 }
 
-
-.mat-first-col {
-  background: map-get($theme-primary, 'lighter');
-}
-
 .light-accent-background {
   background-color: $light-background;
 }
 
-.light-accent-background-two {
+.dark-accent-text {
   color: $dark-accent-text;
 }
 
-.light-primary-background {
-  background-color: map-get($theme-primary, 'lighter')
-}
-
-.input-container, .select-container, .date-picker-container, .input-container-small{
+.input-container, .select-container, .date-picker-container, .input-container-small {
   text-align: left;
   padding: 10px;
   width: 200px;
@@ -164,7 +159,7 @@ app-footer {
   }
 
   mat-form-field {
-    padding-left: 0px;
+    padding-left: 0;
 
     width: 200px;
 
@@ -176,14 +171,11 @@ app-footer {
 
   input {
     font-size: 16px;
-    padding-left: 0px;
+    padding-left: 0;
     color: $dark-text;
   }
 }
 
-.mat-card{
-  background-color: $light-background;
-}
 .form-row-btn {
   display: flex;
   flex-direction: row;
@@ -200,9 +192,10 @@ app-footer {
 .formContainer {
   background-color: map-get($theme-primary, 'darker');
   color: $light-accent-text;
+  max-width: 735px;
 
   h2 {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .header-spacer {
@@ -266,9 +259,6 @@ app-footer {
   background-color: map-get($theme-primary, 'main');
 }
 
-.desc-box-offcolor {
-  background-color: map-get($theme-primary, 'lighter');
-}
 
 .desc-box {
   h1 {
@@ -283,19 +273,12 @@ app-footer {
 }
 
 tr.element-row:not(.expanded-row):hover {
-  //background: #777;
   background-color: map-get($theme-primary, 'lighter');
 }
 
-.button-overcontainer {
-  background-color: map-get($theme-primary, 'lighter');
-}
-
-.button-super-over {
-  background-color: map-get($theme-primary, 'lighter');
-}
 
 .pricing-card {
+  color: map-get($theme-primary, 'main');
   background-color: map-get($theme-primary, 'lighter');
 }
 

@@ -16,7 +16,9 @@ export class NavComponent {
 
   constructor(private store: Store<{menuOpen: boolean, userProfile: any}> ) {
     this.store.select('userProfile').pipe(takeUntil(this.destroyed), delay(0)).subscribe(x => {
-      this.isStaff = x.userDetail.is_staff
+      if (x !== undefined) {
+        this.isStaff = x.userDetail.is_staff
+      }
     })
 
   }

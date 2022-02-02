@@ -11,8 +11,8 @@
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import 'https://fonts.googleapis.com/css?family=Material+Icons';
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+@import 'https://fonts.googleapis.com/css?family=Material+Icons&display=swap';
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
 
 $fontConfig: (
   display-4: mat.define-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
@@ -29,6 +29,7 @@ $fontConfig: (
   caption: mat.define-typography-level(12px, 20px, 400, 'Roboto', 0.0333em),
   input: mat.define-typography-level(inherit, 1.125, 400, 'Roboto', 1.5px)
 );
+
 
 // Foreground Elements
 
@@ -320,19 +321,20 @@ app-footer {
 }
 
 .mat-header-cell{
-    background: map-get($theme-primary, 'darker');
+  background: map-get($theme-primary, 'darker');
 
-    h3 {
-        //font-weight: bold;
-        padding-top: 10px;
-        text-align: center;
-        color: $light-accent-text;
-    }
+  h3 {
+    //font-weight: bold;
+    padding-top: 10px;
+    text-align: center;
+    color: $light-accent-text;
+  }
 
 
 }
-.mat-first-col{
-    background: map-get($theme-primary, 'lighter');
+
+.container-light {
+  background: map-get($theme-primary, 'lighter');
 }
 
 //.formContainer{

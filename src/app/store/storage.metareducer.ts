@@ -1,12 +1,19 @@
 import {Action, ActionReducer, MetaReducer} from '@ngrx/store';
 import {cloneDeep, merge, pick} from 'lodash';
 import {logout} from "./actions/auth.action";
+import {PLATFORM_ID} from "@angular/core";
 
 function setSavedState(state: any, localStorageKey: string) {
-  localStorage.setItem(localStorageKey, JSON.stringify(state));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(localStorageKey, JSON.stringify(state));
+  }
 }
 function getSavedState(localStorageKey: string): any {
-  return JSON.parse(localStorage.getItem(localStorageKey)!);
+  let platformId = PLATFORM_ID
+  // let bob = @Inject(PLATFORM_ID)
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem(localStorageKey)!);
+  }
 }
 
 // the keys from state which we'd like to save.

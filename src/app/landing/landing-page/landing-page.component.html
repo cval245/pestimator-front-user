@@ -1,25 +1,78 @@
-<div class="mat-typography">
-<div fxLayout="column" fxLayoutAligne="center center">
-
-
-    <div class="world-background">
-        <div class="world-background-container" fxFlex fxLayout="column" fxLayoutAlign="center center">
-                <h1 class="mat-display-2">Estimate Global Patent Costs</h1>
-        </div>
+<meta name="description" content="EstPat Patent Cost Estimator">
+<div class="over-landing">
+  <mat-toolbar color="primary" fxShow fxHide.lt-sm>
+    <a routerLink="/">
+      <div style="width: 50px; height: 50px; text-align: center; padding: 0;">
+        <img style="width: 100%; height: 100%; object-fit: cover"
+             src="assets/images/estpat-logo-trans.svg" alt="">
+      </div>
+    </a>
+    <a mat-button routerLink="/"><p class="mat-display-1" style="margin-bottom: 0">EstPat</p></a>
+    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+      <button mat-button (click)="scrollFeatures()"><p class="mat-h3 heading-button">Features</p></button>
+      <button mat-button (click)="scrollExampleReport()"><p class="mat-h3 heading-button">Examples</p></button>
+      <button mat-button (click)="scrollPricing()"><p class="mat-h3 heading-button">Pricing</p></button>
+      <a mat-flat-button color="accent" routerLink="/account/login"><p class="mat-h3 heading-button">Login</p></a>
     </div>
-    <div fxLayout="column" fxLayoutAlign="center center" class="blurb-container">
+  </mat-toolbar>
+  <mat-toolbar color="primary" fxHide fxShow.lt-sm>
+    <a routerLink="/" aria-label="home page button 1">
+      <div style="width: 50px; height: 50px; text-align: center; padding: 0;">
+        <img style="width: 100%; height: 100%; object-fit: cover"
+             src="assets/images/estpat-logo-trans.svg" alt="">
+      </div>
+    </a>
+    <a mat-button routerLink="/" aria-label="home page button 2">
+      <p class="mat-display-1" style="margin-bottom: 0">EstPat</p>
+    </a>
+    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu button">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="scrollFeatures()"><p class="mat-h3">Features</p></button>
+        <button mat-menu-item (click)="scrollExampleReport()"><p class="mat-h3">Examples</p></button>
+        <button mat-menu-item (click)="scrollPricing()"><p class="mat-h3">Pricing</p></button>
+        <a mat-menu-item routerLink="/account/signup"><p class="mat-h3">Sign up</p></a>
+        <a mat-menu-item routerLink="/account/login"><p class="mat-h3">Login</p></a>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+
+
+  <div class="mat-typography">
+    <div fxLayout="column">
+
+
+      <div class="world-background">
+        <div class="world-background-container" fxFlex fxLayout="column" fxLayoutAlign="center center">
+          <h1 class="mat-display-2">Estimate Global Patent Costs</h1>
+        </div>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center center" class="blurb-container">
         <p class="mat-title">What We Do</p>
         <section class="mat-subheading-2 blurb">
-            Estimate your total patent costs in multiple jurisidictions.  Gather insight into your future patent costs estimates.  All estimates are saved in your online account and is available for download at any time.
+          Estimate your total patent costs in multiple jurisidictions. Gather insight into your future patent costs
+          estimates. All estimates are saved in your online account and is available for download at any time.
         </section>
-    </div>
-    <div class="blurb-container-2">
+      </div>
+      <div class="blurb-container-2">
         <h2>Ready to Start? Sign Up below</h2>
         <div>
           <a mat-flat-button color="accent" routerLink="/account/signup">Sign Up</a>
           <a mat-button color="accent" routerLink="/account/login">Login</a>
         </div>
-    </div>
+      </div>
 
-</div>
+    </div>
+  </div>
+  <app-features-demonstration></app-features-demonstration>
+  <app-example-report></app-example-report>
+  <app-pricing></app-pricing>
+  <div style="margin-bottom: 100px; margin-top: 100px;">
+    <h2>Ready to Start? Sign Up below</h2>
+    <div>
+      <a mat-flat-button style="margin:10px;" color="accent" routerLink="/account/signup">Sign Up</a>
+    </div>
+  </div>
 </div>

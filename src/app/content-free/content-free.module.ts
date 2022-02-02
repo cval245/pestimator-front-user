@@ -14,7 +14,12 @@ import {FlexModule} from "@angular/flex-layout";
   declarations: [
     FeaturesDemonstrationComponent,
     PricingComponent,
-    ExampleReportComponent
+    ExampleReportComponent,
+  ],
+  exports: [
+    FeaturesDemonstrationComponent,
+    ExampleReportComponent,
+    PricingComponent
   ],
   imports: [
     CommonModule,

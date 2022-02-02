@@ -1,10 +1,15 @@
-.world-background{
+.world-background {
   position: relative;
   background-image: url(/assets/images/world-map-plain-transparency.webp);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   height: 500px;
+}
 
+.heading-button {
+  margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
