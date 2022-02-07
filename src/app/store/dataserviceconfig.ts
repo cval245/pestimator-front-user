@@ -176,6 +176,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'fee-category/',
       collectionResourceUrl: environment.API_URL + 'fee-category/',
     },
+    DetailedFeeCategory: {
+      entityResourceUrl: environment.API_URL + 'detailed-fee-category/',
+      collectionResourceUrl: environment.API_URL + 'detailed-fee-category/',
+    },
     TransComplexTime: {
       entityResourceUrl: environment.API_URL + 'trans-complex-time/',
       collectionResourceUrl: environment.API_URL + 'trans-complex-time/',

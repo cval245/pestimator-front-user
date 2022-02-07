@@ -16,6 +16,7 @@ import {ConditionRendererComponent} from "../condition-renderer/condition-render
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {IFeeCategory} from "../_models/FeeCategory.model";
 import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
+import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 
 
 interface TableWise {
@@ -31,6 +32,7 @@ interface TableWise {
   fee_code: string;
   isa_country_fee_only: boolean;
   fee_category: any;
+  detailed_fee_category: any;
 }
 
 @Component({
@@ -53,7 +55,6 @@ export class EstTemplateGridV2Component implements OnInit {
   public getRowNodeId: any;
   public modules: Module[] = [ClientSideRowModelModule];
   @Input() rowData: TableWise[] = new Array<TableWise>();
-  // @Input() currencies: Currency[] = new Array<Currency>()
   @Input() currencies_list: string[] = new Array<string>()
   @Input() applTypes: ApplType[] = []
   @Input() country: Country = new Country()
@@ -64,10 +65,10 @@ export class EstTemplateGridV2Component implements OnInit {
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Input() docFormats: IDocFormat[] = new Array<IDocFormat>()
   @Input() feeCategories: IFeeCategory[] = new Array<IFeeCategory>();
+  @Input() detailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
   @Output() formData: EventEmitter<TableWise> = new EventEmitter()
   @Output() delEmit: EventEmitter<TableWise[]> = new EventEmitter()
   private gridColumnApi: any;
-  // private defaultEntitySize: EntitySize = new EntitySize();
   //@ts-ignore
   public frameworkComponents: { conditionRenderer: ConditionRendererComponent };
 
@@ -107,7 +108,7 @@ export class EstTemplateGridV2Component implements OnInit {
           return row.value
         },
         cellEditor: 'agTextCellEditor',
-        comparator: (valueA: number , valueB: number, nodeA: any, nodeB:any, isInverted: boolean) =>{
+        comparator: (valueA: number, valueB: number, nodeA: any, nodeB: any, isInverted: boolean) => {
           return valueA - valueB
         },
       },
@@ -116,7 +117,6 @@ export class EstTemplateGridV2Component implements OnInit {
         editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
         valueGetter: (params: ValueGetterParams) => {
-          // this.currencies.find(x => x.currency_name)
           return params.data.official_cost_currency
         },
         valueFormatter(row: ValueFormatterParams): string {
@@ -125,7 +125,6 @@ export class EstTemplateGridV2Component implements OnInit {
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.currencies_list}
       },
-
       {
         field: 'appl_type', headerName: 'Appl Type', editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
@@ -151,21 +150,33 @@ export class EstTemplateGridV2Component implements OnInit {
         },
       },
       {
-        field: 'fee_code', headerName: 'Fee Code', editable: true,
-        width: 200, sortable: true, filter: 'agTextColumnFilter',
-        valueFormatter(row: ValueFormatterParams): string {
-          return row.value
-        },
-        cellEditor: 'agTextCellEditor',
-      },
-      {
-        field: 'description', headerName: 'Description', editable: true,
+        field: 'detailed_fee_category', headerName: 'Detailed Fee Category', editable: true,
         width: 300, sortable: true, filter: 'agTextColumnFilter',
         valueFormatter(row: ValueFormatterParams): string {
-          return row.value
+          return row.value.name
         },
-        cellEditor: 'agTextCellEditor',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: this.detailedFeeCategories},
+        comparator: (valueA: IDetailedFeeCategory, valueB: IDetailedFeeCategory, nodeA: any, nodeB: any, isInverted: boolean) => {
+          return (valueA.id - valueB.id)
+        },
       },
+      // {
+      //   field: 'fee_code', headerName: 'Fee Code', editable: true,
+      //   width: 200, sortable: true, filter: 'agTextColumnFilter',
+      //   valueFormatter(row: ValueFormatterParams): string {
+      //     return row.value
+      //   },
+      //   cellEditor: 'agTextCellEditor',
+      // },
+      // {
+      //   field: 'description', headerName: 'Description', editable: true,
+      //   width: 300, sortable: true, filter: 'agTextColumnFilter',
+      //   valueFormatter(row: ValueFormatterParams): string {
+      //     return row.value
+      //   },
+      //   cellEditor: 'agTextCellEditor',
+      // },
       {
         field: 'law_firm_template.law_firm_cost', headerName: 'LawFirm Cost', editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
@@ -173,7 +184,7 @@ export class EstTemplateGridV2Component implements OnInit {
           return params.data.law_firm_template.law_firm_cost
         },
         valueSetter: (params: ValueSetterParams) => {
-          let newData = {
+          params.data = {
             ...params.data,
             law_firm_template: {
               id: params.data.law_firm_template.id,
@@ -182,7 +193,6 @@ export class EstTemplateGridV2Component implements OnInit {
               date_diff: params.data.law_firm_template.date_diff
             }
           }
-          params.data = newData
           this.onCellValueChanged(params)
           return false
         },
@@ -198,7 +208,7 @@ export class EstTemplateGridV2Component implements OnInit {
           return params.data.law_firm_template.law_firm_cost_currency
         },
         valueSetter: (params: ValueSetterParams) => {
-          let newData = {
+          params.data = {
             ...params.data,
             law_firm_template: {
               id: params.data.law_firm_template.id,
@@ -207,7 +217,6 @@ export class EstTemplateGridV2Component implements OnInit {
               date_diff: params.data.law_firm_template.date_diff
             }
           }
-          params.data = newData
           this.onCellValueChanged(params)
           return false
         },
@@ -244,13 +253,13 @@ export class EstTemplateGridV2Component implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       {
-        field:'conditions', headerName: 'Conditions', editable: 'True',
+        field: 'conditions', headerName: 'Conditions', editable: 'True',
         width: 600, sortable: false,
         cellRenderer: 'conditionRenderer',
         cellRendererParams: {
           country: this.country,
         },
-        autoHeight:true,
+        autoHeight: true,
       },
     ];
     this.frameworkComponents = {
@@ -272,6 +281,7 @@ export class EstTemplateGridV2Component implements OnInit {
       description: '',
       isa_country_fee_only: false,
       fee_category: {} as IFeeCategory,
+      detailed_fee_category: {} as IDetailedFeeCategory,
       law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},
       conditions: {id: 0, condition_annual_prosecution_fee: false},
     }
@@ -301,32 +311,33 @@ export class EstTemplateGridV2Component implements OnInit {
         params.data.appl_type = params.data.appl_type.id
         params.data.country = this.country.id
         params.data.fee_category = params.data.fee_category.id
+        params.data.detailed_fee_category = params.data.detailed_fee_category.id
         if (params.data.conditions.condition_entity_size) {
-          if (params.data.conditions.condition_entity_size.id ==0){
+          if (params.data.conditions.condition_entity_size.id == 0) {
             params.data.conditions.condition_entity_size = null
-          }else{
+          } else {
             params.data.conditions.condition_entity_size = params.data.conditions.condition_entity_size.id
           }
         }
 
         if (params.data.conditions.doc_format) {
-          if (params.data.conditions.doc_format.id ==0){
+          if (params.data.conditions.doc_format.id == 0) {
             params.data.conditions.doc_format = null
-          }else{
+          } else {
             params.data.conditions.doc_format = params.data.conditions.doc_format.id
           }
         }
         if (params.data.conditions.condition_complex) {
-          if (params.data.conditions.condition_complex.id==0){
+          if (params.data.conditions.condition_complex.id == 0) {
             params.data.conditions.condition_complex = null
-          }else{
+          } else {
             params.data.conditions.condition_complex = params.data.conditions.condition_complex.id
           }
         }
         if (params.data.conditions.condition_time_complex) {
-          if (params.data.conditions.condition_time_complex.id==0){
+          if (params.data.conditions.condition_time_complex.id == 0) {
             params.data.conditions.condition_time_complex = null
-          }else{
+          } else {
             params.data.conditions.condition_time_complex = params.data.conditions.condition_time_complex.id
           }
         }

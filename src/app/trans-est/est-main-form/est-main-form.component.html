@@ -9,7 +9,7 @@
               [formControl]="countryControl">
     <mat-option *ngFor="let t of countries"
                 [value]="t.id">
-      {{t.country}}
+      {{t.long_name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
@@ -28,9 +28,9 @@
   [complexConditions]="complexConditions"
   [complexTimeConditions]="complexTimeConditions"
   [feeCategories]="feeCategories"
+  [detailedFeeCategories]="filteredDetailedFeeCategories"
   (formData)="onSubmitFilEstTemp($event)"
-  (delEmit)="delFileEstTemp($event)"
->
+  (delEmit)="delFileEstTemp($event)">
 </app-est-template-grid-v2>
 </div>
 
@@ -48,9 +48,9 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitPublEstTemp($event)"
-    (delEmit)="delPublEstTemp($event)"
-  >
+    (delEmit)="delPublEstTemp($event)">
   </app-est-template-grid-v2>
 </div>
 
@@ -67,9 +67,9 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitReqEstTemp($event)"
-    (delEmit)="delReqEstTemp($event)"
-  >
+    (delEmit)="delReqEstTemp($event)">
   </app-est-template-grid-v2>
 </div>
 
@@ -87,9 +87,9 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitOAEstTemp($event)"
-    (delEmit)="delOAEstTemp($event)"
-  >
+    (delEmit)="delOAEstTemp($event)">
   </app-est-template-grid-v2>
 </div>
 <div *ngIf="country_us === true" class="over-grid">
@@ -105,9 +105,9 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitUSOAEstTemp($event)"
-    (delEmit)="delUSOAEstTemp($event)"
-  >
+    (delEmit)="delUSOAEstTemp($event)">
   </app-est-template-grid-us-oa>
 </div>
 
@@ -124,9 +124,9 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitAllowEstTemp($event)"
-    (delEmit)="delAllowEstTemp($event)"
-  >
+    (delEmit)="delAllowEstTemp($event)">
   </app-est-template-grid-v2>
 </div>
 
@@ -143,8 +143,8 @@
     [complexConditions]="complexConditions"
     [complexTimeConditions]="complexTimeConditions"
     [feeCategories]="feeCategories"
+    [detailedFeeCategories]="filteredDetailedFeeCategories"
     (formData)="onSubmitIssueEstTemp($event)"
-    (delEmit)="delIssueEstTemp($event)"
-  >
+    (delEmit)="delIssueEstTemp($event)">
   </app-est-template-grid-v2>
 </div>

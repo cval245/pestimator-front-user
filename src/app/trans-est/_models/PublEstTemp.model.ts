@@ -11,4 +11,5 @@ export interface IPublEstTemp{
   fee_code: string;
   isa_country_fee_only: boolean;
   fee_category: any;
+  detailed_fee_category: any;
 }

@@ -17,7 +17,7 @@ body {
 }
 
 .ag-theme-alpine-custom {
-  //@include ag-theme-alpine();
+  @include ag-theme-alpine();
 
   .ag-row-last {
     background-color: $light-bg-darker-10;
@@ -28,6 +28,7 @@ body {
   padding: 30px;
   background: map-get($theme-primary, 'lighter');
 }
+
 
 .blurb-container-2 {
   padding: 30px;
@@ -86,7 +87,7 @@ app-nav {
   margin-top: 50px;
   flex: 0 2 150px;
   background: map-get($theme-primary, 'lighter');
-  color: map-get($theme-accent, 'darker');
+  color: #003D3D;
 }
 
 app-main {

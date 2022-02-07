@@ -27,8 +27,8 @@ export class HomePageComponent implements OnDestroy {
   pageSize = 5;
   countries: Country[] = [new Country]
   applTypes: ApplType[] = [new ApplType]
-  private famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadLoaded().pipe(filter(x => x.length > 0));
-  private family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadLoaded().pipe(filter(x => x.length > 0));
+  private famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadyLoaded().pipe(filter(x => x.length > 0));
+  private family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadyLoaded().pipe(filter(x => x.length > 0));
 
 
   constructor(

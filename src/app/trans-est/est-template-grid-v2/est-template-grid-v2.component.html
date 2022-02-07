@@ -2,21 +2,21 @@
 <button (click)="deleteRow()">Delete</button>
 <button (click)="removeFilters()">Remove Filters</button>
 <div class="est-form-grid">
-<ag-grid-angular
-  style="width: 1820px; height: 800px;"
-  class="ag-theme-alpine-custom"
-  [rowData]="rowData"
-  [columnDefs]="columnDefs"
-  [rowSelection]="rowSelection"
-  [floatingFiltersHeight]="floatingFiltersHeight"
-  [headerHeight]="headerHeight"
-  [defaultColDef]="defaultColDef"
-  [immutableData]="true"
-  [getRowNodeId]="getRowNodeId"
-  [modules]="modules"
-  [frameworkComponents]="frameworkComponents"
-  (cellValueChanged)="onCellValueChanged($event)"
-  (gridReady)="onGridReady($event)"
-  (firstDataRendered)="onFirstDataRendered($event)"
-></ag-grid-angular>
+  <ag-grid-angular
+    style="width: 1820px; height: 800px;"
+    class="ag-theme-alpine-custom"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [rowSelection]="rowSelection"
+    [floatingFiltersHeight]="floatingFiltersHeight"
+    [headerHeight]="headerHeight"
+    [defaultColDef]="defaultColDef"
+    [immutableData]="true"
+    [getRowNodeId]="getRowNodeId"
+    [modules]="modules"
+    [frameworkComponents]="frameworkComponents"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (firstDataRendered)="onFirstDataRendered($event)"
+  ></ag-grid-angular>
 </div>

@@ -13,4 +13,5 @@ export interface IUSOAEstTemp {
   oa_first_final_bool: boolean;
   official_cost: number,
   official_cost_currency: string;
+  detailed_fee_category: any;
 }

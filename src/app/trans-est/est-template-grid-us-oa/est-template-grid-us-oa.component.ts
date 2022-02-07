@@ -21,6 +21,7 @@ import {ConditionRendererComponent} from "../condition-renderer/condition-render
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {IFeeCategory} from "../_models/FeeCategory.model";
 import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
+import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 
 
 interface USOATableWise {
@@ -38,6 +39,7 @@ interface USOATableWise {
   oa_first_final_bool: boolean,
   official_cost: number,
   official_cost_currency: string,
+  detailed_fee_category: any;
 }
 
 @Component({
@@ -71,6 +73,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
   @Input() complexTimeConditions: IComplexTimeConditions[] = [{'id': 0, 'name': ''}]
   @Input() docFormats: IDocFormat[] = new Array<IDocFormat>()
   @Input() feeCategories: IFeeCategory[] = new Array<IFeeCategory>();
+  @Input() detailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
   @Output() formData: EventEmitter<USOATableWise> = new EventEmitter()
   @Output() delEmit: EventEmitter<USOATableWise[]> = new EventEmitter()
   private gridColumnApi: any;
@@ -181,6 +184,18 @@ export class EstTemplateGridUSOAComponent implements OnInit {
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.feeCategories},
         comparator: (valueA: IFeeCategory, valueB: IFeeCategory, nodeA: any, nodeB: any, isInverted: boolean) => {
+          return (valueA.id - valueB.id)
+        },
+      },
+      {
+        field: 'detailed_fee_category', headerName: 'Detailed Fee Category', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value.name
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {values: this.detailedFeeCategories},
+        comparator: (valueA: IDetailedFeeCategory, valueB: IDetailedFeeCategory, nodeA: any, nodeB: any, isInverted: boolean) => {
           return (valueA.id - valueB.id)
         },
       },
@@ -308,6 +323,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
       oa_first_final_bool: false,
       oa_final_bool: false,
       fee_category: {} as IFeeCategory,
+      detailed_fee_category: {} as IDetailedFeeCategory,
       law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},
       conditions: {id: 0, condition_annual_prosecution_fee: false},
     }
@@ -337,6 +353,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
         params.data.appl_type = params.data.appl_type.id
         params.data.country = this.country.id
         params.data.fee_category = params.data.fee_category.id
+        params.data.detailed_fee_category = params.data.detailed_fee_category.id
         if (params.data.conditions.condition_entity_size) {
           if (params.data.conditions.condition_entity_size.id == 0) {
             params.data.conditions.condition_entity_size = null

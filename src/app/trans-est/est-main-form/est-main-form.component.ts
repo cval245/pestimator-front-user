@@ -41,6 +41,8 @@ import {FeeCategoryService} from "../_services/fee-category.service";
 import {IFeeCategory} from "../_models/FeeCategory.model";
 import {Language} from "../../_models/Language.model";
 import {LanguageService} from "../../_services/language.service";
+import {DetailedFeeCategoryService} from "../_services/detailed-fee-category.service";
+import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 
 interface GenericTemp {
   id: number,
@@ -55,6 +57,7 @@ interface GenericTemp {
   fee_code: string;
   isa_country_fee_only: boolean;
   fee_category: any;
+  detailed_fee_category: any;
 }
 
 interface CountryWise {
@@ -65,6 +68,11 @@ interface CountryWise {
 interface FeeCategoryWise {
   id: number,
   fee_category: any;
+}
+
+interface DetailedFeeCategoryWise {
+  id: number,
+  detailed_fee_category: any;
 }
 
 
@@ -159,6 +167,8 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   public country_us: boolean = false;
   public entitySizes = new Array<EntitySize>();
   public feeCategories: IFeeCategory[] = new Array<IFeeCategory>();
+  public detailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
+  public filteredDetailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
   private country_us_id: number = 0;
   public complexTimeConditions = new Array<IComplexTimeConditions>();
   public currencies: Currency[] = new Array<Currency>();
@@ -192,6 +202,7 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     private docFormatSer: DocFormatService,
     private languageSer: LanguageService,
     private feeCatSer: FeeCategoryService,
+    private detailedFeeCatSer: DetailedFeeCategoryService,
     private _viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
   ) {
@@ -220,6 +231,10 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .subscribe(x => {
         this.feeCategories = x
       })
+    this.detailedFeeCatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.detailedFeeCategories = x
+      })
     this.currencySer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
@@ -231,8 +246,8 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .subscribe(x => {
         this.country_us_id = x.find(y => y.country == 'US')?.id || 0
         this.countries = x.sort((a, b) => {
-          let countryA = a.country.toUpperCase()
-          let countryB = b.country.toUpperCase()
+          let countryA = a.long_name.toUpperCase()
+          let countryB = b.long_name.toUpperCase()
           if (countryA < countryB) {
             return -1;
           }
@@ -257,9 +272,6 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     this.conditionSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-
-        // this.conditions = cloneDeep(x)
-        // this.conditions = x.slice(0)
         this.conditions = x
         this.conditions = clone(this.conditions)
         this.setFilters(this.country.id)
@@ -287,12 +299,9 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.country = this.countries.find(y => y.id == x)!
-        this.country_us = false
-        if (x == this.country_us_id) {
-          this.country_us = true
-        }
+        this.filteredDetailedFeeCategories = this.detailedFeeCategories.filter(y => y.country == x)
+        this.country_us = x == this.country_us_id;
         this.setFilters(x)
-        // this.filteredLanguages = map(this.country.available_languages, y => this.languages.find(z => z.id == y.language))
       })
     this.filEstSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -386,15 +395,22 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   replaceFkWithObject(data: GenericTemp[]) {
     return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
       this.lawFirmTempSet(this.conditionsSet(
-        this.applTypeSet(this.countrySet(this.feeCategorySet(
-          data))))))))))
+        this.applTypeSet(this.countrySet(this.feeCategorySet(this.detailedFeeCategorySet(
+          data)))))))))))
   }
 
   replaceFkWithObjectUSOA(data: IUSOAEstTemp[]) {
     return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
       this.lawFirmTempSet(this.conditionsSet(
-        this.applTypeSet(this.countrySet(this.feeCategorySet(
-          data))))))))))
+        this.applTypeSet(this.countrySet(this.feeCategorySet(this.detailedFeeCategorySet(
+          data)))))))))))
+  }
+
+  detailedFeeCategorySet<TDetailedFeeCategoryWise extends DetailedFeeCategoryWise>(arg: TDetailedFeeCategoryWise[]): TDetailedFeeCategoryWise[] {
+    return map<TDetailedFeeCategoryWise, TDetailedFeeCategoryWise>(arg, (x: TDetailedFeeCategoryWise) => {
+      let d = this.detailedFeeCategories.find(y => y.id == x.detailed_fee_category);
+      return {...x, 'detailed_fee_category': d}
+    })
   }
 
   feeCategorySet<TFeeCategoryWise extends FeeCategoryWise>(arg: TFeeCategoryWise[]): TFeeCategoryWise[] {

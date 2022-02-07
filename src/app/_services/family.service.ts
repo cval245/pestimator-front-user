@@ -12,7 +12,7 @@ export class FamilyService extends EntityCollectionServiceBase<Family> {
     super('Family', serviceElementsFactory)
   }
 
-  getAllUnlessAlreadLoaded() {
+  getAllUnlessAlreadyLoaded() {
     return this.loaded$.pipe(switchMap(x => {
       return x ? this.entities$ : this.getAll()
     }))

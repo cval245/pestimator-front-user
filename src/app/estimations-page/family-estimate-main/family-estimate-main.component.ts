@@ -19,8 +19,8 @@ import {LanguageService} from "../../_services/language.service";
 })
 export class FamilyEstimateMainComponent implements OnInit {
 
-  famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadLoaded();
-  family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadLoaded();
+  famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadyLoaded();
+  family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadyLoaded();
   famEsts: FamEst[] = [new FamEst('')];
   families: Family[] = [new Family()];
   famEstSub: Subscription;

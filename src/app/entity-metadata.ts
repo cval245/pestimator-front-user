@@ -35,6 +35,7 @@ const entityMetadata: EntityMetadataMap = {
   DocFormatCountry: {},
   OAType: {},
   FeeCategory: {},
+  DetailedFeeCategory: {},
   Family: {},
   FamilyAll: {},
   Application: {},

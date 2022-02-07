@@ -29,6 +29,10 @@ import {MatDividerModule} from "@angular/material/divider";
 import {OverlayModule} from "@angular/cdk/overlay";
 import {PortalModule} from "@angular/cdk/portal";
 import {EstTemplateGridUSOAComponent} from "./est-template-grid-us-oa/est-template-grid-us-oa.component";
+import {DetailedFeeCategoryFormComponent} from './detailed-fee-category-form/detailed-fee-category-form.component';
+import {
+  DetailedFeeCategoryFormPageComponent
+} from './detailed-fee-category-form-page/detailed-fee-category-form-page.component';
 
 
 @NgModule({
@@ -43,6 +47,8 @@ import {EstTemplateGridUSOAComponent} from "./est-template-grid-us-oa/est-templa
     EstTemplateGridUSOAComponent,
     ConditionRendererComponent,
     ConditionsFormComponent,
+    DetailedFeeCategoryFormComponent,
+    DetailedFeeCategoryFormPageComponent,
   ],
   imports: [
     CommonModule,
