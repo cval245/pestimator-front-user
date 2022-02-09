@@ -4,16 +4,7 @@ import {forIn} from "lodash";
 import {MatDialog} from "@angular/material/dialog";
 import {ConditionsFormComponent} from "../conditions-form/conditions-form.component";
 import {Country} from "../../_models/Country.model";
-// import {ICellRendererParams} from "ag-grid-community";
 import {ICellRendererParams} from "@ag-grid-community/core";
-
-
-// export interface IDialogData{
-//   conditions: IConditions
-//   entitySizes: EntitySize[]
-//   complexConditions: IComplexConditions[]
-//   complexTimeConditions: IComplexTimeConditions[]
-// }
 
 @Component({
   selector: 'app-condition-renderer',
@@ -27,23 +18,15 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   public adjustConditions: any = []
   public country: Country = new Country();
 
-  constructor(
-    public dialog: MatDialog,
-    // private entitySizeSer: EntitySizeService,
-    // private complexCondSer: ComplexConditionsService,
-    // private complexTimeCondSer: ComplexTimeConditionsService,
-  ) {
-
+  constructor(public dialog: MatDialog) {
   }
 
 
-  // @ts-ignore
   agInit(params: ICellRendererParams): void {
     this.params = params;
     this.createChips(this.params)
   }
 
-  // @ts-ignore
   refresh(params: ICellRendererParams): boolean {
     this.params = params;
     this.createChips(this.params)
@@ -89,10 +72,9 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   editConditions() {
     const dialogRef = this.dialog.open(ConditionsFormComponent, {
       width: '1200px',
-      // 'height': '800px',
       data: {conditions: this.conditions, country: this.country}
     })
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
     })
   }
 }

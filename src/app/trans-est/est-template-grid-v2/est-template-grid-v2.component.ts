@@ -75,6 +75,8 @@ export class EstTemplateGridV2Component implements OnInit {
   constructor() {
     this.defaultColDef = {
       resizable: true,
+      autoHeight: true,
+      wrapText: true,
     };
     this.rowSelection = 'multiple';
     this.getRowNodeId = function (data: any) {
@@ -161,22 +163,22 @@ export class EstTemplateGridV2Component implements OnInit {
           return (valueA.id - valueB.id)
         },
       },
-      // {
-      //   field: 'fee_code', headerName: 'Fee Code', editable: true,
-      //   width: 200, sortable: true, filter: 'agTextColumnFilter',
-      //   valueFormatter(row: ValueFormatterParams): string {
-      //     return row.value
-      //   },
-      //   cellEditor: 'agTextCellEditor',
-      // },
-      // {
-      //   field: 'description', headerName: 'Description', editable: true,
-      //   width: 300, sortable: true, filter: 'agTextColumnFilter',
-      //   valueFormatter(row: ValueFormatterParams): string {
-      //     return row.value
-      //   },
-      //   cellEditor: 'agTextCellEditor',
-      // },
+      {
+        field: 'fee_code', headerName: 'Fee Code', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
+      {
+        field: 'description', headerName: 'Description', editable: true,
+        width: 200, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
       {
         field: 'law_firm_template.law_firm_cost', headerName: 'LawFirm Cost', editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
@@ -253,8 +255,11 @@ export class EstTemplateGridV2Component implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       {
-        field: 'conditions', headerName: 'Conditions', editable: 'True',
-        width: 600, sortable: false,
+        field: 'conditions',
+        headerName: 'Conditions',
+        editable: 'True',
+        width: 600,
+        sortable: false,
         cellRenderer: 'conditionRenderer',
         cellRendererParams: {
           country: this.country,

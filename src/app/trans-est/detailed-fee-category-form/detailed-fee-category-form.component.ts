@@ -3,6 +3,10 @@ import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 import {GridApi, GridOptions, Module, ValueFormatterParams} from "@ag-grid-community/core";
 import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
 import {Country} from "../../_models/Country.model";
+import {ApplType} from "../../_models/applType.model";
+import {
+  DetFeeCatApplTypesRendererComponent
+} from "../det-fee-cat-appl-types-renderer/det-fee-cat-appl-types-renderer.component";
 
 @Component({
   selector: 'app-detailed-fee-category-form',
@@ -13,12 +17,17 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
 
   @Input() detailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
   @Input() countries: Country[] = new Array<Country>();
+  @Input() applTypes: ApplType[] = new Array<ApplType>();
   @Output() formData: EventEmitter<IDetailedFeeCategory> = new EventEmitter()
   @Output() delEmit: EventEmitter<IDetailedFeeCategory[]> = new EventEmitter()
   public columnDefs: any
   public params: any
+  //@ts-ignore
+  public frameworkComponents: { detailFeeApplTypesRenderer: DetFeeCatApplTypesRendererComponent };
   public defaultColDef = {
     resizable: true,
+    autoHeight: true,
+    wrapText: true,
   };
   public headerHeight: number = 100;
   public getRowNodeId = function (data: any) {
@@ -57,8 +66,22 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {values: this.countries}
+      },
+      {
+        field: 'appl_types',
+        headerName: 'ApplTypes',
+        editable: 'True',
+        width: 350,
+        sortable: false,
+        cellRenderer: 'detailFeeApplTypesRenderer',
+        cellRendererParams: {values: this.applTypes},
+        autoHeight: true,
       }
-    ]
+    ];
+    this.frameworkComponents = {
+      //@ts-ignore
+      detailFeeApplTypesRenderer: DetFeeCatApplTypesRendererComponent
+    }
   }
 
   agInit(params: any): void {
@@ -93,6 +116,7 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
       id: 0,
       name: '',
       country: new Country(),
+      appl_types: new ApplType()
     }
     let newAppls = this.detailedFeeCategories.slice()
     newAppls.push(newRow)
@@ -111,4 +135,7 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
     this.gridApi.setFilterModel(null);
   }
 
+  onFirstDataRendered(params: any) {
+    // params.api.sizeColumnsToFit()
+  }
 }

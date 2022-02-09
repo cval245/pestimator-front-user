@@ -5,6 +5,8 @@ import {combineLatest, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 import {Country} from "../../_models/Country.model";
+import {ApplType} from "../../_models/applType.model";
+import {ApplTypeService} from "../../_services/appl-type.service";
 
 @Component({
   selector: 'app-detailed-fee-category-form-page',
@@ -16,19 +18,25 @@ export class DetailedFeeCategoryFormPageComponent implements OnInit {
   private destroyed = new Subject<void>()
   public detailedFeeCategories: IDetailedFeeCategory[] = new Array<IDetailedFeeCategory>();
   public countries: Country[] = new Array<Country>();
+  public applTypes: ApplType[] = new Array<ApplType>();
   public columnDefs: any
 
   constructor(
     private countrySer: CountryAllService,
+    private applTypeSer: ApplTypeService,
     private detailedFeeCatSer: DetailedFeeCategoryService) {
   }
 
 
   ngOnInit(): void {
-    combineLatest([this.countrySer.getAllUnlessAlreadyLoaded(),
-      this.detailedFeeCatSer.getAllUnlessAlreadyLoaded()])
+    combineLatest([
+      this.countrySer.getAllUnlessAlreadyLoaded(),
+      this.applTypeSer.getAllUnlessAlreadyLoaded(),
+      this.detailedFeeCatSer.getAllUnlessAlreadyLoaded()
+    ])
       .pipe(takeUntil(this.destroyed))
-      .subscribe(([countries, detailedFeeCats]) => {
+      .subscribe(([countries, applTypes, detailedFeeCats]) => {
+        this.applTypes = applTypes
         this.countries = countries.sort((a, b) => {
           let countryA = a.long_name.toUpperCase()
           let countryB = b.long_name.toUpperCase()

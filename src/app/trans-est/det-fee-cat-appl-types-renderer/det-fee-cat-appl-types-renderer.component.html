@@ -1,0 +1,12 @@
+<form [formGroup]="applTypeForm">
+  <div formArrayName="appl_types">
+ <span *ngFor="let item of applTypesFormArray.controls; let i=index;" style="margin:10px;">
+   <ng-container [formGroupName]="i">
+     <mat-checkbox formControlName="selected">
+       {{item.value.appl_type.application_type}}
+     </mat-checkbox>
+   </ng-container>
+</span>
+  </div>
+</form>
+

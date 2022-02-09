@@ -138,7 +138,6 @@ export class ConditionsFormComponent implements OnInit {
       } else if (value === 0) {
         value = null
       }
-
       submitData[key] = value
     })
 

@@ -33,6 +33,9 @@ import {DetailedFeeCategoryFormComponent} from './detailed-fee-category-form/det
 import {
   DetailedFeeCategoryFormPageComponent
 } from './detailed-fee-category-form-page/detailed-fee-category-form-page.component';
+import {
+  DetFeeCatApplTypesRendererComponent
+} from './det-fee-cat-appl-types-renderer/det-fee-cat-appl-types-renderer.component';
 
 
 @NgModule({
@@ -49,6 +52,7 @@ import {
     ConditionsFormComponent,
     DetailedFeeCategoryFormComponent,
     DetailedFeeCategoryFormPageComponent,
+    DetFeeCatApplTypesRendererComponent,
   ],
   imports: [
     CommonModule,
