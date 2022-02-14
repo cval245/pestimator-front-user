@@ -39,6 +39,7 @@ export class GenTransComponent implements OnChanges {
     this.applTypesCorrect = this.applTypes.filter(applType => {
       return applType.country_set.some(countryId => countryId == this.country.id)
     })
+    // console.log('fff', this.tableData)
   }
 
   newRow() {
@@ -60,12 +61,26 @@ export class GenTransComponent implements OnChanges {
       appl_type: row.appl_type.id,
       prev_appl_type: row.prev_appl_type ? row.prev_appl_type.id : null,
       date_diff: row.date_diff,
-      trans_complex_time_condition: [row.trans_complex_time_condition]
+      trans_complex_time_condition: row.trans_complex_time_condition ? row.trans_complex_time_condition : null
     })
   }
 
-  submit(){
+  submit() {
     this.form.patchValue({country: this.country.id})
+    if (this.form.controls.appl_type.value.id) {
+      this.form.patchValue({appl_type: this.form.controls.appl_type.value.id})
+    }
+    if (this.form.controls.prev_appl_type.value) {
+      if (this.form.controls.prev_appl_type.value.id) {
+        this.form.patchValue({prev_appl_type: this.form.controls.prev_appl_type.value.id})
+      }
+    }
+    if (this.form.controls.trans_complex_time_condition.value) {
+      if (this.form.controls.trans_complex_time_condition.value.id) {
+        this.form.patchValue({trans_complex_time_condition: this.form.controls.trans_complex_time_condition.value.id})
+      }
+    }
+    console.log('sss', this.form.value)
     this.formData.emit(this.form.value)
     this.editingRow = 0
   }

@@ -7,6 +7,7 @@ import {ApplType} from "../../_models/applType.model";
 import {
   DetFeeCatApplTypesRendererComponent
 } from "../det-fee-cat-appl-types-renderer/det-fee-cat-appl-types-renderer.component";
+import {CountryFilterComponent} from "../country-filter/country-filter.component";
 
 @Component({
   selector: 'app-detailed-fee-category-form',
@@ -51,7 +52,8 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
       {
         field: 'name', headerName: 'Name', editable: true,
         width: 500,
-        sortable: true, filter: 'agTextColumnFilter',
+        sortable: true,
+        filter: 'agTextColumnFilter',
         valueFormatter(row: ValueFormatterParams): string {
           return row.value
         },
@@ -60,7 +62,9 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
       {
         field: 'country', headerName: 'Country', editable: true,
         width: 250,
-        sortable: true, filter: 'agTextColumnFilter',
+        sortable: true,
+        // filter: 'agTextColumnFilter',
+        filter: 'countryfilter',
         valueFormatter(row: ValueFormatterParams): string {
           return row.value.long_name
         },
@@ -80,7 +84,8 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
     ];
     this.frameworkComponents = {
       //@ts-ignore
-      detailFeeApplTypesRenderer: DetFeeCatApplTypesRendererComponent
+      detailFeeApplTypesRenderer: DetFeeCatApplTypesRendererComponent,
+      countryfilter: CountryFilterComponent,
     }
   }
 
@@ -114,9 +119,9 @@ export class DetailedFeeCategoryFormComponent implements OnInit {
   addRow(addIndex?: number) {
     let newRow = {
       id: 0,
-      name: '',
+      name: 'aaa',
       country: new Country(),
-      appl_types: new ApplType()
+      appl_types: []
     }
     let newAppls = this.detailedFeeCategories.slice()
     newAppls.push(newRow)

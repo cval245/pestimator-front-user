@@ -42,14 +42,14 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
   public appl_type_utility: ApplType = new ApplType();
   private formArrayLoaded: boolean = false
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.parisStageForm.valueChanges
       .pipe(takeUntil(this.destroyed))
       .subscribe(() => {
-        if (this.parisCountriesFormArray){
+        if (this.parisCountriesFormArray) {
           this.parisStage.emit(this.parisStageForm)
         }
       })
@@ -94,14 +94,14 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     forEach(this.customApplDetails, x => {
-      let checkArray = this.parisCountriesFormArray
-      let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
-      if (control) {
-        let custom_details = control.value.custom_appl_details
-        let custom_options = control.value.custom_appl_options
-        if (x.customDetails != custom_details || x.customOptions != custom_options) {
-          control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
-        }
+        let checkArray = this.parisCountriesFormArray
+        let control = find(checkArray.controls, y => y.value.country.id == x.country.id)
+        if (control) {
+          let custom_details = control.value.custom_appl_details
+          let custom_options = control.value.custom_appl_options
+          if (x.customDetails != custom_details || x.customOptions != custom_options) {
+            control.patchValue({custom_appl_details: x.customDetails, custom_appl_options: x.customOptions})
+          }
         }
       }
     )
@@ -130,7 +130,6 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
     this.parisCountries = sortBy(this.parisCountries, x => {
       return x.long_name
     })
-    // let checkArray = cloneDeep(checkArray)
     let removeArr: number[] = []
     forEach(checkArray.controls, (control, key) => {
       if (control) {
@@ -144,30 +143,38 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
     forEach(removeArr.sort((a, b) => b - a), x => {
       checkArray.removeAt(x)
     })
-    forEach(this.parisCountries, x => {
+    forEach(this.parisCountries, (x, key) => {
       if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
       })) {
+        let col = 1
+        if (key >= this.parisCountries.length / 2) {
+          col = 2
+        } else {
+          col = 1
+        }
         let new_control = this.fb.group({
           selected: false,
           country: x,
+          column: col,
           custom_appl_details: [new CustomApplDetails()],
           custom_appl_options: [new CustomApplOption()],
         })
+        console.log('f', new_control.value)
         checkArray.push(new_control)
       }
     })
     this.formArrayLoaded = true
   }
 
-  blockOutCountries(){
-    if (this.blockedParisCountries.length > 0){
+  blockOutCountries() {
+    if (this.blockedParisCountries.length > 0) {
       let checkArray = this.parisCountriesFormArray
       forEach(checkArray.controls, (control: AbstractControl) => {
-        if (some(this.blockedParisCountries, x => x == control.value.country)){
-          if (control.enabled){
+        if (some(this.blockedParisCountries, x => x == control.value.country)) {
+          if (control.enabled) {
             control.disable()
-            if (control.value.selected){
+            if (control.value.selected) {
               control.patchValue({selected: false})
             }
           }

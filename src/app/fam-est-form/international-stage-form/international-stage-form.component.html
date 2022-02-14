@@ -55,14 +55,17 @@
     <mat-divider style="margin-top: 20px;"></mat-divider>
     <h3 class="form-row">National Phase Countries</h3>
     <div formArrayName="pct_countries" class="form-row" fxLayout="row" fxLayoutAlign="space-between">
-      <div fxLayout="column" fxLayoutAlign="start start">
-        <ng-container [ngTemplateOutlet]="natPhaseCountries"></ng-container>
+      <div fxLayout="column" fxLayoutAlign="start start" fxHide.gt-xs>
+        <ng-container [ngTemplateOutlet]="natSinglePhaseCountries"></ng-container>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start start" fxHide.lt-sm>
+        <ng-container [ngTemplateOutlet]="natDoublePhaseCountries"></ng-container>
       </div>
     </div>
   </div>
 </form>
 
-<ng-template #natPhaseCountries>
+<ng-template #natSinglePhaseCountries>
   <div [formGroup]="internationalStageForm"
        *ngFor="let item of pctCountriesFormArray.controls;
               let i=index; trackBy: trackByIndex">
@@ -92,6 +95,76 @@
           </app-custom-appl-options>
         </div>
       </ng-container>
+    </div>
+  </div>
+</ng-template>
+<ng-template #natDoublePhaseCountries>
+  <div [formGroup]="internationalStageForm" fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout="column" fxLayoutAlign="start start" style="margin: 5px;">
+      <div formArrayName="pct_countries"
+           *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex"
+           class="check-row" fxLayout="row" fxLayoutAlign="space-between">
+        <ng-container [formGroupName]="i">
+          <div fxLayout="column" fxLayoutAlign="start start" *ngIf="item.value.column === 1">
+            <div>
+              <mat-checkbox formControlName="selected">
+                {{item.value.country.long_name}}
+              </mat-checkbox>
+              <button *ngIf="item.value.country.id !== country_ep.id"
+                      mat-icon-button
+                      [matTooltip]="customApplToolTip"
+                      [disabled]="item.disabled"
+                      (click)="editPCTNatCustApplDetails(item.value.country)">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+            </div>
+            <div class="check-text-row">
+              <app-custom-appl-details
+                [customApplDetails]="item.value.custom_appl_details">
+              </app-custom-appl-details>
+              <app-custom-appl-options
+                [customApplOption]="item.value.custom_appl_options"
+                [country]="item.value.country"
+                [appl_type]="appl_type_utility">
+              </app-custom-appl-options>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start start" style="margin: 5px;">
+      <div formArrayName="pct_countries"
+           *ngFor="let item of pctCountriesFormArray.controls;
+              let i=index; trackBy: trackByIndex"
+           class="check-row" fxLayout="row" fxLayoutAlign="space-between">
+        <ng-container [formGroupName]="i">
+          <div fxLayout="column" fxLayoutAlign="start start" *ngIf="item.value.column === 2">
+            <div>
+              <mat-checkbox formControlName="selected">
+                {{item.value.country.long_name}}
+              </mat-checkbox>
+              <button *ngIf="item.value.country.id !== country_ep.id"
+                      mat-icon-button
+                      [matTooltip]="customApplToolTip"
+                      [disabled]="item.disabled"
+                      (click)="editPCTNatCustApplDetails(item.value.country)">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+            </div>
+            <div class="check-text-row">
+              <app-custom-appl-details
+                [customApplDetails]="item.value.custom_appl_details">
+              </app-custom-appl-details>
+              <app-custom-appl-options
+                [customApplOption]="item.value.custom_appl_options"
+                [country]="item.value.country"
+                [appl_type]="appl_type_utility">
+              </app-custom-appl-options>
+            </div>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </ng-template>

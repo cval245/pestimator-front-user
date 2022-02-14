@@ -36,20 +36,15 @@ export class DetFeeCatApplTypesRendererComponent implements OnInit {
     this.applTypeForm.valueChanges.pipe(
       takeUntil(this.destroyed))
       .subscribe(y => {
-        let filtered_old = this.detailedFeeCategory.appl_types.filter((x: any) => x.selected == true)
         let filtered_new = y.appl_types.filter((x: any) => x.selected == true)
-        if (filtered_old.length != filtered_new.length) {
-          this.detailedFeeCategory.country = this.detailedFeeCategory.country.id
-          this.detailedFeeCategory.appl_types = filtered_new.map((z: any) => z.appl_type.id)
-          console.log('fffna', filtered_new)
-          console.log('surina', this.detailedFeeCategory.appl_types)
-          if (this.detailedFeeCategory.id == 0 || undefined) {
-            this.detailedFeeCatSer.add(this.detailedFeeCategory).subscribe()
-          } else {
-            this.detailedFeeCatSer.update(this.detailedFeeCategory).subscribe()
-          }
-          this.detailedFeeCategory = y
+        this.detailedFeeCategory.country = this.detailedFeeCategory.country.id
+        this.detailedFeeCategory.appl_types = filtered_new.map((z: any) => z.appl_type.id)
+        if (this.detailedFeeCategory.id == 0 || undefined) {
+          this.detailedFeeCatSer.add(this.detailedFeeCategory).subscribe()
+        } else {
+          this.detailedFeeCatSer.update(this.detailedFeeCategory).subscribe()
         }
+        this.detailedFeeCategory = y
       })
   }
 

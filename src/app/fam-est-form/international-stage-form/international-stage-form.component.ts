@@ -204,14 +204,20 @@ export class InternationalStageFormComponent implements OnInit, OnChanges, OnDes
     forEach(removeArr.sort((a, b) => b - a), x => {
       checkArray.removeAt(x)
     })
-    forEach(this.pctAcceptCountries, x => {
+    forEach(this.pctAcceptCountries, (x, key) => {
       if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
       })) {
-
+        let col = 1
+        if (key >= this.pctAcceptCountries.length / 2) {
+          col = 2
+        } else {
+          col = 1
+        }
         let new_control = this.fb.group({
           selected: false,
           country: x,
+          column: col,
           custom_appl_details: [new CustomApplDetails()],
           custom_appl_options: [new CustomApplOption()],
         })

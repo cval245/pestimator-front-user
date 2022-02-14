@@ -1,0 +1,16 @@
+<div style="padding: 4px; width: 200px;">
+  <div style="font-weight: bold;">Custom Filter</div>
+  <div>
+    <input
+      style="margin: 4px 0 4px 0;"
+      type="text"
+      [(ngModel)]="filterText"
+      (ngModelChange)="onInputChanged()"
+      placeholder="Full name search..."
+    />
+  </div>
+  <div style="margin-top: 20px;">
+    This filter does partial word search on multiple words, eg "mich phel"
+    still brings back Michael Phelps.
+  </div>
+</div>

@@ -17,6 +17,8 @@ import {IDocFormat} from "../../_models/DocFormat.model";
 import {IFeeCategory} from "../_models/FeeCategory.model";
 import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
 import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
+import {AppltypefilterComponent} from "../appltypefilter/appltypefilter.component";
+import {DetailedFeeCategoryFilterComponent} from "../detailed-fee-category/detailed-fee-category-filter.component";
 
 
 interface TableWise {
@@ -75,7 +77,7 @@ export class EstTemplateGridV2Component implements OnInit {
   constructor() {
     this.defaultColDef = {
       resizable: true,
-      autoHeight: true,
+      autoHeight: false,
       wrapText: true,
     };
     this.rowSelection = 'multiple';
@@ -129,7 +131,9 @@ export class EstTemplateGridV2Component implements OnInit {
       },
       {
         field: 'appl_type', headerName: 'Appl Type', editable: true,
-        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        width: 100, sortable: true,
+        // filter: 'agTextColumnFilter',
+        filter: 'appltypefilter',
         valueFormatter(row: ValueFormatterParams): string {
           return row.value.application_type
         },
@@ -153,7 +157,8 @@ export class EstTemplateGridV2Component implements OnInit {
       },
       {
         field: 'detailed_fee_category', headerName: 'Detailed Fee Category', editable: true,
-        width: 300, sortable: true, filter: 'agTextColumnFilter',
+        width: 300, sortable: true,
+        filter: 'detailedfeecatfilter',
         valueFormatter(row: ValueFormatterParams): string {
           return row.value.name
         },
@@ -162,6 +167,7 @@ export class EstTemplateGridV2Component implements OnInit {
         comparator: (valueA: IDetailedFeeCategory, valueB: IDetailedFeeCategory, nodeA: any, nodeB: any, isInverted: boolean) => {
           return (valueA.id - valueB.id)
         },
+        autoHeight: true,
       },
       {
         field: 'fee_code', headerName: 'Fee Code', editable: true,
@@ -178,6 +184,18 @@ export class EstTemplateGridV2Component implements OnInit {
           return row.value
         },
         cellEditor: 'agTextCellEditor',
+      },
+      {
+        field: 'conditions',
+        headerName: 'Conditions',
+        editable: 'True',
+        width: 600,
+        sortable: false,
+        cellRenderer: 'conditionRenderer',
+        cellRendererParams: {
+          country: this.country,
+        },
+        autoHeight: true,
       },
       {
         field: 'law_firm_template.law_firm_cost', headerName: 'LawFirm Cost', editable: true,
@@ -254,22 +272,13 @@ export class EstTemplateGridV2Component implements OnInit {
         },
         cellEditor: 'agTextCellEditor',
       },
-      {
-        field: 'conditions',
-        headerName: 'Conditions',
-        editable: 'True',
-        width: 600,
-        sortable: false,
-        cellRenderer: 'conditionRenderer',
-        cellRendererParams: {
-          country: this.country,
-        },
-        autoHeight: true,
-      },
+
     ];
     this.frameworkComponents = {
       //@ts-ignore
-      conditionRenderer: ConditionRendererComponent
+      conditionRenderer: ConditionRendererComponent,
+      appltypefilter: AppltypefilterComponent,
+      detailedfeecatfilter: DetailedFeeCategoryFilterComponent,
       // conditionRenderer: new ConditionRendererComponent()
     }
   }
@@ -277,17 +286,17 @@ export class EstTemplateGridV2Component implements OnInit {
   addRow(addIndex?: number) {
     let newRow = {
       id: 0,
-      date_diff: '',
+      date_diff: 'P0D',
       country: this.country,
-      appl_type: 0,
+      appl_type: new ApplType(),
       official_cost: 0,
       official_cost_currency: this.country.currency_name,
-      fee_code: '',
-      description: '',
+      fee_code: 'default',
+      description: 'default',
       isa_country_fee_only: false,
-      fee_category: {} as IFeeCategory,
-      detailed_fee_category: {} as IDetailedFeeCategory,
-      law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},
+      fee_category: {id: 0, name: 'default'} as IFeeCategory,
+      detailed_fee_category: {id: 0, name: 'default'} as IDetailedFeeCategory,
+      law_firm_template: {id: 0, law_firm_cost: 0, law_firm_cost_currency: 'USD', date_diff: 'P0D'},
       conditions: {id: 0, condition_annual_prosecution_fee: false},
     }
 
@@ -317,6 +326,15 @@ export class EstTemplateGridV2Component implements OnInit {
         params.data.country = this.country.id
         params.data.fee_category = params.data.fee_category.id
         params.data.detailed_fee_category = params.data.detailed_fee_category.id
+
+        if (params.data.conditions.language) {
+          if (params.data.conditions.language.id == 0) {
+            params.data.conditions.language = null
+          } else {
+            params.data.conditions.language = params.data.conditions.language.id
+          }
+        }
+
         if (params.data.conditions.condition_entity_size) {
           if (params.data.conditions.condition_entity_size.id == 0) {
             params.data.conditions.condition_entity_size = null
@@ -359,6 +377,12 @@ export class EstTemplateGridV2Component implements OnInit {
       return false
     }
     if (tableWise.appl_type == 0) {
+      return false
+    }
+    if (tableWise.fee_category.id == 0) {
+      return false
+    }
+    if (tableWise.detailed_fee_category.id == 0) {
       return false
     }
     if (tableWise.fee_code == '') {

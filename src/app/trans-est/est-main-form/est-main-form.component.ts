@@ -233,7 +233,17 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       })
     this.detailedFeeCatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.detailedFeeCategories = x
+        this.detailedFeeCategories = x.sort((a, b) => {
+          let catA = a.name.toUpperCase()
+          let catB = b.name.toUpperCase()
+          if (catA < catB) {
+            return -1;
+          }
+          if (catA > catB) {
+            return 1;
+          }
+          return 0;
+        })
       })
     this.currencySer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))

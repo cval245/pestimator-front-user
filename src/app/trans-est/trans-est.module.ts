@@ -36,6 +36,9 @@ import {
 import {
   DetFeeCatApplTypesRendererComponent
 } from './det-fee-cat-appl-types-renderer/det-fee-cat-appl-types-renderer.component';
+import {AppltypefilterComponent} from './appltypefilter/appltypefilter.component';
+import {DetailedFeeCategoryFilterComponent} from './detailed-fee-category/detailed-fee-category-filter.component';
+import {CountryFilterComponent} from './country-filter/country-filter.component';
 
 
 @NgModule({
@@ -53,6 +56,9 @@ import {
     DetailedFeeCategoryFormComponent,
     DetailedFeeCategoryFormPageComponent,
     DetFeeCatApplTypesRendererComponent,
+    AppltypefilterComponent,
+    DetailedFeeCategoryFilterComponent,
+    CountryFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -71,7 +77,12 @@ import {
     MatSortModule,
     MatCheckboxModule,
     MatDialogModule,
-    AgGridModule.withComponents([ConditionRendererComponent]),
+    AgGridModule.withComponents([
+      ConditionRendererComponent,
+      AppltypefilterComponent,
+      DetailedFeeCategoryFilterComponent,
+      CountryFilterComponent,
+    ]),
     MatChipsModule,
     MatDividerModule,
     OverlayModule,

@@ -1,10 +1,6 @@
-<div>
-  <div>
-    <mat-chip-list *ngFor="let c of adjustConditions">
-      <mat-chip selectable=true removable=true (removed)="remove(c)">
-        {{c[0]}} = <b>{{c[2]}}</b>
-      </mat-chip>
-    </mat-chip-list>
-    <mat-chip (click)="editConditions()"><mat-icon color="primary">create</mat-icon></mat-chip>
+<div fxLayout="column" fxLayoutAlign="start start">
+  <div *ngFor="let c of adjustConditions">
+    {{c[0]}} = <b>{{c[2]}}</b>
   </div>
+  <button (click)="editConditions()">edit</button>
 </div>

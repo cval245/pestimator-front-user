@@ -46,6 +46,11 @@ interface ApplTypeWise {
   appl_type: any;
 }
 
+interface PrevApplTypeWise {
+  id: number,
+  prev_appl_type: any;
+}
+
 interface ComplexTimeWise {
   id: number,
   trans_complex_time_condition: any;
@@ -198,33 +203,34 @@ export class FormPageComponent implements OnInit, OnDestroy {
       this.publTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.publTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
+        this.publTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
+        console.log('ths', this.publTrans)
       })
       this.reqTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.reqTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
+        this.reqTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
       })
       this.oaTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
 
-        this.oaTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
+        this.oaTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
       })
       this.allowTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.allowTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
+        this.allowTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
       })
       this.issueTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.issueTrans = this.complexTimeConditionsSet(this.applTypeSet(this.countrySet(x)))
+        this.issueTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
       })
       this.oaNumSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.oaNum = this.applTypeSet(this.countrySet(x))
+        this.oaNum = this.prevApplTypeSet(this.applTypeSet(this.countrySet(x)))
       })
   }
 
@@ -275,6 +281,13 @@ export class FormPageComponent implements OnInit, OnDestroy {
     return map<TApplTypeWise, TApplTypeWise>(arg, (x: TApplTypeWise) => {
       let d = this.applTypes.find(y => y.id == x.appl_type);
       return {...x, 'appl_type': d}
+    })
+  }
+
+  prevApplTypeSet<TPrevApplTypeWise extends PrevApplTypeWise>(arg: TPrevApplTypeWise[]): TPrevApplTypeWise[] {
+    return map<TPrevApplTypeWise, TPrevApplTypeWise>(arg, (x: TPrevApplTypeWise) => {
+      let d = this.applTypes.find(y => y.id == x.prev_appl_type);
+      return {...x, 'prev_appl_type': d}
     })
   }
 

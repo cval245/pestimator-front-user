@@ -124,6 +124,10 @@ app-footer {
 }
 
 
+.check-text-row {
+  color: $dark-accent-text;
+}
+
 .mat-header-cell {
   background: map-get($theme-accent, 'lighter');
 
@@ -181,6 +185,10 @@ app-footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.check-row {
+  color: $dark-accent-text;
 }
 
 .form-row {

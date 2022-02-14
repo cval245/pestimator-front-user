@@ -79,9 +79,13 @@ export class TransFormTableComponent {
     if (this.form.controls.id.value == 0) {
       this.form.patchValue({id: undefined})
     }
+    // if (this.form.controls.prev_appl_type.value == ''){
+    //   this.form.patchValue({prev_appl_type: this.form.controls.prev_appl_type.value.id})
+    // }
+
     this.form.patchValue({
       country: this.country.id,
-      // appl_type: this.form.get('appl_type')!.value.id,
+      // appl_type: this.form.controls.appl_type.value.id
       // prev_appl_type: this.form.get('prev_appl_type')!.value.id
     })
     this.formData.emit(this.form.value)

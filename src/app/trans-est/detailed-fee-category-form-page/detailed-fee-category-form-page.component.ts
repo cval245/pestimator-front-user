@@ -6,7 +6,7 @@ import {takeUntil} from "rxjs/operators";
 import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
 import {Country} from "../../_models/Country.model";
 import {ApplType} from "../../_models/applType.model";
-import {ApplTypeService} from "../../_services/appl-type.service";
+import {ApplTypeAllService} from "../../_services/appl-type-all.service";
 
 @Component({
   selector: 'app-detailed-fee-category-form-page',
@@ -23,7 +23,7 @@ export class DetailedFeeCategoryFormPageComponent implements OnInit {
 
   constructor(
     private countrySer: CountryAllService,
-    private applTypeSer: ApplTypeService,
+    private applTypeSer: ApplTypeAllService,
     private detailedFeeCatSer: DetailedFeeCategoryService) {
   }
 

@@ -156,14 +156,20 @@ export class EpStageFormComponent implements OnInit, OnDestroy, OnChanges {
     forEach(removeArr.sort((a, b) => b - a), x => {
       checkArray.removeAt(x)
     })
-    forEach(this.ep_countries, x => {
+    forEach(this.ep_countries, (x, key) => {
       if (!some(checkArray.controls, control => {
         return control.value.country.id == x.id
       })) {
-
+        let col = 1
+        if (key >= this.ep_countries.length / 2) {
+          col = 2
+        } else {
+          col = 1
+        }
         let new_control = this.fb.group({
           selected: false,
           country: x,
+          column: col,
           custom_appl_details: [new CustomApplDetails()],
           custom_appl_options: [new CustomApplOption()],
         })
