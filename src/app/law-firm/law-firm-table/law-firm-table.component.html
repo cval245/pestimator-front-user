@@ -1,1 +1,23 @@
-<p>law-firm-table works!</p>
+<div>
+  <mat-form-field>
+    <mat-label>Jurisdiction</mat-label>
+    <mat-select [formControl]="countrySelector">
+      <mat-option *ngFor="let country of countries"
+                  [value]="country"
+      >
+        {{country.long_name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button (click)="removeFilter()">clear filter</button>
+</div>
+
+<div class="law-firm-cards">
+  <div class="law-firm-cards-container">
+    <div *ngFor="let lawFirm of lawFirms">
+      <app-law-firm-card
+        [lawFirm]="lawFirm"
+      ></app-law-firm-card>
+    </div>
+  </div>
+</div>
+

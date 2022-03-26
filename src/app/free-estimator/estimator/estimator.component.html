@@ -1,0 +1,22 @@
+<h1>Estimate Patent Costs</h1>
+<div>
+  <mat-form-field>
+    <mat-label>Jurisdiction</mat-label>
+    <mat-select [formControl]="countrySelector">
+      <mat-option *ngFor="let country of countries"
+                  [value]="country"
+      >
+        {{country.long_name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="chart">
+  <app-chart-fam-est-detail [countryAggeds]="countryAgged">
+  </app-chart-fam-est-detail>
+</div>
+<div *ngIf="famEst.id !== 0">
+  <h3>Total Cost: {{famEst.total_cost | currency}}</h3>
+  <button mat-flat-button style='margin-right: 10px;' color="primary" (click)="retrievePDF()">PDF</button>
+  <button mat-flat-button color="primary" (click)="retrieveXLS()">EXCEL</button>
+</div>

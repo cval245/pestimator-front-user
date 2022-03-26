@@ -19,7 +19,7 @@ import {MatSort} from "@angular/material/sort";
 })
 export class FamilyEstimateTableComponent implements OnChanges {
 
-  @Input() famEsts: FamEst[] = [new FamEst('')];
+  @Input() famEsts: FamEst[] = [new FamEst()];
   @Input() pageSize = 20;
   @Output() famEstFormdataID = new EventEmitter()
   public displayedColumns: string[] = ['']

@@ -20,7 +20,6 @@ import {FamilyEstimateTableModule} from "../family-estimate-table/family-estimat
       HomeRoutingModule,
       MatListModule,
       FamilyEstimateTableModule,
-      // EstimationModule,
     ],
 })
 export class HomeModule {

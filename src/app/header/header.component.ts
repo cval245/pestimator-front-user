@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   public showMenuBool: boolean = false;
   public isLoggedIn = false;
-  public landingBool: boolean = false;
+  // public landingBool: boolean = false;
 
   @ViewChild(PricingComponent, {read: ElementRef}) private vc: PricingComponent = new PricingComponent();
 
@@ -26,11 +26,11 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.store.select('landing').pipe(delay(0)).subscribe(x => {
-      if (x !== undefined) {
-        this.landingBool = x.landing
-      }
-    })
+    // this.store.select('landing').pipe(delay(0)).subscribe(x => {
+    //   if (x !== undefined) {
+    //     // this.landingBool = x.landing
+    //   }
+    // })
 
     this.isLoggedIn = false
     this.store.select('authCred').pipe(delay(0)).subscribe(x => {

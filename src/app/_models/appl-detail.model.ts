@@ -15,6 +15,7 @@ export class ApplDetail {
   public entity_size: EntitySize | null = null
   public application?: any = null
   public id?: number = 0
+  public family_udn?: number = 0
 
   constructor(init?: Partial<ApplDetail>) {
     Object.assign(this, init)

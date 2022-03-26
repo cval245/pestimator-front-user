@@ -21,7 +21,7 @@ export class FamilyEstimateMainComponent implements OnInit {
 
   famEst$: Observable<FamEst[]> = this.famEstSer.getAllUnlessAlreadyLoaded();
   family$: Observable<Family[]> = this.familySer.getAllUnlessAlreadyLoaded();
-  famEsts: FamEst[] = [new FamEst('')];
+  famEsts: FamEst[] = [new FamEst()];
   families: Family[] = [new Family()];
   famEstSub: Subscription;
 

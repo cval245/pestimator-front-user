@@ -1,0 +1,14 @@
+<div class="estimate-overcontainer">
+  <div class="estimate-container">
+    <div class="over-chart">
+      <div class="chart">
+        <app-estimator [famEsts]="famEsts"
+                       [countries]="countries"
+                       [countryAgged]="countryAgged"
+                       (countryEmitter)="changedCountry($event)">
+        </app-estimator>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -20,7 +20,7 @@ import {ApplType} from "../../_models/applType.model";
 })
 export class HomePageComponent implements OnDestroy {
 
-  famEsts: FamEst[] = [new FamEst('')];
+  famEsts: FamEst[] = [new FamEst()];
 
   private cmbSub: Subscription;
   families: Family[] = [new Family()];

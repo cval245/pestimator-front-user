@@ -1,5 +1,6 @@
 export class FamEstDetail{
     constructor(
+      public udn?: number,
       public country?: any,
       public year?: any,
       public law_firm_cost_sum?: number,

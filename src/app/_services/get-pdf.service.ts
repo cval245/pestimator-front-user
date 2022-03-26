@@ -11,7 +11,6 @@ import {environment} from "../../environments/environment";
 export class GetPDFService {
 
   url = environment.API_URL + 'get-pdf-report/';
-  // url = 'http://localhost:8000/get-pdf-report/'
 
   private subscript: Subscription = new Subscription()
 

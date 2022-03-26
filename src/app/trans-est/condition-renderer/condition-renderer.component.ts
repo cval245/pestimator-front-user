@@ -5,6 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConditionsFormComponent} from "../conditions-form/conditions-form.component";
 import {Country} from "../../_models/Country.model";
 import {ICellRendererParams} from "@ag-grid-community/core";
+import {ApplType} from "../../_models/applType.model";
 
 @Component({
   selector: 'app-condition-renderer',
@@ -17,6 +18,7 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   public conditions: any
   public adjustConditions: any = []
   public country: Country = new Country();
+  public applType: ApplType = new ApplType();
 
   constructor(public dialog: MatDialog) {
   }
@@ -34,8 +36,9 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   }
 
   createChips(params: ICellRendererParams) {
-    this.conditions = params.data.conditions
     this.country = params.data.country
+    this.applType = params.data.appl_type
+    this.conditions = params.data.conditions
     this.adjustConditions = []
     forIn(this.conditions, (value, key) => {
       if (value !== undefined && value !== null) {
@@ -72,7 +75,7 @@ export class ConditionRendererComponent implements ICellRendererAngularComp {
   editConditions() {
     const dialogRef = this.dialog.open(ConditionsFormComponent, {
       width: '1200px',
-      data: {conditions: this.conditions, country: this.country}
+      data: {conditions: this.conditions, country: this.country, appl_type: this.applType}
     })
     dialogRef.afterClosed().subscribe(() => {
     })

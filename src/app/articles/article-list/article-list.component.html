@@ -1,0 +1,11 @@
+<div class="articles-list-overcontainer">
+  <div class="articles-list-container">
+    <h1>Articles</h1>
+
+    <div *ngFor="let article of articles">
+      <app-article-card
+        [article]="article">
+      </app-article-card>
+    </div>
+  </div>
+</div>

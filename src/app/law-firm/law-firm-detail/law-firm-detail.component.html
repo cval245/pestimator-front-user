@@ -1,0 +1,18 @@
+<div class="law-detail-overcontainer">
+  <div class="law-detail-container">
+    <div class="law-detail-introduction">
+      <img class="law-firm-image" [src]="[this.image_url]">
+      <div class="law-firm-content">
+        <h1>{{lawFirm.name}}</h1>
+        <p>{{lawFirm.long_description}}</p>
+        <div class="contact-container">
+          <h2>Contact Information</h2>
+          <p>Website: <a [href]="lawFirm.website">{{lawFirm.website}}</a></p>
+          <p>Phone: {{lawFirm.phone}}</p>
+          <p>Email: {{lawFirm.email}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<a routerLink="../" mat-flat-button color="accent">Back</a>

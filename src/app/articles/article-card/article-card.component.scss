@@ -1,0 +1,12 @@
+.article-card {
+  max-width: 600px;
+  margin: 20px;
+  mat-card-content{
+    margin: 8px;
+  }
+  img{
+    height: 200px;
+    margin-left: 0px;
+    width:100%;
+  }
+}

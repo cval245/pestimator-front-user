@@ -120,7 +120,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
       }))
     let family$ = this.activatedRoute.params.pipe(
       switchMap(x => {
-        return this.familySer.getWithQuery('FamEstFormDataUDN=' + x.udn)
+        return this.familySer.getWithQueryByFamEstFormDataUDNUnlessLoaded(x.udn)
       }))
 
     this.combinedSub = combineLatest([
@@ -148,16 +148,15 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.cAggChart = this.allCountryAgged[0]
         this.displayedColumns = this.calcColumns(this.countryAgged)
         this.family = family[0]
-        let appl$ = this.applSer.getWithQuery('familyUDN=' + this.family.unique_display_no)
-        let applDet$ = this.applDetSer.getWithQuery('familyUDN=' + this.family.unique_display_no)
-        let famform$ = this.famformSer.getWithQuery('UDN=' + this.family.unique_display_no)
-        let famDetTot$ = this.famEstDetTotSer.getWithQuery(('familyUDN=' + this.family.unique_display_no))
+        let appl$ = this.applSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
+        let applDet$ = this.applDetSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.fam_est_form_data_udn)
+        let famform$ = this.famformSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
+        let famDetTot$ = this.famEstDetTotSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
         return combineLatest([
           appl$,
           applDet$,
           famform$,
           famDetTot$,
-          // this.docForSer.getAllUnlessAlreadyLoaded(),
         ])
       })).subscribe(([applications, applDetails, famform, famDetTot]) => {
       this.famEstDetTot = famDetTot[0]
@@ -184,7 +183,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
   }
 
   getFamEstDetailByFormUDN(udn: number): Observable<FamEstDetail[]> {
-    return this.famEstDetSer.getWithQuery('FamEstFormDataUDN=' + udn)
+    return this.famEstDetSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(udn)
   }
 
   add(famEstDetail: FamEstDetail) {

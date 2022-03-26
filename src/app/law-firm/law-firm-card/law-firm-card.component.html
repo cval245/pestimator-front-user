@@ -1,0 +1,12 @@
+<mat-card class="lawfirm-card mat-elevation-z4">
+  <mat-card-title-group>
+    <mat-card-title>{{lawFirm.name}}</mat-card-title>
+    <img style="margin-left:10px;" mat-card-sm-image [src]="[image_url]">
+  </mat-card-title-group>
+  <mat-card-content style="margin-top:10px;">
+    <p style="text-align: left;">{{lawFirm.long_description}}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-flat-button [routerLink]="[lawFirm.slug]" color="accent">Learn More</a>
+  </mat-card-actions>
+</mat-card>

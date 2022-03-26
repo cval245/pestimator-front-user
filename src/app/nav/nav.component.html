@@ -1,21 +1,36 @@
 <div>
   <div fxLayoutAlign="center none" fxLayout="column">
+
     <a mat-button
        routerLink="/home"
        (click)="closeMenu()">
       <p class="mat-h3">Home</p>
     </a>
     <a mat-button
-       routerLink="/estimations"
+       routerLink="/articles"
        (click)="closeMenu()">
-      <p class="mat-h3">Estimations</p>
+      <p class="mat-h3">Articles</p>
+    </a>
+    <a mat-button
+       routerLink="/law-firms"
+       (click)="closeMenu()">
+      <p class="mat-h3">Law-Firms</p>
+    </a>
+    <a mat-button
+       routerLink="/estimate"
+       (click)="closeMenu()">
+      <p class="mat-h3">Simple Estimates</p>
     </a>
     <a mat-button
        routerLink="/fam-est-form"
        (click)="closeMenu()">
-      <p class="mat-h3">New Estimation</p>
+      <p class="mat-h3">New Estimate</p>
     </a>
-
+    <a mat-button
+       routerLink="/estimations"
+       (click)="closeMenu()">
+      <p class="mat-h3">Estimates</p>
+    </a>
     <a *ngIf="isStaff"
        mat-button
        routerLink="/admin/main"

@@ -1,2 +1,8 @@
-<p>main-page works!</p>
-<app-law-firm-table></app-law-firm-table>
+<div style="margin-top: 20px;">
+<app-law-firm-table
+  [lawFirms]="filteredLawFirms"
+  [countries]="countries"
+  [selected_jurisdiction]="selected_jurisdiction"
+  (changeJurisdiction)="changeJuridisdiction($event)"
+></app-law-firm-table>
+</div>

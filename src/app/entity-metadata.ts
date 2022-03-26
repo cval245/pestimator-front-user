@@ -13,21 +13,47 @@ import {IPublTrans} from './trans-est/_models/PublTrans.model';
 import {IUSOAEstTemp} from "./trans-est/_models/IUSOAEstTemp";
 import {IRequestExamEstTemp} from "./trans-est/_models/RequestExamEstTemp.model";
 import {IRequestExamTrans} from "./trans-est/_models/RequestExamTrans.model";
+import {FamEstDetail} from "./_models/FamEstDetail.model";
+import {FamEstForm} from "./_models/FamEstForm.model";
+import {FamEstDetTot} from "./_models/FamEstDetTot.model";
+import {Family} from "./_models/family.model";
+
 
 const entityMetadata: EntityMetadataMap = {
   UserDetail: {},
   UserAll: {},
   LawFirm: {},
+  LawFirmImage: {},
+  Article: {},
   FamEst: {},
+  FamEstGuest: {},
   FamEstUser: {},
-  FamEstDetail: {},
-  FamEstDetTot:{},
-  FamEstForm: {},
+  FamEstDetail: {
+    filterFn: (entities: FamEstDetail[], udn: any) => {
+      return entities.filter(entity => entity.udn == udn.udn)
+    }
+  },
+  FamEstDetailGuest: {
+    filterFn: (entities: FamEstDetail[], udn: any) => {
+      return entities.filter(entity => entity.udn == udn.udn)
+    }
+  },
+  FamEstDetTot: {
+    filterFn: (entities: FamEstDetTot[], udn: number) => {
+      return entities.filter(entity => entity.family_udn == udn)
+    }
+  },
+  FamEstForm: {
+    filterFn: (entities: FamEstForm[], udn: number) => {
+      return entities.filter(entity => entity.unique_display_no == udn)
+    }
+  },
   Country: {},
   Currency: {},
   CountryAll: {},
   EntitySize: {},
   EPValidationTranslationRequired: {},
+  TranslationRequiredOptions: {},
   ApplType: {},
   ApplTypeAll: {},
   Language: {},
@@ -36,7 +62,11 @@ const entityMetadata: EntityMetadataMap = {
   OAType: {},
   FeeCategory: {},
   DetailedFeeCategory: {},
-  Family: {},
+  Family: {
+    filterFn: (entities: Family[], udn: number) => {
+      return entities.filter(entity => entity.fam_est_form_data_udn == udn)
+    }
+  },
   FamilyAll: {},
   Application: {},
   ApplDetail: {},
@@ -125,9 +155,9 @@ const entityMetadata: EntityMetadataMap = {
 };
 
 // because the plural of "hero" is not "heros"
-const pluralNames = { LawFirm: 'LawFirms', FamEst: 'FamEst'};
+const pluralNames = {LawFirm: 'LawFirms', FamEst: 'FamEst'};
 
 export const entityConfig = {
-    entityMetadata,
-    pluralNames
+  entityMetadata,
+  pluralNames
 };

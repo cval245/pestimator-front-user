@@ -1,11 +1,13 @@
 export class FamEst{
-    constructor(
-      public date_created: string,
-      public id?: number,
-      public law_firm_cost?: number,
-      public official_cost?: number,
-      public translation_cost?: number,
-      public total_cost?: number,
-      public famestformdata?: number,
-    ){}
+  public date_created: string = ''
+  public id?: number = 0
+  public law_firm_cost?: number = 0
+  public official_cost?: number = 0
+  public translation_cost?: number = 0
+  public total_cost?: number = 0
+  public famestformdata?: number = 0
+
+  constructor(init?: Partial<FamEst>) {
+    Object.assign(this, init)
+  }
 }

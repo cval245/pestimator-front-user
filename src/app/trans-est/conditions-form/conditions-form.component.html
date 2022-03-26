@@ -99,7 +99,7 @@
         <mat-label>Entity Size</mat-label>
         <mat-select class="custom-select"
                     formControlName="condition_entity_size">
-          <mat-option *ngFor="let t of entitySizes"
+          <mat-option *ngFor="let t of entitySizesAvail"
                       [value]="t">
             {{t.entity_size}}
           </mat-option>
@@ -109,7 +109,7 @@
         <mat-label>Doc Format</mat-label>
         <mat-select class="custom-select"
                     formControlName="doc_format">
-          <mat-option *ngFor="let t of docFormats"
+          <mat-option *ngFor="let t of docFormatsAvail"
                       [value]="t">
             {{t.name}}
           </mat-option>
@@ -119,7 +119,7 @@
         <mat-label>Language</mat-label>
         <mat-select class="custom-select"
                     formControlName="language">
-          <mat-option *ngFor="let t of languages"
+          <mat-option *ngFor="let t of languagesAvail"
                       [value]="t">
             {{t.name}}
           </mat-option>
@@ -178,6 +178,14 @@
         <mat-label>Renewal Fee from filing After Grant</mat-label>
         <mat-select class="custom-select"
                     formControlName="condition_renewal_fee_from_filing_after_grant">
+          <mat-option [value]=true>True</mat-option>
+          <mat-option [value]=false>False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="wide" appearance="outline">
+        <mat-label>Renewal Fee from filing of prior After Grant</mat-label>
+        <mat-select class="custom-select"
+                    formControlName="condition_renewal_fee_from_filing_of_prior_after_grant">
           <mat-option [value]=true>True</mat-option>
           <mat-option [value]=false>False</mat-option>
         </mat-select>

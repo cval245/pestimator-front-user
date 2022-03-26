@@ -11,12 +11,13 @@ import {ComplexTimeConditionsService} from "../../_services/complex-time-conditi
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
 import {ConditionsService} from "../_services/conditions.service";
-import {forIn} from "lodash";
+import {forIn, some} from "lodash";
 import {DocFormatService} from "../../_services/doc-format.service";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {Country} from "../../_models/Country.model";
 import {LanguageService} from "../../_services/language.service";
 import {Language} from "../../_models/Language.model";
+import {ApplType} from "../../_models/applType.model";
 
 @Component({
   selector: 'app-conditions-form',
@@ -28,16 +29,19 @@ export class ConditionsFormComponent implements OnInit {
   public condForm: FormGroup;
   private destroy = new Subject<void>()
   public entitySizes: EntitySize[] = new Array<EntitySize>();
+  public entitySizesAvail: EntitySize[] = new Array<EntitySize>();
   public complexConditions: IComplexConditions[] = new Array<IComplexConditions>();
   public complexTimeConditions: IComplexTimeConditions[] = new Array<IComplexTimeConditions>();
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
   public docFormatsAvail: IDocFormat[] = new Array<IDocFormat>();
   public country: Country = new Country()
+  public applType: ApplType = new ApplType()
   public languages: Language[] = new Array<Language>()
+  public languagesAvail: Language[] = new Array<Language>()
 
   constructor(
     public dialogRef: MatDialogRef<ConditionsFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { conditions: IConditions, country: Country },
+    @Inject(MAT_DIALOG_DATA) public data: { conditions: IConditions, country: Country, appl_type: ApplType },
     private fb: FormBuilder,
     private entitySizeSer: EntitySizeService,
     private docFormatSer: DocFormatService,
@@ -47,14 +51,20 @@ export class ConditionsFormComponent implements OnInit {
     private condSer: ConditionsService,
   ) {
     this.country = data.country
+    this.applType = data.appl_type
     this.entitySizeSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: EntitySize[]) => {
       this.entitySizes = x
+      this.entitySizesAvail = this.entitySizes.filter(y => y.country == this.country.id)
     })
     this.docFormatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IDocFormat[]) => {
       this.docFormats = x
+      let available_doc_formats = this.country.available_doc_formats.filter(y => y.appl_type === this.applType.id)
+      this.docFormatsAvail = this.docFormats.filter(y => some(available_doc_formats,z =>  z.doc_format === y.id))
     })
     this.languageSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: Language[]) => {
       this.languages = x
+      let available_languages = this.country.available_languages.filter(y => y.appl_type === this.applType.id)
+      this.languagesAvail = this.languages.filter(y => some(available_languages,z =>  z.language === y.id))
     })
     this.complexCondSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.destroy)).subscribe((x: IComplexConditions[]) => {
       this.complexConditions = x
@@ -86,6 +96,7 @@ export class ConditionsFormComponent implements OnInit {
       condition_time_complex: [data.conditions.condition_time_complex],
       condition_annual_prosecution_fee: [data.conditions.condition_annual_prosecution_fee],
       condition_annual_prosecution_fee_until_grant: [data.conditions.condition_annual_prosecution_fee_until_grant],
+      condition_renewal_fee_from_filing_of_prior_after_grant: [data.conditions.condition_renewal_fee_from_filing_of_prior_after_grant],
       condition_renewal_fee_from_filing_after_grant: [data.conditions.condition_renewal_fee_from_filing_after_grant],
       prior_pct: [data.conditions.prior_pct],
       prior_pct_same_country: [data.conditions.prior_pct_same_country],

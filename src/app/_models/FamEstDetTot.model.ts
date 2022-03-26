@@ -6,6 +6,7 @@ export class FamEstDetTot{
   public translation_cost_sum: number = 0
   public law_firm_cost_sum: number = 0
   public total_cost_sum: number = 0
+  public family_udn: number = 0
 
   constructor(init?: Partial<FamEstDetTot>) {
     Object.assign(this, init)

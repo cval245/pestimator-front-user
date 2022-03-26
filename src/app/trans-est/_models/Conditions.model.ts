@@ -27,6 +27,7 @@ export interface IConditions {
   condition_annual_prosecution_fee?: boolean;
   condition_annual_prosecution_fee_until_grant?: boolean;
   condition_renewal_fee_from_filing_after_grant?: boolean;
+  condition_renewal_fee_from_filing_of_prior_after_grant?: boolean;
   prior_pct?: boolean;
   prior_pct_same_country?: boolean;
   prev_appl_date_excl_intermediary_time?: boolean;

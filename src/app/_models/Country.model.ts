@@ -17,9 +17,7 @@ export class Country{
     default: boolean
   }[] = new Array<{ country: 0, appl_type: 0, language: 0, default: false }>()
   public ep_validation_translation_required: number = 0
-  // public entity_size_available: boolean = false
-  // public available_entity_sizes: [number] = [0]
-  // public available_doc_formats: [number] = [0]
+  public utility_translation_required: number = 0
   public available_doc_formats: {
     country: number,
     appl_type: number,
@@ -51,8 +49,8 @@ export class CountryDetailsAdded{
     default: boolean
   }[] = new Array<{ country: 0, appl_type: 0, language: 0, default: false }>()
   public ep_validation_translation_required: number = 0
-  // public entity_size_available: boolean = false
-  // public available_entity_sizes: EntitySize[] = [new EntitySize()]
+  public utility_translation_required: number = 0
+
   public col?: number = 0
   public available_doc_formats: {
     country: number,

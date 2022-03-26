@@ -35,6 +35,8 @@ import {DocFormatService} from "../../_services/doc-format.service";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {IDocFormatCountry} from "../../_models/DocFormatCountry.model";
 import {DocFormatCountryService} from "../../_services/doc-format-country.service";
+import {TranslationRequiredOptionsService} from "../../_services/translation-required-options.service";
+import {ITranslationRequiredOptions} from "../../_models/ITranslationRequiredOptions";
 
 interface CountryWise {
   id: number,
@@ -83,6 +85,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
   public countryRequirements = new Array<ITransFilReqFull>()
   public epValidationTranslate: IEPValidationTranslationRequired[] = new Array<IEPValidationTranslationRequired>();
   public reqs: ITransFilReqFull = {} as ITransFilReqFull;
+  public transReqOptions: ITranslationRequiredOptions[] = new Array<ITranslationRequiredOptions>();
 
   constructor(
     private countrySer: CountryAllService,
@@ -101,6 +104,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private docFormatSer: DocFormatService,
     private docFormatCountrySer: DocFormatCountryService,
     private tranFilReqSer: TransFilingRequirementsService,
+    private transReqOptSer: TranslationRequiredOptionsService,
   ) {
     combineLatest([
       this.applTypeSer.getAllUnlessAlreadyLoaded(),
@@ -137,6 +141,10 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.epValidatSer.entities$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.epValidationTranslate = x
+      })
+    this.transReqOptSer.entities$.pipe(takeUntil(this.unsubscribe$))
+      .subscribe(x => {
+        this.transReqOptions = x
       })
     this.transComplexTimeSer.entities$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
@@ -204,7 +212,6 @@ export class FormPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
         this.publTrans = this.complexTimeConditionsSet(this.prevApplTypeSet(this.applTypeSet(this.countrySet(x))))
-        console.log('ths', this.publTrans)
       })
       this.reqTranSer.filteredEntities$
       .pipe(takeUntil(this.unsubscribe$))
@@ -248,6 +255,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     this.transComplexTimeSer.getAll()
     this.epValidatSer.getAll()
     this.entSer.getAll()
+    this.transReqOptSer.getAll()
   }
 
   ngOnDestroy(): void {

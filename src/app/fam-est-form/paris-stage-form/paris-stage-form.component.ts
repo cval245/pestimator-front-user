@@ -160,7 +160,6 @@ export class ParisStageFormComponent implements OnInit, OnDestroy, OnChanges {
           custom_appl_details: [new CustomApplDetails()],
           custom_appl_options: [new CustomApplOption()],
         })
-        console.log('f', new_control.value)
         checkArray.push(new_control)
       }
     })

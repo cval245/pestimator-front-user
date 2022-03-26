@@ -9,11 +9,13 @@ import {ContentFreeModule} from "../content-free/content-free.module";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {EstimatePatentCostsComponent} from './estimate-patent-costs/estimate-patent-costs.component';
 
 
 @NgModule({
   declarations: [
-    LandingPageComponent
+    LandingPageComponent,
+    EstimatePatentCostsComponent
   ],
   exports: [
     LandingPageComponent

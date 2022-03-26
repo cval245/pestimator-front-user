@@ -54,6 +54,21 @@ const routes: Routes = [
     canActivate: [IsStaffLoggedInGuard, LandingGuard],
     data: {preload: false}
   },
+  {
+    path: 'law-firms',
+    loadChildren: () => import('./law-firm/law-firm.module').then(m => m.LawFirmModule),
+    data: {preload: true}
+  },
+  {
+    path: 'articles',
+    loadChildren: () => import('./articles/articles.module').then(m => m.ArticlesModule),
+    data: {preload: true}
+  },
+  {
+    path: 'estimate',
+    loadChildren: () => import('./free-estimator/free-estimator.module').then(m => m.FreeEstimatorModule),
+    data: {preload: true}
+  },
   {path: '**', component: NotFoundComponent, canActivate: [LandingGuard]},
 ];
 

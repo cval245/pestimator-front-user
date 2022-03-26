@@ -13,12 +13,24 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       collectionResourceUrl: environment.API_URL + 'user-detail/'
     },
     LawFirm: {
-      entityResourceUrl: environment.API_URL + 'lawfirms/',
-      collectionResourceUrl: environment.API_URL + 'lawfirms/'
+      entityResourceUrl: environment.API_URL + 'law-firms/',
+      collectionResourceUrl: environment.API_URL + 'law-firms/'
+    },
+    LawFirmImage: {
+      entityResourceUrl: environment.API_URL + 'get-law-firm-image/',
+      collectionResourceUrl: environment.API_URL + 'get-law-firm-image/'
+    },
+    Article: {
+      entityResourceUrl: environment.API_URL + 'article/',
+      collectionResourceUrl: environment.API_URL + 'article/'
     },
     FamEst: {
       entityResourceUrl: environment.API_URL + 'fam-est/',
       collectionResourceUrl: environment.API_URL + 'fam-est/',
+    },
+    FamEstGuest: {
+      entityResourceUrl: environment.API_URL + 'fam-est-guest/',
+      collectionResourceUrl: environment.API_URL + 'fam-est-guest/',
     },
     FamEstUser: {
       entityResourceUrl: environment.API_URL + 'fam-est-specific-user/',
@@ -39,6 +51,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     FamEstDetail: {
       entityResourceUrl: environment.API_URL + 'fam-est-detail/',
       collectionResourceUrl: environment.API_URL + 'fam-est-detail/',
+    },
+    FamEstDetailGuest: {
+      entityResourceUrl: environment.API_URL + 'fam-est-detail-guest/',
+      collectionResourceUrl: environment.API_URL + 'fam-est-detail-guest/',
     },
     EntitySize: {
       entityResourceUrl: environment.API_URL + 'entity-size/',
@@ -187,6 +203,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     EPValidationTranslationRequired: {
       entityResourceUrl: environment.API_URL + 'epvalidation-translation-required/',
       collectionResourceUrl: environment.API_URL + 'epvalidation-translation-required/',
+    },
+    TranslationRequiredOptions: {
+      entityResourceUrl: environment.API_URL + 'translation-required-options/',
+      collectionResourceUrl: environment.API_URL + 'translation-required-options/',
     }
   }
 }

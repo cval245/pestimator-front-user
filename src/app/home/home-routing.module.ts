@@ -5,7 +5,8 @@ import {HomeProfileGuard} from "../_guards/home-profile.guard";
 
 const routes: Routes = [
     {path: '', component: HomePageComponent,
-     canActivate: [ HomeProfileGuard ]},
+     canActivate: [ HomeProfileGuard ]
+    },
 ];
 
 @NgModule({

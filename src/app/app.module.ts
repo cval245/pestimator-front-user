@@ -43,6 +43,7 @@ import {customDetailsReducer} from "./store/reducers/customDetails.reducers";
 import {userProfileReducer} from "./store/reducers/userProfile.reducers";
 import {UserProfileEffect} from "./store/effects/userProfile.effect";
 import {landingReducer} from "./store/reducers/landing.reducers";
+import {jurisdictionReducer} from "./store/reducers/law-firm-jurisdiction.reducers";
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import {landingReducer} from "./store/reducers/landing.reducers";
         'menuOpen': menuOpenReducer,
         'customDetails': customDetailsReducer,
         'userProfile': userProfileReducer,
+        'jurisdiction': jurisdictionReducer,
       },
       {metaReducers}),
     StoreDevtoolsModule.instrument({

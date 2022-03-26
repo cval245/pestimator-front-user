@@ -9,5 +9,6 @@ export class Application {
       public date_filing?: Date,
       public appl_details?: any,
       public country?: any,
+      public family_udn?:any,
     ) {}
 }

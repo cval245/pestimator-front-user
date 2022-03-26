@@ -7,6 +7,7 @@ import {IEPValidationTranslationRequired} from "../../_models/IEPValidationTrans
 import {EntitySize} from "../../_models/entitySize.model";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {cloneDeep, filter, flatMap, map} from "lodash";
+import {ITranslationRequiredOptions} from "../../_models/ITranslationRequiredOptions";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
   @Input() docFormats = new Array<IDocFormat>()
   @Input() epValidationTranslate = new Array<IEPValidationTranslationRequired>()
   @Output() formEmitter = new EventEmitter()
+  @Input() transReqOptions: ITranslationRequiredOptions[] = new Array<ITranslationRequiredOptions>();
   public filteredApplTypes = [new ApplType()]
   public form: FormGroup;
   public formActive: boolean = false;
@@ -46,6 +48,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       available_languages: this.fb.array([]),
       // available_entity_sizes: this.fb.array([false]),
       ep_validation_translation_required: [0],
+      utility_translation_required: [0],
       available_doc_formats: this.fb.array([false]),
     })
     this.getApplTypeArray.valueChanges.subscribe((x: number[]) => {
@@ -81,6 +84,7 @@ export class ApplTypeFormComponent implements OnInit, OnChanges {
       color: this.country.color,
       long_name: this.country.long_name,
       ep_validation_translation_required: this.country.ep_validation_translation_required,
+      utility_translation_required: this.country.utility_translation_required,
       // available_entity_sizes: this.country.available_entity_sizes,
       available_doc_formats: this.country.available_doc_formats,
       available_languages: this.country.available_languages,

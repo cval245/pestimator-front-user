@@ -39,7 +39,6 @@ export class GenTransComponent implements OnChanges {
     this.applTypesCorrect = this.applTypes.filter(applType => {
       return applType.country_set.some(countryId => countryId == this.country.id)
     })
-    // console.log('fff', this.tableData)
   }
 
   newRow() {
@@ -80,7 +79,6 @@ export class GenTransComponent implements OnChanges {
         this.form.patchValue({trans_complex_time_condition: this.form.controls.trans_complex_time_condition.value.id})
       }
     }
-    console.log('sss', this.form.value)
     this.formData.emit(this.form.value)
     this.editingRow = 0
   }

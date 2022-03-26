@@ -1,15 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoggedInGuard} from '../_guards/logged-in.guard';
 import {MainPageComponent} from './main-page/main-page.component';
+import {LawFirmDetailComponent} from "./law-firm-detail/law-firm-detail.component";
+// import {LandingGuard} from "../_guards/landing.guard";
 
 const routes: Routes = [
-    {path: 'law-firms', component: MainPageComponent,
-     canActivate: [LoggedInGuard]},
+  {
+    path: '', component: MainPageComponent,
+  },
+  {
+    path: ':nameslug', component: LawFirmDetailComponent,
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class LawFirmRoutingModule { }
+export class LawFirmRoutingModule {
+}
