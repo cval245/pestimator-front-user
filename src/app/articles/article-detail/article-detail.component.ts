@@ -5,6 +5,7 @@ import {ArticleService} from "../../_services/article.service";
 import {ActivatedRoute} from "@angular/router";
 import {Article} from "../../_models/article.model";
 import {environment} from "../../../environments/environment";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-article-detail',
@@ -17,8 +18,9 @@ export class ArticleDetailComponent implements OnInit {
   public image_url: string = ''
 
   constructor(private articleSer: ArticleService,
-              private route: ActivatedRoute
-              ) {
+              private route: ActivatedRoute,
+              private location: Location,
+  ) {
   }
 
   ngOnInit(): void {
@@ -27,7 +29,7 @@ export class ArticleDetailComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe(x => {
         this.article = x[0]
-        this.image_url = environment.API_URL+'get-article-image/'+this.article.image_location
+        this.image_url = environment.API_URL + 'get-article-image/' + this.article.image_location
       })
   }
 
@@ -37,4 +39,7 @@ export class ArticleDetailComponent implements OnInit {
     this.destroy.complete()
   }
 
+  back() {
+    this.location.back()
+  }
 }

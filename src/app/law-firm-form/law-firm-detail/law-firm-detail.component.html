@@ -1,0 +1,21 @@
+<div class="law-detail-overcontainer">
+  <div class="law-detail-container">
+    <div class="law-detail-introduction">
+      <img class="law-firm-image" [src]="[this.image_url]">
+      <div class="law-firm-content">
+        <h1>{{lawFirm.name}}</h1>
+        <h4>Jurisdiction: {{lawFirm.country.long_name}}</h4>
+        <div [innerHtml]="lawFirm.long_description"></div>
+        <div class="contact-container">
+          <h2>Contact Information</h2>
+          <p>Website: <a [href]="lawFirm.website">{{lawFirm.website}}</a></p>
+          <p>Phone: {{lawFirm.phone}}</p>
+          <p>Email: {{lawFirm.email}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="file" (change)="uploadFile($event)">
+<a (click)="back()" mat-flat-button color="accent">Back</a>
+<button (click)="openForm()" mat-flat-button color="accent">Edit</button>

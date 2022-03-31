@@ -1,0 +1,10 @@
+<div class="article-detail-overcontainer">
+  <div class="article-detail-container">
+    <h1>{{article.title}}</h1>
+    <img class="header-img" mat-card-sm-image [src]="[image_url]">
+    <div [innerHtml]="article.content"></div>
+  </div>
+</div>
+<a (click)="back()" mat-flat-button color="accent">Back</a>
+<button (click)="openForm()" mat-flat-button color="accent">Edit</button>
+<input type="file" (change)="uploadFile($event)">

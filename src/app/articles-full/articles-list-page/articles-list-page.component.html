@@ -1,0 +1,12 @@
+<div class="articles-list-overcontainer">
+  <button mat-flat-button color="accent" (click)="newArticle()">New Article</button>
+  <div class="articles-list-container">
+    <h1>Articles</h1>
+
+    <div *ngFor="let article of articles">
+      <app-articles-card
+        [article]="article">
+      </app-articles-card>
+    </div>
+  </div>
+</div>

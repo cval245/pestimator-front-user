@@ -4,7 +4,8 @@
       <img class="law-firm-image" [src]="[this.image_url]">
       <div class="law-firm-content">
         <h1>{{lawFirm.name}}</h1>
-        <p>{{lawFirm.long_description}}</p>
+        <h4>Jurisdiction: {{lawFirm.country.long_name}}</h4>
+        <div [innerHtml]="lawFirm.long_description"></div>
         <div class="contact-container">
           <h2>Contact Information</h2>
           <p>Website: <a [href]="lawFirm.website">{{lawFirm.website}}</a></p>
@@ -15,4 +16,4 @@
     </div>
   </div>
 </div>
-<a routerLink="../" mat-flat-button color="accent">Back</a>
+<a (click)="back()" mat-flat-button color="accent">Back</a>

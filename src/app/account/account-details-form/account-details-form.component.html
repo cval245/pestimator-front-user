@@ -1,36 +1,46 @@
 <button mat-raised-button color="primary" (click)="editFormButton()">Edit Account Information</button>
 <form [formGroup]="acctForm" fxLayout="column" style="padding: 20px;">
-    <ng-template matStepLabel>Family Details</ng-template>
-    <div fxLayout="column" fxLayoutAlign="center center">
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-            <mat-form-field color="primary" appearance="outline">
-                <mat-label>Company Name:</mat-label>
-                <input matInput type="text" formControlName="company_name">
-            </mat-form-field>
-        </div>
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-            <mat-form-field color="primary" appearance="outline">
-                <mat-label>Address:</mat-label>
-                <input matInput type="text" formControlName="address">
-            </mat-form-field>
+  <ng-template matStepLabel>Family Details</ng-template>
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div class="input-container">
+        <p>Company Name:</p>
         <mat-form-field color="primary" appearance="outline">
-            <mat-label>City:</mat-label>
-                <input matInput type="text" formControlName="city">
+          <input matInput type="text" formControlName="company_name">
         </mat-form-field>
-        </div>
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-            <mat-form-field color="primary" appearance="outline">
-                <mat-label>State:</mat-label>
-                <input matInput type="text" formControlName="state">
-            </mat-form-field>
-            <mat-form-field color="primary" appearance="outline">
-                <mat-label>Zip Code:</mat-label>
-                <input matInput type="text" formControlName="zip_code">
-            </mat-form-field>
-        </div>
-        <div>
-            <button mat-raised-button [disabled]="buttonDisabled" color="accent" (click)="onSubmit()">Save</button>
-            <button mat-button [disabled]="buttonDisabled" (click)="cancelForm()">Cancel</button>
-        </div>
+      </div>
     </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div class="input-container">
+        <p>Address:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="address">
+        </mat-form-field>
+      </div>
+      <div class="input-container">
+        <p>City:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="city">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div class="input-container">
+        <p>State:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="state">
+        </mat-form-field>
+      </div>
+      <div class="input-container">
+        <p>Zip Code:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="zip_code">
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button mat-raised-button [disabled]="buttonDisabled" color="accent" (click)="onSubmit()">Save</button>
+      <button mat-button [disabled]="buttonDisabled" (click)="cancelForm()">Cancel</button>
+    </div>
+  </div>
 </form>

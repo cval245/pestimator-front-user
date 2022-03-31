@@ -1,0 +1,67 @@
+<h1>Law Firm Form</h1>
+<form [formGroup]="lawFirmForm" fxLayout="column" style="padding: 20px;">
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+          <div class="select-container">
+            <p>Name:</p>
+            <mat-form-field color="primary" appearance="outline">
+              <input matInput type="text" formControlName="name">
+            </mat-form-field>
+          </div>
+          <div class="input-container">
+            <p>Address:</p>
+            <mat-form-field color="primary" appearance="outline">
+              <input matInput type="text" formControlName="long_description">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+          <div class="input-container">
+            <p>Website:</p>
+            <mat-form-field color="primary" appearance="outline">
+              <input matInput type="text" formControlName="website">
+            </mat-form-field>
+          </div>
+          <div class="input-container">
+            <p>Email:</p>
+            <mat-form-field color="primary" appearance="outline">
+              <input matInput type="text" formControlName="email">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+          <div class="input-container">
+            <p>Phone:</p>
+            <mat-form-field color="primary" appearance="outline">
+              <input matInput type="text" formControlName="phone">
+            </mat-form-field>
+          </div>
+          <div class="select-container">
+            <p>Country</p>
+            <mat-form-field appearance="outline">
+              <mat-select class="custom-select"
+                          formControlName="country">
+                <mat-option *ngFor="let t of countries"
+                            [value]="t">
+                  {{t.long_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+          <mat-form-field class="text-area" color="primary" appearance="outline">
+            <mat-label>Long Description:</mat-label>
+            <textarea matInput type="text" formControlName="long_description"></textarea>
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-raised-button color="accent" (click)="onSubmit()">Save</button>
+          <button mat-button (click)="cancelForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

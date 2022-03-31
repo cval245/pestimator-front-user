@@ -11,6 +11,9 @@ html, body {
   width: 100%
 }
 
+mat-card-content {
+  text-align: left;
+}
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -144,6 +147,23 @@ app-footer {
 
 .dark-accent-text {
   color: $dark-accent-text;
+}
+.mat-card-mobile{
+  margin:10px;
+}
+
+.standard-card {
+  max-width: 600px;
+  min-width: 250px;
+  margin: 20px;
+  mat-card-content{
+    margin: 8px;
+  }
+  img{
+    height: 200px;
+    margin-left: 0px;
+    width:100%;
+  }
 }
 
 .input-container, .select-container, .date-picker-container, .input-container-small {

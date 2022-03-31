@@ -7,11 +7,21 @@ import {switchMap} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class ArticleService extends EntityCollectionServiceBase<Article>{
+export class ArticleService extends EntityCollectionServiceBase<Article> {
+  private full_loaded: boolean = false
+
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('Article', serviceElementsFactory)
   }
+
   getAllUnlessAlreadyLoaded(): Observable<Article[]> {
-    return this.loaded$.pipe(switchMap(x => x? this.entities$: this.getAll()))
+    return this.loaded$.pipe(switchMap(x => {
+      if (x && this.full_loaded) {
+        return this.entities$
+      } else {
+        this.full_loaded = true
+        return this.getAll()
+      }
+    }))
   }
 }

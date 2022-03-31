@@ -1,0 +1,15 @@
+.article-detail-container{
+  margin: 20px;
+  text-align: start;
+  max-width: 600px;
+  flex-grow: 1;
+}
+.header-img{
+  height: 200px;
+  margin-left: 0px;
+  width:100%;
+}
+.article-detail-overcontainer{
+  display: flex;
+  justify-content: center;
+}

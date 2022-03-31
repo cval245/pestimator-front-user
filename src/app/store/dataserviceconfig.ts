@@ -16,6 +16,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'law-firms/',
       collectionResourceUrl: environment.API_URL + 'law-firms/'
     },
+    LawFirmFull: {
+      entityResourceUrl: environment.API_URL + 'law-firms-full/',
+      collectionResourceUrl: environment.API_URL + 'law-firms-full/'
+    },
     LawFirmImage: {
       entityResourceUrl: environment.API_URL + 'get-law-firm-image/',
       collectionResourceUrl: environment.API_URL + 'get-law-firm-image/'
@@ -23,6 +27,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
     Article: {
       entityResourceUrl: environment.API_URL + 'article/',
       collectionResourceUrl: environment.API_URL + 'article/'
+    },
+    ArticleFull: {
+      entityResourceUrl: environment.API_URL + 'article-full/',
+      collectionResourceUrl: environment.API_URL + 'article-full/'
     },
     FamEst: {
       entityResourceUrl: environment.API_URL + 'fam-est/',

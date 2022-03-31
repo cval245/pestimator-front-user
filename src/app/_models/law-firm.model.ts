@@ -2,7 +2,6 @@ export class LawFirm {
   public id: number = 0
   public name: string = ''
   public slug: string = ''
-  public user: any = 0
   public long_description: string = ''
   public website: string = ''
   public email: string = ''

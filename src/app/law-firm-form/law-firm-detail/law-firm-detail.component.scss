@@ -1,0 +1,43 @@
+.law-firm-image{
+  max-width: 250px;
+  max-height: 250px;
+  margin: 10px;
+}
+
+.law-firm-content{
+  text-align: left;
+  margin: 10px;
+}
+
+.law-detail-container{
+  margin: 20px;
+  padding: 10px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.law-detail-overcontainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.law-detail-introduction{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.contact-container{
+  display:flex;
+  flex-direction:column;
+  justify-content: start;
+  align-content: start;
+  align-items: start;
+}

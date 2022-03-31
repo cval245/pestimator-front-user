@@ -19,15 +19,18 @@ import {ReactiveFormsModule} from "@angular/forms";
     LawFirmCardComponent,
     LawFirmDetailComponent,
   ],
-    imports: [
-        CommonModule,
-        LawFirmRoutingModule,
-        MatCardModule,
-        MatButtonModule,
-        MatDividerModule,
-        MatSelectModule,
-        ReactiveFormsModule
-    ]
+  exports: [
+    LawFirmCardComponent
+  ],
+  imports: [
+    CommonModule,
+    LawFirmRoutingModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatSelectModule,
+    ReactiveFormsModule
+  ]
 })
 export class LawFirmModule {
 }

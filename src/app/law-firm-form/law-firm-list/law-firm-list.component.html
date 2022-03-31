@@ -1,0 +1,6 @@
+<button (click)="openForm()">Add New</button>
+<div *ngFor="let lawFirm of lawFirms">
+  <app-law-firm-card
+    [lawFirm]="lawFirm"
+  ></app-law-firm-card>
+</div>

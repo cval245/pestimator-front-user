@@ -8,19 +8,23 @@ import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from "@angular/material/list";
 import {FamilyEstimateTableModule} from "../family-estimate-table/family-estimate-table.module";
+import {ArticlesModule} from "../articles/articles.module";
+import {LawFirmModule} from "../law-firm/law-firm.module";
 
 @NgModule({
   declarations: [HomePageComponent],
-    imports: [
-      CommonModule,
-      FlexLayoutModule,
-      MatButtonModule,
-      MatCardModule,
-      MatGridListModule,
-      HomeRoutingModule,
-      MatListModule,
-      FamilyEstimateTableModule,
-    ],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    MatCardModule,
+    MatGridListModule,
+    HomeRoutingModule,
+    MatListModule,
+    FamilyEstimateTableModule,
+    ArticlesModule,
+    LawFirmModule,
+  ],
 })
 export class HomeModule {
 }

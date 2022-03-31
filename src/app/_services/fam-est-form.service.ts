@@ -16,8 +16,6 @@ export class FamEstFormService extends EntityCollectionServiceBase<FamEstFormSub
   getWithQueryByFamEstFormDataUDNUnlessLoaded(udn: number): Observable<FamEstFormSubmit[]> {
     return this.entities$.pipe(switchMap(x => {
       if (x.length > 0){
-        console.log('y-x', x)
-        console.log('y-udn', udn)
         if (x.some(y => y.unique_display_no== udn)){
           let z = x.filter(y => y.unique_display_no== udn)
           return of(z)

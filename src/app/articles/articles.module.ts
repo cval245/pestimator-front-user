@@ -10,16 +10,19 @@ import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
-  declarations: [
-    ArticleListComponent,
-    ArticleDetailComponent,
-    ArticleCardComponent
-  ],
-  imports: [
-    CommonModule,
-    ArticlesRoutingModule,
-    MatButtonModule,
-    MatCardModule
-  ]
+    declarations: [
+        ArticleListComponent,
+        ArticleDetailComponent,
+        ArticleCardComponent
+    ],
+    exports: [
+        ArticleCardComponent
+    ],
+    imports: [
+        CommonModule,
+        ArticlesRoutingModule,
+        MatButtonModule,
+        MatCardModule
+    ]
 })
 export class ArticlesModule { }

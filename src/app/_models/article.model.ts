@@ -4,6 +4,7 @@ export class Article{
   public slug: string = ''
   public image_location: string=''
   public date_created: Date = new Date()
+  public visible: boolean = false
   public content?: string = ''
   public content_short?: string = ''
 

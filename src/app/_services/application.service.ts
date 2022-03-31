@@ -7,19 +7,18 @@ import {switchMap} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationService extends EntityCollectionServiceBase<Application>{
-    constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-        super('Application', serviceElementsFactory)
-    }
+export class ApplicationService extends EntityCollectionServiceBase<Application> {
+  constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
+    super('Application', serviceElementsFactory)
+  }
 
   getWithQueryByFamEstFormDataUDNUnlessLoaded(udn: number): Observable<Application[]> {
     return this.entities$.pipe(switchMap(x => {
-      if (x.length > 0){
-        if (x.some(y => y.family_udn == udn)){
-          let z = x.filter(y => y.family_udn== udn)
+      if (x.length > 0) {
+        if (x.some(y => y.family_udn == udn)) {
+          let z = x.filter(y => y.family_udn == udn)
           return of(z)
-        }
-        else{
+        } else {
           return super.getWithQuery('familyUDN=' + udn)
         }
       } else {

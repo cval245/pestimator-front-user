@@ -51,5 +51,15 @@
        routerLink="/trans-est/detailed-fee-category-form"
        (click)="closeMenu()">
       <p class="mat-h3">Detailed Fee Form</p></a>
+    <a *ngIf="isStaff"
+       mat-button
+       routerLink="/law-firm-form"
+       (click)="closeMenu()">
+      <p class="mat-h3">Law-Firm-Form</p></a>
+    <a *ngIf="isStaff"
+       mat-button
+       routerLink="/articles-full"
+       (click)="closeMenu()">
+      <p class="mat-h3">Articles Full</p></a>
   </div>
 </div>

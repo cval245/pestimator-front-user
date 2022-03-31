@@ -111,7 +111,7 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
     private getXlsSer: GetXLSService,
     private getPdfSer: GetPDFService,
   ) {
-    this.famEstDetails = [new FamEstDetail()]
+    this.famEstDetails = new Array<FamEstDetail>()
     this.family = new Family
 
     let famEstDetails$ = this.activatedRoute.params.pipe(
@@ -149,8 +149,8 @@ export class FamEstDetailComponent implements OnInit, OnDestroy {
         this.displayedColumns = this.calcColumns(this.countryAgged)
         this.family = family[0]
         let appl$ = this.applSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
-        let applDet$ = this.applDetSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.fam_est_form_data_udn)
-        let famform$ = this.famformSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
+        let applDet$ = this.applDetSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
+        let famform$ = this.famformSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.fam_est_form_data_udn)
         let famDetTot$ = this.famEstDetTotSer.getWithQueryByFamEstFormDataUDNUnlessLoaded(this.family.unique_display_no)
         return combineLatest([
           appl$,

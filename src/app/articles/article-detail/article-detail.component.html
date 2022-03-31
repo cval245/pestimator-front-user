@@ -2,7 +2,7 @@
   <div class="article-detail-container">
     <h1>{{article.title}}</h1>
     <img class="header-img" mat-card-sm-image [src]="[image_url]">
-    <p>{{article.content}}</p>
+    <div [innerHtml]="article.content"></div>
   </div>
 </div>
-<a routerLink="../" mat-flat-button color="accent">Back</a>
+<a (click)="back()" mat-flat-button color="accent">Back</a>

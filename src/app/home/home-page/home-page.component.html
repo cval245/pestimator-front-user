@@ -3,10 +3,8 @@
   Accurate prediction of patent costs tool. Insights into patent portfolio fees and expenditures">
 </head>
 
-<div fxShow.sm fxShow.gt-sm fxHide gdcolumns="repeat(auto-fill, minmax(200px, 1fr))" gdgap="10px"
-     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;"
->
-  <mat-card class="mat-elevation-z4">
+<div class="home-tiles" fxShow.sm fxShow.gt-sm fxHide>
+  <mat-card class="mat-elevation-z4 standard-card">
     <mat-card-header>
       <mat-card-title>New Estimate</mat-card-title>
     </mat-card-header>
@@ -17,8 +15,8 @@
       <img alt="bird image" src="assets/images/Peregrine-falcon.webp" style="width: 100%">
     </mat-card-content>
     <mat-card-footer>
-      <mat-card-actions align="end">
-        <button mat-flat-button color="accent" style="right: 15px"
+      <mat-card-actions>
+        <button mat-flat-button color="accent"
                 routerLink="/fam-est-form">
           Create Estimate
         </button>
@@ -26,7 +24,7 @@
     </mat-card-footer>
   </mat-card>
 
-  <mat-card class="mat-elevation-z4">
+  <mat-card class="mat-elevation-z4 standard-card">
     <mat-card-header>
       <mat-card-title>Coming Soon...</mat-card-title>
     </mat-card-header>
@@ -42,7 +40,7 @@
     <mat-card-footer>
     </mat-card-footer>
   </mat-card>
-  <mat-card class="mat-elevation-z4" gdcolumn="auto / span 2" style="grid-column: auto / span 2;">
+  <mat-card class="mat-elevation-z4 standard-card" >
     <mat-card-header>
       <mat-card-title>View Estimates</mat-card-title>
     </mat-card-header>
@@ -54,7 +52,7 @@
       </app-family-estimate-table>
     </mat-card-content>
     <mat-card-footer>
-      <mat-card-actions align="end">
+      <mat-card-actions>
         <button mat-flat-button color="accent" style="right: 15px"
                 routerLink="/estimations">
           View All
@@ -62,9 +60,15 @@
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
+  <div *ngIf="latest_article.id !== 0">
+    <app-article-card [article]="latest_article"></app-article-card>
+  </div>
+  <div *ngIf="featured_lawfirm.id !== 0">
+    <app-law-firm-card [lawFirm]="featured_lawfirm"></app-law-firm-card>
+  </div>
 </div>
 <div fxHide fxShow.lt-sm>
-  <mat-card class="mat-card-mobile">
+  <mat-card class="mat-card-mobile standard-card">
     <mat-card-header>
       <mat-card-title>New Estimate</mat-card-title>
     </mat-card-header>
@@ -74,7 +78,7 @@
       </p>
     </mat-card-content>
     <mat-card-footer>
-      <mat-card-actions align="end">
+      <mat-card-actions>
         <button mat-flat-button color="accent" style="right: 15px"
                 routerLink="/fam-est-form">
           Create Estimate
@@ -82,7 +86,7 @@
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
-  <mat-card class="mat-card-mobile">
+  <mat-card class="mat-card-mobile standard-card">
     <mat-card-header>
       <mat-card-title>Coming Soon...</mat-card-title>
     </mat-card-header>
@@ -97,7 +101,7 @@
     <mat-card-footer>
     </mat-card-footer>
   </mat-card>
-  <mat-card class="mat-card-mobile">
+  <mat-card class="mat-card-mobile standard-card">
     <mat-card-header>
       <mat-card-title>View Estimates</mat-card-title>
     </mat-card-header>
@@ -107,12 +111,19 @@
       </app-family-estimate-table>
     </mat-card-content>
     <mat-card-footer>
-      <mat-card-actions align="end">
-        <button mat-flat-button color="accent" style="right: 15px"
+      <mat-card-actions>
+        <button mat-flat-button color="accent"
                 routerLink="/estimations">
           View All
         </button>
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
+  <div class="mat-card-mobile" *ngIf="latest_article.id !== 0">
+    <app-article-card [article]="latest_article"></app-article-card>
+  </div>
+  <div class="mat-card-mobile" *ngIf="featured_lawfirm.id !== 0">
+    <app-law-firm-card [lawFirm]="featured_lawfirm"></app-law-firm-card>
+  </div>
+
 </div>

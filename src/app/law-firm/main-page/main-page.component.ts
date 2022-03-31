@@ -30,9 +30,7 @@ export class MainPageComponent implements OnInit {
     combineLatest([
       this.lawFirmSer.getAllUnlessAlreadyLoaded(),
       this.countrySer.getAllUnlessAlreadyLoaded(),
-      this.store.select('jurisdiction').pipe(
-        takeUntil(this.destroy),
-      )
+      this.store.select('jurisdiction')
     ]).pipe(takeUntil(this.destroy)).subscribe(x => {
       this.lawFirms = x[0]
       this.filteredLawFirms = this.lawFirms
@@ -69,7 +67,6 @@ export class MainPageComponent implements OnInit {
     this.store.dispatch(jurisdiction({jurisdiction: event}))
     this.filteredLawFirms = cloneDeep(this.lawFirms.filter(y => y.country == this.selected_jurisdiction))
 
-    console.log('chc', this.filteredLawFirms)
     if (event.id == 0){
       this.filteredLawFirms = this.lawFirms
     }

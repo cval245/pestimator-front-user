@@ -14,11 +14,9 @@ export class FamEstDetTotService extends EntityCollectionServiceBase<FamEstDetTo
   }
 
   getWithQueryByFamEstFormDataUDNUnlessLoaded(udn: number): Observable<FamEstDetTot[]> {
-
+    console.log('echo')
     return this.entities$.pipe(switchMap(x => {
       if (x.length > 0){
-        console.log('x', x)
-        console.log('udn', udn)
         if (x.some(y => y.family_udn == udn)){
           let z = x.filter(y => y.family_udn == udn)
           return of(z)

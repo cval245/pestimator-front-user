@@ -60,8 +60,20 @@ const routes: Routes = [
     data: {preload: true}
   },
   {
+    path: 'law-firm-form',
+    loadChildren: () => import('./law-firm-form/law-firm-form.module').then(m => m.LawFirmFormModule),
+    canActivate: [IsStaffLoggedInGuard, LandingGuard],
+    data: {preload: true}
+  },
+  {
     path: 'articles',
     loadChildren: () => import('./articles/articles.module').then(m => m.ArticlesModule),
+    data: {preload: true}
+  },
+  {
+    path: 'articles-full',
+    loadChildren: () => import('./articles-full/articles-full.module').then(m => m.ArticlesFullModule),
+    canActivate: [IsStaffLoggedInGuard, LandingGuard],
     data: {preload: true}
   },
   {

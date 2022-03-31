@@ -1,0 +1,12 @@
+<mat-card class="article-card mat-elevation-z4">
+  <mat-card-title-group>
+    <mat-card-title>{{article.title}}--{{article.visible}}</mat-card-title>
+  </mat-card-title-group>
+  <img mat-card-sm-image [src]="[image_url]">
+  <mat-card-content style="margin-top:10px;">
+    <div style="text-align: left;"[innerHtml]="article.content_short"></div>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-flat-button [routerLink]="['/articles-full/' + article.slug]" color="accent">Learn More</a>
+  </mat-card-actions>
+</mat-card>
