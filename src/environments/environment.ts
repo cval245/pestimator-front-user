@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false,
-    API_URL: 'http://localhost:8000/',
-    STRIPE_PUBLISHABLE_KEY:'pk_test_51H7SvaEsr85VxCzR5tPcI81RRPeOMiXVp3k8VdXEylOEpwT1bXkE5JO5IVhXkmk25Oa6mmOnBgh6MynkdliZ5ENl00YaLBl1Jj',
-    RECAPTCHA_SITE_KEY: '6Lf7PakcAAAAAAaGwssS4YOGraagGj7VJgOAS7Pp',
+  production: false,
+  API_URL: 'http://localhost:8000/',
+  STRIPE_PUBLISHABLE_KEY: 'pk_test_51H7SvaEsr85VxCzR5tPcI81RRPeOMiXVp3k8VdXEylOEpwT1bXkE5JO5IVhXkmk25Oa6mmOnBgh6MynkdliZ5ENl00YaLBl1Jj',
+  RECAPTCHA_SITE_KEY: '6Lf7PakcAAAAAAaGwssS4YOGraagGj7VJgOAS7Pp',
 };
 
 /*

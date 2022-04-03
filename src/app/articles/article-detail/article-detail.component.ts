@@ -4,7 +4,6 @@ import {Subject} from "rxjs";
 import {ArticleService} from "../../_services/article.service";
 import {ActivatedRoute} from "@angular/router";
 import {Article} from "../../_models/article.model";
-import {environment} from "../../../environments/environment";
 import {Location} from "@angular/common";
 
 @Component({
@@ -29,7 +28,7 @@ export class ArticleDetailComponent implements OnInit {
       .pipe(takeUntil(this.destroy))
       .subscribe(x => {
         this.article = x[0]
-        this.image_url = environment.API_URL + 'get-article-image/' + this.article.image_location
+        this.image_url = this.article.image_location
       })
   }
 

@@ -43,10 +43,11 @@ export class EstimatorComponent implements OnInit, OnDestroy {
     this.destroy.complete()
   }
   retrievePDF() {
-    this.getPdfSer.getAndDownload(this.famEst.famestformdata_udn)
+    // this.getPdfSer.getAndDownload(this.famEst.famestformdata_udn)
+    this.getPdfSer.getAndDownload(this.famEst.pdf_url)
   }
 
   retrieveXLS() {
-    this.getXlsSer.getAndDownload(this.famEst.famestformdata_udn)
+    this.getXlsSer.getAndDownload(this.famEst.excel_url)
   }
 }

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Article} from "../../_models/article.model";
-import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-articles-card',
@@ -14,6 +13,6 @@ export class ArticlesCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.image_url = environment.API_URL+'get-article-image/'+this.article.image_location
+    this.image_url = this.article.image_location
   }
 }

@@ -4,7 +4,6 @@ import {LawFirmService} from "../../_services/law-firm.service";
 import {LawFirm} from "../../_models/law-firm.model";
 import {combineLatest, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
 import {Location} from '@angular/common'
 import {CountryService} from "../../_services/country.service";
 import {Country} from "../../_models/Country.model";
@@ -37,7 +36,7 @@ export class LawFirmDetailComponent implements OnInit {
       this.countries = countries
       let country = this.countries.find(y => y.id == this.lawFirm.country)
       this.lawFirm = {...this.lawFirm, country: country}
-      this.image_url = environment.API_URL + 'get-law-firm-image/' + this.lawFirm.image_location
+      this.image_url = this.lawFirm.image_location
     })
   }
 

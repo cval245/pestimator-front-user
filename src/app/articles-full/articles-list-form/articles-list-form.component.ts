@@ -32,9 +32,11 @@ export class ArticlesListFormComponent implements OnChanges {
       image_location: this.article.image_location,
       content: this.article.content,
     })
+    console.log('s', this.form.value)
   }
 
   onSubmit() {
+    console.log('s', this.form.value)
     this.formEmit.emit(this.form.value)
   }
 
@@ -42,4 +44,5 @@ export class ArticlesListFormComponent implements OnChanges {
     this.form.reset()
     this.cancelEmit.emit()
   }
+
 }

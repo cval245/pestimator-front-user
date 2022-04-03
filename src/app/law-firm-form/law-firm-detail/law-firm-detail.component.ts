@@ -7,7 +7,6 @@ import {Location} from "@angular/common";
 import {CountryService} from "../../_services/country.service";
 import {LawfirmImageUploadService} from "../../_services/lawfirm-image-upload.service";
 import {first, switchMap, takeUntil} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
 import {MatDialog} from "@angular/material/dialog";
 import {LawFirmModalComponent} from "../law-firm-modal/law-firm-modal.component";
 import {LawfirmFullService} from "../../_services/lawfirm-full.service";
@@ -24,6 +23,7 @@ export class LawFirmDetailComponent implements OnInit {
   private nameslug: string = ''
   private destroy: Subject<void> = new Subject<void>()
   public image_url: string = ''
+  public new_image_url: string = ''
 
   constructor(private router: Router,
               private lawFirmSer: LawfirmFullService,
@@ -36,7 +36,7 @@ export class LawFirmDetailComponent implements OnInit {
         this.countries = countries
         this.lawFirm = lawFirm[0]
         this.lawFirm = this.addCountry(this.lawFirm)
-        this.image_url = environment.API_URL + 'get-law-firm-image/' + this.lawFirm.image_location
+        this.image_url = this.lawFirm.image_location
       })
   }
 

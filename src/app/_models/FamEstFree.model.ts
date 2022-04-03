@@ -1,4 +1,4 @@
-export class FamEstFree{
+export class FamEstFree {
   public date_created: string = ''
   public id: number = 0
   public law_firm_cost: number = 0
@@ -8,6 +8,8 @@ export class FamEstFree{
   public famestformdata: number = 0
   public famestformdata_udn: number = 0
   public country: any = 0
+  public excel_url = ''
+  public pdf_url = ''
 
   constructor(init?: Partial<FamEstFree>) {
     Object.assign(this, init)

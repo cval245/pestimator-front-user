@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory} from "@ngrx/data";
+import {EntityActionOptions, EntityCollectionServiceBase, EntityCollectionServiceElementsFactory} from "@ngrx/data";
 import {Article} from "../_models/article.model";
 import {Observable} from "rxjs";
 import {switchMap} from "rxjs/operators";
@@ -12,6 +12,11 @@ export class ArticleFullService extends EntityCollectionServiceBase<Article> {
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('ArticleFull', serviceElementsFactory)
+  }
+
+
+  update(entity: Partial<Article>, options?: EntityActionOptions): Observable<Article> {
+    return super.update(entity, options);
   }
 
   getAllUnlessAlreadyLoaded(): Observable<Article[]> {

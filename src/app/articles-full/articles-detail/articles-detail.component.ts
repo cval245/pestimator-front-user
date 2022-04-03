@@ -4,7 +4,6 @@ import {Article} from "../../_models/article.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {first, takeUntil} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
 import {MatDialog} from "@angular/material/dialog";
 import {ArticlesFormModalComponent} from "../articles-form-modal/articles-form-modal.component";
 import {ArticleFullService} from "../../_services/article-full.service";
@@ -36,7 +35,7 @@ export class ArticlesDetailComponent implements OnInit {
 
       this.subs(titleslug).subscribe(x => {
         this.article = x[0]
-        this.image_url = environment.API_URL + 'get-article-image/' + this.article.image_location
+        this.image_url = this.article.image_location
       })
   }
 
@@ -56,6 +55,7 @@ export class ArticlesDetailComponent implements OnInit {
 
   onSubmit(article: Article) {
     this.destroy.next()
+    console.log(article)
     if (article.id == 0) {
       this.articleSer.add(article).pipe(takeUntil(this.destroy)).subscribe(x => {
         this.article = x

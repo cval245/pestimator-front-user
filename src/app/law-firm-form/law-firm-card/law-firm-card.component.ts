@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LawFirm} from "../../_models/law-firm.model";
-import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-law-firm-card',
@@ -14,7 +13,7 @@ export class LawFirmCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.image_url = environment.API_URL+'get-law-firm-image/'+this.lawFirm.image_location
+    this.image_url = this.lawFirm.image_location
   }
 
 }
