@@ -3,17 +3,19 @@ import {HttpClient} from '@angular/common/http';
 import {DefaultDataService, HttpUrlGenerator, Logger,} from '@ngrx/data';
 import {Update} from '@ngrx/entity';
 import {Observable} from 'rxjs';
-import {defaultDataServiceConfig} from '../../app.module';
+import {defaultDataServiceConfig} from "../dataserviceconfig";
+
+// import {defaultDataServiceConfig} from '../../app.module';
 
 @Injectable()
 export class MyDataService extends DefaultDataService<any> {
-    constructor(http: HttpClient, httpUrlGenerator: HttpUrlGenerator, logger: Logger) {
-        super('account', http, httpUrlGenerator, defaultDataServiceConfig);
-        this.entitiesUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.collectionResourceUrl
-        this.entityUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.entityResourceUrl
-    }
+  constructor(http: HttpClient, httpUrlGenerator: HttpUrlGenerator, logger: Logger) {
+    super('account', http, httpUrlGenerator, defaultDataServiceConfig);
+    this.entitiesUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.collectionResourceUrl
+    this.entityUrl = defaultDataServiceConfig.entityHttpResourceUrls!.UserProfile.entityResourceUrl
+  }
 
-    update(update: Update<any>): Observable<any> {
+  update(update: Update<any>): Observable<any> {
         const id = update && update.id;
         const updateOrError =
             id == null
