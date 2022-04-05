@@ -15,6 +15,8 @@ import {MatInputModule} from "@angular/material/input";
 import {FlexModule} from "@angular/flex-layout";
 import {ArticlesFormModalComponent} from './articles-form-modal/articles-form-modal.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {ImageArticlesModalComponent} from './image-articles-modal/image-articles-modal.component';
+import {ImageArticlesFormComponent} from './image-articles-form/image-articles-form.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     ArticlesListFormComponent,
     ArticlesDetailComponent,
     ArticlesCardComponent,
-    ArticlesFormModalComponent
+    ArticlesFormModalComponent,
+    ImageArticlesModalComponent,
+    ImageArticlesFormComponent
   ],
   imports: [
     CommonModule,

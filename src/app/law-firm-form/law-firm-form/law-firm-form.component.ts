@@ -24,6 +24,10 @@ export class LawFirmFormComponent implements OnChanges{
     }
   )
 
+  compareCountry(c_one: Country, c_two: Country) {
+    return c_one.id === c_two.id;
+  }
+
   constructor(private fb: FormBuilder) {
   }
 

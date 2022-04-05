@@ -27,6 +27,8 @@ const entityMetadata: EntityMetadataMap = {
   LawFirmImage: {},
   Article: {},
   ArticleFull: {},
+  ArticleImagePosition: {},
+  ImageArticle: {},
   FamEst: {},
   FamEstGuest: {},
   FamEstUser: {},

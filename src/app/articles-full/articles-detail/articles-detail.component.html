@@ -1,10 +1,22 @@
 <div class="article-detail-overcontainer">
   <div class="article-detail-container">
-    <h1>{{article.title}}</h1>
+    <h1>{{displayArticle.title}}</h1>
     <img class="header-img" mat-card-sm-image [src]="[image_url]">
-    <div [innerHtml]="article.content"></div>
+    <div [innerHtml]="displayArticle.content">
+    </div>
   </div>
 </div>
 <a (click)="back()" mat-flat-button color="accent">Back</a>
 <button (click)="openForm()" mat-flat-button color="accent">Edit</button>
 <input type="file" (change)="uploadFile($event)">
+<button (click)="addArticleImage()" mat-flat-button color="accent">Add Article Image</button>
+<div *ngFor="let articleImage of articleImages">
+  <div class="img-form-overcontainer">
+    <div class="img-form-container">
+      <p>Image Position: {{articleImage.image_position.name}}
+        {{articleImage.image_location}}</p>
+      <img class="img-mini" [src]="articleImage.image_location">
+      <button (click)="openArticleImageForm(articleImage)" mat-flat-button color="accent">Edit Article Image</button>
+    </div>
+  </div>
+</div>

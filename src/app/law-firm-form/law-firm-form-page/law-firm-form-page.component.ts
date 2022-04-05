@@ -43,6 +43,7 @@ export class LawFirmFormPageComponent implements OnInit {
         let country = this.countries.find(z => z.id == y.country)!
         return {...y, 'country': country}
       })
+      console.log('ttt', this.lawFirms)
     })
   }
 
@@ -52,10 +53,11 @@ export class LawFirmFormPageComponent implements OnInit {
   }
 
   submitLawFirm(formData: LawFirm) {
-      if (formData.id == 0) {
-        this.lawFirmSer.add(formData)
-      } else {
-        this.lawFirmSer.update(formData)
-      }
+
+    if (formData.id == 0) {
+      this.lawFirmSer.add(formData)
+    } else {
+      this.lawFirmSer.update(formData)
+    }
   }
 }

@@ -39,9 +39,10 @@
             </mat-form-field>
           </div>
           <div class="select-container">
-            <p>Country</p>
+            <p>Country {{lawFirmForm.value.country.country}}</p>
             <mat-form-field appearance="outline">
               <mat-select class="custom-select"
+                          [compareWith]="compareCountry"
                           formControlName="country">
                 <mat-option *ngFor="let t of countries"
                             [value]="t">

@@ -1,15 +1,37 @@
-.article-detail-container{
+.article-detail-container {
   margin: 20px;
   text-align: start;
   max-width: 600px;
   flex-grow: 1;
 }
-.header-img{
+
+.header-img {
   height: 200px;
   margin-left: 0px;
-  width:100%;
+  width: 100%;
 }
-.article-detail-overcontainer{
+
+.article-detail-overcontainer {
   display: flex;
   justify-content: center;
 }
+
+.img-form-container {
+  border: 1px #3D3D3D solid;
+  padding: 10px;
+}
+
+.img-form-overcontainer {
+  display: flex;
+  justify-content: center;
+}
+
+.img-mini {
+  max-height: 30px;
+}
+
+.bottom {
+  max-width: 600px;
+}
+
+

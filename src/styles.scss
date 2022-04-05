@@ -32,6 +32,25 @@ body {
   background: map-get($theme-primary, 'lighter');
 }
 
+.right-img, .top-right, .bottom-right {
+  max-width: 400px;
+  max-height: 400px;
+  float: right;
+  margin: 10px;
+}
+
+.left-img, .top-left, .bottom-left {
+  max-width: 400px;
+  max-height: 400px;
+  float: left;
+  margin: 10px;
+}
+
+.center-img, .top, .bottom {
+  max-width: 600px;
+  max-height: 600px;
+  margin: 10px;
+}
 
 .blurb-container-2 {
   padding: 30px;
