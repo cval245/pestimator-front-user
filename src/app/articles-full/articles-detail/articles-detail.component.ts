@@ -12,8 +12,8 @@ import {ImageArticlesModalComponent} from "../image-articles-modal/image-article
 import {ImageArticle} from "../../_models/ImageArticle.model";
 import {ArticleImagesService} from "../../_services/article-images.service";
 import {ArticleImagesUploadService} from "../../_services/article-images-upload.service";
-import {ArticleImagesPositionService} from "../../_services/article-images-position.service";
 import {ArticleImagePosition} from "../../_models/ArticleImagePosition.model";
+import {defaultModules, QuillModules} from "ngx-quill";
 
 @Component({
   selector: 'app-articles-detail',
@@ -28,7 +28,14 @@ export class ArticlesDetailComponent implements OnInit {
   public html: string = ''
   public articleImages: ImageArticle[] = new Array<ImageArticle>()
   public positions: ArticleImagePosition[] = new Array<ArticleImagePosition>()
-
+  public quillModules: QuillModules = {
+    toolbar: {
+      container: defaultModules.toolbar,
+      handlers: {
+        image: this.imageHandler
+      }
+    }
+  };
 
   constructor(private articleSer: ArticleFullService,
               private route: ActivatedRoute,
@@ -38,36 +45,36 @@ export class ArticlesDetailComponent implements OnInit {
               private router: Router,
               private imgArtSer: ArticleImagesService,
               private articleImagSer: ArticleImagesUploadService,
-              private positionSer: ArticleImagesPositionService,
   ) {
   }
 
   ngOnInit(): void {
 
     let titleslug = this.route.snapshot.paramMap.get('titleslug')!
-    this.subs(titleslug).subscribe(([articleImages, positions]) => {
-      this.positions = positions
+    this.subs(titleslug).subscribe(([articleImages]) => {
+      // this.positions = positions
       this.displayArticle = this.article
-      this.articleImages = articleImages.map(y => {
-        let image_position = this.positions.find(z => z.id == y.image_position)!
-        return {...y, image_position: image_position}
-      })
-      this.articleImages.forEach(y => {
-        if (y.image_position.name == 'top-left'
-          || y.image_position.name == 'top-right'
-          || y.image_position.name == 'top') {
-          let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
-          let blurb = img_string + this.displayArticle.content
-          this.displayArticle = {...this.displayArticle, content: blurb}
-        }
-        if (y.image_position.name == 'bottom-left'
-          || y.image_position.name == 'bottom-right'
-          || y.image_position.name == 'bottom') {
-          let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
-          let blurb = this.displayArticle.content + img_string
-          this.displayArticle = {...this.displayArticle, content: blurb}
-        }
-      })
+      this.articleImages = articleImages
+      // this.articleImages = articleImages.map(y => {
+      //   let image_position = this.positions.find(z => z.id == y.image_position)!
+      //   return {...y, image_position: image_position}
+      // })
+      // this.articleImages.forEach(y => {
+      //   if (y.image_position.name == 'top-left'
+      //     || y.image_position.name == 'top-right'
+      //     || y.image_position.name == 'top') {
+      //     let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
+      //     let blurb = img_string + this.displayArticle.content
+      //     this.displayArticle = {...this.displayArticle, content: blurb}
+      //   }
+      //   if (y.image_position.name == 'bottom-left'
+      //     || y.image_position.name == 'bottom-right'
+      //     || y.image_position.name == 'bottom') {
+      //     let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
+      //     let blurb = this.displayArticle.content + img_string
+      //     this.displayArticle = {...this.displayArticle, content: blurb}
+      //   }
+      // })
     })
   }
 
@@ -79,7 +86,6 @@ export class ArticlesDetailComponent implements OnInit {
           this.image_url = this.article.image_location
           return combineLatest([
             this.imgArtSer.getWithQuery('articleid=' + this.article.id),
-            this.positionSer.getAllUnlessAlreadyLoaded()
           ])
         }))
   }
@@ -110,7 +116,7 @@ export class ArticlesDetailComponent implements OnInit {
 
   onSubmitArticleImage(articleImage: ImageArticle) {
     this.destroy.next()
-    let articleImageSubmit = {...articleImage, image_position: articleImage.image_position.id}
+    let articleImageSubmit = {...articleImage}
     if (articleImageSubmit.id == 0) {
       this.imgArtSer.add(articleImageSubmit)
         .pipe(takeUntil(this.destroy),
@@ -172,5 +178,34 @@ export class ArticlesDetailComponent implements OnInit {
     let article_image = new ImageArticle()
     article_image.article = this.article.id
     this.openArticleImageForm(article_image)
+  }
+
+  imageHandler(this: any) {
+    const tooltip = this.quill.theme.tooltip;
+    const originalSave = tooltip.save;
+    const originalHide = tooltip.hide;
+    tooltip.save = function (this: any) {
+      const range = this.quill.getSelection(true);
+      const value = this.textbox.value;
+      if (value) {
+        this.quill.insertEmbed(range.index, 'image', value, 'user');
+      }
+    };
+    // Called on hide and save.
+    tooltip.hide = function (this: any) {
+      tooltip.save = originalSave;
+      tooltip.hide = originalHide;
+      tooltip.hide();
+    };
+    tooltip.edit('image');
+    tooltip.textbox.placeholder = "Embed URL";
+  }
+
+  cancelForm($event: any) {
+
+  }
+
+  submitForm(event: any) {
+    this.onSubmit(event)
   }
 }

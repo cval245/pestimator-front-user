@@ -3,19 +3,6 @@
   <div fxLayout="column" fxLayoutAlign="center center">
     <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
       <div fxLayout="column" fxLayoutAlign="center center">
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-          <mat-form-field appearance="outline">
-            <mat-label>Image Position</mat-label>
-            <mat-select class="custom-select"
-                        formControlName="image_position"
-                        [compareWith]="comparePosition">
-              <mat-option *ngFor="let t of positions"
-                          [value]="t">
-                {{t.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
         <input type="file" (change)="uploadFile($event)">
         <div>
           <button mat-raised-button color="accent" (click)="onSubmit()">Save</button>

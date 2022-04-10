@@ -1,8 +1,6 @@
-import {ArticleImagePosition} from "./ArticleImagePosition.model";
-
 export class ImageArticle {
   public id: number = 0
-  public image_position: ArticleImagePosition = new ArticleImagePosition()
+  // public image_position: ArticleImagePosition = new ArticleImagePosition()
   public image_location: string = ''
   public article: number = 0
 
@@ -13,7 +11,7 @@ export class ImageArticle {
 
 export class ImageArticleSubmit {
   public id: number = 0
-  public image_position: number = 0
+  // public image_position: number = 0
   public image_location: string = ''
   public article: number = 0
 

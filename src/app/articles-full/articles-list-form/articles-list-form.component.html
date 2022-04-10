@@ -1,38 +1,35 @@
-<h1>Article Form</h1>
 <form [formGroup]="form" fxLayout="column" style="padding: 20px;">
   <div fxLayout="column" fxLayoutAlign="center center">
     <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-      <div fxLayout="column" fxLayoutAlign="center center">
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-          <div class="input-container">
-            <p>Title:</p>
-            <mat-form-field color="primary" appearance="outline">
-              <input matInput type="text" formControlName="title">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-          <div class="select-container">
-            <p>Visible</p>
-            <mat-form-field appearance="outline" color="primary">
-              <mat-select formControlName="visible">
-                <mat-option [value]=true>True</mat-option>
-                <mat-option [value]=false>False</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
-          <mat-form-field class="text-area" color="primary" appearance="outline">
-            <mat-label>content:</mat-label>
-            <textarea matInput type="text" formControlName="content"></textarea>
-          </mat-form-field>
-        </div>
-        <div>
-          <button mat-raised-button color="accent" (click)="onSubmit()">Save</button>
-          <button mat-button (click)="cancelForm()">Cancel</button>
-        </div>
+      <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 50px;">
+        <quill-editor [modules]="quillModules"
+                      formControlName="content"
+                      [readOnly]="false">
+        </quill-editor>
       </div>
     </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div class="input-container">
+        <p>Title:</p>
+        <mat-form-field color="primary" appearance="outline">
+          <input matInput type="text" formControlName="title">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-row" fxLayout.gt-sm="row" fxLayout.sm="column">
+      <div class="select-container">
+        <p>Visible</p>
+        <mat-form-field appearance="outline" color="primary">
+          <mat-select formControlName="visible">
+            <mat-option [value]=true>True</mat-option>
+            <mat-option [value]=false>False</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button color="accent" (click)="onSubmit()">Save</button>
+    <button mat-button (click)="cancelForm()">Cancel</button>
   </div>
 </form>

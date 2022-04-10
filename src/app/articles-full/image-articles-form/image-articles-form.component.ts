@@ -11,12 +11,10 @@ import {ArticleImagePosition} from "../../_models/ArticleImagePosition.model";
 export class ImageArticlesFormComponent implements OnChanges {
 
   @Input() articleImage: ImageArticle = new ImageArticle()
-  @Input() positions: ArticleImagePosition[] = new Array<ArticleImagePosition>()
   @Output() formEmit = new EventEmitter()
   @Output() cancelEmit = new EventEmitter()
   public form = this.fb.group({
     id: [0],
-    image_position: [''],
     image_location: [''],
     article: [0],
   })
@@ -32,7 +30,7 @@ export class ImageArticlesFormComponent implements OnChanges {
   ngOnChanges(): void {
     this.form.setValue({
       id: this.articleImage.id,
-      image_position: this.articleImage.image_position,
+      // image_position: this.articleImage.image_position,
       image_location: this.articleImage.image_location,
       article: this.articleImage.article,
     })

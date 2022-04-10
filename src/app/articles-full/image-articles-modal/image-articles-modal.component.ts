@@ -15,12 +15,11 @@ export class ImageArticlesModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: { articleImage: ImageArticle, positions: ArticleImagePosition[] }) {
+    @Inject(MAT_DIALOG_DATA) public data: { articleImage: ImageArticle }) {
   }
 
   ngOnInit(): void {
     this.articleImage = this.data.articleImage
-    this.positions = this.data.positions
   }
 
 

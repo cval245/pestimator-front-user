@@ -7,6 +7,7 @@ import {ArticleDetailComponent} from './article-detail/article-detail.component'
 import {MatButtonModule} from "@angular/material/button";
 import {ArticleCardComponent} from './article-card/article-card.component';
 import {MatCardModule} from "@angular/material/card";
+import {QuillModule} from "ngx-quill";
 
 
 @NgModule({
@@ -19,10 +20,11 @@ import {MatCardModule} from "@angular/material/card";
         ArticleCardComponent
     ],
     imports: [
-        CommonModule,
-        ArticlesRoutingModule,
-        MatButtonModule,
-        MatCardModule
+      CommonModule,
+      ArticlesRoutingModule,
+      MatButtonModule,
+      MatCardModule,
+      QuillModule
     ]
 })
 export class ArticlesModule { }

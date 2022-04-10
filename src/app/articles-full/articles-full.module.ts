@@ -17,6 +17,9 @@ import {ArticlesFormModalComponent} from './articles-form-modal/articles-form-mo
 import {MatDialogModule} from "@angular/material/dialog";
 import {ImageArticlesModalComponent} from './image-articles-modal/image-articles-modal.component';
 import {ImageArticlesFormComponent} from './image-articles-form/image-articles-form.component';
+import {QuillModule} from "ngx-quill";
+
+// import {QuillModule} from "ngx-quill";
 
 
 @NgModule({
@@ -39,7 +42,8 @@ import {ImageArticlesFormComponent} from './image-articles-form/image-articles-f
     MatSelectModule,
     MatInputModule,
     MatDialogModule,
-    FlexModule
+    FlexModule,
+    QuillModule,
   ]
 })
 export class ArticlesFullModule { }

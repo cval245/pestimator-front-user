@@ -44,6 +44,7 @@ import {userProfileReducer} from "./store/reducers/userProfile.reducers";
 import {UserProfileEffect} from "./store/effects/userProfile.effect";
 import {landingReducer} from "./store/reducers/landing.reducers";
 import {jurisdictionReducer} from "./store/reducers/law-firm-jurisdiction.reducers";
+import {QuillModule} from "ngx-quill";
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import {jurisdictionReducer} from "./store/reducers/law-firm-jurisdiction.reduce
     }),
     EffectsModule.forRoot([AuthEffectsNew, UserProfileEffect]),
     EntityDataModule.forRoot(entityConfig),
+    QuillModule.forRoot(),
     LandingRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,

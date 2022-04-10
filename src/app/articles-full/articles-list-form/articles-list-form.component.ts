@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {Article} from "../../_models/article.model";
+import {defaultModules, QuillModules} from "ngx-quill";
 
 
 @Component({
@@ -20,6 +21,14 @@ export class ArticlesListFormComponent implements OnChanges {
     visible: [false],
     content: [''],
   })
+  public quillModules: QuillModules = {
+    toolbar: {
+      container: defaultModules.toolbar,
+      handlers: {
+        image: this.imageHandler
+      }
+    }
+  };
 
   constructor(private fb: FormBuilder) {
   }
@@ -32,6 +41,27 @@ export class ArticlesListFormComponent implements OnChanges {
       image_location: this.article.image_location,
       content: this.article.content,
     })
+  }
+
+  imageHandler(this: any) {
+    const tooltip = this.quill.theme.tooltip;
+    const originalSave = tooltip.save;
+    const originalHide = tooltip.hide;
+    tooltip.save = function (this: any) {
+      const range = this.quill.getSelection(true);
+      const value = this.textbox.value;
+      if (value) {
+        this.quill.insertEmbed(range.index, 'image', value, 'user');
+      }
+    };
+    // Called on hide and save.
+    tooltip.hide = function (this: any) {
+      tooltip.save = originalSave;
+      tooltip.hide = originalHide;
+      tooltip.hide();
+    };
+    tooltip.edit('image');
+    tooltip.textbox.placeholder = "Embed URL";
   }
 
   onSubmit() {

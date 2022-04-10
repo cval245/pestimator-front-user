@@ -36,10 +36,10 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'article-full/',
       collectionResourceUrl: environment.API_URL + 'article-full/'
     },
-    ArticleImagePosition: {
-      entityResourceUrl: environment.API_URL + 'article-image-position/',
-      collectionResourceUrl: environment.API_URL + 'article-image-position/'
-    },
+    // ArticleImagePosition: {
+    //   entityResourceUrl: environment.API_URL + 'article-image-position/',
+    //   collectionResourceUrl: environment.API_URL + 'article-image-position/'
+    // },
     FamEst: {
       entityResourceUrl: environment.API_URL + 'fam-est/',
       collectionResourceUrl: environment.API_URL + 'fam-est/',
