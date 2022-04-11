@@ -506,3 +506,10 @@ tr.element-row:not(.expanded-row):hover {
   }
 }
 
+#quill-container, .ql-container {
+  height: auto;
+}
+
+quill-editor {
+  max-width: 600px;
+}
