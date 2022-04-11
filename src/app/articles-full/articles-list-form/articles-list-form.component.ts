@@ -20,6 +20,7 @@ export class ArticlesListFormComponent implements OnChanges {
     image_location: [''],
     visible: [false],
     content: [''],
+    abstract: [''],
   })
   public quillModules: QuillModules = {
     toolbar: {
@@ -40,6 +41,7 @@ export class ArticlesListFormComponent implements OnChanges {
       visible: this.article.visible,
       image_location: this.article.image_location,
       content: this.article.content,
+      abstract: this.article.abstract,
     })
   }
 

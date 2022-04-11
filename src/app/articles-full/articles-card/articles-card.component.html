@@ -4,7 +4,7 @@
   </mat-card-title-group>
   <img mat-card-sm-image [src]="[image_url]">
   <mat-card-content style="margin-top:10px;">
-    <div style="text-align: left;"[innerHtml]="article.content_short"></div>
+    <div style="text-align: left;" [innerHtml]="article.abstract"></div>
   </mat-card-content>
   <mat-card-actions>
     <a mat-flat-button [routerLink]="['/articles-full/' + article.slug]" color="accent">Learn More</a>

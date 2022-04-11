@@ -5,8 +5,8 @@ export class Article{
   public image_location: any = ''
   public date_created: Date = new Date()
   public visible: boolean = false
+  public abstract: string = ''
   public content?: string = ''
-  public content_short?: string = ''
 
   constructor(init?:Partial<Article>){
     Object.assign(this, init)
