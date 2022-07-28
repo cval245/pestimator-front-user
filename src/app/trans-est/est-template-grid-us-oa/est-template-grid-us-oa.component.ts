@@ -40,6 +40,8 @@ interface USOATableWise {
   official_cost: number,
   official_cost_currency: string,
   detailed_fee_category: any;
+  date_enabled: Date;
+  date_disabled: Date;
 }
 
 @Component({
@@ -199,22 +201,7 @@ export class EstTemplateGridUSOAComponent implements OnInit {
           return (valueA.id - valueB.id)
         },
       },
-      {
-        field: 'fee_code', headerName: 'Fee Code', editable: true,
-        width: 200, sortable: true, filter: 'agTextColumnFilter',
-        valueFormatter(row: ValueFormatterParams): string {
-          return row.value
-        },
-        cellEditor: 'agTextCellEditor',
-      },
-      {
-        field: 'description', headerName: 'Description', editable: true,
-        width: 300, sortable: true, filter: 'agTextColumnFilter',
-        valueFormatter(row: ValueFormatterParams): string {
-          return row.value
-        },
-        cellEditor: 'agTextCellEditor',
-      },
+
       {
         field: 'law_firm_template.law_firm_cost', headerName: 'LawFirm Cost', editable: true,
         width: 100, sortable: true, filter: 'agTextColumnFilter',
@@ -301,6 +288,22 @@ export class EstTemplateGridUSOAComponent implements OnInit {
         },
         autoHeight: true,
       },
+      {
+        field: 'fee_code', headerName: 'Fee Code', editable: true,
+        width: 200, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
+      {
+        field: 'description', headerName: 'Description', editable: true,
+        width: 300, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
     ];
     this.frameworkComponents = {
       //@ts-ignore
@@ -322,6 +325,8 @@ export class EstTemplateGridUSOAComponent implements OnInit {
       isa_country_fee_only: false,
       oa_first_final_bool: false,
       oa_final_bool: false,
+      date_enabled: new Date(),
+      date_disabled: new Date(),
       fee_category: {} as IFeeCategory,
       detailed_fee_category: {} as IDetailedFeeCategory,
       law_firm_template: {id: 0, law_firm_cost: 0, date_diff: ''},

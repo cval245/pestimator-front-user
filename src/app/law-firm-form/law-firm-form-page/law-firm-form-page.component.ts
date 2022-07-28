@@ -43,7 +43,6 @@ export class LawFirmFormPageComponent implements OnInit {
         let country = this.countries.find(z => z.id == y.country)!
         return {...y, 'country': country}
       })
-      console.log('ttt', this.lawFirms)
     })
   }
 

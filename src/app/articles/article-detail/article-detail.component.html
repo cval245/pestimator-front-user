@@ -4,6 +4,8 @@
     <img class="header-img" mat-card-sm-image [src]="[image_url]">
     <quill-view [content]="displayArticle.content">
     </quill-view>
+    <div class="back-button">
+      <a (click)="back()" mat-flat-button color="accent">Back</a>
+    </div>
   </div>
 </div>
-<a (click)="back()" mat-flat-button color="accent">Back</a>

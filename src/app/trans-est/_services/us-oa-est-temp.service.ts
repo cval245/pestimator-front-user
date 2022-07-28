@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
-import {IUSOAEstTemp} from "../_models/IUSOAEstTemp";
+import {IUSOAEstTempSubmit} from "../_models/IUSOAEstTemp";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsOaEstTempService extends EntityCollectionServiceBase<IUSOAEstTemp> {
+export class UsOaEstTempService extends EntityCollectionServiceBase<IUSOAEstTempSubmit> {
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('USOAEstTemp', serviceElementsFactory)

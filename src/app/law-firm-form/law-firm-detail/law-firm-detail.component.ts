@@ -94,7 +94,6 @@ export class LawFirmDetailComponent implements OnInit {
   }
 
   onSubmit(lawFirm: LawFirm) {
-    console.log('psy', lawFirm.country)
     let submit_lawFirm = {...lawFirm, country: lawFirm.country.id}
 
     this.destroy.next()

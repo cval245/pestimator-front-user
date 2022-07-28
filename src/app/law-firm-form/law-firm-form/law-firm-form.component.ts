@@ -32,7 +32,6 @@ export class LawFirmFormComponent implements OnChanges{
   }
 
   ngOnChanges(): void {
-    console.log('lol', this.lawFirm)
     this.lawFirmForm.setValue({
       id: this.lawFirm.id,
       name: this.lawFirm.name,
@@ -43,7 +42,6 @@ export class LawFirmFormComponent implements OnChanges{
       country: this.lawFirm.country,
       image_location: this.lawFirm.image_location
     })
-    console.log('ggg', this.lawFirmForm)
   }
 
   onSubmit() {

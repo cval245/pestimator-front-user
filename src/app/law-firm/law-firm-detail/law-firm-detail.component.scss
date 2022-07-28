@@ -1,6 +1,7 @@
 .law-firm-image{
-  max-width: 250px;
-  max-height: 250px;
+  object-fit: contain;
+  width: 250px;
+  height: 250px;
   margin: 10px;
 }
 
@@ -35,10 +36,8 @@
   justify-content: center;
 }
 
-.contact-container{
-  display:flex;
-  flex-direction:column;
-  justify-content: start;
-  align-content: start;
-  align-items: start;
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }

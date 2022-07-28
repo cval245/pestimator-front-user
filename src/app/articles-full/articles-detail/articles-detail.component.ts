@@ -13,7 +13,6 @@ import {ImageArticle} from "../../_models/ImageArticle.model";
 import {ArticleImagesService} from "../../_services/article-images.service";
 import {ArticleImagesUploadService} from "../../_services/article-images-upload.service";
 import {ArticleImagePosition} from "../../_models/ArticleImagePosition.model";
-import {defaultModules, QuillModules} from "ngx-quill";
 
 @Component({
   selector: 'app-articles-detail',
@@ -28,14 +27,7 @@ export class ArticlesDetailComponent implements OnInit {
   public html: string = ''
   public articleImages: ImageArticle[] = new Array<ImageArticle>()
   public positions: ArticleImagePosition[] = new Array<ArticleImagePosition>()
-  public quillModules: QuillModules = {
-    toolbar: {
-      container: defaultModules.toolbar,
-      handlers: {
-        image: this.imageHandler
-      }
-    }
-  };
+
 
   constructor(private articleSer: ArticleFullService,
               private route: ActivatedRoute,
@@ -52,29 +44,8 @@ export class ArticlesDetailComponent implements OnInit {
 
     let titleslug = this.route.snapshot.paramMap.get('titleslug')!
     this.subs(titleslug).subscribe(([articleImages]) => {
-      // this.positions = positions
       this.displayArticle = this.article
       this.articleImages = articleImages
-      // this.articleImages = articleImages.map(y => {
-      //   let image_position = this.positions.find(z => z.id == y.image_position)!
-      //   return {...y, image_position: image_position}
-      // })
-      // this.articleImages.forEach(y => {
-      //   if (y.image_position.name == 'top-left'
-      //     || y.image_position.name == 'top-right'
-      //     || y.image_position.name == 'top') {
-      //     let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
-      //     let blurb = img_string + this.displayArticle.content
-      //     this.displayArticle = {...this.displayArticle, content: blurb}
-      //   }
-      //   if (y.image_position.name == 'bottom-left'
-      //     || y.image_position.name == 'bottom-right'
-      //     || y.image_position.name == 'bottom') {
-      //     let img_string = '<img src="' + y.image_location + '" class="' + y.image_position.name + '">'
-      //     let blurb = this.displayArticle.content + img_string
-      //     this.displayArticle = {...this.displayArticle, content: blurb}
-      //   }
-      // })
     })
   }
 

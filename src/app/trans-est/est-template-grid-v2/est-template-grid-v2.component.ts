@@ -1,17 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Country} from "../../_models/Country.model";
 import {ApplType} from "../../_models/applType.model";
 import {EntitySize} from "../../_models/entitySize.model";
 import {IComplexConditions} from "../_models/ComplexConditions.model";
 import {IComplexTimeConditions} from "../_models/IComplexTimeConditions";
-import {
-  GridApi,
-  GridOptions,
-  Module,
-  ValueFormatterParams,
-  ValueGetterParams,
-  ValueSetterParams
-} from "@ag-grid-community/core";
+import {GridApi, Module, ValueFormatterParams, ValueGetterParams, ValueSetterParams} from "@ag-grid-community/core";
 import {ConditionRendererComponent} from "../condition-renderer/condition-renderer.component";
 import {IDocFormat} from "../../_models/DocFormat.model";
 import {IFeeCategory} from "../_models/FeeCategory.model";
@@ -26,8 +19,8 @@ interface TableWise {
   official_cost: number,
   official_cost_currency: string,
   date_diff: string,
-  country: any,//Country | undefined,
-  appl_type: any,//ApplType | undefined,
+  country: any,
+  appl_type: any,
   conditions: any;
   law_firm_template: any;
   description: string;
@@ -35,6 +28,8 @@ interface TableWise {
   isa_country_fee_only: boolean;
   fee_category: any;
   detailed_fee_category: any;
+  date_enabled: Date;
+  date_disabled: Date;
 }
 
 @Component({
@@ -42,16 +37,14 @@ interface TableWise {
   templateUrl: './est-template-grid-v2.component.html',
   styleUrls: ['./est-template-grid-v2.component.scss']
 })
-export class EstTemplateGridV2Component implements OnInit {
+export class EstTemplateGridV2Component implements OnChanges {
 
 
   public columnDefs: any
-  public datasource: any
   public floatingFiltersHeight: any;
   public defaultColDef: any;
   public rowSelection: any;
   private gridApi: GridApi = new GridApi()
-  public gridOptions: GridOptions = {}
   public params: any
   public headerHeight: number = 200;
   public getRowNodeId: any;
@@ -87,11 +80,16 @@ export class EstTemplateGridV2Component implements OnInit {
     this.floatingFiltersHeight = 50;
   }
 
-  ngOnInit(): void {
-  }
-
   agInit(params: any): void {
     this.params = params
+  }
+
+  dateFormatter(params: any) {
+    let date = params.value;
+    if (date.valueOf() === 0) {
+      return ''
+    }
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
   }
 
   ngOnChanges(): void {
@@ -104,6 +102,20 @@ export class EstTemplateGridV2Component implements OnInit {
           return row.value
         },
         cellEditor: 'agTextCellEditor',
+      },
+      {
+        field: 'date_enabled', headerName: 'Date Enabled', editable: true,
+        width: 100,
+        sortable: true, filter: 'agDateColumnFilter',
+        valueFormatter: this.dateFormatter,
+        cellEditor: 'agDateCellEditor',
+      },
+      {
+        field: 'date_disabled', headerName: 'Date Disabled', editable: true,
+        width: 100,
+        sortable: true, filter: 'agDateColumnFilter',
+        valueFormatter: this.dateFormatter,
+        cellEditor: 'agDateCellEditor',
       },
       {
         field: 'official_cost', headerName: 'Official Cost', editable: true,
@@ -169,22 +181,7 @@ export class EstTemplateGridV2Component implements OnInit {
         },
         autoHeight: true,
       },
-      {
-        field: 'fee_code', headerName: 'Fee Code', editable: true,
-        width: 100, sortable: true, filter: 'agTextColumnFilter',
-        valueFormatter(row: ValueFormatterParams): string {
-          return row.value
-        },
-        cellEditor: 'agTextCellEditor',
-      },
-      {
-        field: 'description', headerName: 'Description', editable: true,
-        width: 200, sortable: true, filter: 'agTextColumnFilter',
-        valueFormatter(row: ValueFormatterParams): string {
-          return row.value
-        },
-        cellEditor: 'agTextCellEditor',
-      },
+
       {
         field: 'conditions',
         headerName: 'Conditions',
@@ -254,7 +251,7 @@ export class EstTemplateGridV2Component implements OnInit {
           return params.data.law_firm_template.date_diff
         },
         valueSetter: (params: ValueSetterParams) => {
-          let newData = {
+          params.data = {
             ...params.data,
             law_firm_template: {
               id: params.data.law_firm_template.id,
@@ -263,7 +260,6 @@ export class EstTemplateGridV2Component implements OnInit {
               date_diff: params.newValue
             }
           }
-          params.data = newData
           this.onCellValueChanged(params)
           return false
         },
@@ -272,7 +268,22 @@ export class EstTemplateGridV2Component implements OnInit {
         },
         cellEditor: 'agTextCellEditor',
       },
-
+      {
+        field: 'fee_code', headerName: 'Fee Code', editable: true,
+        width: 100, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
+      {
+        field: 'description', headerName: 'Description', editable: true,
+        width: 200, sortable: true, filter: 'agTextColumnFilter',
+        valueFormatter(row: ValueFormatterParams): string {
+          return row.value
+        },
+        cellEditor: 'agTextCellEditor',
+      },
     ];
     this.frameworkComponents = {
       //@ts-ignore
@@ -293,6 +304,8 @@ export class EstTemplateGridV2Component implements OnInit {
       official_cost_currency: this.country.currency_name,
       fee_code: 'default',
       description: 'default',
+      date_enabled: new Date(),
+      date_disabled: new Date(),
       isa_country_fee_only: false,
       fee_category: {id: 0, name: 'default'} as IFeeCategory,
       detailed_fee_category: {id: 0, name: 'default'} as IDetailedFeeCategory,
@@ -322,10 +335,10 @@ export class EstTemplateGridV2Component implements OnInit {
   onCellValueChanged(params: any) {
     if (params.newValue !== params.oldValue) {
       if (this.isValid(params.data)) {
-        params.data.appl_type = params.data.appl_type.id
-        params.data.country = this.country.id
-        params.data.fee_category = params.data.fee_category.id
-        params.data.detailed_fee_category = params.data.detailed_fee_category.id
+        // params.data.appl_type = params.data.appl_type.id
+        // params.data.country = this.country.id
+        // params.data.fee_category = params.data.fee_category.id
+        // params.data.detailed_fee_category = params.data.detailed_fee_category.id
 
         if (params.data.conditions.language) {
           if (params.data.conditions.language.id == 0) {

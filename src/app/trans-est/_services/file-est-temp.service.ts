@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory,} from '@ngrx/data';
-import {IFileEstTemp} from '../_models/FileEstTemp.model';
+import {IFileEstTempSubmit} from '../_models/FileEstTemp.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FileEstTempService extends EntityCollectionServiceBase<IFileEstTemp>{
+export class FileEstTempService extends EntityCollectionServiceBase<IFileEstTempSubmit> {
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
     super('FileEstTemp', serviceElementsFactory)
-   }
+  }
 }

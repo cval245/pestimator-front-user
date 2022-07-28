@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {clone, map} from 'lodash';
-import {forkJoin, Subject} from 'rxjs';
+import {map} from 'lodash';
+import {combineLatest, forkJoin, Subject} from 'rxjs';
 import {mergeMap, takeUntil} from 'rxjs/operators';
 import {ApplType} from 'src/app/_models/applType.model';
 import {Country} from 'src/app/_models/Country.model';
@@ -43,6 +43,7 @@ import {Language} from "../../_models/Language.model";
 import {LanguageService} from "../../_services/language.service";
 import {DetailedFeeCategoryService} from "../_services/detailed-fee-category.service";
 import {IDetailedFeeCategory} from "../_models/DetailedFeeCategory.model";
+import {convertIBaseEst, convertIBaseEstToSubmit, IBaseEstTemp, IBaseEstTempSubmit} from "../_models/BaseEstTemp.model";
 
 interface GenericTemp {
   id: number,
@@ -58,87 +59,23 @@ interface GenericTemp {
   isa_country_fee_only: boolean;
   fee_category: any;
   detailed_fee_category: any;
+  date_enabled: Date;
+  date_disabled: Date;
 }
 
-interface CountryWise {
-  id: number,
-  country: any;
+enum ServiceEnum {
+  FileEstTemp = 'FileEstTemp',
+  PublEstTemp = 'PublEstTemp',
+  OAEstTemp = 'OAEstTemp',
+  USOAEstTemp = 'OAEstTemp',
+  AllowEstTemp = 'AllowEstTemp',
+  IssueEstTemp = 'IssueEstTemp',
+  RequestExamEstTemp = 'RequestExamEstTemp',
 }
 
-interface FeeCategoryWise {
+interface NamedWise {
   id: number,
-  fee_category: any;
-}
-
-interface DetailedFeeCategoryWise {
-  id: number,
-  detailed_fee_category: any;
-}
-
-
-interface ApplTypeWise {
-  id: number,
-  appl_type: any;
-}
-
-interface EntitySizeWise {
-  id: number,
-  condition_entity_size: any;
-}
-
-interface DocFormatWise {
-  id: number,
-  doc_format: any;
-}
-
-interface OverDocFormatWise {
-  id: number,
-  conditions: DocFormatWise;
-}
-
-interface OverEntitySizeWise {
-  id: number,
-  conditions: EntitySizeWise;
-}
-
-interface LanguageWise {
-  id: number,
-  language: any;
-}
-
-interface OverLanguageWise {
-  id: number,
-  conditions: LanguageWise
-}
-
-interface ComplexConditionWise {
-  id: number,
-  condition_complex: IComplexConditions | number;
-}
-
-interface ComplexTimeConditionWise {
-  id: number,
-  condition_time_complex: IComplexTimeConditions | number;
-}
-
-interface OverComplexConditionsWise {
-  id: number,
-  conditions: ComplexConditionWise;
-}
-
-interface OverComplexTimeConditionsWise {
-  id: number,
-  conditions: ComplexTimeConditionWise;
-}
-
-interface ConditionsWise {
-  id: number,
-  conditions: any;
-}
-
-interface LawFirmWise {
-  id: number,
-  law_firm_template: any;
+  name: string
 }
 
 
@@ -173,10 +110,9 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
   public complexTimeConditions = new Array<IComplexTimeConditions>();
   public currencies: Currency[] = new Array<Currency>();
   public languages: Language[] = new Array<Language>();
-  public filteredLanguages: Language[] = new Array<Language>();
   public currencies_list: string[] = new Array<string>();
   public docFormats: IDocFormat[] = new Array<IDocFormat>();
-  public overLayOpen: boolean = true;
+  public conditionsChangedObs: Subject<IConditions[]> = new Subject()
   //@ts-ignore
   @ViewChild('templatePortalContent') templatePortalContent: TemplateRef<unknown>;
 
@@ -206,26 +142,45 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     private _viewContainerRef: ViewContainerRef,
     private overlay: Overlay,
   ) {
-
-    this.docFormatSer.getAllUnlessAlreadyLoaded()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.docFormats = x.sort((a, b) => {
-          let countryA = a.name.toUpperCase()
-          let countryB = b.name.toUpperCase()
-          if (countryA < countryB) {
-            return -1;
+    combineLatest([
+      combineLatest([this.countrySer.getAllUnlessAlreadyLoaded()]),
+      combineLatest([
+        this.docFormatSer.getAllUnlessAlreadyLoaded(),
+        this.languageSer.getAllUnlessAlreadyLoaded(),
+        this.complexConditionSer.getAllUnlessAlreadyLoaded(),
+        this.complexTimeConditionSer.getAllUnlessAlreadyLoaded(),
+        this.entitySizeSer.getAllUnlessAlreadyLoaded(),
+        this.conditionSer.getAllUnlessAlreadyLoaded(),
+      ])
+    ])
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(
+      ([
+         [countries],
+         [
+           docFormats,
+           languages,
+           complexConditions,
+           complexTimeConditions,
+           entitySizes,
+           conditions,
+         ]]) => {
+        this.docFormats = EstMainFormComponent.formatDocFormats(docFormats)
+        this.languages = EstMainFormComponent.formatLanguages(languages)
+        this.complexConditions = EstMainFormComponent.formatComplexConditions(complexConditions)
+        this.complexTimeConditions = EstMainFormComponent.formatComplexTimeConditions(complexTimeConditions)
+        this.entitySizes = EstMainFormComponent.formatEntitySizes(entitySizes)
+        this.conditions = conditions.map(x => {
+          return {
+            ...x,
+            condition_entity_size: this.entitySizes.find(y => y.id == x.condition_entity_size),
+            condition_complex: this.complexConditions.find(y => y.id == x.condition_complex),
+            condition_time_complex: this.complexTimeConditions.find(y => y.id == x.condition_time_complex),
+            language: this.languages.find(y => y.id == x.language),
+            doc_format: this.docFormats.find(y => y.id == x.doc_format),
           }
-          if (countryA > countryB) {
-            return 1;
-          }
-          return 0;
         })
-      })
-    this.languageSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.languages = x
-        this.languages.push({name: 'N/A', id: 0})
+        this.conditionsChangedObs.next(this.conditions)
+        this.countries = EstMainFormComponent.formatCountries(countries)
       })
     this.feeCatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
@@ -233,17 +188,7 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
       })
     this.detailedFeeCatSer.getAllUnlessAlreadyLoaded().pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => {
-        this.detailedFeeCategories = x.sort((a, b) => {
-          let catA = a.name.toUpperCase()
-          let catB = b.name.toUpperCase()
-          if (catA < catB) {
-            return -1;
-          }
-          if (catA > catB) {
-            return 1;
-          }
-          return 0;
-        })
+        this.detailedFeeCategories = EstMainFormComponent.nameSort(x)
       })
     this.currencySer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
@@ -251,59 +196,17 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
         this.currencies = x
         this.currencies_list = map(x, y => y.currency_name).sort()
       })
-    this.countrySer.getAllUnlessAlreadyLoaded()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.country_us_id = x.find(y => y.country == 'US')?.id || 0
-        this.countries = x.sort((a, b) => {
-          let countryA = a.long_name.toUpperCase()
-          let countryB = b.long_name.toUpperCase()
-          if (countryA < countryB) {
-            return -1;
-          }
-          if (countryA > countryB) {
-            return 1;
-          }
-          return 0;
-        })
-      })
-
-    this.entitySizeSer.getAllUnlessAlreadyLoaded()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.entitySizes = x
-        this.entitySizes.push({entity_size: 'N/A', id: 0, description: 'N/A', default_bool: false, country: 0})
-      })
 
     this.applTypeSer.getAllUnlessAlreadyLoaded()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.applTypes = x)
 
-    this.conditionSer.entities$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.conditions = x
-        this.conditions = clone(this.conditions)
-        this.setFilters(this.country.id)
-      })
-
-    this.complexConditionSer.getAllUnlessAlreadyLoaded()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.complexConditions = x
-        this.complexConditions.push({name: 'N/A', id: 0})
-      })
-
-    this.complexTimeConditionSer.getAllUnlessAlreadyLoaded()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.complexTimeConditions = x
-        this.complexTimeConditions.push({name: 'N/A', id: 0})
-      })
 
     this.lawFirmTempSer.entities$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => this.lawFirmTemp = x)
+      .subscribe(x => {
+        this.lawFirmTemp = x
+      })
 
     this.countryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
@@ -313,42 +216,49 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
         this.country_us = x == this.country_us_id;
         this.setFilters(x)
       })
-    this.filEstSer.filteredEntities$
+    combineLatest([this.filEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.filEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.filEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.publEstSer.filteredEntities$
+
+    combineLatest([this.publEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.publEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.publEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.reqEstSer.filteredEntities$
+
+    combineLatest([this.reqEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.reqEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.reqEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.oaEstSer.filteredEntities$
+
+    combineLatest([this.oaEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.oaEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.oaEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.usoaEstSer.filteredEntities$
+
+    combineLatest([this.usoaEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.usoaEstTemp = this.replaceFkWithObjectUSOA(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.usoaEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.allowEstSer.filteredEntities$
+
+    combineLatest([this.allowEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.allowEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.allowEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
-    this.issueEstSer.filteredEntities$
+
+    combineLatest([this.issueEstSer.filteredEntities$, this.conditionsChangedObs, this.lawFirmTempSer.entities$])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(x => {
-        this.issueEstTemp = this.replaceFkWithObject(x)
+      .subscribe(([ests, conditions, lawFirms]) => {
+        this.issueEstTemp = this.fillInEstRows(ests, conditions, lawFirms)
       })
   }
+
 
   ngOnInit(): void {
     this.filEstSer.getAll()
@@ -378,6 +288,18 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     overlayRef.attach(this.templatePortal)
   }
 
+  fillInEstRows<T extends IBaseEstTempSubmit>(estRows: T[], conditions: IConditions[], lawFirmTemps: ILawFirmEstTemp[]) {
+    return estRows.map(row => {
+      return convertIBaseEst(row,
+        this.countries,
+        this.applTypes,
+        conditions,
+        lawFirmTemps,
+        this.feeCategories,
+        this.detailedFeeCategories)
+    })
+  }
+
   setFilters(country_id: number) {
     this.filEstSer.setFilter({
       country_id: country_id
@@ -402,302 +324,95 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     })
   }
 
-  replaceFkWithObject(data: GenericTemp[]) {
-    return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
-      this.lawFirmTempSet(this.conditionsSet(
-        this.applTypeSet(this.countrySet(this.feeCategorySet(this.detailedFeeCategorySet(
-          data)))))))))))
-  }
-
-  replaceFkWithObjectUSOA(data: IUSOAEstTemp[]) {
-    return this.languageSet(this.complexTimeConditionsSet(this.complexConditionsSet(this.docFormatSet(this.entitySizeSet(
-      this.lawFirmTempSet(this.conditionsSet(
-        this.applTypeSet(this.countrySet(this.feeCategorySet(this.detailedFeeCategorySet(
-          data)))))))))))
-  }
-
-  detailedFeeCategorySet<TDetailedFeeCategoryWise extends DetailedFeeCategoryWise>(arg: TDetailedFeeCategoryWise[]): TDetailedFeeCategoryWise[] {
-    return map<TDetailedFeeCategoryWise, TDetailedFeeCategoryWise>(arg, (x: TDetailedFeeCategoryWise) => {
-      let d = this.detailedFeeCategories.find(y => y.id == x.detailed_fee_category);
-      return {...x, 'detailed_fee_category': d}
-    })
-  }
-
-  feeCategorySet<TFeeCategoryWise extends FeeCategoryWise>(arg: TFeeCategoryWise[]): TFeeCategoryWise[] {
-    return map<TFeeCategoryWise, TFeeCategoryWise>(arg, (x: TFeeCategoryWise) => {
-      let d = this.feeCategories.find(y => y.id == x.fee_category);
-      return {...x, 'fee_category': d}
-    })
-  }
-
-
-  countrySet<TCountryWise extends CountryWise>(arg: TCountryWise[]): TCountryWise[] {
-    return map<TCountryWise, TCountryWise>(arg, (x: TCountryWise) => {
-      let d = this.countries.find(y => y.id == x.country);
-      return {...x, 'country': d}
-    })
-  }
-
-  applTypeSet<TApplTypeWise extends ApplTypeWise>(arg: TApplTypeWise[]): TApplTypeWise[] {
-    return map<TApplTypeWise, TApplTypeWise>(arg, (x: TApplTypeWise) => {
-      let d = this.applTypes.find(y => y.id == x.appl_type);
-      return {...x, 'appl_type': d}
-    })
-  }
-
-  entitySizeSet<TEntitySizeWise extends OverEntitySizeWise>(arg: TEntitySizeWise[]): TEntitySizeWise[] {
-    return map<TEntitySizeWise, TEntitySizeWise>(arg, (x: TEntitySizeWise) => {
-      let d = this.entitySizes.find(y => y.id == x.conditions.condition_entity_size);
-      let conditions = {...x.conditions, 'condition_entity_size': d}
-      return {...x, conditions}
-    })
-  }
-
-  languageSet<TLanguageWise extends OverLanguageWise>(arg: TLanguageWise[]): TLanguageWise[] {
-    return map<TLanguageWise, TLanguageWise>(arg, (x: TLanguageWise) => {
-      let d = this.languages.find(y => y.id == x.conditions.language);
-      let conditions = {...x.conditions, 'language': d}
-      return {...x, conditions}
-    })
-  }
-
-
-  docFormatSet<TDocFormatWise extends OverDocFormatWise>(arg: TDocFormatWise[]): TDocFormatWise[] {
-    return map<TDocFormatWise, TDocFormatWise>(arg, (x: TDocFormatWise) => {
-      let d = this.docFormats.find(y => y.id == x.conditions.doc_format);
-      let conditions = {...x.conditions, 'doc_format': d}
-      return {...x, conditions}
-    })
-  }
-
-  complexConditionsSet<TComplexCondition extends OverComplexConditionsWise>(arg: TComplexCondition[]): TComplexCondition[] {
-    return map<TComplexCondition, TComplexCondition>(arg, (x: TComplexCondition) => {
-      let d = this.complexConditions.find(y => y.id == x.conditions.condition_complex);
-      let conditions = {...x.conditions, 'condition_complex': d}
-      return {...x, conditions}
-    })
-  }
-
-  complexTimeConditionsSet<TComplexTimeCondition extends OverComplexTimeConditionsWise>(arg: TComplexTimeCondition[]): TComplexTimeCondition[] {
-    return map<TComplexTimeCondition, TComplexTimeCondition>(arg, (x: TComplexTimeCondition) => {
-      let d = this.complexTimeConditions.find(y => y.id == x.conditions.condition_time_complex);
-      let conditions = {...x.conditions, 'condition_time_complex': d}
-      return {...x, conditions}
-    })
-  }
-
-  conditionsSet<TConditionsWise extends ConditionsWise>(arg: TConditionsWise[]): TConditionsWise[] {
-    return map<TConditionsWise, TConditionsWise>(arg, (x: TConditionsWise) => {
-      let d = this.conditions.find(y => y.id == x.conditions);
-      return {...x, 'conditions': d}
-    })
-  }
-
-  lawFirmTempSet<TLawFirmWise extends LawFirmWise>(arg: TLawFirmWise[]): TLawFirmWise[] {
-    return map<TLawFirmWise, TLawFirmWise>(arg, (x: TLawFirmWise) => {
-      let d = this.lawFirmTemp.find(y => y.id == x.law_firm_template);
-      return {...x, 'law_firm_template': d}
-    })
-  }
 
   onSubmitFilEstTemp(formData: IFileEstTemp): void {
-    if (formData.id == 0 || undefined) {
+    this.onSubmitGeneric(formData, ServiceEnum.FileEstTemp)
+  }
+
+  onSubmitPublEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.PublEstTemp)
+  }
+
+  onSubmitOAEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.OAEstTemp)
+  }
+
+  onSubmitUSOAEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.USOAEstTemp)
+  }
+
+  onSubmitReqEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.RequestExamEstTemp)
+  }
+
+  onSubmitAllowEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.AllowEstTemp)
+  }
+
+  onSubmitIssueEstTemp(formData: IFileEstTemp): void {
+    this.onSubmitGeneric(formData, ServiceEnum.IssueEstTemp)
+  }
+
+
+  delGenericTemp(delRows: IBaseEstTemp[], estTempClass: ServiceEnum): void {
+    delRows.forEach(row => {
+      let rowSubmit = convertIBaseEstToSubmit(row)
+      this.serviceGetter(estTempClass).delete(rowSubmit.id)
+    })
+  }
+
+  onSubmitGeneric(formData: GenericTemp, estTempClass: ServiceEnum): void {
+    let formDataSubmit = convertIBaseEstToSubmit(formData)
+    if (formDataSubmit.id == 0 || undefined
+    ) {
       let cmb$ = this.addConditionLawFirm(formData.conditions,
         formData.law_firm_template)
 
       cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.filEstSer.add(formData)
+        formDataSubmit.conditions = x[0].id
+        formDataSubmit.law_firm_template = x[1].id
+        //@ts-ignore
+        return this.serviceGetter(estTempClass).add(formDataSubmit)
       })).subscribe()
 
     } else {
       let cmb$ = this.updateConditionLawFirm(formData.conditions,
         formData.law_firm_template)
       cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.filEstSer.update(formData)
-      })).subscribe()
+        formDataSubmit.conditions = x[0].id
+        formDataSubmit.law_firm_template = x[1].id
+        //@ts-ignore
+        return this.serviceGetter(estTempClass).update(formDataSubmit)
+      })).subscribe(y => console.log(y))
     }
   }
 
   delFileEstTemp(delRows: IFileEstTemp[]): void {
-    for (let row of delRows) {
-      this.filEstSer.delete(row)
-    }
-  }
-
-  onSubmitPublEstTemp(formData: IPublEstTemp): void {
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.publEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.publEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.FileEstTemp)
   }
 
   delPublEstTemp(delRows: IPublEstTemp[]): void {
-    for (let row of delRows) {
-      this.publEstSer.delete(row)
-    }
-  }
-
-  onSubmitReqEstTemp(formData: IRequestExamEstTemp): void {
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.reqEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.reqEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.PublEstTemp)
   }
 
   delReqEstTemp(delRows: IPublEstTemp[]): void {
-    for (let row of delRows) {
-      this.reqEstSer.delete(row)
-    }
-  }
-
-
-  onSubmitOAEstTemp(formData: IOAEstTemp): void {
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.oaEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.oaEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.RequestExamEstTemp)
   }
 
   delOAEstTemp(delRows: IOAEstTemp[]): void {
-    for (let row of delRows) {
-      this.oaEstSer.delete(row)
-    }
-  }
-
-  // for us oa estimates because extra column
-  onSubmitUSOAEstTemp(formData: IUSOAEstTemp): void {
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.usoaEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.usoaEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.OAEstTemp)
   }
 
   delUSOAEstTemp(delRows: IUSOAEstTemp[]): void {
-    for (let row of delRows) {
-      this.usoaEstSer.delete(row)
-    }
-  }
-
-
-  onSubmitAllowEstTemp(formData: IAllowEstTemp): void {
-
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.allowEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.allowEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.USOAEstTemp)
   }
 
   delAllowEstTemp(delRows: IAllowEstTemp[]): void {
-    for (let row of delRows) {
-      this.allowEstSer.delete(row)
-    }
-  }
-
-  onSubmitIssueEstTemp(formData: IIssueEstTemp): void {
-    if (formData.id == 0 || undefined) {
-      let cmb$ = this.addConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.issueEstSer.add(formData)
-      })).subscribe()
-
-    } else {
-      let cmb$ = this.updateConditionLawFirm(formData.conditions,
-        formData.law_firm_template)
-      cmb$.pipe(mergeMap(x => {
-        formData.conditions = x[0].id
-        formData.law_firm_template = x[1].id
-        return this.issueEstSer.update(formData)
-      })).subscribe()
-    }
+    this.delGenericTemp(delRows, ServiceEnum.AllowEstTemp)
   }
 
   delIssueEstTemp(delRows: IIssueEstTemp[]): void {
-    for (let row of delRows) {
-      this.issueEstSer.delete(row)
-    }
+    this.delGenericTemp(delRows, ServiceEnum.IssueEstTemp)
   }
 
   updateConditionLawFirm(conditions: IConditions, law_firm_template: ILawFirmEstTemp) {
@@ -710,5 +425,90 @@ export class EstMainFormComponent implements OnInit, AfterViewInit {
     let condition$ = this.conditionSer.add(conditions)
     let lawFirmTemp$ = this.lawFirmTempSer.add(law_firm_template)
     return forkJoin([condition$, lawFirmTemp$])
+  }
+
+  serviceGetter(serviceEnum: ServiceEnum) {
+    switch (serviceEnum) {
+      case ServiceEnum.FileEstTemp:
+        return this.filEstSer
+      case ServiceEnum.PublEstTemp:
+        return this.publEstSer
+      case ServiceEnum.OAEstTemp:
+        return this.oaEstSer
+      case ServiceEnum.USOAEstTemp:
+        return this.usoaEstSer
+      case ServiceEnum.AllowEstTemp:
+        return this.allowEstSer
+      case ServiceEnum.IssueEstTemp:
+        return this.issueEstSer
+      case ServiceEnum.RequestExamEstTemp:
+        return this.reqEstSer
+    }
+  }
+
+  private static formatLanguages(languages: Language[]): Language[] {
+    let new_languages = languages
+    languages.push({name: 'N/A', id: 0})
+    return this.nameSort(new_languages)
+  }
+
+  private static formatComplexConditions(complexConditions: IComplexConditions[]): IComplexConditions[] {
+    let newComplexConditions = complexConditions
+    newComplexConditions.push({name: 'N/A', id: 0})
+    return this.nameSort(newComplexConditions)
+  }
+
+  private static formatComplexTimeConditions(complexTimeConditions: IComplexTimeConditions[]): IComplexTimeConditions[] {
+    let newComplexTimeConditions = complexTimeConditions
+    newComplexTimeConditions.push({name: 'N/A', id: 0})
+    return this.nameSort(newComplexTimeConditions)
+  }
+
+  private static formatDocFormats(docFormats: IDocFormat[]): IDocFormat[] {
+    return this.nameSort(docFormats)
+  }
+
+  private static nameSort<T extends NamedWise[]>(genNamedArr: T) {
+    return genNamedArr.sort((a, b) => {
+      let objA = a.name.toUpperCase()
+      let objB = b.name.toUpperCase()
+      if (objA < objB) {
+        return -1;
+      }
+      if (objA > objB) {
+        return 1;
+      }
+      return 0;
+    })
+  }
+
+  private static formatCountries(countries: Country[]): Country[] {
+    return countries.sort((a, b) => {
+      let objA = a.country.toUpperCase()
+      let objB = b.country.toUpperCase()
+      if (objA < objB) {
+        return -1;
+      }
+      if (objA > objB) {
+        return 1;
+      }
+      return 0;
+    })
+  }
+
+  private static formatEntitySizes(entitySizes: EntitySize[]): EntitySize[] {
+    let newEntitySizes = entitySizes
+    newEntitySizes.push({entity_size: 'N/A', id: 0, description: 'N/A', default_bool: false, country: 0})
+    return newEntitySizes.sort((a, b) => {
+      let objA = a.entity_size.toUpperCase()
+      let objB = b.entity_size.toUpperCase()
+      if (objA < objB) {
+        return -1;
+      }
+      if (objA > objB) {
+        return 1;
+      }
+      return 0;
+    })
   }
 }
