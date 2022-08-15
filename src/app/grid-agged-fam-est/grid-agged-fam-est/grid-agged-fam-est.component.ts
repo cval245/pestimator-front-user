@@ -3,9 +3,6 @@ import {RowCountryAggedWise} from "../../estimations-detail-page/fam-est-detail/
 import {forEach, map, omit} from "lodash";
 import {Module, ValueFormatterParams, ValueGetterParams} from "@ag-grid-community/core";
 import {ClientSideRowModelModule} from "@ag-grid-community/client-side-row-model";
-// import {ValueFormatterParams} from "@ag-grid-community/core";
-// import {ValueGetterParams} from "@ag-grid-community/core";
-
 
 @Component({
   selector: 'app-grid-agged-fam-est',
@@ -30,7 +27,6 @@ export class GridAggedFamEstComponent implements OnChanges {
   ngOnChanges() {
     let just_row_data
     let tot_col
-    // this.rowData = this.countryAggeds
     this.rowData = map(this.countryAggeds, x => {
       just_row_data = omit(x.row_data, 'total')
       tot_col = x.row_data.total

@@ -17,6 +17,7 @@ export class LawFirmFormPageComponent implements OnInit {
   lawFirms: LawFirm[] = new Array<LawFirm>()
   filteredLawFirms: LawFirm[] = new Array<LawFirm>()
   countries: Country[] = new Array<Country>()
+
   constructor(private lawFirmSer: LawFirmService,
               private countrySer: CountryService) { }
 

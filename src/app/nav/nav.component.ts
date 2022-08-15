@@ -12,12 +12,14 @@ import {Subject} from "rxjs";
 export class NavComponent {
 
   public isStaff: boolean = false;
+  public isLawFirmAuthorized: boolean = false;
   private destroyed = new Subject<void>();
 
   constructor(private store: Store<{menuOpen: boolean, userProfile: any}> ) {
     this.store.select('userProfile').pipe(takeUntil(this.destroyed), delay(0)).subscribe(x => {
       if (x !== undefined) {
         this.isStaff = x.userDetail.is_staff
+        this.isLawFirmAuthorized = x.userDetail.lawfirm_submit_data_access
       }
     })
 

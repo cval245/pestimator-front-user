@@ -1,0 +1,14 @@
+<div class="mat-elevation-z8" style="margin-top: 30px; width: 800px">
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine"
+    domLayout="autoHeight"
+    [rowData]="lawFirmFees"
+    [frameworkComponents]="frameworkComponents"
+    [defaultColDef]="defaultColDef"
+    [modules]="modules"
+    [columnDefs]="columnDefs"
+    (cellValueChanged)="onCellValueChanged($event)"
+  >
+  </ag-grid-angular>
+</div>

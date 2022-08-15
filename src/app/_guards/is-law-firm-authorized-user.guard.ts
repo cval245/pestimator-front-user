@@ -7,9 +7,9 @@ import {takeUntil} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class IsStaffLoggedInGuard implements CanActivate, OnDestroy {
+export class IsLawFirmAuthorizedUserGuard implements CanActivate, OnDestroy {
 
-  private isStaff: Boolean = false
+  private isLawFirmAuthorizedUser: Boolean = false
   private isLoggedIn: Boolean = false
   private destroyed = new Subject<void>();
 
@@ -18,29 +18,32 @@ export class IsStaffLoggedInGuard implements CanActivate, OnDestroy {
     private router: Router
   ) {
     this.store.select('authCred').pipe(takeUntil(this.destroyed)).subscribe(x => {
-        this.isLoggedIn = x.isLoggedIn
+      this.isLoggedIn = x.isLoggedIn
     })
     this.store.select('userProfile').pipe(takeUntil(this.destroyed)).subscribe(x => {
-      this.isStaff = x.userDetail.is_staff
+      this.isLawFirmAuthorizedUser = x.userDetail.lawfirm_submit_data_access
     })
   }
+
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.isLoggedIn){
-      if (this.isStaff){
+    if (this.isLoggedIn) {
+      if (this.isLawFirmAuthorizedUser) {
         return true;
-      } else{
+      } else {
         return false;
       }
-    } else{
+    } else {
       return this.router.parseUrl('/account/login')
     }
 
   }
+
   ngOnDestroy() {
     this.destroyed.next()
     this.destroyed.complete()
   }
+
 }

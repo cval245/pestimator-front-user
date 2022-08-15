@@ -27,6 +27,9 @@ import {LawFirmDetailComponent} from './law-firm-detail/law-firm-detail.componen
     LawFirmCardComponent,
     LawFirmDetailComponent
   ],
+  exports: [
+    LawFirmFormComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

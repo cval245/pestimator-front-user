@@ -5,6 +5,7 @@ import {IsStaffLoggedInGuard} from "./_guards/is-staff-logged-in.guard";
 import {LoggedInGuard} from "./_guards/logged-in.guard";
 import {CustomPreloadingStrategyService} from "./_services/custom-preloading-strategy.service";
 import {LandingGuard} from "./_guards/landing.guard";
+import {IsLawFirmAuthorizedUserGuard} from "./_guards/is-law-firm-authorized-user.guard";
 
 const routes: Routes = [
   {
@@ -53,6 +54,12 @@ const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
     canActivate: [IsStaffLoggedInGuard, LandingGuard],
     data: {preload: false}
+  },
+  {
+    path: 'law-firm-authorized',
+    loadChildren: () => import('./law-firm-authorized/law-firm-authorized.module').then(m => m.LawFirmAuthorizedModule),
+    canActivate: [IsLawFirmAuthorizedUserGuard, LandingGuard],
+    data: {preload: true}
   },
   {
     path: 'law-firms',

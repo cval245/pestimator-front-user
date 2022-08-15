@@ -1,0 +1,10 @@
+<mat-form-field class="currency-form-ctrl">
+  <mat-select
+    [formControl]="currencyCtrl"
+    [compareWith]="compareCurrency">
+    <mat-option *ngFor="let t of currencies"
+                [value]="t">
+      {{t.currency_name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

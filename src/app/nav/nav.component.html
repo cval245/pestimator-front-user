@@ -31,6 +31,18 @@
        (click)="closeMenu()">
       <p class="mat-h3">Estimates</p>
     </a>
+    <a *ngIf="isLawFirmAuthorized"
+       mat-button
+       routerLink="/law-firm-authorized"
+       (click)="closeMenu()">
+      <p class="mat-h3">Edit Law Firm Profile</p>
+    </a>
+    <a *ngIf="isLawFirmAuthorized"
+       mat-button
+       routerLink="/law-firm-authorized/law-firm-fee-entry"
+       (click)="closeMenu()">
+      <p class="mat-h3">Law Firm Fees</p>
+    </a>
     <a *ngIf="isStaff"
        mat-button
        routerLink="/admin/main"

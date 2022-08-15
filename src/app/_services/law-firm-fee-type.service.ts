@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {EntityCollectionServiceBase, EntityCollectionServiceElementsFactory} from '@ngrx/data';
 import {switchMap} from "rxjs/operators";
-import {LawFirmFeeFull} from "../_models/LawFirmFeeTypeFull.model";
+import {LawFirmFeeType} from "../_models/LawFirmFeeType.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LawFirmFeeTypeService extends EntityCollectionServiceBase<LawFirmFeeFull> {
+export class LawFirmFeeTypeService extends EntityCollectionServiceBase<LawFirmFeeType> {
 
   private full_loaded: boolean = false
 
   constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
-    super('LawFirmFee', serviceElementsFactory)
+    super('LawFirmFeeType', serviceElementsFactory)
   }
 
   getAllUnlessAlreadyLoaded() {

@@ -20,6 +20,22 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'law-firms-full/',
       collectionResourceUrl: environment.API_URL + 'law-firms-full/'
     },
+    LawFirmAuthorized: {
+      entityResourceUrl: environment.API_URL + 'law-firm-authorized/',
+      collectionResourceUrl: environment.API_URL + 'law-firm-authorized/'
+    },
+    LawFirmFee: {
+      entityResourceUrl: environment.API_URL + 'law-firm-fees/',
+      collectionResourceUrl: environment.API_URL + 'law-firm-fees/'
+    },
+    LawFirmFeeFull: {
+      entityResourceUrl: environment.API_URL + 'law-firm-fees-full/',
+      collectionResourceUrl: environment.API_URL + 'law-firm-fees-full/'
+    },
+    LawFirmFeeType: {
+      entityResourceUrl: environment.API_URL + 'lawfirm-fee-types/',
+      collectionResourceUrl: environment.API_URL + 'lawfirm-fee-types/'
+    },
     LawFirmImage: {
       entityResourceUrl: environment.API_URL + 'get-law-firm-image/',
       collectionResourceUrl: environment.API_URL + 'get-law-firm-image/'
@@ -36,10 +52,6 @@ export const defaultDataServiceConfig: DefaultDataServiceConfig = {
       entityResourceUrl: environment.API_URL + 'article-full/',
       collectionResourceUrl: environment.API_URL + 'article-full/'
     },
-    // ArticleImagePosition: {
-    //   entityResourceUrl: environment.API_URL + 'article-image-position/',
-    //   collectionResourceUrl: environment.API_URL + 'article-image-position/'
-    // },
     FamEst: {
       entityResourceUrl: environment.API_URL + 'fam-est/',
       collectionResourceUrl: environment.API_URL + 'fam-est/',
